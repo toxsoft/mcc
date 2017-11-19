@@ -12,3 +12,6 @@ Require-Bundle: ru.toxsoft.tslib_plugin;bundle-version="6.0.2",
  ru.toxsoft.s5.sysaddons.reports.gui_plugin;bundle-version="7.23.1",
  ru.toxsoft.s5.sysaddons.reports_plugin;bundle-version="7.23.1",
  ru.toxsoft.s5.sysaddons.wscfg_plugin;bundle-version="7.23.1"
+Export-Package: ru.toxsoft.mcc.client.connection,
+ ru.toxsoft.mcc.server,
+ ru.toxsoft.mcc.server.impl

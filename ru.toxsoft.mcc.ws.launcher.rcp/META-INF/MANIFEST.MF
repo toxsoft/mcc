@@ -14,7 +14,9 @@ Require-Bundle: org.eclipse.core.runtime,
  ru.toxsoft.tsgui_plugin;bundle-version="6.0.2",
  ru.toxsoft.tsgui.e4;bundle-version="1.0.1",
  ru.toxsoft.mws.base;bundle-version="1.0.0",
- ru.toxsoft.mws.app.main;bundle-version="1.0.0"
+ ru.toxsoft.mws.app.main;bundle-version="1.0.0",
+ ru.toxsoft.mcc.server;bundle-version="1.0.0",
+ ru.toxsoft.mws.module.s5.conn;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: ru.toxsoft.mcc.ws.launcher.rcp,

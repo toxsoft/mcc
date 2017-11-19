@@ -1,7 +1,15 @@
 package ru.toxsoft.mcc.ws.launcher.rcp;
 
+import ru.toxsoft.mcc.client.connection.MccServicesInitializer;
+import ru.toxsoft.mcc.server.impl.IMccServerApi;
 import ru.toxsoft.mws.base.mwsservice.ITsModularWorkstationService;
+import ru.toxsoft.mws.module.s5.conn.EOpenCmdStartegy;
+import ru.toxsoft.mws.module.s5.conn.IMwsModuleS5ConnConstants;
+import ru.toxsoft.mws.module.s5.conn.cfg.IS5ConnParameters;
+import ru.toxsoft.mws.module.s5.conn.cfg.impl.S5ConnConfig;
 import ru.toxsoft.tsgui.e4.app.TsActivator;
+import ru.toxsoft.tslib.utils.login.ILoginInfo;
+import ru.toxsoft.tslib.utils.login.LoginInfo;
 
 /**
  * Активатор плагина.
@@ -38,10 +46,23 @@ public class Activator
   /**
    * Настраивает конфигурацию модулей, которые будут запскаться.
    */
+  @SuppressWarnings( "nls" )
   @Override
   protected void doStart() {
     ITsModularWorkstationService mws = Activator.getInstance().getOsgiService( ITsModularWorkstationService.class );
     mws.setAppSettingsRootName( APP_SETTINGS_ROOT_NAME );
+    // настройка умолчаний соединения с сервером (модуль mws.module.s5.conn)
+    mws.mwsContext().params().setBool( IMwsModuleS5ConnConstants.ALWAYS_USE_FILE_MENU, true );
+    S5ConnConfig scc = new S5ConnConfig();
+    scc.params().setStr( IS5ConnParameters.API_BEAN_NAME, IMccServerApi.API_BEAN_NAME );
+    scc.params().setStr( IS5ConnParameters.API_INTERFACE, IMccServerApi.API_INTERFACE_NAME );
+    scc.params().setStr( IS5ConnParameters.MODULE_NAME, IMccServerApi.APP_MODULE_NAME );
+    scc.params().setStr( IS5ConnParameters.CLIENT_SERVICE_INITER_CLASS_NAME, MccServicesInitializer.class.getName() );
+    scc.params().setStr( IS5ConnParameters.HOST_NAME, "localhost" );
+    IMwsModuleS5ConnConstants.CONFIG_DEFAULTS.setValue( mws.mwsContext().params(), scc );
+    ILoginInfo dli = new LoginInfo( "root", "1" );
+    IMwsModuleS5ConnConstants.DEFAULT_LOGIN_INFO.setValue( mws.mwsContext().params(), dli );
+    IMwsModuleS5ConnConstants.OPEN_CMD_STRATEGY.setValue( mws.mwsContext().params(), EOpenCmdStartegy.OPEN_LAST );
   }
 
   /**
