@@ -7,7 +7,8 @@
 Надо создать целевую платформу "TS-RCP-4.6-multi-platform" со следующим содержимым:
 1. Directory "${workspace_loc}/../git-repos/ts-targets/target-rcp-ts-addons"
 2. Directory "${workspace_loc}/../git-repos/ts-targets/target-ts-addons"
-3. Software site: "http://download.eclipse.org/eclipse/updates/4.6"
+2. Directory "${workspace_loc}/../git-repos/ts-targets/target-emf-2.12"
+4. Software site: "http://download.eclipse.org/eclipse/updates/4.6"
 
 Директории добавляются в целевую платформу как обычно.
 А вот удаленныый источник плагинов (Software site) добавляется так:

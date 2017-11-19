@@ -1,13 +1,22 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: АРМ МосКокс, RCP версия
-Bundle-SymbolicName: ru.toxsoft.mcc.ws.launcher.rcp
+Bundle-Name: АРМ МосКокс
+Bundle-SymbolicName: ru.toxsoft.mcc.ws.launcher.rcp;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ru.toxsoft.mcc.ws.launcher.rcp.Activator
 Bundle-Vendor: ToxSoft LLC
 Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jface;bundle-version="3.12.0",
+ org.eclipse.e4.core.contexts;bundle-version="1.5.0",
+ org.eclipse.e4.ui.model.workbench;bundle-version="1.2.0",
+ org.eclipse.e4.ui.workbench;bundle-version="1.4.0",
  ru.toxsoft.tslib_plugin;bundle-version="6.0.2",
  ru.toxsoft.tsgui_plugin;bundle-version="6.0.2",
- ru.toxsoft.tsgui.e4;bundle-version="1.0.1"
+ ru.toxsoft.tsgui.e4;bundle-version="1.0.1",
+ ru.toxsoft.mws.base;bundle-version="1.0.0",
+ ru.toxsoft.mws.app.main;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Export-Package: ru.toxsoft.mcc.ws.launcher.rcp,
+ ru.toxsoft.mcc.ws.launcher.rcp.app,
+ ru.toxsoft.mcc.ws.launcher.rcp.app.addons
