@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ru.toxsoft.mcc.server -->
+
+<!-- создает плагин для Eclipse -->
+<project name="mcc.server" default="deploy">
+  <!-- это префикс проекта (с заглавной буквы), например Mcc -->
+  <property name="project.Prefix" value="Mcc" />
+
+  <!-- это префикс проекта, например mcc -->
+  <property name="project.prefix" value="mcc" />
+
+  <!-- это версия проекта -->
+  <property name="plugin.version" value="2.0.1" />
+
+  <!-- это имя проекта -->
+  <property name="plugin.name" value="ru.toxsoft.${project.prefix}.server" />
+
+  <!-- имя jar-файла собираемого для создания плагина (идентификатор и версия плагина) -->
+  <property name="jarfile.name" value="${project.prefix}-server.jar" />
+
+  <!-- имя собираемого deploy-jar-файла для размещения в wildfly -->
+  <property name="deployable_jarfile.name" value="${project.prefix}-server-deploy.jar" />
+
+  <!-- это имя - идентификатор plugin-а -->
+  <property name="plugin.id" value="${plugin.name}_plugin" />
+
+  <!-- это директорий проекта plugin-а -->
+  <property name="project_dir" value="${plugin.id}" />
+  
+  <!-- это имя определяется из настроек plugin-а (идентификатор и версия плагина) -->
+  <property name="pluginfile.name" value="${plugin.id}_${plugin.version}.jar" />
+
+  <!-- директория wildfly -->
+  <property name="jboss.home" value="../../../tsjboss/" />
+  <!-- <property name="jboss.home" value="../../../tsjboss_10.1.Final/" /> -->
+  <!-- <property name="jboss.home" value="../../../tsjboss_11.0.0" /> -->
+  
+  <!-- каталог откомпилированных класс-файлов -->
+  <property name="bin.dir" value="bin" />
+  
+  <!-- каталог трансформированных класс-файлов S5Instrument-->
+  <property name="transformed.dir" value="transformed" />
+  
+  <!-- каталог исходных текстов -->
+  <property name="src.dir" value="src" />
+  
+  
+  <tstamp>
+    <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+  </tstamp>
+
+  <manifest file="dist/temp_META_INF_dir/MANIFEST.MF">
+    <attribute name="Application-Name" value="mcc server" />
+    <attribute name="Company-Name" value="ToxSoft LLC" />
+    <attribute name="S5-Version" value="${plugin.version}" />
+    <attribute name="Boot-Class-Path" value="${jboss.home}/modules/system/layers/base/org/javassist/main/javassist-3.18.1-GA.jar ${jboss.home}/modules/system/layers/base/javax/persistence/api/main/hibernate-jpa-2.1-api-1.0.0.Final.jar" />
+    <attribute name="s5-session-api" value="ru.toxsoft.${project.prefix}.server.impl.I${project.Prefix}ServerApiRemote" />
+    <attribute name="s5-session-impl" value="ru.toxsoft.${project.prefix}.server.impl.${project.Prefix}ServerApiSessionImpl" />
+    <attribute name="Premain-Class" value="ru.toxsoft.s5.server.impl.instrument.S5ClassLoadedAgent" />
+    <attribute name="Built-Date" value="${TODAY}" />
+  </manifest>
+
+  <target name="s5-instrument">
+    <java classname="ru.toxsoft.s5.server.impl.instrument.S5Instrument" fork="true" logerror="true">
+      <!-- arg line="-?" / -->
+      <!-- arg line="-v" / -->
+      <arg line="--error-verbose" />
+      <arg line="--source-dir ${bin.dir}" />
+      <arg line="--dest-dir ${transformed.dir}" />
+      <classpath>
+        <pathelement path="${bin.dir}" />
+        <pathelement path="../../ts-targets/target-lib/tslib.jar" />
+        <pathelement path="../../ts-targets/target-lib/s5-server.jar" />
+        <pathelement path="${jboss.home}/modules/system/layers/base/org/apache/commons/cli/main/commons-cli-1.2.jar" />
+        <pathelement path="${jboss.home}/modules/system/layers/base/org/javassist/main/javassist-3.18.1-GA.jar" />
+        <pathelement path="${jboss.home}/modules/system/layers/base/javax/persistence/api/main/hibernate-jpa-2.1-api-1.0.0.Final.jar" />
+        <pathelement path="${jboss.home}/modules/system/layers/base/org/hibernate/main/hibernate-core-4.3.1.Final.jar" />
+      </classpath>
+      <!-- <jvmarg value="-Dfile.encoding=UTF-8" /> -->
+    </java>
+    <eclipse.refreshLocal resource="${project_dir}/transformed" depth="infinite" />
+  </target>
+  
+  <target name="build_jar" depends="s5-instrument">
+    <jar destfile="dist/${jarfile.name}" manifest="dist/temp_META_INF_dir/MANIFEST.MF">
+      <metainf dir="dist/temp_META_INF_dir" />
+      <fileset dir="${transformed.dir}">
+        <include name="ru/**/*.class" />
+      </fileset>
+      <fileset dir="${src.dir}">
+        <include name="ru/**/*.properties" />
+      </fileset>
+      <fileset dir="${src.dir}">
+        <include name="ru/**/*.java" />
+      </fileset>
+    </jar>
+    <eclipse.refreshLocal resource="${project_dir}/dist" depth="infinite" />
+  </target>
+
+  <target name="build_plugin" depends="build_jar">
+    <pde.exportPlugins destination="dist"
+                       exportSource="true"
+                       exportSourceBundle="false"
+                       exportType="directory"
+                       plugins="${plugin.id}"
+                       useworkspacecompiledclasses="true"
+                       useJARFormat="true" />
+  </target>
+
+  <target name="build" depends="build_plugin" description="Пересборка mcc">
+  </target>
+
+  <target name="deploy" description="Формирование и размещение mcc-server-deploy-jar в wildfly" >
+      <jar destfile="dist/${deployable_jarfile.name}" manifest="dist/temp_META_INF_dir/MANIFEST.MF">
+        <metainf dir="dist/temp_META_INF_dir" />
+          <fileset dir="${transformed.dir}">
+              <include name="ru/**/*.class" />
+          </fileset>
+          <fileset dir="${src.dir}">
+              <include name="ru/**/*.properties" />
+          </fileset>
+          <fileset dir="${src.dir}">
+              <include name="ru/**/*.java" />
+          </fileset>
+          <zipfileset src="../../ts-targets/target-lib/tslib.jar" />
+          <zipfileset src="../../ts-targets/target-lib/s5-server.jar">
+              <exclude name="**/META-INF/*" />
+          </zipfileset>
+          <zipfileset src="../../ts-targets/target-lib/s5-sysaddons-gateways.jar">
+              <exclude name="**/META-INF/*" />
+          </zipfileset>
+          <zipfileset src="../../ts-targets/target-lib/s5-sysaddons-alarms.jar">
+              <exclude name="**/META-INF/*" />
+          </zipfileset>
+          <zipfileset src="../../ts-targets/target-lib/s5-sysaddons-reports.jar">
+              <exclude name="**/META-INF/*" />
+          </zipfileset>
+          <zipfileset src="../../ts-targets/target-lib/s5-sysaddons-wscfg.jar">
+              <exclude name="**/META-INF/*" />
+          </zipfileset>
+          <zipfileset src="../../ts-targets/target-extlibs/ru.toxsoft.openmuc/j60870-1.2.0.jar">
+             <exclude name="**/META-INF/*" />
+          </zipfileset>        
+      </jar>
+      <copy todir="${jboss.home}/standalone/deployments" file="dist/${deployable_jarfile.name}" overwrite="true" />
+      <copy todir="${jboss.home}/standalone/configuration" file="dist/files_to_jboss/standalone-${project.prefix}.xml" overwrite="true" />
+      <eclipse.refreshLocal resource="${project_dir}/dist" depth="infinite" />
+  </target>
+  
+  <target name="clean" description="Удаляет собранные файлы">
+    <delete file="dist/${jarfile.name}" />
+    <delete file="dist/${deployable_jarfile.name}" />
+    <delete dir="${transformed.dir}" />
+    <delete>
+      <fileset dir="dist/temp_META_INF_dir" includes="*.MF" />
+      <fileset dir="dist/plugins" includes="*" />
+    </delete>
+    <eclipse.refreshLocal resource="${project_dir}/dist" depth="infinite" />
+    <eclipse.refreshLocal resource="${project_dir}/transformed" depth="infinite" />
+  </target>
+
+</project>

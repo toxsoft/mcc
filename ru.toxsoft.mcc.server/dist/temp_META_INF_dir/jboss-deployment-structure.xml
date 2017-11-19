@@ -1,0 +1,14 @@
+<!--  mvk: источник: https://developer.jboss.org/thread/202130, https://docs.jboss.org/author/display/WFLY8/Class+Loading+in+WildFly  -->
+<jboss-deployment-structure>  
+    <deployment>  
+         <dependencies>  
+         	 <!-- модули для подключения к managment для перехвата shutdown -->
+              <module name="org.jboss.dmr" />  
+              <module name="org.jboss.as.controller-client" />  
+           <!-- required for S5Connection inside wildfy: -->
+              <module name="org.jboss.xnio" export="true" />
+              <module name="org.jboss.xnio.nio" export="true" />
+              <module name="org.hornetq" export="true" />
+        </dependencies>  
+    </deployment>  
+</jboss-deployment-structure>  
