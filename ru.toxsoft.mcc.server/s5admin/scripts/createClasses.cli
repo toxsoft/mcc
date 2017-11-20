@@ -1,0 +1,32 @@
+cd dev.classes
+
+b print.cli "Создание классов проекта МосКокс:"
+# раздел "Система управления"
+b classes\ControlSystem\AlgoStages\createAlgoStages.cli
+b classes\ControlSystem\Blockings\createBlockings.cli
+b classes\ControlSystem\Commands\createCommands.cli
+b classes\ControlSystem\Modes\createModes.cli
+b classes\ControlSystem\OperPoint\createOperPoint.cli
+b classes\ControlSystem\PowerProtection\createPwrProtection.cli
+b classes\ControlSystem\Settings\createOilPumpSettings.cli
+b classes\ControlSystem\Settings\createRegulatorsSettings.cli
+b classes\ControlSystem\Settings\createSurgeValveSettings.cli
+b classes\ControlSystem\Settings\createThrottleSettings.cli
+b classes\ControlSystem\SurgeProtection\createAntiSurgeProtection.cli
+b classes\ControlSystem\createControlSystem.cli
+
+# раздел "Оборудование"
+b classes\Hardware\MainSwitch\createMainSwitch.cli
+b classes\Hardware\ThyristorExciter\createThyristorExiter.cli
+b classes\Hardware\createHardware.cli
+b classes\Hardware\createIrreversibleEngines.cli
+b classes\Hardware\createReversibleEngines.cli
+
+# раздел "КИП"
+b classes\KIP\Analogs\createAnalogInput.cli
+b classes\KIP\Analogs\createAnalogs.cli
+b classes\KIP\Discrets\createDiscrets.cli
+b classes\KIP\createKIP.cli
+
+b classes\createTurbocharger.cli
+b classes\createOPC2S5Bridge.cli

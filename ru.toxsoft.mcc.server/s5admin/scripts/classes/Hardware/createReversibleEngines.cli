@@ -1,0 +1,86 @@
+cd dev.classes
+
+createClass -classId  mcc.ReversibleEngineBase  -parentId S5Object -name "Базовый класс для реверсивных двигателей" 
+
+addAttr -id type        -type String  -n "Тип измерения"
+addAttr -id unit        -type String  -n "название единицы измерения"
+addAttr -id unitId      -type String  -n "id единицы измерения в СИ"
+addAttr -id hNorm       -type Float   -n "верхнее нормальное значение"
+addAttr -id lNorm       -type Float   -n "нижнее нормальное значение"
+addAttr -id shortName   -type String  -n "короткое название"
+
+addData -id awpOpenStart      -type Boolean -currdata -histdata   -n "Старт с АРМа на открытие" -d "Старт с АРМа на открытие"
+addData -id awpOpenStop       -type Boolean -currdata -histdata   -n "Стоп с АРМа на открытие" -d "Стоп с АРМа на открытие"
+addData -id awpCloseStart     -type Boolean -currdata -histdata   -n "Старт с АРМа на закрытие" -d "Старт с АРМа на закрытие"
+addData -id awpCloseStop      -type Boolean -currdata -histdata   -n "Стоп с АРМа на закрытие" -d "Стоп с АРМа на закрытие"
+addData -id pnlStartFwd       -type Boolean -currdata -histdata   -n "Cтарт с панели на открытие" -d "Cтарт с панели на открытие"
+addData -id pnlStopFwd        -type Boolean -currdata -histdata   -n "Стоп с панели на открытие" -d "Стоп с панели на открытие"
+addData -id pnlStartBkwd      -type Boolean -currdata -histdata   -n "Старт с панели на закрытие" -d "Старт с панели на закрытие"
+addData -id pnlStopBkwd       -type Boolean -currdata -histdata   -n "Стоп с панели на закрытие" -d "Стоп с панели на закрытие"
+addData -id ctrlStartFwd      -type Boolean -currdata -histdata   -n "Старт с контроллера на открытие" -d "Старт с контроллера на открытие"
+addData -id ctrlStopFwd       -type Boolean -currdata -histdata   -n "Стоп с контроллера на открытие" -d "Стоп с контроллера на открытие"
+addData -id ctrlStartBkwd     -type Boolean -currdata -histdata   -n "Старт с контроллера на закрытие" -d "Старт с контроллера на закрытие"
+addData -id ctrlStopBkwd      -type Boolean -currdata -histdata   -n "Стоп с контроллера на закрытие" -d "Стоп с контроллера на закрытие"
+addData -id awpCtrl           -type Boolean -currdata -histdata   -n "Управление с АРМ" -d "Управление с АРМ"
+addData -id panelCtrl         -type Boolean -currdata -histdata   -n "Управление с панели" -d "Управление с панели"
+addData -id autoCtrl          -type Boolean -currdata -histdata   -n "Управление автомат" -d "Управление автомат"
+addData -id confirmation      -type Boolean -currdata -histdata   -n "Квитирование" -d "Квитирование"
+addData -id imitation         -type Boolean -currdata -histdata   -n "Флаг имитации" -d "Флаг имитации"
+addData -id damperOpenTime    -type Integer -currdata -histdata   -n "Время открытия" -d "Время открытия"
+addData -id damperCloseTime   -type Integer -currdata -histdata   -n "Время закрытия" -d "Время закрытия"
+addData -id enabled           -type Boolean -currdata -histdata   -n "Разрешение" -d "Разрешение"
+addData -id openSignal2DO     -type Boolean -currdata -histdata   -n "Открывать" -d "Открывать"
+addData -id closeSignal2DO    -type Boolean -currdata -histdata   -n "Закрывать" -d "Закрывать"
+addData -id error             -type Boolean -currdata -histdata   -n "Общая авария" -d "Общая авария"
+addData -id stateWord         -type Integer -currdata -histdata   -n "Слово состояния" -d "Слово состояния"
+addData -id errorWord         -type Integer -currdata -histdata   -n "Слово ошибок" -d "Слово ошибок"
+addData -id hourMeterMs       -type Integer -currdata -histdata   -n "Счетчик моточасов в мс" -d "Счетчик моточасов в мс"
+addData -id hourMeterMin      -type Integer -currdata -histdata   -n "Счетчик моточасов в минутах" -d "Счетчик моточасов в минутах"
+addData -id startCount        -type Integer -currdata -histdata   -n "Кол-во пусков" -d "Кол-во пусков"
+addData -id powerU            -type Boolean -currdata -histdata   -n "Питание в норме" -d "Питание в норме"
+
+addEvent       -id open    -h -name "Открыта" 
+addEventParam  -ev open    -id   on     -type       Boolean 
+addEvent       -id close    -h -name "Закрыта" 
+addEventParam  -ev close    -id   on     -type       Boolean 
+addEvent       -id powerU    -h -name "Питание в норме" 
+addEventParam  -ev powerU    -id   on     -type       Boolean 
+addEvent       -id limitSwitchOpen    -h -name "Открыт" 
+addEventParam  -ev limitSwitchOpen    -id   on     -type       Boolean 
+addEvent       -id limitSwitchClose    -h -name "Закрыт" 
+addEventParam  -ev limitSwitchClose    -id   on     -type       Boolean 
+addEvent       -id openSignal2DO    -h -name "Открывать" 
+addEventParam  -ev openSignal2DO    -id   on     -type       Boolean 
+addEvent       -id closeSignal2DO    -h -name "Закрывать" 
+addEventParam  -ev closeSignal2DO    -id   on     -type       Boolean 
+
+saveChanges
+
+createClass -classId  mcc.PressureValve  -parentId mcc.ReversibleEngineBase -name "Задвижка нагнетания" 
+
+addData -id contactTime       -type Integer -currdata -histdata   -n "Время сраб.доп.конт." -d "Время сраб.доп.конт."
+addData -id open              -type Boolean -currdata -histdata   -n "Открыто" -d "Открыта"
+addData -id close             -type Boolean -currdata -histdata   -n "Закрыто" -d "Закрыта"
+addData -id addContactOpen    -type Boolean -currdata -histdata   -n "Открывается" -d "Открывается"
+addData -id addContactClose   -type Boolean -currdata -histdata   -n "Закрывается" -d "Закрывается"
+
+saveChanges
+
+createClass -classId  mcc.SurgeValve  -parentId mcc.ReversibleEngineBase -name "Помпажный клапан" 
+
+addData -id limitSwitchOpen   -type Boolean -currdata -histdata   -n "Открыт" -d "Открыт"
+addData -id limitSwitchClose  -type Boolean -currdata -histdata   -n "Закрыт" -d "Закрыт"
+addData -id angle             -type Float -currdata -histdata     -n "Угол открытия" -d "Угол открытия"
+addData -id alarmVFD          -type Boolean -currdata -histdata   -n "ЧРП авария" -d "ЧРП авария"
+
+saveChanges
+
+createClass -classId  mcc.ThrottleValve  -parentId mcc.ReversibleEngineBase -name "Дроссельная заслонка" 
+
+addData -id limitSwitchOpen   -type Boolean -currdata -histdata   -n "Открыт" -d "Открыт"
+addData -id angle22           -type Boolean -currdata -histdata   -n "22 градуса" -d "22 градуса"
+addData -id limitSwitchClose  -type Boolean -currdata -histdata   -n "Закрыт" -d "Закрыт"
+addData -id angle             -type Float -currdata -histdata     -n "Угол открытия" -d "Угол открытия"
+addData -id alarmVFD          -type Boolean -currdata -histdata   -n "ЧРП авария" -d "ЧРП авария"
+
+saveChanges

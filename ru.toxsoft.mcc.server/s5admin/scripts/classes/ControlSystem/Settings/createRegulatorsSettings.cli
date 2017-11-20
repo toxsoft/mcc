@@ -1,0 +1,21 @@
+cd dev.classes
+
+createClass -classId  mcc.RegulatorsSettings  -parentId S5Object -name "Настройки регуляторов" 
+
+addAttr -id type        -type String  -n "Тип измерения"
+addAttr -id unit        -type String  -n "название единицы измерения"
+addAttr -id unitId      -type String  -n "id единицы измерения в СИ"
+addAttr -id hNorm       -type Float   -n "верхнее нормальное значение"
+addAttr -id lNorm       -type Float   -n "нижнее нормальное значение"
+addAttr -id shortName   -type String  -n "короткое название"
+
+
+addData -id internalSetPoint     -type Float -currdata -histdata   -n "Внутренняя уставка" -d "Внутренняя уставка"
+addData -id errorSignal          -type Float -currdata -histdata   -n "Отклонение" -d "Отклонение"
+addData -id maxPressure          -type Float -currdata -histdata   -n "Max давление на напоре" -d "Max давление на напоре"
+addData -id enblMaxPressLimit    -type Boolean -currdata -histdata   -n "Ограничение по max давлению" -d "Ограничение по max давлению"
+
+addLink -id content     -maxCount 0 -classIds "S5Object"     -name "связь с сущностями настройки регуляторов"
+
+saveChanges
+

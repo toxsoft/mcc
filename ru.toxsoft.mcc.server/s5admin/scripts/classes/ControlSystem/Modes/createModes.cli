@@ -1,0 +1,11 @@
+cd dev.classes
+
+createClass -classId  mcc.Modes  -parentId S5Object -name "Режимы" 
+
+addData -id apwCtrl          -type Boolean -currdata -histdata   -n "Управление с АРМа" -d "Управление с АРМа"
+addData -id panelCtrl        -type Boolean -currdata -histdata   -n "Управление с панели" -d "Управление с панели"
+addData -id autoCtrl         -type Boolean -currdata -histdata   -n "Управление автомат" -d "Управление автомат"
+addData -id autoReg          -type Boolean -currdata -histdata   -n "ПИД-регулятор в автомате" -d "ПИД-регулятор в автомате"
+
+saveChanges
+

@@ -1,0 +1,35 @@
+cd dev.classes
+
+createClass -classId  mcc.IrreversibleEngine  -parentId S5Object -name "Не реверсивный двигатель" 
+
+addData -id awpStart         -type Boolean -currdata -histdata   -n "Пуск с АРМа" -d "Пуск с АРМа"
+addData -id awpStop          -type Boolean -currdata -histdata   -n "Стоп с АРМа" -d "Стоп с АРМа"
+addData -id panelStart       -type Boolean -currdata -histdata   -n "Пуск с панели" -d "Пуск с панели"
+addData -id panelStop        -type Boolean -currdata -histdata   -n "Стоп с панели" -d "Стоп с панели"
+addData -id controllerStart  -type Boolean -currdata -histdata   -n "Пуск с контроллера" -d "Пуск с контроллера"
+addData -id controllerStop   -type Boolean -currdata -histdata   -n "Стоп с контроллера" -d "Стоп с контроллера"
+addData -id awpCtrl          -type Boolean -currdata -histdata   -n "Управление с АРМ" -d "Управление с АРМ"
+addData -id panelCtrl        -type Boolean -currdata -histdata   -n "Управление с панели" -d "Управление с панели"
+addData -id autoCtrl         -type Boolean -currdata -histdata   -n "Управление автомат" -d "Управление автомат"
+addData -id confirmation     -type Boolean -currdata -histdata   -n "Квитирование" -d "Квитирование аварий"
+addData -id enabled          -type Boolean -currdata -histdata   -n "Разрешение" -d "Разрешение"
+addData -id powerU           -type Boolean -currdata -histdata   -n "Питание в норме" -d "Питание в норме"
+addData -id imitation        -type Boolean -currdata -histdata   -n "Флаг имитации" -d "Флаг имитации"
+addData -id contactTime      -type Integer -currdata -histdata   -n "Время срабатывания доп.контакта" -d "Время срабатывания доп.контакта"
+addData -id output2DO        -type Boolean -currdata -histdata   -n "Включить" -d "Включить"
+addData -id on               -type Boolean -currdata -histdata   -n "Включен" -d "Включен"
+addData -id alarm            -type Boolean -currdata -histdata   -n "Общая авария" -d "Общая авария"
+addData -id stateWord        -type Integer -currdata -histdata   -n "Слово состояния" -d "Слово состояния"
+addData -id errorWord        -type Integer -currdata -histdata   -n "Слово ошибок" -d "Слово ошибок"
+addData -id hourMeterMs      -type Integer -currdata -histdata   -n "Счетчик моточасов в мс" -d "Счетчик моточасов в мс"
+addData -id hourMeterMin     -type Integer -currdata -histdata   -n "Счетчик моточасов в минутах" -d "Счетчик моточасов в минутах"
+addData -id startCount       -type Integer -currdata -histdata   -n "Кол-во пусков" -d "Кол-во пусков"
+
+addEvent       -id on    -h -name "Включен" 
+addEventParam  -ev on    -id   on     -type       Boolean 
+addEvent       -id output2DO    -h -name "Включить" 
+addEventParam  -ev output2DO    -id   on     -type       Boolean 
+addEvent       -id powerU    -h -name "Питание в норме" 
+addEventParam  -ev powerU    -id   on     -type       Boolean 
+
+saveChanges

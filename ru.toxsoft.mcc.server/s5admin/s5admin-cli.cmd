@@ -21,10 +21,10 @@ set S5_ADMIN_CONNECT_TIMEOUT=3000
 set S5_ADMIN_FAILURE_TIMEOUT=5000
 :: set S5_ADMIN_CURRDATA_TIMEOUT=300
 set S5_ADMIN_CURRDATA_TIMEOUT=-1
-set S5_ADMIN_MODULE=mt-server-deploy
-set S5_ADMIN_INTERFACE="ru.toxsoft.mt.server.impl.IMtServerApiRemote"
-set S5_ADMIN_BEAN="MtServerApiSessionImpl"
-set S5_ADMIN_INITIALIZER="ru.toxsoft.mt.client.connection.MtServicesInitializer"
+set S5_ADMIN_MODULE=mcc-server-deploy
+set S5_ADMIN_INTERFACE="ru.toxsoft.mcc.server.impl.IMccServerApiRemote"
+set S5_ADMIN_BEAN="MccServerApiSessionImpl"
+set S5_ADMIN_INITIALIZER="ru.toxsoft.mcc.client.connection.MccServicesInitializer"
 set S5_ADMIN_CACHED=false
 set S5_ADMIN_PROFILER_AGENT=
 :: set S5_ADMIN_PROFILER_AGENT=-agentpath:C:\PROGRA~1\JPROFI~1\bin\WINDOW~1\jprofilerti.dll=port=8849,nowait

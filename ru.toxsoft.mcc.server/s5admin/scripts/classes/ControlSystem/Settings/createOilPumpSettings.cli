@@ -1,0 +1,10 @@
+cd dev.classes
+
+createClass -classId  mcc.OilPumpSettings  -parentId S5Object -name "Настройки пускового маслонасоса" 
+
+addData -id setPointMin -type Float -currdata -histdata   -n "ПМН Уставка min" -d "ПМН Уставка min"
+addData -id setPointMax -type Float -currdata -histdata   -n "ПМН Уставка max" -d "ПМН Уставка max"
+addData -id auto        -type Boolean -currdata -histdata   -n "ПМН регулятор в автомате" -d "ПМН регулятор в автомате"
+
+saveChanges
+

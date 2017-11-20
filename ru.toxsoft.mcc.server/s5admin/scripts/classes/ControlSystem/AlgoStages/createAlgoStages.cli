@@ -1,0 +1,10 @@
+cd dev.classes
+
+createClass -classId  mcc.AlgoStages  -parentId S5Object -name "Этапы алгоритма" 
+
+addData -id starting            -type Boolean -currdata -histdata   -n "Запуск Автомат" -d "Запуск Автомат"
+addData -id stoping             -type Boolean -currdata -histdata   -n "Останов Автомат" -d "Останов Автомат"
+addData -id alarmStoping        -type Boolean -currdata -histdata   -n "Останов Аварийный" -d "Останов Аварийный"
+
+saveChanges
+

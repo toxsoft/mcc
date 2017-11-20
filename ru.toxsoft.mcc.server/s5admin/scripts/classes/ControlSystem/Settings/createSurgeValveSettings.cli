@@ -1,0 +1,19 @@
+cd dev.classes
+
+createClass -classId  mcc.SurgeValveSettings  -parentId S5Object -name "Настройки ПК" 
+
+addAttr -id type        -type String  -n "Тип измерения"
+addAttr -id unit        -type String  -n "название единицы измерения"
+addAttr -id unitId      -type String  -n "id единицы измерения в СИ"
+addAttr -id hNorm       -type Float   -n "верхнее нормальное значение"
+addAttr -id lNorm       -type Float   -n "нижнее нормальное значение"
+addAttr -id shortName   -type String  -n "короткое название"
+
+addData -id deadZone          -type Float  -currdata -histdata   -n "ДПК зона нечувств.регулирования" -d "ДПК зона нечувств.регулирования"
+addData -id minMoveTime       -type Integer -currdata -histdata  -n "ДПК min время движения" -d "ДПК min время движения"
+addData -id surgeVlvWorkFreq    -type Float -currdata -histdata   -n "Частота в нормальном режиме" -d "Частота в нормальном режиме"
+addData -id surgeVlvAlarmFreq   -type Float -currdata -histdata   -n "Частота в аварийном режиме" -d "Частота в аварийном режиме "
+addData -id currFreqVFD         -type Integer -currdata -histdata   -n "Частота ЧРП текущее значение" -d "Частота ЧРП текущее значение"
+
+saveChanges
+

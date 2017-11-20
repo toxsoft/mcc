@@ -1,0 +1,30 @@
+cd dev.classes
+
+createClass -classId  mcc.ThrottleSettings  -parentId S5Object -name "Настройки ДЗ" 
+
+addAttr -id type        -type String  -n "Тип измерения"
+addAttr -id unit        -type String  -n "название единицы измерения"
+addAttr -id unitId      -type String  -n "id единицы измерения в СИ"
+addAttr -id hNorm       -type Float   -n "верхнее нормальное значение"
+addAttr -id lNorm       -type Float   -n "нижнее нормальное значение"
+addAttr -id shortName   -type String  -n "короткое название"
+
+addData -id useProportionCoeff   -type Boolean -currdata -histdata   -n "Использовать Кп" -d "Использовать Кп"
+addData -id proportionalCoeff    -type Float -currdata -histdata   -n "Кп коэфф.пропорц." -d "Кп коэфф.пропорц."
+addData -id useIntegralCoeff     -type Boolean -currdata -histdata   -n "Использовать Ки" -d "Использовать Ки"
+addData -id integrationTime      -type Integer -currdata -histdata   -n "Ки время интегрирования" -d "Ки время интегрирования"
+addData -id useDifferentialCoeff -type Boolean -currdata -histdata   -n "Использовать Кд" -d "Использовать Кд"
+addData -id derivativeTime       -type Integer -currdata -histdata   -n "Кд время дифференцирования" -d "Кд время дифференцирования"
+addData -id processVarInput      -type Float -currdata -histdata   -n "Входное значение" -d "Входное значение"
+addData -id deadBandWidth        -type Float -currdata -histdata   -n "Зона нечувствительности" -d "Зона нечувствительности"
+addData -id minPulseTime         -type Integer -currdata -histdata   -n "Min время импульса" -d "Min время импульса"
+addData -id minBreakTime         -type Integer -currdata -histdata   -n "Min время между импульсами" -d "Min время между импульсами"
+addData -id motorManipulatedVal  -type Integer -currdata -histdata   -n "Полное время хода" -d "Полное время хода"
+addData -id maxPIDoutput         -type Float -currdata -histdata   -n "Max значение выхода PID" -d "Max значение выхода PID"
+addData -id minPIDoutput         -type Float -currdata -histdata   -n "Min значение выхода PID" -d "Min значение выхода PID"
+addData -id thrttleWorkFreq     -type Float -currdata -histdata   -n "Частота в нормальном режиме" -d "Частота в нормальном режиме"
+addData -id thrttleAlarmFreq    -type Float -currdata -histdata   -n "Частота в аварийном режиме" -d "Частота в аварийном режиме"
+addData -id currFreqVFD         -type Integer -currdata -histdata   -n "Частота ЧРП текущее значение" -d "Частота ЧРП текущее значение"
+
+saveChanges
+

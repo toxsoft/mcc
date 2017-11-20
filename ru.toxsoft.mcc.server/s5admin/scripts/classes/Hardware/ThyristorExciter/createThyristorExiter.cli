@@ -1,0 +1,47 @@
+cd dev.classes
+
+createClass -classId  mcc.ThiristorExiter  -parentId S5Object -name "ТВУ" 
+
+addData -id awpStart      -type Boolean -currdata -histdata   -n "Включить с АРМа" -d "Включить с АРМа"
+addData -id awpStop       -type Boolean -currdata -histdata   -n "Выключить с АРМа" -d "Выключить с АРМа"
+addData -id awpTest       -type Boolean -currdata -histdata   -n "Тест с АРМа" -d "Тест с АРМа"
+addData -id panelStart    -type Boolean -currdata -histdata   -n "Включить с панели" -d "Включить с панели"
+addData -id panelStop     -type Boolean -currdata -histdata   -n "Выключить с панели" -d "Выключить с панели"
+addData -id paneTest      -type Boolean -currdata -histdata   -n "Тест с панели" -d "Тест с панели"
+addData -id ctrlStart     -type Boolean -currdata -histdata   -n "Включить с контроллера" -d "Включить с контроллера"
+addData -id ctrlStop      -type Boolean -currdata -histdata   -n "Выключить с контроллера" -d "Выключить с контроллера"
+addData -id ctrlTest      -type Boolean -currdata -histdata   -n "Тест с контроллера" -d "Тест с контроллера"
+addData -id awpCtrl       -type Boolean -currdata -histdata   -n "Управление с АРМа" -d "Управление с АРМа"
+addData -id panelCtrl     -type Boolean -currdata -histdata   -n "Управление с панели" -d "Управление с панели"
+addData -id autoCtrl      -type Boolean -currdata -histdata   -n "Управление автомат" -d "Управление автомат"
+addData -id confirmation  -type Boolean -currdata -histdata   -n "Квитирование" -d "Квитирование"
+addData -id imitation     -type Boolean -currdata -histdata   -n "Флаг имитации" -d "Флаг имитации"
+addData -id rotorTestCurrent  -type Float -currdata -histdata   -n "Тестовый ток ротора" -d "Тестовый ток ротора"
+addData -id testTime      -type Integer -currdata -histdata   -n "Время опробывания" -d "Время опробывания"
+addData -id contactTime   -type Integer -currdata -histdata   -n "Время сраб.доп.конт." -d "Время сраб.доп.конт."
+addData -id alarm         -type Boolean -currdata -histdata   -n "Общая авария" -d "Общая авария"
+addData -id stateWord     -type Integer -currdata -histdata   -n "Слово состояния" -d "Слово состояния"
+addData -id errorWord     -type Integer -currdata -histdata   -n "Слово ошибок" -d "Слово ошибок"
+addData -id hourMeterMs   -type Integer -currdata -histdata   -n "Счетчик моточасов в мс" -d "Счетчик моточасов в мс"
+addData -id hourMeterMinutes  -type Integer -currdata -histdata   -n "Счетчик моточасов в минутах" -d "Счетчик моточасов в минутах"
+addData -id startCount    -type Integer -currdata -histdata   -n "Кол-во пусков" -d "Кол-во пусков"
+addData -id noPowerThrExiter    -type Boolean -currdata -histdata   -n "Питание в норме" -d "Питание в норме"
+addData -id failureThrExiter    -type Boolean -currdata -histdata   -n "ТВУ авария" -d "ТВУ авария"
+addData -id warning       -type Boolean -currdata -histdata   -n "Предупреждение" -d "Предупреждение"
+addData -id ready         -type Boolean -currdata -histdata   -n "Готовность" -d "Готовность"
+addData -id on            -type Boolean -currdata -histdata   -n "Включен" -d "Включен"
+addData -id output2DO     -type Boolean -currdata -histdata   -n "Включить" -d "Включить"
+addData -id turnOff       -type Boolean -currdata -histdata   -n "Отключить" -d "Отключить"
+addData -id testing       -type Boolean -currdata -histdata   -n "Опробование" -d "Опробование"
+
+addEvent       -id on    -h -name "Включен" 
+addEventParam  -ev on    -id   on     -type       Boolean 
+addEvent       -id output2DO    -h -name "Включить" 
+addEventParam  -ev output2DO    -id   on     -type       Boolean 
+addEvent       -id turnOff    -h -name "Отключить" 
+addEventParam  -ev turnOff    -id   on     -type       Boolean 
+addEvent       -id testing    -h -name "Опробование" 
+addEventParam  -ev testing    -id   on     -type       Boolean 
+
+saveChanges
+
