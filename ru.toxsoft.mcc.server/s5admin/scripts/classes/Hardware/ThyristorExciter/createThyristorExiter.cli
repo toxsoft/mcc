@@ -1,6 +1,6 @@
 cd dev.classes
 
-createClass -classId  mcc.ThiristorExiter  -parentId S5Object -name "ТВУ" 
+createClass -classId  mcc.ThyristorExiter  -parentId S5Object -name "ТВУ" 
 
 addData -id awpStart      -type Boolean -currdata -histdata   -n "Включить с АРМа" -d "Включить с АРМа"
 addData -id awpStop       -type Boolean -currdata -histdata   -n "Выключить с АРМа" -d "Выключить с АРМа"

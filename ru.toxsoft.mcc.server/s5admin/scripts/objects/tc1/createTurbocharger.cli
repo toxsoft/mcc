@@ -284,8 +284,8 @@ $tc1Hardware    ->  setAttr visName "Оборудование"
 
 # инициализируем связи Оборудование
 #  ТВУ
-$tc1ThiristorExiter   = createObject mcc.ThiristorExiter       tc1ThiristorExiter
-$tc1ThiristorExiter    ->  setAttr visName "ТВУ"
+$tc1ThyristorExiter   = createObject mcc.ThyristorExiter       tc1ThyristorExiter
+$tc1ThyristorExiter    ->  setAttr visName "ТВУ"
 
 # Высоковольтный выключатель
 $tc1MainSwitch   = createObject mcc.MainSwitch       tc1MainSwitch
@@ -307,7 +307,7 @@ $tc1ThrottleValve    ->  setAttr visName "Дроссельная заслонк�
 $tc1OilPump   = createObject mcc.IrreversibleEngine       tc1OilPump
 $tc1OilPump    ->  setAttr visName "Пусковой маслонасос"
 
-$tc1Hardware, $tc1ThiristorExiter, $tc1MainSwitch, $tc1PressureValve, $tc1SurgeValve, $tc1ThrottleValve, $tc1OilPump  -> setLink content 
+$tc1Hardware, $tc1ThyristorExiter, $tc1MainSwitch, $tc1PressureValve, $tc1SurgeValve, $tc1ThrottleValve, $tc1OilPump  -> setLink content 
 
 $tc1Turbocharger, $tc1ControlSystem, $tc1KIP, $tc1Hardware  -> setLink content 
 
