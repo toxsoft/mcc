@@ -174,6 +174,9 @@
             <logger category="ru.toxsoft.s5.server.impl.sequences.S5SequenceThreadWrite">
                 <level name="ERROR"/>
             </logger>
+            <logger category="ru.toxsoft.s5.server.services.users">
+                <level name="TRACE"/>
+            </logger>
             <logger category="ru.toxsoft.s5.server.services.srvmsgs">
                 <level name="ERROR"/>
             </logger>
@@ -189,8 +192,11 @@
             <logger category="ru.toxsoft.s5.common.services.currdata.impl.S5ReadCurrDataSet">
                 <level name="ERROR"/>
             </logger>
-            <logger category="ru.toxsoft.s5.server.services.histdata">
+            <logger category="ru.toxsoft.s5.common.services.histdata.impl.S5WriteHistDataSet">
                 <level name="ERROR"/>
+            </logger>
+            <logger category="ru.toxsoft.s5.server.services.histdata">
+                <level name="TRACE"/>
             </logger>
             <logger category="rootHistData">
                 <level name="ERROR"/>
@@ -294,16 +300,16 @@
                     <managed-thread-factory name="default" jndi-name="java:jboss/ee/concurrency/factory/default" context-service="default"/>
                 </managed-thread-factories>
                 <managed-executor-services>
-                    <managed-executor-service name="default" jndi-name="java:jboss/ee/concurrency/executor/default" context-service="default" hung-task-threshold="60000" core-threads="25" max-threads="1000" keepalive-time="5000" queue-length="150000"/>
-                    <managed-executor-service name="s5-sequence-write" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/write" context-service="default" hung-task-threshold="60000" core-threads="4" max-threads="4" keepalive-time="5000" queue-length="150000"/>
-                    <managed-executor-service name="s5-sequence-union" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/union" context-service="default" hung-task-threshold="60000" core-threads="1" max-threads="1" keepalive-time="5000" queue-length="150000"/>
-                    <managed-executor-service name="s5-sequence-validation" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/validation" context-service="default" hung-task-threshold="60000" core-threads="1" max-threads="1" keepalive-time="5000" queue-length="150000"/>
+                    <managed-executor-service name="default" jndi-name="java:jboss/ee/concurrency/executor/default" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="1000" keepalive-time="5000" queue-length="500"/>
+                    <managed-executor-service name="s5-sequence-write" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/write" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
+                    <managed-executor-service name="s5-sequence-union" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/union" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
+                    <managed-executor-service name="s5-sequence-validation" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/validation" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                 </managed-executor-services>
                 <managed-scheduled-executor-services>
                     <managed-scheduled-executor-service name="default" jndi-name="java:jboss/ee/concurrency/scheduler/default" context-service="default" hung-task-threshold="60000" core-threads="25" keepalive-time="3000"/>
                 </managed-scheduled-executor-services>
             </concurrent>
-            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:/mcc_data_source" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
+            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:/mm_data_source" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ejb3:3.0">
             <session-bean>
