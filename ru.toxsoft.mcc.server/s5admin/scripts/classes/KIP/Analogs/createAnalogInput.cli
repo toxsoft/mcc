@@ -9,104 +9,111 @@ addAttr -id hNorm       -type Float   -n "верхнее нормальное з
 addAttr -id lNorm       -type Float   -n "нижнее нормальное значение"
 addAttr -id shortName   -type String  -n "короткое название"
 
-addData -id currentValue   -type Float -currdata -histdata -syncdata true -syncdataDelta 1000 -n "Текущее значение" -d "значение измеряемой величины"
-addData -id channelAddress -type Integer -currdata -histdata   -n "Адрес канала" -d "Адрес канала"
-addData -id x0             -type Float -currdata -histdata   -n "Коэффициент масштабирования x0" -d "Коэффициент масштабирования x0"
-addData -id y0             -type Float -currdata -histdata   -n "Коэффициент масштабирования y0" -d "Коэффициент масштабирования y0"
-addData -id x1             -type Float -currdata -histdata   -n "Коэффициент масштабирования x1" -d "Коэффициент масштабирования x1"
-addData -id y1             -type Float -currdata -histdata   -n "Коэффициент масштабирования y1" -d "Коэффициент масштабирования y1"
+addData -id channelAddress -type Integer -currdata -histdata   -n "Адрес канала в контроллере" -d "Адрес канала в контроллере"
+addData -id filterConst    -type Integer -currdata -histdata   -n "Время фильтрации (мсек)" -d "Время фильтрации (мсек)"
+addData -id x0             -type Float -currdata -histdata   -n "Нижняя граница выходного сигнала датчика" -d "Нижняя граница выходного сигнала датчика"
+addData -id y0             -type Float -currdata -histdata   -n "Нижняя граница шкалы измеряемого параметра" -d "Нижняя граница шкалы измеряемого параметра"
+addData -id x1             -type Float -currdata -histdata   -n "Верхняя граница выходного сигнала датчика" -d "Верхняя граница выходного сигнала датчика"
+addData -id y1             -type Float -currdata -histdata   -n "Верхняя граница шкалы измеряемого параметра" -d "Верхняя граница шкалы измеряемого параметра"
 addData -id setPoint1      -type Float -currdata -histdata   -n "Уставка 1" -d "Уставка 1"
 addData -id setPoint2      -type Float -currdata -histdata   -n "Уставка 2" -d "Уставка 2"
 addData -id setPoint3      -type Float -currdata -histdata   -n "Уставка 3" -d "Уставка 3"
 addData -id setPoint4      -type Float -currdata -histdata   -n "Уставка 4" -d "Уставка 4"
-addData -id imitationValue -type Float -currdata -histdata   -n "Значение в режиме эмуляции" -d "Значение в режиме эмуляции"
+addData -id imitationValue -type Float -currdata -histdata   -n "Значение для имитации датчика" -d "Значение для имитации датчика"
 addData -id controlWord    -type Integer -currdata -histdata   -n "Слово управления" -d "Слово управления"
-addData -id eventTime      -type Integer -currdata -histdata   -n "Время срабатывания аварии/предупреждения" -d "Время срабатывания аварии/предупреждения"
-addData -id imitation      -type Boolean -currdata -histdata   -n "Флаг имитации" -d "Флаг имитации"
-addData -id enblAlarmTreat -type Boolean -currdata -histdata   -n "Флаг разрешения обработки аварийных срабатываний (выходы за пределы warn/alarm)" -d "Флаг разрешения обработки аварийных срабатываний (выходы за пределы warn/alarm)"
-addData -id physicalValue  -type Float -currdata -histdata   -n "Физическое значение измеряемого параметра" -d "Физическое значение измеряемого параметра"
+addData -id imitation      -type Boolean -currdata -histdata   -n "'1' - включение режима имитации датчика" -d "'1' - включение режима имитации датчика"
+addData -id confirmation   -type Boolean -currdata -histdata   -n "«1» - квитирование аварий по датчику" -d "«1» - квитирование аварий по датчику"
+addData -id enblAlarmTreat -type Boolean -currdata -histdata   -n "«1» - разрешение на обработку аварий" -d "«1» - разрешение на обработку аварий"
+addData -id eventTime      -type Integer -currdata -histdata   -n "Время срабатывания аварии/предупреждения (мсек)" -d "Время срабатывания аварии/предупреждения (мсек)"
+addData -id currentValue   -type Float -currdata -histdata -syncdata true -syncdataDelta 1000 -n "Текущее значение измеряемого параметра" -d "Текущее значение измеряемого параметра"
+addData -id physicalValue  -type Float -currdata -histdata   -n "Текущее значение выходного сигнала датчика" -d "Текущее значение выходного сигнала датчика"
 addData -id stateWord      -type Integer -currdata -histdata   -n "Слово состояния" -d "Слово состояния"
-addData -id paramState     -type Integer -currdata -histdata   -n "Состояние сигнала с учетом приоритета (норма/авария/предупреждение/...)" -d "Состояние сигнала с учетом приоритета (норма/авария/предупреждение/...)"
-addData -id filterConst    -type Integer -currdata -histdata   -n "Постоянная фильтра" -d "Постоянная фильтра"
-addData -id confirmation   -type Boolean -currdata -histdata   -n "Квитирование аварий" -d "Квитирование аварий"
-addData -id chnlUPwr       -type Boolean -currdata -histdata   -n "Напряжение питания измерительного канала в норме" -d "Напряжение питания измерительного канала в норме"
-addData -id bipolar        -type Boolean -currdata -histdata   -n "Тип сигнала: 0-однополярный 1—биполярный" -d "Тип сигнала: 0-однополярный (0..10В, 4..20мА); 1—биполярный (-10..+10В)"
-addData -id alarm          -type Boolean -currdata -histdata   -n "Измеренное значение CV вышло за пределы AMax или AMin" -d "Измеренное значение CV вышло за пределы AMax или AMin"
-addData -id warn           -type Boolean -currdata -histdata   -n "Измеренное значение CV вышло за пределы WMax или WMin" -d "Измеренное значение CV вышло за пределы WMax или WMin"
+addData -id alarm          -type Boolean -currdata -histdata   -n "Авария" -d "Авария"
+addData -id warn           -type Boolean -currdata -histdata   -n "Предупреждение" -d "Предупреждение"
+addData -id paramState     -type Integer -currdata -histdata   -n "Состояние датчика" -d "Состояние датчика"
 
-addCmd  -id channelAddress -name "Установить адрес канала"  -d "Установить адрес канала"                  
+
+addCmd  -id channelAddress -name "Установить адрес канала в контроллере"  -d "Установить адрес канала в контроллере"                  
 addCmdArg  -c channelAddress    -id value    -type Integer -n "адрес канала"
-addCmd  -id x0 -name "x0"  -d "Установить коэффициент масштабирования x0"                  
-addCmdArg  -c x0    -id value    -type Float -n "значение коэффициента масштабирования x0"
-addCmd  -id y0 -name "y0"  -d "Установить коэффициент масштабирования y0"                  
-addCmdArg  -c y0    -id value    -type Float -n "значение коэффициента масштабирования y0"
-addCmd  -id x1 -name "x1"  -d "Установить коэффициент масштабирования x1"                  
-addCmdArg  -c x1    -id value    -type Float -n "значение коэффициента масштабирования x1"
-addCmd  -id y1 -name "y1"  -d "Установить коэффициент масштабирования y1"                  
-addCmdArg  -c y1    -id value    -type Float -n "значение коэффициента масштабирования y1"
-addCmd  -id setPoint1 -name "уставка аварии max"  -d "Установить уставку аварии max"                  
-addCmdArg  -c setPoint1    -id value    -type Float -n "значение уставки аварии max"
-addCmd  -id setPoint2 -name "уставка предупреждения max"  -d "Установить уставку предупреждения max"                  
-addCmdArg  -c setPoint2    -id value    -type Float -n "значение уставки предупреждения max"
-addCmd  -id setPoint3 -name "уставка аварии min"  -d "Установить уставку аварии min"                  
-addCmdArg  -c setPoint3    -id value    -type Float -n "значение уставки аварии min"
-addCmd  -id setPoint4 -name "уставка предупреждения max"  -d "Установить уставку предупреждения min"                  
-addCmdArg  -c setPoint4    -id value    -type Float -n "значение уставки предупреждения min"
+addCmd  -id filterConst -name "Время фильтрации (мсек)"  -d "Время фильтрации (мсек)"                  
+addCmdArg  -c filterConst    -id value    -type Integer -n "значение времени фильтрации (мсек)"
+addCmd  -id x0 -name "x0"  -d "Установить нижняя граница выходного сигнала датчика"                  
+addCmdArg  -c x0    -id value    -type Float -n "значение Нижняя граница выходного сигнала датчика"
+addCmd  -id y0 -name "y0"  -d "Установить нижняя граница шкалы измеряемого параметра"                  
+addCmdArg  -c y0    -id value    -type Float -n "значение Нижняя граница шкалы измеряемого параметра"
+addCmd  -id x1 -name "x1"  -d "Установить Верхняя граница выходного сигнала датчика"                  
+addCmdArg  -c x1    -id value    -type Float -n "значение Верхняя граница выходного сигнала датчика"
+addCmd  -id y1 -name "y1"  -d "Установить Верхняя граница шкалы измеряемого параметра"                  
+addCmdArg  -c y1    -id value    -type Float -n "значение Верхняя граница шкалы измеряемого параметра"
+addCmd  -id setPoint1 -name "уставка 1"  -d "Установить уставка 1"                  
+addCmdArg  -c setPoint1    -id value    -type Float -n "значение уставка 1"
+addCmd  -id setPoint2 -name "уставка 2"  -d "Установить уставка 2"                  
+addCmdArg  -c setPoint2    -id value    -type Float -n "значение уставка 2"
+addCmd  -id setPoint3 -name "уставка 3"  -d "Установить уставка 3"                  
+addCmdArg  -c setPoint3    -id value    -type Float -n "значение уставка 3"
+addCmd  -id setPoint4 -name "уставка уставка 4"  -d "Установить уставка 4"                  
+addCmdArg  -c setPoint4    -id value    -type Float -n "значение уставка 4"
 addCmd  -id imitationValue -name "значение в режиме эмуляции"  -d "Установить значение в режиме эмуляции"                  
 addCmdArg  -c imitationValue    -id value    -type Float -n "значение в режиме эмуляции"
 addCmd  -id controlWord -name "слово управления"  -d "Установить слово управления"                  
 addCmdArg  -c controlWord    -id value    -type Integer -n "значение слова управления"
-addCmd  -id eventTime -name "время срабатывания аварии/предупреждения"  -d "Установить время срабатывания аварии/предупреждения"                  
-addCmdArg  -c eventTime    -id value    -type Integer -n "значение времени срабатывания аварии/предупреждения"
 addCmd  -id imitation -name "флаг имитации"  -d "Установить флаг имитации"                  
 addCmdArg  -c imitation    -id value    -type Boolean -n "значение флага имитации"
-addCmd  -id calibrationWarning -name "постоянная фильтра"  -d "Установить постоянную фильтра"                  
-addCmdArg  -c calibrationWarning    -id value    -type Integer -n "значение постоянной фильтра"
-addCmd  -id bipolar -name "Установить тип сигнала"  -d "Установить тип сигнала"                  
-addCmdArg  -c bipolar    -id value    -type Boolean -n "тип сигнала"
-# битовые команды
-addCmd  -id alarmMinInd -name "Индикация аварии минимума"  -d "Индикация аварии минимума"                  
-addCmdArg  -c alarmMinInd    -id value    -type Boolean -n "значение флага"
-addCmd  -id alarmMinGen -name "Генерация аварии минимума"  -d "Генерация аварии минимума"                  
-addCmdArg  -c alarmMinGen    -id value    -type Boolean -n "значение флага"
-addCmd  -id warningMinInd -name "Генерация предупреждения минимума"  -d "Генерация предупреждения минимума"                  
-addCmdArg  -c warningMinInd    -id value    -type Boolean -n "значение флага"
-addCmd  -id warningMinGen -name "Индикация предупреждения минимума"  -d "Генерация предупреждения минимума"                  
-addCmdArg  -c warningMinGen    -id value    -type Boolean -n "значение флага"
-addCmd  -id warningMaxInd -name " Индикация предупреждения max"  -d " Индикация предупреждения max"                  
-addCmdArg  -c warningMaxInd    -id value    -type Boolean -n "значение флага"
-addCmd  -id warningMaxGen -name " Генерация предупреждения max"  -d " Генерация предупреждения max"                  
-addCmdArg  -c warningMaxGen    -id value    -type Boolean -n "значение флага"
-addCmd  -id alarmMaxInd -name " Индикация аварии max"  -d " Индикация аварии max"                  
-addCmdArg  -c alarmMaxInd    -id value    -type Boolean -n "значение флага"
-addCmd  -id alarmMaxGen -name " Генерация аварии max"  -d " Генерация аварии max"                  
-addCmdArg  -c alarmMaxGen    -id value    -type Boolean -n "значение флага"
-
-addCmd  -id enblAlarmTreat -name "Флаг разрешения обработки аварийных срабатываний"  -d "Флаг разрешения обработки аварийных срабатываний (выходы за пределы warn/alarm)"                  
-addCmdArg  -c enblAlarmTreat    -id value    -type Boolean -n "значение флага"
-
-addCmd  -id filterConst -name "Постоянная фильтра"  -d "Постоянная фильтра"                  
-addCmdArg  -c filterConst    -id value    -type Integer -n "значение фильтра"
-addCmd  -id filterConst -name "Постоянная фильтра"  -d "Постоянная фильтра"                  
-addCmdArg  -c filterConst    -id value    -type Integer -n "значение фильтра"
 addCmd  -id confirmation -name "Квитирование аварий"  -d "Квитирование аварий"     
 addCmdArg  -c confirmation    -id value    -type Boolean -n "квитирование"
+addCmd  -id enblAlarmTreat -name "Флаг разрешения обработки аварийных срабатываний"  -d "Флаг разрешения обработки аварийных срабатываний (выходы за пределы warn/alarm)"                  
+addCmdArg  -c enblAlarmTreat    -id value    -type Boolean -n "значение флага"
+addCmd  -id eventTime -name "время срабатывания аварии/предупреждения"  -d "Установить время срабатывания аварии/предупреждения"                  
+addCmdArg  -c eventTime    -id value    -type Integer -n "значение времени срабатывания аварии/предупреждения"
 
 
-addEvent       -id alarmMax    -h -name "авария max" 
-addEventParam  -ev alarmMax    -id   on     -type       Boolean 
+addEvent       -id channelAddress    -h -name "Адрес канала в контроллере" 
+addEventParam  -ev channelAddress    -id   on     -type       Integer 
+addEvent       -id filterConst       -h -name "Время фильтрации (мсек)"                    
+addEventParam  -ev filterConst       -id on    -type Integer 
+addEvent       -id setPoint1         -h -name "уставка 1"                    
+addEventParam  -ev setPoint1         -id on    -type Float 
+addEvent       -id setPoint2         -h -name "уставка 2"                    
+addEventParam  -ev setPoint2         -id on    -type Float 
+addEvent       -id setPoint3         -h -name "уставка 3"                    
+addEventParam  -ev setPoint3         -id on    -type Float 
+addEvent       -id setPoint4         -h -name "уставка 4"                    
+addEventParam  -ev setPoint4         -id on    -type Float 
+addEvent       -id setPoint4generation    -h -name "НАУ генерация (Уставка 4)" 
+addEventParam  -ev setPoint4generation    -id   on     -type       Boolean 
+addEvent       -id setPoint4indication    -h -name "НАУ индикация (Уставка 4)" 
+addEventParam  -ev setPoint4indication    -id   on     -type       Boolean 
+addEvent       -id setPoint3generation    -h -name "НПУ генерация (Уставка 3)" 
+addEventParam  -ev setPoint3generation    -id   on     -type       Boolean 
+addEvent       -id setPoint3indication    -h -name "НПУ индикация (Уставка 3)" 
+addEventParam  -ev setPoint3indication    -id   on     -type       Boolean 
+addEvent       -id setPoint2generation    -h -name "ВПУ генерация (Уставка 2)" 
+addEventParam  -ev setPoint2generation    -id   on     -type       Boolean 
+addEvent       -id setPoint2indication    -h -name "ВПУ индикация (Уставка 2)" 
+addEventParam  -ev setPoint2indication    -id   on     -type       Boolean 
+addEvent       -id setPoint1generation    -h -name "ВАУ генерация (Уставка 1)" 
+addEventParam  -ev setPoint1generation    -id   on     -type       Boolean 
+addEvent       -id setPoint1indication    -h -name "ВАУ индикация (Уставка 1)" 
+addEventParam  -ev setPoint1indication    -id   on     -type       Boolean 
+addEvent       -id eventTime              -h -name "время срабатывания аварии/предупреждения"                    
+addEventParam  -ev eventTime              -id   on    -type Integer 
 addEvent       -id alarmMin    -h -name "авария min" 
 addEventParam  -ev alarmMin    -id   on     -type       Boolean 
-addEvent       -id noPowerSupply    -h -name "нет напряжения питания" 
-addEventParam  -ev noPowerSupply    -id   on     -type       Boolean 
-addEvent       -id calibrationError    -h -name "ошибка калибровки (отклонение > 5%)" 
-addEventParam  -ev calibrationError    -id   on     -type       Boolean 
+addEvent       -id alarmMax    -h -name "авария min" 
+addEventParam  -ev alarmMax    -id   on     -type       Boolean 
 addEvent       -id warningMax    -h -name "предупреждение max" 
 addEventParam  -ev warningMax    -id   on     -type       Boolean 
 addEvent       -id warningMin    -h -name "предупреждение min" 
 addEventParam  -ev warningMin    -id   on     -type       Boolean 
+addEvent       -id calibrationError    -h -name "ошибка калибровки (отклонение > 5%)" 
+addEventParam  -ev calibrationError    -id   on     -type       Boolean 
 addEvent       -id calibrationWarning    -h -name "предупреждение калибровки (отклонение < 5%)" 
 addEventParam  -ev calibrationWarning    -id   on     -type       Boolean 
+addEvent       -id imitation            -h -name "флаг имитации"                    
+addEventParam  -ev imitation            -id on   -type Boolean 
+addEvent       -id enblAlarmTreat       -h -name "Флаг разрешения обработки аварийных срабатываний"                    
+addEventParam  -ev enblAlarmTreat       -id on    -type Boolean 
+
 
 saveChanges
 
