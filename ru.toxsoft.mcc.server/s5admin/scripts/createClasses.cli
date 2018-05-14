@@ -1,14 +1,18 @@
 cd dev.classes
 
 b print.cli "Создание классов проекта МосКокс:"
-b classes\Test\createAnalogInput.cli
-b classes\Test\createCtrlSystem.cli
-b classes\Test\createDigInput.cli
-b classes\Test\createDigOutput.cli
-b classes\Test\createIrreversibleEngine.cli
-b classes\Test\createMainSwitch.cli
-b classes\Test\createOilPumpReg.cli
-b classes\Test\createReversibleEngine.cli
+
+b classes\KIP\Analogs\createAnalogInput.cli
+b classes\ControlSystem\createCtrlSystem.cli
+b classes\PLC\DI\createDigInput.cli
+b classes\PLC\DO\createDigOutput.cli
+b classes\Hardware\createIrreversibleEngine.cli
+b classes\Hardware\createReversibleEngine.cli
+b classes\Hardware\MainSwitch\createMainSwitch.cli
+b classes\Hardware\createOilPumpReg.cli
+b classes\PLC\createPLC.cli
+b classes\createTurbocharger.cli
+b classes\createOPC2S5Bridge.cli
 
 # раздел "Система управления"
 #b classes\ControlSystem\AlgoStages\createAlgoStages.cli

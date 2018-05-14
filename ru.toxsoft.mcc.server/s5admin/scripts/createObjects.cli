@@ -7,4 +7,4 @@
 b objects\Test\createObjects.cli
 
 # Создание моста OPC 2 S5 системы
-#b objects\createOPC2S5Bridge.cli
+b objects\createOPC2S5Bridge.cli
