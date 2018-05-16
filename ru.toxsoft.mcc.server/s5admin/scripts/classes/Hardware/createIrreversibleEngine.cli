@@ -45,7 +45,8 @@ addEventParam  -ev controllerStart -id on -type Boolean
 addEvent       -id controllerStop -h  -n "Стоп с контроллера  "
 addEventParam  -ev controllerStop -id on -type Boolean
 addEvent       -id auxTime -h  -n "Время на срабатывание доп.контакта пускателя"
-addEventParam  -ev auxTime -id on -type Integer
+addEventParam  -ev auxTime -id oldVal -type Integer
+addEventParam  -ev auxTime -id newVal -type Integer
 addEvent       -id imitation -h  -n "14.6 Включен режим имитации"
 addEventParam  -ev imitation -id on -type Boolean
 addEvent       -id enabled -h  -n "14.7 Разрешение работы"

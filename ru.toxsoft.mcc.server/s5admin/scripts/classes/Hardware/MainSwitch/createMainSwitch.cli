@@ -55,9 +55,11 @@ addEventParam  -ev localStart -id on -type Boolean
 addEvent       -id localStop -h  -n "Стоп по месту установки оборуд."
 addEventParam  -ev localStop -id on -type Boolean
 addEvent       -id auxTimeOn -h  -n "Время включения (после подачи команды)"
-addEventParam  -ev auxTimeOn -id on -type Integer
+addEventParam  -ev auxTimeOn -id oldVal -type Integer
+addEventParam  -ev auxTimeOn -id newVal -type Integer
 addEvent       -id auxTimeOff -h  -n "Время отключения (после подачи команды)"
-addEventParam  -ev auxTimeOff -id on -type Integer
+addEventParam  -ev auxTimeOff -id oldVal -type Integer
+addEventParam  -ev auxTimeOff -id newVal -type Integer
 addEvent       -id imitation -h  -n "18.6 Режим имитации"
 addEventParam  -ev imitation -id on -type Boolean
 addEvent       -id on -h  -n "19.0 ВВ включен"

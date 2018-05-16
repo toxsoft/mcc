@@ -82,11 +82,14 @@ addEventParam  -ev limitSwitchOpen -id on -type Boolean
 addEvent       -id limitSwitchClose -h  -n "Сработал КВ на закрытие"
 addEventParam  -ev limitSwitchClose -id on -type Boolean
 addEvent       -id openTime -h  -n "Время открытия задвижки"
-addEventParam  -ev openTime -id on -type Integer
+addEventParam  -ev openTime -id oldVal -type Integer
+addEventParam  -ev openTime -id newVal -type Integer
 addEvent       -id closeTime -h  -n "Время закрытия задвижки"
-addEventParam  -ev closeTime -id on -type Integer
+addEventParam  -ev closeTime -id oldVal -type Integer
+addEventParam  -ev closeTime -id newVal -type Integer
 addEvent       -id auxTime -h  -n "Время срабатывания доп.контакта"
-addEventParam  -ev auxTime -id on -type Integer
+addEventParam  -ev auxTime -id oldVal -type Integer
+addEventParam  -ev auxTime -id newVal -type Integer
 addEvent       -id imitation -h  -n "24.6 Режим имитации"
 addEventParam  -ev imitation -id on -type Boolean
 addEvent       -id enabled -h  -n "24.7 Разрешение работы"

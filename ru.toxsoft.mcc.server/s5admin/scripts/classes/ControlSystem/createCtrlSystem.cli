@@ -51,7 +51,8 @@ addEventParam  -ev ready -id on -type Boolean
 addEvent       -id enableSiren -h  -n "Разрешение сирены"
 addEventParam  -ev enableSiren -id on -type Boolean
 addEvent       -id setOilTemp -h  -n "Уставка температуры масла для разрешения пуска"
-addEventParam  -ev setOilTemp -id on -type Float
+addEventParam  -ev setOilTemp -id oldVal -type Float
+addEventParam  -ev setOilTemp -id newVal -type Float
 
 addCmd     -id setApwCtrl -n "Установить управление с АРМа" -d "Установить управление с АРМа"
 addCmdArg  -c setApwCtrl -id value -type Boolean

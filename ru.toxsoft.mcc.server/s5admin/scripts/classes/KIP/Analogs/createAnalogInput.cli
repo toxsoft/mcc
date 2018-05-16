@@ -27,25 +27,35 @@ addData -id warn -type Boolean -currdata  -histdata  -n "Предупрежде�
 addData -id paramState -type Integer -currdata  -histdata  -n "Состояние датчика" -d "Состояние датчика"
 
 addEvent       -id channelAddress -h  -n "Адрес канала в контроллере"
-addEventParam  -ev channelAddress -id on -type Integer
+addEventParam  -ev channelAddress -id oldVal -type Integer
+addEventParam  -ev channelAddress -id newVal -type Integer
 addEvent       -id filterConst -h  -n "Время фильтрации (мсек)"
-addEventParam  -ev filterConst -id on -type Integer
+addEventParam  -ev filterConst -id oldVal -type Integer
+addEventParam  -ev filterConst -id newVal -type Integer
 addEvent       -id x0 -h  -n "Нижняя граница выходного сигнала датчика"
-addEventParam  -ev x0 -id on -type Float
+addEventParam  -ev x0 -id oldVal -type Float
+addEventParam  -ev x0 -id newVal -type Float
 addEvent       -id y0 -h  -n "Нижняя граница шкалы измеряемого параметра"
-addEventParam  -ev y0 -id on -type Float
+addEventParam  -ev y0 -id oldVal -type Float
+addEventParam  -ev y0 -id newVal -type Float
 addEvent       -id x1 -h  -n "Верхняя граница выходного сигнала датчика"
-addEventParam  -ev x1 -id on -type Float
+addEventParam  -ev x1 -id oldVal -type Float
+addEventParam  -ev x1 -id newVal -type Float
 addEvent       -id y1 -h  -n "Верхняя граница шкалы измеряемого параметра"
-addEventParam  -ev y1 -id on -type Float
+addEventParam  -ev y1 -id oldVal -type Float
+addEventParam  -ev y1 -id newVal -type Float
 addEvent       -id setPoint1 -h  -n "Уставка 1"
-addEventParam  -ev setPoint1 -id on -type Float
+addEventParam  -ev setPoint1 -id oldVal -type Float
+addEventParam  -ev setPoint1 -id newVal -type Float
 addEvent       -id setPoint2 -h  -n "Уставка 2"
-addEventParam  -ev setPoint2 -id on -type Float
+addEventParam  -ev setPoint2 -id oldVal -type Float
+addEventParam  -ev setPoint2 -id newVal -type Float
 addEvent       -id setPoint3 -h  -n "Уставка 3"
-addEventParam  -ev setPoint3 -id on -type Float
+addEventParam  -ev setPoint3 -id oldVal -type Float
+addEventParam  -ev setPoint3 -id newVal -type Float
 addEvent       -id setPoint4 -h  -n "Уставка 4"
-addEventParam  -ev setPoint4 -id on -type Float
+addEventParam  -ev setPoint4 -id oldVal -type Float
+addEventParam  -ev setPoint4 -id newVal -type Float
 addEvent       -id setPoint4generation -h  -n "НАУ генерация (Уставка 4)"
 addEventParam  -ev setPoint4generation -id on -type Boolean
 addEvent       -id setPoint4indication -h  -n "НАУ индикация (Уставка 4)"
@@ -63,7 +73,8 @@ addEventParam  -ev setPoint1generation -id on -type Boolean
 addEvent       -id setPoint1indication -h  -n "ВАУ индикация (Уставка 1)"
 addEventParam  -ev setPoint1indication -id on -type Boolean
 addEvent       -id eventTime -h  -n "Время срабатывания аварии/предупреждения (мсек)"
-addEventParam  -ev eventTime -id on -type Integer
+addEventParam  -ev eventTime -id oldVal -type Integer
+addEventParam  -ev eventTime -id newVal -type Integer
 addEvent       -id alarmMin -h  -n "НАУ генерация (Уставка 4)"
 addEventParam  -ev alarmMin -id on -type Boolean
 addEvent       -id warningMin -h  -n "НПУ генерация (Уставка 3)"

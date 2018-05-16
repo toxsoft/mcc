@@ -11,9 +11,11 @@ addData -id on -type Boolean -currdata  -histdata  -n "Команда включ
 addData -id pressNorm -type Boolean -currdata  -histdata  -n "Давление в норме" -d "Давление в норме"
 
 addEvent       -id setPointMin -h  -n "Уставка включения"
-addEventParam  -ev setPointMin -id on -type Float
+addEventParam  -ev setPointMin -id oldVal -type Float
+addEventParam  -ev setPointMin -id newVal -type Float
 addEvent       -id setPointMax -h  -n "Уставка отключения"
-addEventParam  -ev setPointMax -id on -type Float
+addEventParam  -ev setPointMax -id oldVal -type Float
+addEventParam  -ev setPointMax -id newVal -type Float
 addEvent       -id auto -h  -n "Регулятор в автомате"
 addEventParam  -ev auto -id on -type Boolean
 addEvent       -id on -h  -n "Команда включения от регулятора"

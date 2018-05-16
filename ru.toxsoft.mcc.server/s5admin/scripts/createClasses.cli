@@ -9,7 +9,7 @@ b classes\PLC\DO\createDigOutput.cli
 b classes\Hardware\createIrreversibleEngine.cli
 b classes\Hardware\createReversibleEngine.cli
 b classes\Hardware\MainSwitch\createMainSwitch.cli
-b classes\Hardware\createOilPumpReg.cli
+b classes\ControlSystem\createOilPumpReg.cli
 b classes\PLC\createPLC.cli
 b classes\createTurbocharger.cli
 b classes\createOPC2S5Bridge.cli
