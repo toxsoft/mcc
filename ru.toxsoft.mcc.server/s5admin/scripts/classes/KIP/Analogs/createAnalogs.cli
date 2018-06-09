@@ -1,8 +1,0 @@
-cd dev.classes
-
-createClass -classId  mcc.Analogs  -parentId S5Object -name "Аналоговые" 
-
-addLink -id content     -maxCount 0 -classIds "S5Object"     -name "содержание группы аналоговых сигналов"
-
-saveChanges
-

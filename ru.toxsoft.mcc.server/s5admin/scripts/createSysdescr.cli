@@ -13,4 +13,4 @@ batch createObjects.cli
 
 #
 # создание пользователей
-batch createUsers.cli
+#batch createUsers.cli

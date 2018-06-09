@@ -1,8 +1,0 @@
-cd dev.classes
-
-createClass -classId  mcc.ControlSystem  -parentId S5Object -name "Система управления" 
-
-addLink -id content -maxCount 0 -classIds "S5Object" -n "Связь c сущностями составляющими систему правления" -d "Связь c сущностями составляющими систему правления"
-
-saveChanges
-
