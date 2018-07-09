@@ -1,8 +1,6 @@
 
 cd dev.objects
 
-$ = createObject   
-
 $n2DoVV_Start = createObject mcc.DigOutput  n2DoVV_Start
 
 $n2DoVV_Stop = createObject mcc.DigOutput  n2DoVV_Stop
@@ -25,11 +23,21 @@ $n2DoKP_On2Open = createObject mcc.DigOutput  n2DoKP_On2Open
 
 $n2DoKP_On2Close = createObject mcc.DigOutput  n2DoKP_On2Close
 
+$n2DoZV1_On2Open = createObject mcc.DigOutput  n2DoZV1_On2Open
+
+$n2DoZV1_On2Close = createObject mcc.DigOutput  n2DoZV1_On2Close
+
+$n2DoZV2_On2Open = createObject mcc.DigOutput  n2DoZV2_On2Open
+
+$n2DoZV2_On2Close = createObject mcc.DigOutput  n2DoZV2_On2Close
+
 $n2DoZB_On2Open = createObject mcc.DigOutput  n2DoZB_On2Open
 
 $n2DoZB_On2Close = createObject mcc.DigOutput  n2DoZB_On2Close
 
 $n2DoPMN_Start = createObject mcc.DigOutput  n2DoPMN_Start
+
+$n2DoTEN_Start = createObject mcc.DigOutput  n2DoTEN_Start
 
 $n2DoLampStart = createObject mcc.DigOutput  n2DoLampStart
 
@@ -37,9 +45,9 @@ $n2DoLampAlarm = createObject mcc.DigOutput  n2DoLampAlarm
 
 $n2DoSiren = createObject mcc.DigOutput  n2DoSiren
 
-$n2DoVent_Start = createObject mcc.DigOutput  n2DoVent_Start
+$n2DoVent1_Start = createObject mcc.DigOutput  n2DoVent1_Start
 
-$n2DoVent_Stop = createObject mcc.DigOutput  n2DoVent_Stop
+$n2DoVent2_Start = createObject mcc.DigOutput  n2DoVent2_Start
 
 $n2DoPRU_Poil = createObject mcc.DigOutput  n2DoPRU_Poil
 
@@ -49,7 +57,7 @@ $n2DoPRU_readyPE = createObject mcc.DigOutput  n2DoPRU_readyPE
 
 $n2DoPRU_protectPE = createObject mcc.DigOutput  n2DoPRU_protectPE
 
-$n2Doreserv34 = createObject mcc.DigOutput  n2Doreserv34
+$n2DoPRU_ventEnd = createObject mcc.DigOutput  n2DoPRU_ventEnd
 
 $n2Doreserv35 = createObject mcc.DigOutput  n2Doreserv35
 
@@ -82,6 +90,10 @@ $n2DiPMN_On = createObject mcc.DigInput  n2DiPMN_On
 $n2DiDVPU_Upwr = createObject mcc.DigInput  n2DiDVPU_Upwr
 
 $n2DiDVPU_On = createObject mcc.DigInput  n2DiDVPU_On
+
+$n2DiTEN_Upwr = createObject mcc.DigInput  n2DiTEN_Upwr
+
+$n2DiTEN_On = createObject mcc.DigInput  n2DiTEN_On
 
 $n2DiDZVS_Upwr = createObject mcc.DigInput  n2DiDZVS_Upwr
 
@@ -122,6 +134,26 @@ $n2DiDKP_On2Close = createObject mcc.DigInput  n2DiDKP_On2Close
 $n2DiDKP_Open = createObject mcc.DigInput  n2DiDKP_Open
 
 $n2DiDKP_Close = createObject mcc.DigInput  n2DiDKP_Close
+
+$n2DiDZV1_Upwr = createObject mcc.DigInput  n2DiDZV1_Upwr
+
+$n2DiDZV1_On2Open = createObject mcc.DigInput  n2DiDZV1_On2Open
+
+$n2DiDZV1_On2Close = createObject mcc.DigInput  n2DiDZV1_On2Close
+
+$n2DiDZV1_Open = createObject mcc.DigInput  n2DiDZV1_Open
+
+$n2DiDZV1_Close = createObject mcc.DigInput  n2DiDZV1_Close
+
+$n2DiDZV2_Upwr = createObject mcc.DigInput  n2DiDZV2_Upwr
+
+$n2DiDZV2_On2Open = createObject mcc.DigInput  n2DiDZV2_On2Open
+
+$n2DiDZV2_On2Close = createObject mcc.DigInput  n2DiDZV2_On2Close
+
+$n2DiDZV2_Open = createObject mcc.DigInput  n2DiDZV2_Open
+
+$n2DiDZV2_Close = createObject mcc.DigInput  n2DiDZV2_Close
 
 $n2DiVent_workWorkFan = createObject mcc.DigInput  n2DiVent_workWorkFan
 
