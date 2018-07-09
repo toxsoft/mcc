@@ -62,6 +62,9 @@ addEvent       -id switchOffFailure -h  -n "17.1 Не выключился"
 addEventParam  -ev switchOffFailure -id on -type Boolean
 addEvent       -id noPowerSupply -h  -n "17.7 Нет напряжения питания"
 addEventParam  -ev noPowerSupply -id on -type Boolean
+addEvent       -id hourMeterMs -h  -n "Счётчик моточасов (мсек) (только сброс)"
+addEventParam  -ev hourMeterMs -id oldVal -type Integer
+addEventParam  -ev hourMeterMs -id newVal -type Integer
 
 addCmd     -id awpStart -n "Пуск с АРМ" -d "Пуск с АРМ"
 addCmdArg  -c awpStart -id value -type Boolean

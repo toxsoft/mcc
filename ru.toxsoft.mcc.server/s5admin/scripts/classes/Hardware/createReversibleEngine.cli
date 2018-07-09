@@ -23,6 +23,7 @@ addData -id awpCtrl -type Boolean -currdata  -histdata  -n "Режим упра�
 addData -id panelCtrl -type Boolean -currdata  -histdata  -n "Режим управления с панели" -d "Режим управления с панели"
 addData -id localCtrl -type Boolean -currdata  -histdata  -n "Режим управления по месту" -d "Режим управления по месту"
 addData -id autoCtrl -type Boolean -currdata  -histdata  -n "Режим управления автомат (от контроллера)" -d "Режим управления автомат (от контроллера)"
+addData -id pwrOn -type Boolean -currdata  -histdata  -n "Питание в норме" -d "Питание в норме"
 addData -id confirmation -type Boolean -currdata  -histdata  -n "Квитирование аварий" -d "Квитирование аварий"
 addData -id imitation -type Boolean -currdata  -histdata  -n "«1» - включение режима имитации" -d "«1» - включение режима имитации"
 addData -id limitSwitchOpen -type Boolean -currdata  -histdata  -n "Сработал КВ на открытие" -d "Сработал КВ на открытие"
@@ -110,6 +111,9 @@ addEvent       -id closeOffFailure -h  -n "27.3 Не выключился на �
 addEventParam  -ev closeOffFailure -id on -type Boolean
 addEvent       -id noPowerSupply -h  -n "27.7 Нет напряжения питания"
 addEventParam  -ev noPowerSupply -id on -type Boolean
+addEvent       -id hourMeterMs -h  -n "Счётчик моточасов (мсек) (только сброс)"
+addEventParam  -ev hourMeterMs -id oldVal -type Integer
+addEventParam  -ev hourMeterMs -id newVal -type Integer
 
 addCmd     -id awpOpenStart -n "Пуск с АРМ на открытие" -d "Пуск с АРМ на открытие"
 addCmdArg  -c awpOpenStart -id value -type Boolean

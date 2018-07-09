@@ -1,13 +1,15 @@
 
 cd dev.objects
 
+$n2TaskDZ = createObject mcc.AnalogOutput  n2TaskDZ
+
 $n2DoVV_Start = createObject mcc.DigOutput  n2DoVV_Start
 
 $n2DoVV_Stop = createObject mcc.DigOutput  n2DoVV_Stop
 
 $n2DoVV_StopTZN = createObject mcc.DigOutput  n2DoVV_StopTZN
 
-$n2DoVPU_hydro_Start = createObject mcc.DigOutput  n2DoVPU_hydro_Start
+$n2Dohydro_VPU_Start = createObject mcc.DigOutput  n2Dohydro_VPU_Start
 
 $n2DoVPU_Start = createObject mcc.DigOutput  n2DoVPU_Start
 
@@ -23,21 +25,13 @@ $n2DoKP_On2Open = createObject mcc.DigOutput  n2DoKP_On2Open
 
 $n2DoKP_On2Close = createObject mcc.DigOutput  n2DoKP_On2Close
 
-$n2DoZV1_On2Open = createObject mcc.DigOutput  n2DoZV1_On2Open
-
-$n2DoZV1_On2Close = createObject mcc.DigOutput  n2DoZV1_On2Close
-
-$n2DoZV2_On2Open = createObject mcc.DigOutput  n2DoZV2_On2Open
-
-$n2DoZV2_On2Close = createObject mcc.DigOutput  n2DoZV2_On2Close
-
 $n2DoZB_On2Open = createObject mcc.DigOutput  n2DoZB_On2Open
 
 $n2DoZB_On2Close = createObject mcc.DigOutput  n2DoZB_On2Close
 
 $n2DoPMN_Start = createObject mcc.DigOutput  n2DoPMN_Start
 
-$n2DoTEN_Start = createObject mcc.DigOutput  n2DoTEN_Start
+$n2Doreserv11 = createObject mcc.DigOutput  n2Doreserv11
 
 $n2DoLampStart = createObject mcc.DigOutput  n2DoLampStart
 
@@ -45,9 +39,9 @@ $n2DoLampAlarm = createObject mcc.DigOutput  n2DoLampAlarm
 
 $n2DoSiren = createObject mcc.DigOutput  n2DoSiren
 
-$n2DoVent1_Start = createObject mcc.DigOutput  n2DoVent1_Start
+$n2DoVentMain_Start = createObject mcc.DigOutput  n2DoVentMain_Start
 
-$n2DoVent2_Start = createObject mcc.DigOutput  n2DoVent2_Start
+$n2DoVentReserv_Start = createObject mcc.DigOutput  n2DoVentReserv_Start
 
 $n2DoPRU_Poil = createObject mcc.DigOutput  n2DoPRU_Poil
 
@@ -57,15 +51,9 @@ $n2DoPRU_readyPE = createObject mcc.DigOutput  n2DoPRU_readyPE
 
 $n2DoPRU_protectPE = createObject mcc.DigOutput  n2DoPRU_protectPE
 
-$n2DoPRU_ventEnd = createObject mcc.DigOutput  n2DoPRU_ventEnd
+$n2DoPRU_VentCmplt = createObject mcc.DigOutput  n2DoPRU_VentCmplt
 
-$n2Doreserv35 = createObject mcc.DigOutput  n2Doreserv35
-
-$n2Doreserv36 = createObject mcc.DigOutput  n2Doreserv36
-
-$n2Doreserv37 = createObject mcc.DigOutput  n2Doreserv37
-
-$n2CtrlSystem = createObject mcc.CtrlSystem  n2CtrlSystem
+$n2Kp = createObject mcc.ReversibleEngine  n2Kp
 
 $n2Zvs = createObject mcc.ReversibleEngine  n2Zvs
 
@@ -74,6 +62,14 @@ $n2Zb = createObject mcc.ReversibleEngine  n2Zb
 $n2Zn = createObject mcc.ReversibleEngine  n2Zn
 
 $n2OilPumpReg = createObject mcc.OilPumpReg  n2OilPumpReg
+
+$n2Vent2 = createObject mcc.IrreversibleEngine  n2Vent2
+
+$n2Vent1 = createObject mcc.IrreversibleEngine  n2Vent1
+
+$n2VPU = createObject mcc.IrreversibleEngine  n2VPU
+
+$n2Hydro = createObject mcc.IrreversibleEngine  n2Hydro
 
 $n2Mn = createObject mcc.IrreversibleEngine  n2Mn
 
@@ -91,9 +87,9 @@ $n2DiDVPU_Upwr = createObject mcc.DigInput  n2DiDVPU_Upwr
 
 $n2DiDVPU_On = createObject mcc.DigInput  n2DiDVPU_On
 
-$n2DiTEN_Upwr = createObject mcc.DigInput  n2DiTEN_Upwr
+$n2Direserv07 = createObject mcc.DigInput  n2Direserv07
 
-$n2DiTEN_On = createObject mcc.DigInput  n2DiTEN_On
+$n2Direserv10 = createObject mcc.DigInput  n2Direserv10
 
 $n2DiDZVS_Upwr = createObject mcc.DigInput  n2DiDZVS_Upwr
 
@@ -135,35 +131,15 @@ $n2DiDKP_Open = createObject mcc.DigInput  n2DiDKP_Open
 
 $n2DiDKP_Close = createObject mcc.DigInput  n2DiDKP_Close
 
-$n2DiDZV1_Upwr = createObject mcc.DigInput  n2DiDZV1_Upwr
+$n2DiVentMain_On = createObject mcc.DigInput  n2DiVentMain_On
 
-$n2DiDZV1_On2Open = createObject mcc.DigInput  n2DiDZV1_On2Open
+$n2DiVentMain_Fault = createObject mcc.DigInput  n2DiVentMain_Fault
 
-$n2DiDZV1_On2Close = createObject mcc.DigInput  n2DiDZV1_On2Close
+$n2DiVentReserv_On = createObject mcc.DigInput  n2DiVentReserv_On
 
-$n2DiDZV1_Open = createObject mcc.DigInput  n2DiDZV1_Open
+$n2DiVentReserv_Fault = createObject mcc.DigInput  n2DiVentReserv_Fault
 
-$n2DiDZV1_Close = createObject mcc.DigInput  n2DiDZV1_Close
-
-$n2DiDZV2_Upwr = createObject mcc.DigInput  n2DiDZV2_Upwr
-
-$n2DiDZV2_On2Open = createObject mcc.DigInput  n2DiDZV2_On2Open
-
-$n2DiDZV2_On2Close = createObject mcc.DigInput  n2DiDZV2_On2Close
-
-$n2DiDZV2_Open = createObject mcc.DigInput  n2DiDZV2_Open
-
-$n2DiDZV2_Close = createObject mcc.DigInput  n2DiDZV2_Close
-
-$n2DiVent_workWorkFan = createObject mcc.DigInput  n2DiVent_workWorkFan
-
-$n2DiVent_workResrvFan = createObject mcc.DigInput  n2DiVent_workResrvFan
-
-$n2DiVent_Fault = createObject mcc.DigInput  n2DiVent_Fault
-
-$n2DiVent_BlowCmplt = createObject mcc.DigInput  n2DiVent_BlowCmplt
-
-$n2DiPRU_EmrStop = createObject mcc.DigInput  n2DiPRU_EmrStop
+$n2DiPRU_EmrStopVV = createObject mcc.DigInput  n2DiPRU_EmrStopVV
 
 $n2DiPRU_Auto = createObject mcc.DigInput  n2DiPRU_Auto
 
@@ -218,8 +194,6 @@ $n2DiUpwr380_Norm = createObject mcc.DigInput  n2DiUpwr380_Norm
 $n2DiPS_G2_Norm = createObject mcc.DigInput  n2DiPS_G2_Norm
 
 $n2DiUsig_Norm = createObject mcc.DigInput  n2DiUsig_Norm
-
-$n2Direserv87 = createObject mcc.DigInput  n2Direserv87
 
 $n2MainSwitch = createObject mcc.MainSwitch  n2MainSwitch
 

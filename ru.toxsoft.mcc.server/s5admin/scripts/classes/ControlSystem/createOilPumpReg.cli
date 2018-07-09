@@ -8,7 +8,6 @@ addData -id setPointMin -type Float -currdata  -histdata  -n "Уставка в�
 addData -id setPointMax -type Float -currdata  -histdata  -n "Уставка отключения" -d "Уставка отключения"
 addData -id auto -type Boolean -currdata  -histdata  -n "Регулятор в автомате" -d "Регулятор в автомате"
 addData -id on -type Boolean -currdata  -histdata  -n "Команда включения от регулятора" -d "Команда включения от регулятора"
-addData -id pressNorm -type Boolean -currdata  -histdata  -n "Давление в норме" -d "Давление в норме"
 
 addEvent       -id setPointMin -h  -n "Уставка включения"
 addEventParam  -ev setPointMin -id oldVal -type Float
@@ -20,8 +19,6 @@ addEvent       -id auto -h  -n "Регулятор в автомате"
 addEventParam  -ev auto -id on -type Boolean
 addEvent       -id on -h  -n "Команда включения от регулятора"
 addEventParam  -ev on -id on -type Boolean
-addEvent       -id pressNorm -h  -n "Давление в норме"
-addEventParam  -ev pressNorm -id on -type Boolean
 
 addCmd     -id setPointMin -n "Уставка включения" -d "Уставка включения"
 addCmdArg  -c setPointMin -id value -type Float
