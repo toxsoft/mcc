@@ -12,6 +12,7 @@ Require-Bundle: ru.toxsoft.log4j_plugin;bundle-version="1.2.17",
  ru.toxsoft.s5.sysaddons.alarms_plugin;bundle-version="7.23.1",
  ru.toxsoft.s5.sysaddons.reports_plugin;bundle-version="7.23.1",
  ru.toxsoft.s5.sysaddons.wscfg_plugin;bundle-version="7.23.1"
+Eclipse-BuddyPolicy: registered
 Export-Package: ru.toxsoft.mcc.client.connection,
  ru.toxsoft.mcc.server,
  ru.toxsoft.mcc.server.impl

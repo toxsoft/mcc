@@ -23,6 +23,10 @@
                name="appName"
                value="АРМ МосКокс">
          </property>
+         <property
+               name="windowImages"
+               value="icons/is16x16/app-icon.png,icons/is32x32/app-icon.png,icons/is48x48/app-icon.png,icons/is64x64/app-icon.png,icons/is128x128/app-icon.png">
+         </property>
       </product>
    </extension>
 

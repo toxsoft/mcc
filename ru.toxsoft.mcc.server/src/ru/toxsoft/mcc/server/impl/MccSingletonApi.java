@@ -6,6 +6,7 @@ import static ru.toxsoft.mcc.server.impl.IMccResources.*;
 import javax.annotation.*;
 import javax.ejb.*;
 
+import ru.toxsoft.s5.client.connection.options.impl.S5ModuleOptionValue;
 import ru.toxsoft.s5.common.annotations.S5AnnotationParser;
 import ru.toxsoft.s5.common.bsobj.IBsObject;
 import ru.toxsoft.s5.common.sysdescr.IClassInfo;
@@ -73,7 +74,7 @@ public class MccSingletonApi
    * Конструктор
    */
   public MccSingletonApi() {
-    super( MCC_SERVER_ID, STR_D_MCC_SERVER_INFO, STR_N_MCC_SERVER_INFO );
+    super( new S5ModuleOptionValue( MCC_SERVER_ID, MCC_SERVER_NAME, MCC_SERVER_DESCR, MCC_SERVER_VERSION ) );
   }
 
   // ------------------------------------------------------------------------------------

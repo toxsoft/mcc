@@ -29,8 +29,8 @@ public class MccServicesInitializer
   //
 
   @Override
-  public IList<S5AbstractServiceClientImpl> createClientServices( IServerClientApi aLocalApi ) {
-    IListEdit<S5AbstractServiceClientImpl> services = new ElemLinkedList<>();
+  public IList<S5AbstractServiceClientImpl<?>> createClientServices( IServerClientApi aLocalApi ) {
+    IListEdit<S5AbstractServiceClientImpl<?>> services = new ElemLinkedList<>();
     services.add( new S5AlarmServiceClientImpl( aLocalApi ) );
     services.add( new S5ReportServiceClientImpl( aLocalApi ) );
     services.add( new S5WorkstationConfigServiceClientImpl( aLocalApi ) );

@@ -6,8 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ru.toxsoft.mcc.ws.module.schemes.Activator
 Bundle-Vendor: ToxSoft LLC
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.jface;bundle-version="3.12.2",
- org.eclipse.e4.core.contexts;bundle-version="1.5.1",
+ org.eclipse.jface,
+ org.eclipse.e4.core.contexts,
  org.eclipse.e4.ui.model.workbench;bundle-version="1.2.0",
  ru.toxsoft.tslib_plugin;bundle-version="6.0.2",
  ru.toxsoft.tsgui_plugin;bundle-version="6.0.2",

@@ -5,10 +5,8 @@
          	 <!-- модули для подключения к managment для перехвата shutdown -->
               <module name="org.jboss.dmr" />  
               <module name="org.jboss.as.controller-client" />  
-           <!-- required for S5Connection inside wildfy: -->
-              <module name="org.jboss.xnio" export="true" />
-              <module name="org.jboss.xnio.nio" export="true" />
-              <module name="org.hornetq" export="true" />
+              <!-- TODO: experimental -->
+              <!-- <module name="ru.toxsoft.s5.server" slot="main" export="true"/>  -->  
         </dependencies>  
     </deployment>  
 </jboss-deployment-structure>  
