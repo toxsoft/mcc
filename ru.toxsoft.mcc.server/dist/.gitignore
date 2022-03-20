@@ -1,2 +1,2 @@
-/mcc-server.jar
-/mcc-server-deploy.jar
+/*.jar
+/deploy-to-local/

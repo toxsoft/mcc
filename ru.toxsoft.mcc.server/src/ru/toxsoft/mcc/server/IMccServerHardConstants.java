@@ -1,24 +1,25 @@
 package ru.toxsoft.mcc.server;
 
 import static ru.toxsoft.mcc.server.IMccResources.*;
-import static ru.toxsoft.s5.utils.S5ManifestUtils.*;
+import static ru.uskat.s5.utils.S5ManifestUtils.*;
 
-import ru.toxsoft.s5.common.info.IServerInfo;
 import ru.toxsoft.tslib.utils.version.DefaultTsVersion;
 import ru.toxsoft.tslib.utils.version.ITsVersion;
+import ru.uskat.s5.server.IS5ServerHardConstants;
 
 /**
- * Жестко заданные константы сервера приложения MCC.
+ * Жестко заданные константы сервера приложения.
  *
- * @author goga
+ * @author mvk
  */
-@SuppressWarnings( { "nls" } )
-public interface IMccServerHardConstants {
+@SuppressWarnings( "nls" )
+public interface IMccServerHardConstants
+    extends IS5ServerHardConstants {
 
   /**
-   * Идентификатор сервера {@link IServerInfo#id()}.
+   * Идентификатор сервера
    */
-  String MCC_SERVER_ID = "ru.toxsoft.mcc.server";
+  String MCC_SERVER_ID = "mcc.server";
 
   /**
    * Имя сервера
@@ -33,11 +34,9 @@ public interface IMccServerHardConstants {
   /**
    * Номер версии
    */
-  ITsVersion MCC_SERVER_VERSION = new DefaultTsVersion( 2, 2, getBuildTime() );
+  ITsVersion MCC_SERVER_VERSION = new DefaultTsVersion( 2, 1, getBuildTime() );
 
-  /**
-   * Псевдоним (алиас) имени приложения, используемый для формирования идентификаторов.
-   */
-  String APP_ALIAS = "mcc";
-
+  // ------------------------------------------------------------------------------------------------
+  // Параметры подключения к серверу
+  //
 }

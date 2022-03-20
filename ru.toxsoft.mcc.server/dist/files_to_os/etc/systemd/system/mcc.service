@@ -1,0 +1,38 @@
+[Unit]
+Description=mcc
+After=syslog.target
+After=network.target
+After=nginx.service
+# 2019-09-14 под кластером БД отключаем автоматический запуск mariadb
+# After=mysql.service
+# ??? установить службу mysql или mariadb.
+# 2019-09-14 под кластером БД отключаем автоматический запуск mariadb
+# Requires=mysql.service
+# Requires=mariadb.service
+Wants=redis.service
+
+[Service]
+Type=forking
+# PIDFile=/home/tsdev/mt/tswildfly-18.0.1.Final/pids/tm-service.pid
+WorkingDirectory=/home/tsdev/mm/tswildfly-18.0.1.Final/bin
+
+User=tsdev
+Group=tsdev
+
+Environment=RACK_ENV=production
+
+OOMScoreAdjust=-1000
+
+ExecStart=/home/tsdev/mcc/run_mcc_node01.sh
+
+TimeoutSec=300
+TimeoutStopSec=1
+# TimeoutAbortSec=1
+KillSignal=SIGKILL
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
