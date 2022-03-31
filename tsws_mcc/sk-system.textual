@@ -1,0 +1,1223 @@
+DataTypes = []
+ClassInfos = [
+  { sk.System, SkObject, {ts.Name="Система",ts.Description="Система"},
+    attrs = [],
+    rtdata = [],
+    links = [],
+    cmds = [],
+    events = [
+      {LoginFailed,{ts.Name="Отказ доступа",ts.Description="Неудачная попытка подключения пользователя",sk.IsHist=true},[
+        {Login,{ts.Name="login",ts.Description="Логин пользователя",sk.TypeId="String"}},
+        {IP,{ts.Name="IP",ts.Description="IP-адрес пользователя",sk.TypeId="String"}}
+      ]},
+      {SysdescrChanged,{ts.Name="Измененено системное описание",ts.Description="Измененено системное описание",sk.IsHist=true},[
+        {user,{ts.Name="Пользователь",ts.Description="Пользователь системы (login)",sk.TypeId="String"}},
+        {description,{ts.Name="Пользователь",ts.Description="Описание изменений (вводится пользователем)",sk.TypeId="String"}},
+        {editor,{ts.Name="Редактор",ts.Description="Описание редактора",sk.TypeId="String"}}
+      ]}
+    ]
+  },
+  { sk.User, SkObject, {ts.Name="Пользователь",ts.Description="Пользователь системы"},
+    attrs = [
+      {password,{ts.Name="Пароль",ts.Description="Пароль пользователя",ts.DefaultValue="",sk.TypeId="ts.Password"}},
+      {isEnabled,{ts.Name="Доступ",ts.Description="Доступ к учетной записи пользователя",ts.DefaultValue=true,sk.TypeId="Boolean"}},
+      {isHidden,{ts.Name="Скрыто",ts.Description="Скрытная учетная запись",ts.DefaultValue=false,sk.TypeId="Boolean"}}
+    ],
+    rtdata = [],
+    links = [],
+    cmds = [],
+    events = [
+      {SessionCreated,{ts.Name="Создание сессии",ts.Description="Создана сессия пользователя",sk.IsHist=true},[
+        {SessionId,{ts.Name="sessionId",ts.Description="Идентификатор сессии пользователя",sk.TypeId="String"}},
+        {IP,{ts.Name="IP",ts.Description="IP-адрес пользователя",sk.TypeId="String"}}
+      ]},
+      {SessionClosed,{ts.Name="Завершение сессии",ts.Description="Завершение сессии пользователя",sk.IsHist=true},[
+        {SessionId,{ts.Name="sessionId",ts.Description="Идентификатор сессии пользователя",sk.TypeId="String"}},
+        {IP,{ts.Name="IP",ts.Description="IP-адрес пользователя",sk.TypeId="String"}}
+      ]},
+      {SessionBreaked,{ts.Name="Обрыв сессии",ts.Description="Обрыв сессии пользователя",sk.IsHist=true},[
+        {SessionId,{ts.Name="sessionId",ts.Description="Идентификатор сессии пользователя",sk.TypeId="String"}},
+        {IP,{ts.Name="IP",ts.Description="IP-адрес пользователя",sk.TypeId="String"}}
+      ]},
+      {SessionRestored,{ts.Name="Восстановление сессии",ts.Description="Восстановление сессии пользователя",sk.IsHist=true},[
+        {SessionId,{ts.Name="sessionId",ts.Description="Идентификатор сессии пользователя",sk.TypeId="String"}},
+        {IP,{ts.Name="IP",ts.Description="IP-адрес пользователя",sk.TypeId="String"}}
+      ]}
+    ]
+  },
+  { sk.Session, SkObject, {ts.Name="Сессия",ts.Description="Сессия пользователя системы"},
+    attrs = [
+      {StartTime,{ts.Name="Открыта",ts.Description="Метка времени (мсек с начала эпохи) открытия сессии",sk.TypeId="Timestamp"}},
+      {EndTime,{ts.Name="Закрыта",ts.Description="Метка времени (мсек с начала эпохи) завершения сессии",ts.DefaultValue=None,sk.TypeId="Timestamp"}},
+      {BackendSpecificParams,{ts.Name="Backend",ts.Description="Специфичные для бекенда параметры",sk.TypeId="VALOBJ"}},
+      {ConnectionCreationParams,{ts.Name="Connection",ts.Description="Параметры создания соединения",sk.TypeId="VALOBJ"}}
+    ],
+    rtdata = [
+      {State,{ts.Name="Соединение",ts.Description="Состояние соединения",sk.IsCurr=false,sk.IsHist=true,sk.IsSync=false,sk.SyncDeltaT=0,sk.TypeId="Boolean"}}
+    ],
+    links = [
+      {User,{ts.Name="Пользователь",ts.Description="Пользователь, который вошел в систему",sk.link.RightClassIds=@StringList{{sk.User}},sk.link.LinkConstraint=@CollConstraint{1,0x7}}}
+    ],
+    cmds = [],
+    events = [
+      {StateChanged,{ts.Name="Изменилось состояния сессии",ts.Description="Изменилось состояние сессии (состояние сединения)",sk.IsHist=true},[
+        {NewState,{ts.Name="Состояние",ts.Description="Новое состояние соединения",sk.TypeId="VALOBJ"}}
+      ]}
+    ]
+  },
+  { sk.regref.Section, SkObject, {sk.classIsCodeDefined=true},
+    attrs = [
+      {Params,{ts.Name="Параметры",ts.Description="Параметры",sk.TypeId="ts.OptionSet"}}
+    ],
+    rtdata = [],
+    links = [],
+    cmds = [],
+    events = [
+      {RriParamsChange,{ts.Name="Правка НСИ",ts.Description="Событие редактирования значения параметра НСИ",sk.IsHist=true},[
+        {sectionId,{ts.Name="Раздел",ts.Description="Идентификатор раздела НСИ",sk.TypeId="ts.IDpath"}},
+        {paramGwid,{ts.Name="Параметр",ts.Description="Идентификатор параметра НСИ",sk.TypeId="VALOBJ"}},
+        {authorLogin,{ts.Name="Автор",ts.Description="Автор (точнее, логин, имя входа) изменения параметров НСИ",sk.TypeId="String"}},
+        {isLink,{ts.Name="Связь?",ts.Description="Признак, что параметр НСИ связь, а не атрибут объекта",sk.TypeId="ts.TsBool"}},
+        {reason,{ts.Name="Причина",ts.Description="Причина изменения параметров НСИ",sk.TypeId="ts.IDpath"}},
+        {oldAttr,{ts.Name="Предыдущее",ts.Description="Предыдущее значение параметра НСИ",sk.TypeId="None"}},
+        {newAttr,{ts.Name="Новое",ts.Description="Новое значение параметра НСИ",sk.TypeId="None"}},
+        {oldLink,{ts.Name="Предыдущее",ts.Description="Предыдущее значение параметра НСИ",sk.TypeId="VALOBJ"}},
+        {newLink,{ts.Name="Новое",ts.Description="Новое значение параметра НСИ",sk.TypeId="VALOBJ"}}
+      ]}
+    ]
+  },
+  { sk.refbook.class.refbook, SkObject, {sk.classIsCodeDefined=true},
+    attrs = [
+      {ItemClassId,{ts.Name="Класс элемента",ts.Description="Идентификатор описательного класса элементов справочника",sk.TypeId="ts.IDpath"}}
+    ],
+    rtdata = [],
+    links = [],
+    cmds = [],
+    events = [
+      {RefbookItemChange,{ts.Name="RB item",ts.Description="Refbook item changed"},[
+        {crudOp,{ts.Name="CRUD operation",ts.Description="What happened with item: CREATE, CHANGE, REMOVE",ts.KeeperId="OptionSet",ts.DefaultValue=None,sk.TypeId="VALOBJ"}},
+        {itemSkid,{ts.Name="Item SKID",ts.Description="SKID of the affected item",ts.KeeperId="OptionSet",ts.DefaultValue=None,sk.TypeId="VALOBJ"}},
+        {oldAttrs,{ts.Name="Old attrs",ts.Description="",ts.KeeperId="OptionSet",ts.DefaultValue=None,sk.TypeId="VALOBJ"}},
+        {newAttrs,{ts.Name="New attrs",ts.Description="",ts.KeeperId="OptionSet",ts.DefaultValue=None,sk.TypeId="VALOBJ"}},
+        {oldLinks,{ts.Name="Old links",ts.Description="",ts.KeeperId="SkLinksMap",ts.DefaultValue=None,sk.TypeId="VALOBJ"}},
+        {newLinks,{ts.Name="New links",ts.Description="",ts.KeeperId="SkLinksMap",ts.DefaultValue=None,sk.TypeId="VALOBJ"}}
+      ]}
+    ]
+  },
+  { sk.onews.Profile, SkObject, {},
+    attrs = [
+      {params,{ts.Name="Параметры",ts.Description="Произвольные параметры профиля АРМ",ts.KeeperId="OptionSet",ts.DefaultValue=@OptionSet{{}},sk.TypeId="VALOBJ"}},
+      {isBuiltin,{ts.Name="Втсроенны?",ts.Description="Признак встроенного (нередактируемого и неудаляемого) профиля",ts.DefaultValue=false,sk.TypeId="ts.TsBool"}},
+      {rules,{ts.Name="Правила",ts.Description="Список правил разрешений возможностей АРМ",ts.KeeperId="S5OneWsProfileRules",ts.DefaultValue=@OptionSet{{}},sk.TypeId="VALOBJ"}}
+    ],
+    rtdata = [],
+    links = [
+      {users,{ts.Name="Пользователи",ts.Description="Пользователи, которым назначен этот профиль АРМ",sk.link.RightClassIds=@StringList{{sk.User}},sk.link.LinkConstraint=@CollConstraint{0,0x4}}}
+    ],
+    cmds = [],
+    events = []
+  },
+  { mcc.AnalogInput, SkObject, {ts.Name="Аналоговый ввод",ts.Description="Аналоговый ввод"},
+    attrs = [],
+    rtdata = [
+      {channelAddress,{ts.Name="Адрес канала",ts.Description="Адрес канала в контроллере",sk.TypeId="Integer"}},
+      {filterConst,{ts.Name="Фильтр, мс",ts.Description="Время фильтрации (мсек)",sk.TypeId="Integer"}},
+      {x0,{ts.Name="Нижняя граница датчика",ts.Description="Нижняя граница выходного сигнала датчика",sk.TypeId="Float"}},
+      {y0,{ts.Name="Нижняя граница параметра",ts.Description="Нижняя граница шкалы измеряемого параметра",sk.TypeId="Float"}},
+      {x1,{ts.Name="Верхняя граница датчика",ts.Description="Верхняя граница выходного сигнала датчика",sk.TypeId="Float"}},
+      {y1,{ts.Name="Верхняя граница параметра",ts.Description="Верхняя граница шкалы измеряемого параметра",sk.TypeId="Float"}},
+      {setPoint1,{ts.Name="Уставка ВА 1",ts.Description="Уставка 1 Верхний Аварийный",sk.TypeId="Float"}},
+      {setPoint2,{ts.Name="Уставка ВП 2",ts.Description="Уставка 2 Верхний Предупредительный",sk.TypeId="Float"}},
+      {setPoint3,{ts.Name="Уставка НП 3",ts.Description="Уставка 3 Нижний Предупредительный",sk.TypeId="Float"}},
+      {setPoint4,{ts.Name="Уставка НА 4",ts.Description="Уставка 4 Нижний Аварийный",sk.TypeId="Float"}},
+      {imitationValue,{ts.Name="Значение имитации",ts.Description="Значение для имитации датчика",sk.TypeId="Float"}},
+      {controlWord,{ts.Name="Слово управления",ts.Description="Слово управления",sk.TypeId="Integer"}},
+      {imitation,{ts.Name="Имитация",ts.Description="«1» - включение режима имитации датчика",sk.TypeId="Boolean"}},
+      {enblAlarmTreat,{ts.Name="Разрешение",ts.Description="«1» - разрешение на обработку аварий",sk.TypeId="Boolean"}},
+      {eventTime,{ts.Name="Задержка срабатывания, мс",ts.Description="Время срабатывания аварии/предупреждения (мсек)",sk.TypeId="Integer"}},
+      {currentValue,{ts.Name="Текущее значение параметра",ts.Description="Текущее значение измеряемого параметра",sk.TypeId="Float"}},
+      {physicalValue,{ts.Name="Текущее значение датчика",ts.Description="Текущее значение выходного сигнала датчика",sk.TypeId="Float"}},
+      {stateWord,{ts.Name="Слово состояния",ts.Description="Слово состояния",sk.TypeId="Integer"}},
+      {alarm,{ts.Name="Авария",ts.Description="Авария",sk.TypeId="Boolean"}},
+      {warn,{ts.Name="Предупреждение",ts.Description="Предупреждение",sk.TypeId="Boolean"}},
+      {paramState,{ts.Name="Состояние",ts.Description="Состояние датчика",sk.TypeId="Integer"}}
+    ],
+    links = [],
+    cmds = [
+      {channelAddress,{ts.Name="Адрес канала"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {filterConst,{ts.Name="Фильтр, мс"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {x0,{ts.Name="Нижняя граница датчика"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {y0,{ts.Name="Нижняя граница параметра"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {x1,{ts.Name="Верхняя граница датчика"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {y1,{ts.Name="Верхняя граница параметра"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {setPoint1,{ts.Name="Уставка ВА 1"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {setPoint2,{ts.Name="Уставка ВП 2"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {setPoint3,{ts.Name="Уставка НП 3"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {setPoint4,{ts.Name="Уставка НА 4"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {imitationValue,{ts.Name=""},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {setPoint4generation,{ts.Name="Генерация НА 4"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {setPoint4indication,{ts.Name="Индикация НА 4"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {setPoint3generation,{ts.Name="Генерация НП 3"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {setPoint3indication,{ts.Name="Индикация НП 3"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {setPoint2generation,{ts.Name="Генерация ВП 2"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {setPoint2indication,{ts.Name="Индикация ВП 2"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {setPoint1generation,{ts.Name="Генерация ВА 1"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {setPoint1indication,{ts.Name="Индикация ВА 1"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {imitation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {confirmation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {enblAlarmTreat,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {eventTime,{ts.Name="Задержка срабатывания, мс"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]}
+    ],
+    events = [
+      {channelAddress,{ts.Name="Адрес канала"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {filterConst,{ts.Name="Фильтр, мс"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {x0,{ts.Name="Нижняя граница датчика"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {y0,{ts.Name="Нижняя граница параметра"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {x1,{ts.Name="Верхняя граница датчика"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {y1,{ts.Name="Верхняя граница параметра"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint1,{ts.Name="Уставка ВА 1"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint2,{ts.Name="Уставка ВП 2"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint3,{ts.Name="Уставка НП 3"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint4,{ts.Name="Уставка НА 4"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint4generation,{ts.Name="Генерация НА 4"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint4indication,{ts.Name="Индикация НА 4"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint3generation,{ts.Name="Генерация НП 3"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint3indication,{ts.Name="Индикация НП 3"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint2generation,{ts.Name="Генерация ВП 2"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint2indication,{ts.Name="Индикация ВП 2"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint1generation,{ts.Name="Генерация ВА 1"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPoint1indication,{ts.Name="Индикация ВА 1"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {eventTime,{ts.Name="Задержка срабатывания, мс"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {alarmMin,{ts.Name="0"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {warningMin,{ts.Name="0"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {warningMax,{ts.Name="0"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {alarmMax,{ts.Name="0"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {calibrationWarning,{ts.Name="0"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {calibrationError,{ts.Name="0"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {imitation,{ts.Name="Имитация"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {enblAlarmTreat,{ts.Name="Разрешение"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  },
+  { mcc.IrreversibleEngine, SkObject, {ts.Name="Нереверсивный привод",ts.Description="Нереверсивный привод электрический общего вида — насос, вентилятор и тд"},
+    attrs = [],
+    rtdata = [
+      {awpStart,{ts.Name="Пуск с АРМ",ts.Description="Пуск с АРМ",sk.TypeId="Boolean"}},
+      {awpStop,{ts.Name="Стоп с АРМ",ts.Description="Стоп с АРМ",sk.TypeId="Boolean"}},
+      {panelStart,{ts.Name="Пуск с панели",ts.Description="Пуск с панели",sk.TypeId="Boolean"}},
+      {panelStop,{ts.Name="Стоп с панели",ts.Description="Стоп с панели",sk.TypeId="Boolean"}},
+      {localStart,{ts.Name="Пуск с ПРУ",ts.Description="Пуск с ПРУ",sk.TypeId="Boolean"}},
+      {localStop,{ts.Name="Стоп с ПРУ",ts.Description="Стоп с ПРУ",sk.TypeId="Boolean"}},
+      {controllerStart,{ts.Name="Пуск с контроллера",ts.Description="Пуск с контроллера",sk.TypeId="Boolean"}},
+      {controllerStop,{ts.Name="Стоп с контроллера",ts.Description="Стоп с контроллера",sk.TypeId="Boolean"}},
+      {awpCtrl,{ts.Name="Управление АРМ",ts.Description="Режим управления с АРМ",sk.TypeId="Boolean"}},
+      {panelCtrl,{ts.Name="Управление Панель",ts.Description="Режим управления с панели",sk.TypeId="Boolean"}},
+      {localCtrl,{ts.Name="Управление ПРУ",ts.Description="Режим управления по месту",sk.TypeId="Boolean"}},
+      {autoCtrl,{ts.Name="Управление Автомат",ts.Description="Режим управления автомат (от контроллера)",sk.TypeId="Boolean"}},
+      {enabled,{ts.Name="Разрешение",ts.Description="«1» - работа устройства разрешена",sk.TypeId="Boolean"}},
+      {auxOn,{ts.Name="Включен контактор",ts.Description="Сработал ДК на включение",sk.TypeId="Boolean"}},
+      {pwrOn,{ts.Name="Питание в норме",ts.Description="Питание в норме",sk.TypeId="Boolean"}},
+      {imitation,{ts.Name="Имитация",ts.Description="«1» - включение режима имитации работы",sk.TypeId="Boolean"}},
+      {auxTime,{ts.Name="Задержка контактора, мс",ts.Description="Время на срабатывание доп.контакта пускателя",sk.TypeId="Integer"}},
+      {output2On,{ts.Name="Выход на включение",ts.Description="Выход на дискретный вывод",sk.TypeId="Boolean"}},
+      {on,{ts.Name="Включен логически",ts.Description="Двигатель включен логически",sk.TypeId="Boolean"}},
+      {alarm,{ts.Name="Авария",ts.Description="Авария",sk.TypeId="Boolean"}},
+      {stateWord,{ts.Name="Слово состояния",ts.Description="Слово состояния",sk.TypeId="Integer"}},
+      {errorWord,{ts.Name="Слово ошибок",ts.Description="Слово ошибок",sk.TypeId="Integer"}},
+      {hourMeterMin,{ts.Name="",ts.Description="Счётчик моточасов (мин)",sk.TypeId="Integer"}},
+      {startCount,{ts.Name="",ts.Description="Количество запусков",sk.TypeId="Integer"}}
+    ],
+    links = [],
+    cmds = [
+      {awpStart,{ts.Name="Пуск с АРМ"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {awpStop,{ts.Name="Стоп с АРМ"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {confirmation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {enabled,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {imitation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {auxTime,{ts.Name="Задержка контактора, мс"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {hourMeterMs,{ts.Name="Сброс счетчика"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {hourMeterMin,{ts.Name=""},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {startCount,{ts.Name=""},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]}
+    ],
+    events = [
+      {awpStart,{ts.Name="Пуск с АРМ"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {awpStop,{ts.Name="Стоп с АРМ"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {panelStart,{ts.Name="Пуск с панели"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {panelStop,{ts.Name="Стоп с панели"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {localStart,{ts.Name="Пуск с ПРУ"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {localStop,{ts.Name="Стоп с ПРУ"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {controllerStart,{ts.Name="Пуск с контроллера"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {controllerStop,{ts.Name="Стоп с контроллера"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {auxTime,{ts.Name="Задержка контактора, мс"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {imitation,{ts.Name="Имитация"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {enabled,{ts.Name="Разрешение"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {on,{ts.Name="Включен"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {PowerSupplyNorm,{ts.Name="Питание"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {switchOnFailure,{ts.Name="Не включился"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {switchOffFailure,{ts.Name="Не отключился"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {noPowerSupply,{ts.Name="Нет питания"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {hourMeter,{ts.Name="Сброс счетчика"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  },
+  { mcc.TwoPositionReg, SkObject, {ts.Name="Позиционный регулятор",ts.Description="Двухпозиционный регулятор"},
+    attrs = [],
+    rtdata = [
+      {currentValue,{ts.Name="Текущее значение",ts.Description="Текущее значение",sk.TypeId="Float"}},
+      {setPointOn,{ts.Name="Уставка включения",ts.Description="Уставка включения",sk.TypeId="Float"}},
+      {setPointOff,{ts.Name="Уставка отключения",ts.Description="Уставка отключения",sk.TypeId="Float"}},
+      {auto,{ts.Name="Регулятор в автомате",ts.Description="Регулятор в автомате",sk.TypeId="Boolean"}},
+      {on,{ts.Name="Выход включен",ts.Description="Выход включен от регулятора",sk.TypeId="Boolean"}}
+    ],
+    links = [],
+    cmds = [
+      {setPointOn,{ts.Name="Уставка включения"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {setPointOff,{ts.Name="Уставка отключения"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {auto,{ts.Name="Регулятор в автомате"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]}
+    ],
+    events = [
+      {setPointOn,{ts.Name="Уставка включения"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setPointOff,{ts.Name="Уставка отключения"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {auto,{ts.Name="Регулятор в автомате"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {on,{ts.Name="Выход включен"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  },
+  { mcc.DigInput, SkObject, {ts.Name="Дискретный ввод",ts.Description="Дискретный ввод"},
+    attrs = [],
+    rtdata = [
+      {physicalValue,{ts.Name="Входной сигнал",ts.Description="Входной сигнал с модуля",sk.TypeId="Boolean"}},
+      {imitationValue,{ts.Name="Значение имитации",ts.Description="Входной сигнал значение Имитации",sk.TypeId="Boolean"}},
+      {imitation,{ts.Name="Имитация",ts.Description="«1» - включение режима имитации",sk.TypeId="Boolean"}},
+      {invert,{ts.Name="Инверсия",ts.Description="Инвертировать входной сигнал",sk.TypeId="Boolean"}},
+      {currentValue,{ts.Name="Текущее значение",ts.Description="Входное обработанное значение",sk.TypeId="Boolean"}},
+      {filterConst,{ts.Name="Фильтр",ts.Description="Время фильтрации (дсек, 1=0,1сек)",sk.TypeId="Integer"}}
+    ],
+    links = [],
+    cmds = [
+      {imitationValue,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {imitation,{ts.Name="Имитация"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {invert,{ts.Name="Инверсия"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {filterConst,{ts.Name="Фильтр"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]}
+    ],
+    events = [
+      {imitation,{ts.Name="Имитация"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {invert,{ts.Name="Инверсия"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {filterConst,{ts.Name="Фильтр"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  },
+  { mcc.ReversibleEngine, SkObject, {ts.Name="Реверсивный привод",ts.Description="Реверсивный привод электрический общего вида — задвижка, МЭО и т.д."},
+    attrs = [],
+    rtdata = [
+      {awpOpenStart,{ts.Name="Пуск с АРМ на открытие",ts.Description="Пуск с АРМ на открытие",sk.TypeId="Boolean"}},
+      {awpOpenStop,{ts.Name="Стоп с АРМ на открытие",ts.Description="Стоп с АРМ на открытие",sk.TypeId="Boolean"}},
+      {awpCloseStart,{ts.Name="Пуск с АРМ на закрытие",ts.Description="Пуск с АРМ на закрытие",sk.TypeId="Boolean"}},
+      {awpCloseStop,{ts.Name="Стоп с АРМ на закрытие",ts.Description="Стоп с АРМ на закрытие",sk.TypeId="Boolean"}},
+      {pnlOpenStart,{ts.Name="Старт с панели на открытие",ts.Description="Старт с панели на открытие",sk.TypeId="Boolean"}},
+      {pnlOpenStop,{ts.Name="Стоп с панели на открытие",ts.Description="Стоп с панели на открытие",sk.TypeId="Boolean"}},
+      {pnlCloseStart,{ts.Name="Старт с панели на закрытие",ts.Description="Старт с панели на закрытие",sk.TypeId="Boolean"}},
+      {pnlCloseStop,{ts.Name="Стоп с панели на закрытие",ts.Description="Стоп с панели на закрытие",sk.TypeId="Boolean"}},
+      {localOpenStart,{ts.Name="Старт с ПРУ на открытие",ts.Description="Старт с ПРУ на открытие",sk.TypeId="Boolean"}},
+      {localOpenStop,{ts.Name="Стоп с ПРУ на открытие",ts.Description="Стоп с ПРУ на открытие",sk.TypeId="Boolean"}},
+      {localCloseStart,{ts.Name="Старт с ПРУ на закрытие",ts.Description="Старт с ПРУ на закрытие",sk.TypeId="Boolean"}},
+      {localCloseStop,{ts.Name="Стоп с ПРУ на закрытие",ts.Description="Стоп с ПРУ на закрытие",sk.TypeId="Boolean"}},
+      {ctrlOpenStart,{ts.Name="Старт с контроллера на открытие",ts.Description="Старт с контроллера на открытие",sk.TypeId="Boolean"}},
+      {ctrlOpenStop,{ts.Name="Стоп с контроллера на открытие",ts.Description="Стоп с контроллера на открытие",sk.TypeId="Boolean"}},
+      {ctrlCloseStart,{ts.Name="Старт с контроллера на закрытие",ts.Description="Старт с контроллера на закрытие",sk.TypeId="Boolean"}},
+      {ctrlCloseStop,{ts.Name="Стоп с контроллера на закрытие",ts.Description="Стоп с контроллера на закрытие",sk.TypeId="Boolean"}},
+      {awpCtrl,{ts.Name="Управление АРМ",ts.Description="Режим управления с АРМ",sk.TypeId="Boolean"}},
+      {panelCtrl,{ts.Name="Управление Панель",ts.Description="Режим управления с панели",sk.TypeId="Boolean"}},
+      {localCtrl,{ts.Name="Управление ПРУ",ts.Description="Режим управления по месту",sk.TypeId="Boolean"}},
+      {autoCtrl,{ts.Name="Управление Автомат",ts.Description="Режим управления автомат (от контроллера)",sk.TypeId="Boolean"}},
+      {pwrOn,{ts.Name="Питание в норме",ts.Description="Питание в норме",sk.TypeId="Boolean"}},
+      {confirmation,{ts.Name="",ts.Description="",sk.TypeId="Boolean"}},
+      {imitation,{ts.Name="Имитация",ts.Description="«1» - включение режима имитации",sk.TypeId="Boolean"}},
+      {limitSwitchOpen,{ts.Name="Открыто",ts.Description="Сработал КВ на открытие",sk.TypeId="Boolean"}},
+      {limitSwitchClose,{ts.Name="Закрыто",ts.Description="Сработал КВ на закрытие",sk.TypeId="Boolean"}},
+      {auxOpen,{ts.Name="Включен контактор на открытие",ts.Description="Сработал ДК на открытие",sk.TypeId="Boolean"}},
+      {auxClose,{ts.Name="Включен контактор на закрытие",ts.Description="Сработал ДК на закрытие",sk.TypeId="Boolean"}},
+      {overloadOpen,{ts.Name="Перегрузка на открытии",ts.Description="Сработала моментная муфта открытия",sk.TypeId="Boolean"}},
+      {overloadClose,{ts.Name="Перегрузка на закрытии",ts.Description="Сработала моментная муфта закрытия",sk.TypeId="Boolean"}},
+      {openTime,{ts.Name="Время открытия, мс",ts.Description="Время открытия задвижки",sk.TypeId="Integer"}},
+      {closeTime,{ts.Name="Время закрытия, мс",ts.Description="Время закрытия задвижки",sk.TypeId="Integer"}},
+      {auxTime,{ts.Name="Задержка контактора, мс",ts.Description="Время срабатывания доп.контакта",sk.TypeId="Integer"}},
+      {enabled,{ts.Name="Разрешение",ts.Description="«1» - работа устройства разрешена",sk.TypeId="Boolean"}},
+      {output2Open,{ts.Name="Выход на открытие",ts.Description="Сигнал на открытие",sk.TypeId="Boolean"}},
+      {output2Close,{ts.Name="Выход на закрытие",ts.Description="Сигнал на закрытие",sk.TypeId="Boolean"}},
+      {open,{ts.Name="",ts.Description="Открывается логически",sk.TypeId="Boolean"}},
+      {close,{ts.Name="",ts.Description="Закрывается логически",sk.TypeId="Boolean"}},
+      {alarm,{ts.Name="",ts.Description="Авария",sk.TypeId="Boolean"}},
+      {stateWord,{ts.Name="Слово состояния",ts.Description="Слово состояния",sk.TypeId="Integer"}},
+      {errorWord,{ts.Name="Слово ошибок",ts.Description="Слово ошибок",sk.TypeId="Integer"}},
+      {hourMeterMin,{ts.Name="",ts.Description="Счётчик моточасов (мин)",sk.TypeId="Integer"}},
+      {startCount,{ts.Name="",ts.Description="Количество включений",sk.TypeId="Integer"}}
+    ],
+    links = [],
+    cmds = [
+      {awpOpenStart,{ts.Name="Пуск с АРМ на открытие"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {awpOpenStop,{ts.Name="Стоп с АРМ на открытие"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {awpCloseStart,{ts.Name="Пуск с АРМ на закрытие"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {awpCloseStop,{ts.Name="Стоп с АРМ на закрытие"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {confirmation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {imitation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {openTime,{ts.Name="Время открытия, мс"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {closeTime,{ts.Name="Время закрытия, мс"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {auxTime,{ts.Name="Задержка контактора, мс"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {enabled,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {hourMeterMs,{ts.Name="Сброс счетчика"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {hourMeterMin,{ts.Name=""},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {startCount,{ts.Name=""},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]}
+    ],
+    events = [
+      {awpOpenStart,{ts.Name="Пуск с АРМ на открытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {awpOpenStop,{ts.Name="Стоп с АРМ на открытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {awpCloseStart,{ts.Name="Пуск с АРМ на закрытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {awpCloseStop,{ts.Name="Стоп с АРМ на закрытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {pnlOpenStart,{ts.Name="Старт с панели на открытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {pnlOpenStop,{ts.Name="Стоп с панели на открытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {pnlCloseStart,{ts.Name="Старт с панели на закрытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {pnlCloseStop,{ts.Name="Стоп с панели на закрытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {localOpenStart,{ts.Name="Старт с ПРУ на открытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {localOpenStop,{ts.Name="Стоп с ПРУ на открытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {localCloseStart,{ts.Name="Старт с ПРУ на закрытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {localCloseStop,{ts.Name="Стоп с ПРУ на закрытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {ctrlOpenStart,{ts.Name="Старт с контроллера на открытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {ctrlOpenStop,{ts.Name="Стоп с контроллера на открытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {ctrlCloseStart,{ts.Name="Старт с контроллера на закрытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {ctrlCloseStop,{ts.Name="Стоп с контроллера на закрытие"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {openTime,{ts.Name="Время открытия, мс"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {closeTime,{ts.Name="Время закрытия, мс"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {auxTime,{ts.Name="Задержка контактора, мс"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {imitation,{ts.Name="Имитация"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {enabled,{ts.Name="Разрешение"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {limitSwitchOpen,{ts.Name="Открыто"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {limitSwitchClose,{ts.Name="Закрыто"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {PowerSupplyNorm,{ts.Name="Питание"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {openFailure,{ts.Name="Не открылось"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {closeFailure,{ts.Name="Не закрылось"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {openOnFailure,{ts.Name="Не вкл. на открытие"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {openOffFailure,{ts.Name="Не откл. на открытие"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {closeOnFailure,{ts.Name="Не вкл. на закрытие"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {closeOffFailure,{ts.Name="Не откл. на закрытие"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {noPowerSupply,{ts.Name="Нет питания"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {hourMeter,{ts.Name="Сброс счетчика"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  },
+  { mcc.MainSwitch, SkObject, {ts.Name="Высоковольтный выключатель",ts.Description="Главный выключатель высоковольтного двигателя"},
+    attrs = [],
+    rtdata = [
+      {awpStart,{ts.Name="Пуск с АРМ",ts.Description="Пуск с АРМ",sk.TypeId="Boolean"}},
+      {awpStop,{ts.Name="Стоп с АРМ",ts.Description="Стоп с АРМ",sk.TypeId="Boolean"}},
+      {panelStart,{ts.Name="Пуск с панели",ts.Description="Пуск с панели",sk.TypeId="Boolean"}},
+      {panelStop,{ts.Name="Стоп с панели",ts.Description="Стоп с панели",sk.TypeId="Boolean"}},
+      {controllerStart,{ts.Name="Пуск с контроллера",ts.Description="Пуск с контроллера",sk.TypeId="Boolean"}},
+      {controllerStop,{ts.Name="Стоп с контроллера",ts.Description="Стоп с контроллера",sk.TypeId="Boolean"}},
+      {awpCtrl,{ts.Name="Управление АРМ",ts.Description="Режим управления с АРМ",sk.TypeId="Boolean"}},
+      {panelCtrl,{ts.Name="Управление Панель",ts.Description="Режим управления с панели",sk.TypeId="Boolean"}},
+      {localCtrl,{ts.Name="Управление ПРУ",ts.Description="Режим управления по месту",sk.TypeId="Boolean"}},
+      {autoCtrl,{ts.Name="Управление Автомат",ts.Description="Режим управления автомат (от контроллера)",sk.TypeId="Boolean"}},
+      {auxOn,{ts.Name="Включен (допконтакт)",ts.Description="Допконтакт ВВ «включен»",sk.TypeId="Boolean"}},
+      {auxOff,{ts.Name="Отключен (допконтакт)",ts.Description="Допконтакт ВВ «отключен»",sk.TypeId="Boolean"}},
+      {emergencyStop,{ts.Name="Кнопка STOP",ts.Description="Нажата кнопка аварийного СТОП",sk.TypeId="Boolean"}},
+      {mainSwitchAlarm,{ts.Name="Авария (внешний сигнал)",ts.Description="Авария высоковольтного выключателя (ВВ)",sk.TypeId="Boolean"}},
+      {imitation,{ts.Name="Имитация",ts.Description="«1» - включение режима имитации",sk.TypeId="Boolean"}},
+      {localStart,{ts.Name="",ts.Description="Пуск по месту установки оборуд.",sk.TypeId="Boolean"}},
+      {localStop,{ts.Name="",ts.Description="Стоп по месту установки оборуд.",sk.TypeId="Boolean"}},
+      {auxTimeOn,{ts.Name="Задержка включения, мс",ts.Description="Время включения (после подачи команды)",sk.TypeId="Integer"}},
+      {auxTimeOff,{ts.Name="Задержка отключения, мс",ts.Description="Время отключения (после подачи команды)",sk.TypeId="Integer"}},
+      {output2On,{ts.Name="Выход на включение",ts.Description="Сигнал на включение",sk.TypeId="Boolean"}},
+      {output2Off,{ts.Name="Выход на отключение",ts.Description="Сигнал на отключение",sk.TypeId="Boolean"}},
+      {on,{ts.Name="Включен",ts.Description="ВВ включен",sk.TypeId="Boolean"}},
+      {off,{ts.Name="Отключен",ts.Description="ВВ отключен",sk.TypeId="Boolean"}},
+      {ready2Start,{ts.Name="Готовность",ts.Description="Готовность к пуску",sk.TypeId="Boolean"}},
+      {alarm,{ts.Name="Авария",ts.Description="Авария",sk.TypeId="Boolean"}},
+      {stateWord,{ts.Name="Слово состояния",ts.Description="Слово состояния",sk.TypeId="Integer"}},
+      {errorWord,{ts.Name="Слово ошибок",ts.Description="Слово ошибок",sk.TypeId="Integer"}},
+      {hourMeterMin,{ts.Name="",ts.Description="Счётчик моточасов (мин)",sk.TypeId="Integer"}},
+      {startCount,{ts.Name="",ts.Description="Количество включений",sk.TypeId="Integer"}}
+    ],
+    links = [],
+    cmds = [
+      {awpStart,{ts.Name="Пуск с АРМ"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {awpStop,{ts.Name="Стоп с АРМ"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {confirmation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {imitation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {auxTimeOn,{ts.Name="Задержка включения, мс"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {auxTimeOff,{ts.Name="Задержка отключения, мс"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {hourMeterMs,{ts.Name="Сброс счетчика"},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {hourMeterMin,{ts.Name=""},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]},
+      {startCount,{ts.Name=""},[
+        {newVal,{sk.TypeId="Integer"}}
+      ]}
+    ],
+    events = [
+      {awpStart,{ts.Name="Пуск с АРМ"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {awpStop,{ts.Name="Стоп с АРМ"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {panelStart,{ts.Name="Пуск с панели"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {panelStop,{ts.Name="Стоп с панели"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {controllerStart,{ts.Name="Пуск с контроллера"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {controllerStop,{ts.Name="Стоп с контроллера"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {auxOn,{ts.Name="Включен (допконтакт)"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {auxOff,{ts.Name="Отключен (допконтакт)"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {emergencyStop,{ts.Name="Аварийный останов"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {mainSwitchAlarm,{ts.Name="Авария (внешний сигнал)"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {auxTimeOn,{ts.Name="Задержка включения, мс"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {auxTimeOff,{ts.Name="Задержка отключения, мс"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {imitation,{ts.Name="Имитация"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {on,{ts.Name="Включен"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {off,{ts.Name="Отключен"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {switchOnFailure,{ts.Name="Не включился"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {switchOffFailure,{ts.Name="Не отключился"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {hourMeter,{ts.Name="Сброс счетчика"},[
+        {oldVal,{sk.TypeId="Integer",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Integer",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  },
+  { mcc.CtrlSystem, SkObject, {ts.Name="Система управления",ts.Description="Система управления общие команды и состояния"},
+    attrs = [],
+    rtdata = [
+      {awpCtrl,{ts.Name="Управление АРМ",ts.Description="Режим управления с АРМ",sk.TypeId="Boolean"}},
+      {panelCtrl,{ts.Name="Управление Панель",ts.Description="Режим управления с панели",sk.TypeId="Boolean"}},
+      {localCtrl,{ts.Name="Управление ПРУ",ts.Description="Режим управления по месту",sk.TypeId="Boolean"}},
+      {autoCtrl,{ts.Name="Управление Автомат",ts.Description="Режим управления автомат (от контроллера)",sk.TypeId="Boolean"}},
+      {setApwCtrl,{ts.Name="",ts.Description="",sk.TypeId="Boolean"}},
+      {setPanelCtrl,{ts.Name="",ts.Description="",sk.TypeId="Boolean"}},
+      {setLocalCtrl,{ts.Name="",ts.Description="",sk.TypeId="Boolean"}},
+      {setAutoCtrl,{ts.Name="",ts.Description="",sk.TypeId="Boolean"}},
+      {start,{ts.Name="",ts.Description="",sk.TypeId="Boolean"}},
+      {stop,{ts.Name="",ts.Description="",sk.TypeId="Boolean"}},
+      {starting,{ts.Name="Запуск Автомат",ts.Description="Идет процесс Запуска в Автомате",sk.TypeId="Boolean"}},
+      {stoping,{ts.Name="Останов Автомат",ts.Description="Идет процесс Останова в Автомате",sk.TypeId="Boolean"}},
+      {on,{ts.Name="Агрегат включен",ts.Description="Агрегат включен",sk.TypeId="Boolean"}},
+      {off,{ts.Name="Агрегат выключен",ts.Description="Агрегат выключен",sk.TypeId="Boolean"}},
+      {emergencyStop,{ts.Name="Останов Аварийный",ts.Description="Останов Аварийный",sk.TypeId="Boolean"}},
+      {ready,{ts.Name="Готов к запуску",ts.Description="Готов к запуску",sk.TypeId="Boolean"}},
+      {enableSiren,{ts.Name="Разрешение сирены",ts.Description="Разрешение сирены",sk.TypeId="Boolean"}},
+      {step,{ts.Name="",ts.Description="Текущий шаг алгоритма",sk.TypeId="Integer"}},
+      {setOilTemp,{ts.Name="Уставка температуры масла для разрешения пуска",ts.Description="Уставка температуры масла для разрешения пуска",sk.TypeId="Float"}}
+    ],
+    links = [],
+    cmds = [
+      {setApwCtrl,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {setPanelCtrl,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {setLocalCtrl,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {setAutoCtrl,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {confirmation,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {start,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {stop,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {setOilTemp,{ts.Name="Уставка температуры масла для разрешения пуска"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]}
+    ],
+    events = [
+      {awpCtrl,{ts.Name="Управление АРМ"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {panelCtrl,{ts.Name="Управление Панель"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {localCtrl,{ts.Name="Управление ПРУ"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {autoCtrl,{ts.Name="Управление Автомат"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {starting,{ts.Name="Запуск Автомат"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {stoping,{ts.Name="Останов Автомат"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {on,{ts.Name="Агрегат включен"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {off,{ts.Name="Агрегат выключен"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {emergencyStop,{ts.Name="Останов Аварийный"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {ready,{ts.Name="Готов к запуску"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {enableSiren,{ts.Name="Разрешение сирены"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {setOilTemp,{ts.Name="Уставка температуры масла для разрешения пуска"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  },
+  { mcc.AnalogOutput, SkObject, {ts.Name="Аналоговый выход",ts.Description="Аналоговый выход"},
+    attrs = [],
+    rtdata = [
+      {currentValue,{ts.Name="Текущее значение",ts.Description="Текущее заданное значение параметра",sk.TypeId="Float"}},
+      {imitationValue,{ts.Name="Значение для имитации",ts.Description="Значение для имитации",sk.TypeId="Float"}},
+      {y1,{ts.Name="Верхняя граница шкалы параметра",ts.Description="Верхняя граница шкалы параметра",sk.TypeId="Float"}},
+      {y0,{ts.Name="Нижняя граница шкалы параметра",ts.Description="Нижняя граница шкалы параметра",sk.TypeId="Float"}},
+      {imitation,{ts.Name="Имитация",ts.Description="«1» - включение режима имитации работы",sk.TypeId="Boolean"}},
+      {currentValueDAC,{ts.Name="Текущее значение ЦАП",ts.Description="Текущее значение ЦАП",sk.TypeId="Integer"}}
+    ],
+    links = [],
+    cmds = [
+      {imitationValue,{ts.Name=""},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {y1,{ts.Name="Верхняя граница шкалы параметра"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {y0,{ts.Name="Нижняя граница шкалы параметра"},[
+        {newVal,{sk.TypeId="Float"}}
+      ]},
+      {imitation,{ts.Name="Имитация"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]}
+    ],
+    events = [
+      {y1,{ts.Name="Верхняя граница шкалы параметра"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {y0,{ts.Name="Нижняя граница шкалы параметра"},[
+        {oldVal,{sk.TypeId="Float",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Float",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {imitation,{ts.Name="Имитация"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  },
+  { mcc.DigOutput, SkObject, {ts.Name="Дискретный вывод",ts.Description="Дискретный вывод"},
+    attrs = [],
+    rtdata = [
+      {physicalValue,{ts.Name="Выходной сигнал",ts.Description="Выходной сигнал от программы",sk.TypeId="Boolean"}},
+      {imitationValue,{ts.Name="Значение имитации",ts.Description="Выходной сигнал значение Имитации",sk.TypeId="Boolean"}},
+      {imitation,{ts.Name="Имитация",ts.Description="«1» - включение режима имитации",sk.TypeId="Boolean"}},
+      {invert,{ts.Name="Инверсия",ts.Description="Инвертировать выходной сигнал",sk.TypeId="Boolean"}},
+      {currentValue,{ts.Name="Текущее значение",ts.Description="Выходное обработанное значение",sk.TypeId="Boolean"}}
+    ],
+    links = [],
+    cmds = [
+      {imitationValue,{ts.Name=""},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {imitation,{ts.Name="Имитация"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]},
+      {invert,{ts.Name="Инверсия"},[
+        {newVal,{sk.TypeId="Boolean"}}
+      ]}
+    ],
+    events = [
+      {imitation,{ts.Name="Имитация"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]},
+      {invert,{ts.Name="Инверсия"},[
+        {oldVal,{sk.TypeId="Boolean",ts.Name="старое значение",ts.Description="значение данного до события"}},
+        {newVal,{sk.TypeId="Boolean",ts.Name="новое значение",ts.Description="значение данного после события"}}
+      ]}
+    ]
+  }
+]
+Objects = [
+  sk.System = [
+    {sk.System[ThisSystem],{ts.Name="Система",ts.Description="Система"}}
+  ],
+  sk.User = [
+    {sk.User[root],{ts.Name="Administrator",ts.Description="Builtin system administrator account"}}
+  ],
+  sk.onews.Profile = [
+    {sk.onews.Profile[internal.DenyAll],{ts.Name="Запрет всего",ts.Description="Профиль АРМ, в котором всё запрещено",isBuiltin=true,rules=@S5OneWsProfileRules{rules = [
+      {"Запрет всех компонент",{true,false,{ts.filter.ALL,{}}},deny}
+    ]
+    }}},
+    {sk.onews.Profile[internal.AllowAll],{ts.Name="Разрешено всё",ts.Description="Профиль АРМ, в котором разрешено всё",isBuiltin=true,rules=@S5OneWsProfileRules{rules = [
+      {"Разрешение всех компонент",{true,false,{ts.filter.ALL,{}}},allow}
+    ]
+    }}}
+  ],
+  mcc.TwoPositionReg = [
+    {mcc.TwoPositionReg[n2TwoPositionReg_MN],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ],
+  mcc.DigOutput = [
+    {mcc.DigOutput[n2DO_VV_StartVV_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_VV_StopVV_Stop],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_VV_StopTZNVV_StopTZN],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_hydro_VPU_Starthydro_VPU_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_VPU_StartVPU_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_ZVS_On2OpenZVS_On2Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_ZVS_On2CloseZVS_On2Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_ZN_On2OpenZN_On2Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_ZN_On2CloseZN_On2Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_KP_On2OpenKP_On2Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_KP_On2CloseKP_On2Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_ZB_On2OpenZB_On2Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_ZB_On2CloseZB_On2Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_PMN_StartPMN_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_LampStartLampStart],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_LampAlarmLampAlarm],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_SirenSiren],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_VentMain_StartVentMain_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_VentReserv_StartVentReserv_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_PRU_PoilPRU_Poil],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_PRU_workPEPRU_workPE],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_PRU_readyPEPRU_readyPE],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_PRU_protectPEPRU_protectPE],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigOutput[n2DO_PRU_VentCmpltPRU_VentCmplt],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ],
+  mcc.DigInput = [
+    {mcc.DigInput[n2DI_VV_OnVV_On],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_VV_OffVV_Off],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_VV_AlarmVV_Alarm],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PMN_UpwrPMN_Upwr],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PMN_OnPMN_On],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DVPU_UpwrDVPU_Upwr],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DVPU_OnDVPU_On],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZVS_UpwrDZVS_Upwr],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZVS_On2OpenDZVS_On2Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZVS_On2CloseDZVS_On2Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZVS_OpenDZVS_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZVS_CloseDZVS_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZB_UpwrDZB_Upwr],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZB_On2OpenDZB_On2Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZB_On2CloseDZB_On2Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZB_OpenDZB_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZB_CloseDZB_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZN_UpwrDZN_Upwr],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZN_On2OpenDZN_On2Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZN_On2CloseDZN_On2Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZN_OpenDZN_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DZN_CloseDZN_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DKP_UpwrDKP_Upwr],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DKP_On2OpenDKP_On2Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DKP_On2CloseDKP_On2Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DKP_OpenDKP_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_DKP_CloseDKP_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_VentMain_OnVentMain_On],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_VentMain_FaultVentMain_Fault],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_VentReserv_OnVentReserv_On],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_VentReserv_FaultVentReserv_Fault],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_EmrStopVVPRU_EmrStopVV],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_AutoPRU_Auto],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_CheckSigPRU_CheckSig],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_ResetSoundPRU_ResetSound],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_PMN_StartPRU_PMN_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_PMN_StopPRU_PMN_Stop],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_VU_StartPRU_VU_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_VU_StopPRU_VU_Stop],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_ZVS_OpenPRU_ZVS_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_ZVS_ClosePRU_ZVS_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_ZB_OpenPRU_ZB_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_ZB_ClosePRU_ZB_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_ZN_OpenPRU_ZN_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_ZN_ClosePRU_ZN_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_KP_OpenPRU_KP_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_KP_ClosePRU_KP_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_SVO_StartPRU_SVO_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_SVO_StopPRU_SVO_Stop],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_PE_StartPRU_PE_Start],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_PE_StopPRU_PE_Stop],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_DZ_OpenPRU_DZ_Open],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PRU_DZ_ClosePRU_DZ_Close],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_AirInGED_NormAirInGED_Norm],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_L1_LOilL1_LOil],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_L1_HOilL1_HOil],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_Upwr380_NormUpwr380_Norm],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_PS_G2_NormPS_G2_Norm],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.DigInput[n2DI_Usig_NormUsig_Norm],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ],
+  mcc.IrreversibleEngine = [
+    {mcc.IrreversibleEngine[n2IE_Vent2],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.IrreversibleEngine[n2IE_Vent1],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.IrreversibleEngine[n2IE_VPU],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.IrreversibleEngine[n2IE_Hydro],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ],
+  mcc.MainSwitch = [
+    {mcc.MainSwitch[n2MainSwitch],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ],
+  mcc.ReversibleEngine = [
+    {mcc.ReversibleEngine[n2RE_Zvs],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ],
+  mcc.AnalogOutput = [
+    {mcc.AnalogOutput[n2AO_TaskDZ],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ],
+  mcc.CtrlSystem = [
+    {mcc.CtrlSystem[n2CtrlSystem],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ],
+  mcc.AnalogInput = [
+    {mcc.AnalogInput[n2AI_P62],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_P61],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TM2],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TM1],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_ST8],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_ST7],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_ST6],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_ST5],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_ST4],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_ST3],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_ST2],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_ST1],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_P14],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_DDZ],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_T15],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_T14],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_T13],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP9],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP8],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP7],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP6],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP5],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP4],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP3],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP2],{ts.Name="имя объекта",ts.Description="описание объекта"}},
+    {mcc.AnalogInput[n2AI_TP1],{ts.Name="имя объекта",ts.Description="описание объекта"}}
+  ]
+]
+Links = []
+LOBs=[]

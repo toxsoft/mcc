@@ -1,0 +1,10 @@
+
+  TsWorkspaceFlavour = {
+    ru.toxsoft.skide,2
+  }
+  TsProjectInfo = {
+    ru.toxsoft.mcc,
+    {
+      ts.Name=" Рабочая область проекта МосКокос"
+    }
+  }
