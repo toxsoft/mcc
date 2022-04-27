@@ -11,6 +11,7 @@ import ru.toxsoft.tslib.utils.collections.IList;
 import ru.toxsoft.tslib.utils.collections.IListEdit;
 import ru.toxsoft.tslib.utils.collections.impl.ElemArrayList;
 import ru.uskat.s5.client.remote.connection.options.impl.S5ModuleOptionValue;
+import ru.uskat.s5.ext.dataquality.backend.addons.S5DataQualityAddon;
 import ru.uskat.s5.ext.reports.backend.addons.S5ReportAddon;
 import ru.uskat.s5.server.backend.addons.*;
 import ru.uskat.s5.server.backend.addons.batch.S5BatchOperationsAddon;
@@ -55,7 +56,7 @@ public class MccMainServer
     retValue.addAll( //
         new S5RegRefAddon(), //
         new S5RefbookAddon(), //
-        // TODO: проводится отладка ISkOneWsService. В git находится работоспособный вариант сервера
+        new S5DataQualityAddon(), //
         new S5OneWsAddon(), //
         new S5BatchOperationsAddon(), //
         new S5RealtimeAddon(), //

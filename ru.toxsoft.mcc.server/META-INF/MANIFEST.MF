@@ -18,7 +18,8 @@ Require-Bundle: ru.toxsoft.extlib.log4j,
  ru.uskat.backend,
  ru.uskat.s5.server,
  ru.uskat.s5.server.histdata10,
- ru.uskat.s5.ext.reports
+ ru.uskat.s5.ext.reports,
+ ru.uskat.s5.ext.dataquality
 Eclipse-BuddyPolicy: registered
 Export-Package: ru.toxsoft.mcc.server,
  ru.toxsoft.mcc.server.main
