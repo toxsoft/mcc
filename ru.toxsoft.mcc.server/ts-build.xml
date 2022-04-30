@@ -94,6 +94,7 @@
         <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/ru.uskat.sysext.onews-lib.jar" />
         <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/ru.uskat.sysext.refbooks-lib.jar" />
         <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/ru.uskat.sysext.regref-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/ru.uskat.sysext.alarms-lib.jar" />
         <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/ru.uskat.sysext.ggprefs-lib.jar" />
         <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/ru.uskat.s5.server-lib.jar">
            <exclude name="**/META-INF/*" />

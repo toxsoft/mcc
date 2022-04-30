@@ -19,6 +19,7 @@ import ru.uskat.s5.server.backend.addons.realtime.S5RealtimeAddon;
 import ru.uskat.s5.server.backend.supports.histdata.sequences.S5HistdataSequencesUtils10;
 import ru.uskat.s5.server.sequences.IS5SequenceImplementation;
 import ru.uskat.s5.server.startup.S5InitialImplementation;
+import ru.uskat.sysext.alarms.addon.SkAlarmAddon;
 
 /**
  * Начальная, неизменяемая, проектно-зависимая конфигурация реализации бекенда mcc-сервера
@@ -57,6 +58,7 @@ public class MccMainServer
         new S5RegRefAddon(), //
         new S5RefbookAddon(), //
         new S5DataQualityAddon(), //
+        new SkAlarmAddon(), //
         new S5OneWsAddon(), //
         new S5BatchOperationsAddon(), //
         new S5RealtimeAddon(), //
