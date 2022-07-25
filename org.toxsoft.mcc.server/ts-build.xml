@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ru.sitrol.mm.fgdp.server -->
+<project name="org.toxsoft.mcc.server" default="deploy">
+  <loadproperties srcFile="ts-build-commons.properties"/>
+  <basename file="${basedir}" property="project.name"/>
+  <property name="lib.jar" value="${project.name}-lib.jar"/>
+  <!-- каталог для размещения собранной библиотеки размещаемой в wildfly -->
+  <property name="deploy.dir" value="deploy-to-main"/>
+  <!-- имя библиотеки для deploy = IS5ImplementConstants.PROJECT_MODULE_ID -->
+  <property name="deploy.jar" value="skat-backend-deploy.jar"/>
+
+  <target name="clean" description="Удаляет собранные файлы">
+    <delete file="dist/${deploy.dir}/${lib.jar}" />
+    <delete file="dist/${deploy.dir}/${deploy.jar}" />
+    <delete>
+      <fileset dir="dist/META_INF" includes="*.MF" />
+      <fileset dir="dist/plugins" includes="*" />
+    </delete>
+<!--
+    <eclipse.refreshLocal resource="${project.name}" depth="infinite" />
+-->
+  </target>
+
+  <tstamp>
+    <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+  </tstamp>
+
+  <manifest file="dist/META_INF/MANIFEST.MF">
+    <attribute name="Application-Name" value="${ts.application-name}" />
+    <attribute name="Company-Name" value="${ts.company-name}" />
+    <attribute name="S5-Version" value="${ts.application-version}" />
+    <attribute name="Boot-Class-Path" value="${wildfly-home.dir}/modules/system/layers/base/org/javassist/main/javassist-3.18.1-GA.jar ${wildfly-home.dir}/modules/system/layers/base/javax/persistence/api/main/hibernate-jpa-2.1-api-1.0.0.Final.jar" />
+    <attribute name="Premain-Class" value="org.toxsoft.s5.server.impl.instrument.S5ClassLoadedAgent" />
+    <attribute name="Built-Date" value="${TODAY}" />
+  </manifest>
+
+  <target name="build_jar">
+    <jar destfile="dist/${lib.jar}" manifest="dist/META_INF/MANIFEST.MF">
+      <metainf dir="dist/META_INF" />
+        <fileset dir="bin">
+          <!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+        </fileset>
+        <fileset dir="src">
+          <include name="ru/**/*.properties" />
+        </fileset>
+        <fileset dir="src">
+        	<!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+        </fileset>
+    </jar>
+<!--
+    <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
+-->
+  </target>
+
+  <target name="build_plugin" depends="build_jar">
+    <pde.exportPlugins destination="dist"
+                       exportSource="true"
+                       exportSourceBundle="false"
+                       exportType="directory"
+                       plugins="${project.name}"
+                       useworkspacecompiledclasses="true"
+                       qualifier="0"
+                       useJARFormat="true" />
+  </target>
+
+  <target name="build" depends="build_plugin" description="Пересборка чего???">
+  </target>
+
+  <target name="build_deploy" description="Сборка *-deploy.jar" >
+      <jar destfile="dist/${deploy.dir}/${deploy.jar}" manifest="dist/META_INF/MANIFEST.MF">
+        <metainf dir="dist/META_INF" />
+        <fileset dir="bin">
+            <!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+        </fileset>
+        <fileset dir="src">
+        	<!-- <include name="ru/**/*.properties" /> -->
+        </fileset>
+        <fileset dir="src">
+        	<!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+        </fileset>
+        <zipfileset src="../../ts3-targets/ts3-target-core/lib/org.toxsoft.tslib-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-core/lib/org.toxsoft.tslib.av-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-core/lib/org.toxsoft.tslib.pas-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-core/lib/org.toxsoft.tsgui.onews-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-core/lib/org.toxsoft.tslib.greenworld-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-core/lib/org.toxsoft.log4j-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.common-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.core-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.backend-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.backend.memtext-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.sysext.batchop-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.sysext.mnemos2-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.sysext.onews-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.sysext.refbooks-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.sysext.regref-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.sysext.alarms-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.sysext.ggprefs-lib.jar" />
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.s5.server-lib.jar">
+           <exclude name="**/META-INF/*" />
+        </zipfileset>
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.s5.server.histdata10-lib.jar">
+           <exclude name="**/META-INF/*" />
+        </zipfileset>
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.s5.ext.dataquality-lib.jar">
+           <exclude name="**/META-INF/*" />
+        </zipfileset>
+        <zipfileset src="../../ts3-targets/ts3-target-uskat/lib/org.toxsoft.uskat.s5.ext.reports-lib.jar">
+           <exclude name="**/META-INF/*" />
+        </zipfileset>
+      </jar>
+<!--
+      <eclipse.refreshLocal resource="${project_dir}/dist" depth="infinite" />
+-->
+  </target>
+  
+  <target name="deploy" description="Формирование и размещение *-deploy-jar в wildfly" depends="build_deploy">
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/deployments" file="dist/${deploy.dir}/${deploy.jar}" overwrite="true" />
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/configuration">
+        <fileset file="dist/files_to_os/${wildfly-standalone-node01.file}"/>
+        <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>
+        <fileset file="${wildfly-home.dir}/standalone/configuration/*.properties"/>
+    </copy>    
+
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node02.dir}/deployments" file="dist/${deploy.dir}/${deploy.jar}" overwrite="true" />
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node02.dir}/configuration">
+        <fileset file="dist/files_to_os/${wildfly-standalone-node02.file}"/>
+        <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>
+        <fileset file="${wildfly-home.dir}/standalone/configuration/*.properties"/>
+    </copy>    
+  
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node03.dir}/deployments" file="dist/${deploy.dir}/${deploy.jar}" overwrite="true" />
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node03.dir}/configuration">
+        <fileset file="dist/files_to_os/${wildfly-standalone-node03.file}"/>
+        <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>
+        <fileset file="${wildfly-home.dir}/standalone/configuration/*.properties"/>
+    </copy>    
+  
+  </target>
+  
+</project>

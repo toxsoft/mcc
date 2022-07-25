@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:ejb="http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_1.xsd"
+	version="3.1">
+	<interceptors>
+		<interceptor>
+			<interceptor-class>ru.uskat.s5.server.transactions.S5TransactionInterceptor</interceptor-class>
+		</interceptor>
+	</interceptors>
+	<assembly-descriptor>
+		<application-exception>
+			<exception-class>ru.toxsoft.tslib.error.TsRuntimeException</exception-class>
+			<rollback>true</rollback>
+			<inherited>true</inherited>
+		</application-exception>
+		<application-exception>
+			<exception-class>java.lang.Exception</exception-class>
+			<rollback>true</rollback>
+			<inherited>true</inherited>
+		</application-exception>
+		<interceptor-binding>
+			<ejb-name>*</ejb-name>
+			<interceptor-class>ru.uskat.s5.server.transactions.S5TransactionInterceptor</interceptor-class>
+		</interceptor-binding>
+	</assembly-descriptor>
+</ejb-jar>
