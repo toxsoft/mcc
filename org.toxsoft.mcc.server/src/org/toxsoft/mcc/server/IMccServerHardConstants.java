@@ -1,7 +1,7 @@
-package ru.toxsoft.mcc.server;
+package org.toxsoft.mcc.server;
 
+import static org.toxsoft.mcc.server.IMccResources.*;
 import static org.toxsoft.uskat.s5.utils.S5ManifestUtils.*;
-import static ru.toxsoft.mcc.server.IMccResources.*;
 
 import org.toxsoft.core.tslib.utils.TsVersion;
 import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;

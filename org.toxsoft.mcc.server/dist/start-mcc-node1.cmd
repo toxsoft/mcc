@@ -1,5 +1,5 @@
-set JAVA_HOME=C:\Program Files\Java\jdk-11.0.10
-set WILDFLY_HOME=C:\works\tswildfly-18.0.1.Final 
+set JAVA_HOME=C:\Program Files\Java\jdk-17.0.2
+set WILDFLY_HOME=d:\works\tswildfly-26.1.1.Final 
 
 :: Префикс проекта
 set PROJECT=mcc
@@ -15,4 +15,4 @@ rmdir /S /Q ..\standalone-%PROJECT%-%NODE%\data
 rmdir /S /Q ..\standalone-%PROJECT%-%NODE%\tmp
 
 rem standalone.bat -c standalone-%PROJECT%-%NODE%.xml -b 0.0.0.0 -Djboss.server.base.dir=../standalone-%PROJECT%-%NODE% -Djboss.server.name=%PROJECT%_%NODE% -Djboss.socket.binding.port-offset=%PORT_OFFSET%
-standalone.bat -c standalone-%PROJECT%-%NODE%.xml -b 0.0.0.0 -Djboss.server.base.dir=../standalone-%PROJECT%-%NODE% -Djboss.server.name=%PROJECT%_%NODE% -Djboss.socket.binding.port-offset=%PORT_OFFSET%
+standalone.bat -c standalone-%PROJECT%-%NODE%.xml -b localhost -Djboss.server.base.dir=../standalone-%PROJECT%-%NODE% -Djboss.server.name=%PROJECT%_%NODE% -Djboss.socket.binding.port-offset=%PORT_OFFSET% -Dfile.encoding=CP866

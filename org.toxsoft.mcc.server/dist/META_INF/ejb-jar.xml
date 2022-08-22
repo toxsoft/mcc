@@ -5,12 +5,12 @@
 	version="3.1">
 	<interceptors>
 		<interceptor>
-			<interceptor-class>ru.uskat.s5.server.transactions.S5TransactionInterceptor</interceptor-class>
+			<interceptor-class>org.toxsoft.uskat.s5.server.transactions.S5TransactionInterceptor</interceptor-class>
 		</interceptor>
 	</interceptors>
 	<assembly-descriptor>
 		<application-exception>
-			<exception-class>ru.toxsoft.tslib.error.TsRuntimeException</exception-class>
+			<exception-class>org.toxsoft.core.tslib.utils.errors.TsRuntimeException</exception-class>
 			<rollback>true</rollback>
 			<inherited>true</inherited>
 		</application-exception>
@@ -21,7 +21,7 @@
 		</application-exception>
 		<interceptor-binding>
 			<ejb-name>*</ejb-name>
-			<interceptor-class>ru.uskat.s5.server.transactions.S5TransactionInterceptor</interceptor-class>
+			<interceptor-class>org.toxsoft.uskat.s5.server.transactions.S5TransactionInterceptor</interceptor-class>
 		</interceptor-binding>
 	</assembly-descriptor>
 </ejb-jar>

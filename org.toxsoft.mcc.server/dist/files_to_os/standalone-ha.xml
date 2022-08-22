@@ -75,7 +75,7 @@
     <profile>
         <subsystem xmlns="urn:jboss:domain:logging:8.0">
             <console-handler name="CONSOLE">
-                <level name="ALL"/>
+                <level name="INFO"/>
                 <formatter>
                     <named-formatter name="COLOR-PATTERN"/>
                 </formatter>
@@ -85,108 +85,33 @@
                     <named-formatter name="PATTERN"/>
                 </formatter>
                 <file relative-to="jboss.server.log.dir" path="server.log"/>
-                <suffix value=".E"/>
+                <suffix value=".yyyy-MM-dd"/>
                 <append value="true"/>
             </periodic-rotating-file-handler>
-            <logger category="javax">
-                <level name="INFO"/>
-            </logger>
-            <logger category="io">
-                <level name="INFO"/>
-            </logger>
-            <logger category="com">
-                <level name="INFO"/>
-            </logger>
             <logger category="com.arjuna">
-                <level name="INFO"/>
-            </logger>
-            <logger category="org">
-                <level name="INFO"/>
-            </logger>
-            <logger category="org.apache.tomcat.util.modeler">
-                <level name="INFO"/>
-            </logger>
-            <logger category="org.jboss.as.config">
-                <level name="INFO"/>
-            </logger>
-            <logger category="sun.rmi">
-                <level name="INFO"/>
-            </logger>
-            <logger category="jacorb">
-                <level name="INFO"/>
-            </logger>
-            <logger category="jacorb.config">
-                <level name="INFO"/>
-            </logger>
-            <logger category="org.infinispan">
                 <level name="WARN"/>
             </logger>
-            <logger category="org.jboss.remoting">
-                <level name="ERROR"/>
+            <logger category="io.jaegertracing.Configuration">
+                <level name="WARN"/>
             </logger>
-            <logger category="org.jboss.security">
-                <level name="INFO"/>
+            <logger category="org.jboss.as.config">
+                <level name="DEBUG"/>
             </logger>
-            <logger category="org.jboss.security.auth">
-                <level name="INFO"/>
-            </logger>
-            <logger category="org.jboss.security.auth.spi">
-                <level name="INFO"/>
-            </logger>
-            <logger category="org.jboss.security.auth.spi.DatabaseServerLoginModule">
-                <level name="TRACE"/>
-            </logger>
-            <logger category="ru.toxsoft.s5.server.login.S5ServerLoginModule">
-                <level name="TRACE"/>
-            </logger>
-            <logger category="ru.toxsoft.s5.server.login.S5ServerLoginModuleFoo">
-                <level name="TRACE"/>
-            </logger>
-            <logger category="org.hibernate.engine.internal.StatefulPersistenceContext">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="org.jboss.as.ejb3.invocation">
-                <level name="OFF"/>
-            </logger>
-            <logger category="io.undertow.request">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="io.undertow.server.HttpServerExchange">
-                <level name="ERROR"/>
-            </logger>
-
-            <!-- TODO: -->
-            <logger category="org.toxsoft">
-                <level name="INFO"/>
-            </logger>
-            <logger category="org.toxsoft.uskat.s5.utils.threads.impl.S5LockControl">
-                <level name="ALL"/>
-            </logger>
-            
-            <logger category="rootHistData">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="S5SequenceWriter">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="S5SequenceUniter">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="S5SequenceValidator">
-                <level name="ERROR"/>
+            <logger category="sun.rmi">
+                <level name="WARN"/>
             </logger>
             <root-logger>
-                <level name="ALL"/>
+                <level name="INFO"/>
                 <handlers>
                     <handler name="CONSOLE"/>
                     <handler name="FILE"/>
                 </handlers>
             </root-logger>
             <formatter name="PATTERN">
-                <pattern-formatter pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c{1}] %s%E%n"/>
+                <pattern-formatter pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n"/>
             </formatter>
             <formatter name="COLOR-PATTERN">
-                <pattern-formatter pattern="%K{level}%d{HH:mm:ss,SSS} %-5p [%c{1}] %s%E%n"/>
+                <pattern-formatter pattern="%K{level}%d{HH:mm:ss,SSS} %-5p [%c] (%t) %s%e%n"/>
             </formatter>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:batch-jberet:3.0">
@@ -204,24 +129,18 @@
         <subsystem xmlns="urn:jboss:domain:core-management:1.0"/>
         <subsystem xmlns="urn:jboss:domain:datasources:7.0">
             <datasources>
-                <datasource jndi-name="java:/mcc_data_source" pool-name="MySqlDS_Pool" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:mysql://127.0.0.1:3306/mcc?useUnicode=true</connection-url>
-                    <driver>mysql</driver>
-                    <pool>
-                        <min-pool-size>100</min-pool-size>
-                        <max-pool-size>100</max-pool-size>
-                        <prefill>true</prefill>
-                    </pool>
+                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true" statistics-enabled="${wildfly.datasources.statistics-enabled:${wildfly.statistics-enabled:false}}">
+                    <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
+                    <driver>h2</driver>
                     <security>
-                        <user-name>root</user-name>
-                        <password>1</password>
+                        <user-name>sa</user-name>
+                        <password>sa</password>
                     </security>
                 </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
                     </driver>
-                    <driver name="mysql" module="com.mysql"/>
                 </drivers>
             </datasources>
         </subsystem>
@@ -247,21 +166,12 @@
                 </managed-thread-factories>
                 <managed-executor-services>
                     <managed-executor-service name="default" jndi-name="java:jboss/ee/concurrency/executor/default" context-service="default" hung-task-termination-period="0" hung-task-threshold="60000" keepalive-time="5000"/>
-                    <managed-executor-service name="s5-service-dojob" jndi-name="java:jboss/ee/concurrency/executor/s5/service/dojob" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
-                    <managed-executor-service name="s5-sequence-read" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/read" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
-                    <managed-executor-service name="s5-sequence-write" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/write" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
-                    <managed-executor-service name="s5-sequence-union" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/union" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
-                    <managed-executor-service name="s5-sequence-validation" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/validation" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
-                    <managed-executor-service name="s5-commands" jndi-name="java:jboss/ee/concurrency/executor/s5/commands" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100" keepalive-time="5000" queue-length="100"/>
                 </managed-executor-services>
                 <managed-scheduled-executor-services>
                     <managed-scheduled-executor-service name="default" jndi-name="java:jboss/ee/concurrency/scheduler/default" context-service="default" hung-task-termination-period="0" hung-task-threshold="60000" keepalive-time="3000"/>
                 </managed-scheduled-executor-services>
             </concurrent>
-            <!-- s5 ===
             <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
-	    -->
-            <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:/mcc_data_source" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee-security:1.0"/>
         <subsystem xmlns="urn:jboss:domain:ejb3:9.0">
@@ -328,10 +238,6 @@
                     <realm name="local" role-mapper="super-user-mapper"/>
                 </security-domain>
                 <security-domain name="ApplicationDomain" default-realm="ApplicationRealm" permission-mapper="default-permission-mapper">
-                    <realm name="ApplicationRealm" role-decoder="groups-to-roles"/>
-                    <realm name="local"/>
-                </security-domain>
-                <security-domain name="mcc_security_domain" default-realm="ApplicationRealm" permission-mapper="default-permission-mapper">
                     <realm name="ApplicationRealm" role-decoder="groups-to-roles"/>
                     <realm name="local"/>
                 </security-domain>
@@ -492,73 +398,6 @@
                     <expiration interval="0"/>
                 </replicated-cache>
             </cache-container>
-            <cache-container name="s5caches" aliases="s5caches_alias" default-cache="default">
-                <transport lock-timeout="60000"/>
-                <distributed-cache name="open_sessions">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <distributed-cache name="closed_sessions">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <distributed-cache name="currdata_indexes">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <distributed-cache name="currdata_values">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <distributed-cache name="event_gwids">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <distributed-cache name="cmd_gwids">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <distributed-cache name="cmd_states">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>                
-                <distributed-cache name="histdata_gwids">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <distributed-cache name="dataquality_marks">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <distributed-cache name="dataquality_sessions_gwids">
-                    <transaction mode="NONE"/>  
-                    <locking isolation="READ_COMMITTED"/>
-                    <state-transfer timeout="10000"/>
-                    <file-store/>
-                </distributed-cache>
-                <replicated-cache name="default">
-                    <transaction mode="NONE"/>
-                    <state-transfer timeout="10000"/>
-                </replicated-cache>
-            </cache-container>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:io:3.0">
             <worker name="default"/>
@@ -608,20 +447,6 @@
                 <stack name="tcp">
                     <transport type="TCP" socket-binding="jgroups-tcp"/>
                     <socket-protocol type="MPING" socket-binding="jgroups-mping"/>
-                    <protocol type="org.jgroups.protocols.TCPPING">
-                        <property name="initial_hosts">
-<!-- 
-                            192.168.204.100[7700],192.168.204.100[7800]
-                            127.0.0.1[7700],127.0.0.1[7800]
-                            127.0.0.1[7050],127.0.0.1[7100],127.0.0.1[7150],127.0.0.1[7200],127.0.0.1[7250],127.0.0.1[7300],127.0.0.1[7350],127.0.0.1[7400],127.0.0.1[7450],127.0.0.1[7500]
-                            127.0.0.1[7050],127.0.0.1[7100],127.0.0.1[7150],127.0.0.1[7200],127.0.0.1[7250],127.0.0.1[7300],127.0.0.1[7350],127.0.0.1[7400],127.0.0.1[7450],127.0.0.1[7500]
--->                                                    
-                            127.0.0.1[7000],127.0.0.1[7100],127.0.0.1[7200]
-                        </property>
-                        <property name="port_range">
-                            0
-                        </property>
-                    </protocol>
                     <protocol type="MERGE3"/>
                     <socket-protocol type="FD_SOCK" socket-binding="jgroups-tcp-fd"/>
                     <protocol type="FD_ALL"/>

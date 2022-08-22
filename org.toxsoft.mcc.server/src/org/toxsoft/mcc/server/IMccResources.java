@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.server;
+package org.toxsoft.mcc.server;
 
 /**
  * Локализуемые ресурсы.

@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.server.main;
+package org.toxsoft.mcc.server.main;
 
 import static org.toxsoft.uskat.s5.server.IS5ImplementConstants.*;
 
@@ -6,10 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.ejb.*;
 
+import org.toxsoft.mcc.server.MccMainServer;
 import org.toxsoft.uskat.s5.server.startup.IS5InitialImplementSingleton;
 import org.toxsoft.uskat.s5.server.startup.S5InitialImplementSingleton;
-
-import ru.toxsoft.mcc.server.MccMainServer;
 
 /**
  * Реализация синглтона инициализации бекенда

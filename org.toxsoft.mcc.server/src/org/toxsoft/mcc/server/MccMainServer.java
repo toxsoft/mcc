@@ -1,6 +1,6 @@
-package ru.toxsoft.mcc.server;
+package org.toxsoft.mcc.server;
 
-import static ru.toxsoft.mcc.server.IMccServerHardConstants.*;
+import static org.toxsoft.mcc.server.IMccServerHardConstants.*;
 
 import org.toxsoft.core.tslib.av.EAtomicType;
 import org.toxsoft.core.tslib.av.opset.IOptionSet;

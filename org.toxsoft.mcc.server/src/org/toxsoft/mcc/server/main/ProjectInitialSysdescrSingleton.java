@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.server.main;
+package org.toxsoft.mcc.server.main;
 
 import static org.toxsoft.uskat.s5.server.IS5ImplementConstants.*;
 
