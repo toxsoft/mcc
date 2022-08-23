@@ -302,11 +302,13 @@
                     <keepalive-time time="60" unit="seconds"/>
                 </thread-pool>
             </thread-pools>
-            <default-security-domain value="other"/>
+            <default-security-domain value="s5_security_domain"/>
             <application-security-domains>
-                <application-security-domain name="other" security-domain="ApplicationDomain"/>
+                <application-security-domain name="s5_security_domain" security-domain="ApplicationDomain"/>
             </application-security-domains>
-            <default-missing-method-permissions-deny-access value="true"/>
+            <!-- s5  --> 
+            <!-- <default-missing-method-permissions-deny-access value="true"/> -->
+            <default-missing-method-permissions-deny-access value="false"/>
             <statistics enabled="${wildfly.ejb3.statistics-enabled:${wildfly.statistics-enabled:false}}"/>
             <log-system-exceptions value="true"/>
         </subsystem>
@@ -698,7 +700,7 @@
             <coordinator-environment statistics-enabled="${wildfly.transactions.statistics-enabled:${wildfly.statistics-enabled:false}}"/>
             <object-store path="tx-object-store" relative-to="jboss.server.data.dir"/>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:undertow:12.0" default-server="default-server" default-virtual-host="default-host" default-servlet-container="default" default-security-domain="other" statistics-enabled="${wildfly.undertow.statistics-enabled:${wildfly.statistics-enabled:false}}">
+        <subsystem xmlns="urn:jboss:domain:undertow:12.0" default-server="default-server" default-virtual-host="default-host" default-servlet-container="default" default-security-domain="s5_security_domain" statistics-enabled="${wildfly.undertow.statistics-enabled:${wildfly.statistics-enabled:false}}">
             <buffer-cache name="default"/>
             <server name="default-server">
                 <ajp-listener name="ajp" socket-binding="ajp"/>
@@ -717,7 +719,7 @@
                 <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
             </handlers>
             <application-security-domains>
-                <application-security-domain name="other" security-domain="ApplicationDomain"/>
+                <application-security-domain name="s5_security_domain" security-domain="ApplicationDomain"/>
             </application-security-domains>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0" statistics-enabled="${wildfly.webservices.statistics-enabled:${wildfly.statistics-enabled:false}}">
