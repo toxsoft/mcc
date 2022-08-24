@@ -3,3 +3,17 @@ TRACE
 exit
 ls
 exit
+connect 
+connect -host localhost -port 8080
+exit
+connect
+connect -host localhost -port 8080
+exit
+connect
+exit
+EXIT
+exit
+connect
+exit
+ext
+exit

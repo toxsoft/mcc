@@ -1,4 +1,4 @@
-set JAVA_HOME=C:\Program Files\Java\jdk-17.0.2
+set JAVA_HOME=C:\Program Files\Java\jdk-17.0.4.1
 set WILDFLY_HOME=d:\works\tswildfly-26.1.1.Final 
 
 :: Префикс проекта

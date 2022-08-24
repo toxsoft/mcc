@@ -28,8 +28,8 @@ set ADMIN_CURRDATA_TIMEOUT=-1
 set _CLASS_PATH=-cp %ADMIN_CLASSPATH%
 set _PLUGIN_PATHS=-Dorg.toxsoft.uskat.skadmin.plugin.paths=%ADMIN_PLUGINPATH%
 set _MAIN_CLASS=org.toxsoft.uskat.skadmin.cli.Main
-set _XMS_MEMORY=-Xms512m
-set _XMX_MEMORY=-Xmx512m
+set _XMS_MEMORY=-Xms1024m
+set _XMX_MEMORY=-Xmx1024m
 set _CHARSET=-Dfile.encoding=CP866
 set _LOGGER=-Dlog4j.configuration=file:log4j.xml
 set _REMOTE_DEBUG=-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000 

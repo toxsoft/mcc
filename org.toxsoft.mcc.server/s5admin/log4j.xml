@@ -25,35 +25,7 @@
                 </layout>
         </appender>
 
-        <category name="ru">
-                <priority value="TRACE" />
-        </category>
-
-        <category name="ru.toxsoft.s5.client.connection.S5Connection">
-                <priority value="INFO" />
-        </category>
-
-        <category name="org.jboss.ejb.client.S5RemoteInvocations">
-                <priority value="INFO" />
-        </category>
-
-        <category name="ru.toxsoft.s5.client.connection.S5ConnectionThread">
-                <priority value="TRACE" />
-        </category>
-        
-        <category name="ru.toxsoft.s5.client.impl.S5ServerApiClientImpl">
-                <priority value="INFO" />
-        </category>
-
-        <category name="ru.toxsoft.s5.client.services.srvmsgs">
-                <priority value="TRACE" />
-        </category>
-
-        <category name="ru.toxsoft.s5.client.services.currdata">
-                <priority value="TRACE" />
-        </category>
-
-        <category name="ru.toxsoft.s5.client.services.histdata">
+        <category name="org.toxsoft">
                 <priority value="TRACE" />
         </category>
 
