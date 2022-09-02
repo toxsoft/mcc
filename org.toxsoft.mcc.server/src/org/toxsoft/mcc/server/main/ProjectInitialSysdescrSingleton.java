@@ -8,9 +8,6 @@ import javax.ejb.*;
 
 import org.toxsoft.core.tslib.av.IAtomicValue;
 import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.utils.TsLibUtils;
-import org.toxsoft.uskat.core.api.users.ISkUser;
-import org.toxsoft.uskat.core.api.users.ISkUserServiceHardConstants;
 import org.toxsoft.uskat.s5.server.startup.IS5InitialSysdescrSingleton;
 import org.toxsoft.uskat.s5.server.startup.S5InitialSysdescrSingleton;
 
@@ -57,10 +54,10 @@ public class ProjectInitialSysdescrSingleton
   @Override
   protected void doCreateSysdescr() {
     // Установка пароля root по умолчанию
-    ISkUser root = userService().listUsers().findByKey( ISkUserServiceHardConstants.USER_ID_ROOT );
-    if( root.password().equals( TsLibUtils.EMPTY_STRING ) ) {
-      userService().setUserPassword( ISkUserServiceHardConstants.USER_ID_ROOT, ROOT_PSWD.asString() );
-    }
+    // ISkUser root = userService().listUsers().findByKey( ISkUserServiceHardConstants.USER_ID_ROOT );
+    // if( root.password().equals( TsLibUtils.EMPTY_STRING ) ) {
+    // userService().setUserPassword( ISkUserServiceHardConstants.USER_ID_ROOT, ROOT_PSWD.asString() );
+    // }
   }
 
   // ------------------------------------------------------------------------------------
