@@ -136,12 +136,6 @@
             <logger category="org.jboss.security.auth.spi.DatabaseServerLoginModule">
                 <level name="TRACE"/>
             </logger>
-            <logger category="ru.toxsoft.s5.server.login.S5ServerLoginModule">
-                <level name="TRACE"/>
-            </logger>
-            <logger category="ru.toxsoft.s5.server.login.S5ServerLoginModuleFoo">
-                <level name="TRACE"/>
-            </logger>
             <logger category="org.hibernate.engine.internal.StatefulPersistenceContext">
                 <level name="ERROR"/>
             </logger>
