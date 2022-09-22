@@ -156,6 +156,9 @@
             <logger category="org.toxsoft.uskat.s5.utils.threads.impl.S5LockControl">
                 <level name="ALL"/>
             </logger>
+            <logger category="org.toxsoft.uskat.s5.server.sessions.pas.S5SessionMessenger">
+                <level name="ALL"/>
+            </logger>
             
             <logger category="rootHistData">
                 <level name="ERROR"/>
