@@ -160,17 +160,14 @@
                 <level name="ALL"/>
             </logger>
             
-            <logger category="rootHistData">
-                <level name="ERROR"/>
-            </logger>
             <logger category="S5SequenceWriter">
-                <level name="ERROR"/>
+                <level name="ALL"/>
             </logger>
             <logger category="S5SequenceUniter">
-                <level name="ERROR"/>
+                <level name="ALL"/>
             </logger>
             <logger category="S5SequenceValidator">
-                <level name="ERROR"/>
+                <level name="ALL"/>
             </logger>
             <root-logger>
                 <level name="ALL"/>
