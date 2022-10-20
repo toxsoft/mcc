@@ -1,11 +1,11 @@
 #!/bin/sh
 
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
-export WILDFLY_HOME=/home/tsdev/works/tswildfly-18.0.1.Final/bin/
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
+export WILDFLY_HOME=/home/tsdev/works/tswildfly-26.1.1.Final/bin/
 export LC_ALL=ru_RU.UTF-8
 
 # Префикс проекта
-export PROJECT=mm-fgdp
+export PROJECT=mсс
 
 # Имя узла кластера
 export NODE=node01
