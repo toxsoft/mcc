@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MCC Workstation Application launcher
+Bundle-SymbolicName: ru.toxsoft.mcc.ws.exe;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ru.toxsoft.mcc.ws.exe.Activator
+Bundle-Vendor: toxsoft.ru
+Export-Package: ru.toxsoft.mcc.ws.exe,
+ ru.toxsoft.mcc.ws.exe.e4.addons
+Require-Bundle: javax.annotation,
+ javax.inject,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.e4.core.contexts,
+ org.eclipse.e4.core.di,
+ org.eclipse.e4.ui.model.workbench,
+ org.eclipse.e4.ui.workbench,
+ org.toxsoft.core.tslib,
+ org.toxsoft.core.singlesrc.rcp,
+ org.toxsoft.core.tsgui,
+ org.toxsoft.core.tsgui.mws,
+ org.toxsoft.uskat.core,
+ org.toxsoft.uskat.base.gui,
+ ru.toxsoft.mcc.ws.core
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Automatic-Module-Name: ru.toxsoft.mcc.ws.exe
+Bundle-ActivationPolicy: lazy
