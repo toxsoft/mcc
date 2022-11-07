@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_KKg_EFkaEe2ha568rOfS2w">
+  <imports xsi:type="commands:Category" xmi:id="_euyUYFkaEe2ha568rOfS2w" elementId="org.toxsoft.mws.cmdcategory.global"/>
+  <imports xsi:type="commands:Command" xmi:id="_zBsM4FkaEe2ha568rOfS2w" elementId="org.toxsoft.mws.cmd.switch_persp">
+    <parameters xmi:id="_3hh1QFkaEe2ha568rOfS2w" elementId="org.toxsoft.mws.cmd.switch_persp.arg.perspId" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId"/>
+  </imports>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_GeqsgFknEe2ha568rOfS2w" featurename="addons" parentElementId="org.toxsoft.mws.app.main">
+    <elements xsi:type="application:Addon" xmi:id="_W8z58FknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.addon.mnemos" contributionURI="bundleclass://ru.toxsoft.mcc.ws.mnemos/ru.toxsoft.mcc.ws.mnemos.e4.addons.AddonMccMnemos"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_NFBVcFknEe2ha568rOfS2w" featurename="children" parentElementId="org.toxsoft.mws.perspectivestack.main">
+    <elements xsi:type="advanced:Perspective" xmi:id="_lrqUAFknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.perspective.mcc_main_scheme" label="%Persp_MccMainScheme" tooltip="%Persp_MccMainScheme_D">
+      <children xsi:type="basic:Part" xmi:id="_8zVaMFknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.part.mcc_scheme" contributionURI="bundleclass://ru.toxsoft.mcc.ws.mnemos/ru.toxsoft.mcc.ws.mnemos.e4.uiparts.UipartMccMainScheme"/>
+    </elements>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_FxMGAFkoEe2ha568rOfS2w" featurename="children" parentElementId="org.toxsoft.mws.menu.main.perspectives">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_JmzFoFkoEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.handledmenuitem.persp_mccmainscheme" label="%Persp_MccMainScheme" tooltip="%Persp_MccMainScheme_D" type="Radio" command="_zBsM4FkaEe2ha568rOfS2w">
+      <parameters xmi:id="_NF_wYFkoEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.parameter.0" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId" value="ru.toxsoft.mcc.ws.mnemos.perspective.mcc_main_scheme"/>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>
