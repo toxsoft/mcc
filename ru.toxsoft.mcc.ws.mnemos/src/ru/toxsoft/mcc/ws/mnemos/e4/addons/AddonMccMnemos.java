@@ -3,6 +3,7 @@ package ru.toxsoft.mcc.ws.mnemos.e4.addons;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.swt.widgets.Display;
 import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
 import org.toxsoft.core.tsgui.mws.bases.MwsAbstractAddon;
@@ -97,7 +98,8 @@ public class AddonMccMnemos
     // 2022-10-25 mvk обязательно для RCP
     IS5ConnectionParams.REF_CLASSLOADER.setRef( ctx, getClass().getClassLoader() );
 
-    // SwtThreadSeparatorService.REF_DISPLAY.setRef( ctx, aWinContext.get( Display.class ) );
+    ISkCoreConfigConstants.REFDEF_THREAD_SEPARATOR.setRef( ctx, SwtThreadSeparatorService.CREATOR );
+    SwtThreadSeparatorService.REF_DISPLAY.setRef( ctx, aWinContext.get( Display.class ) );
 
     try {
       // SkUtils.OP_EXT_SERV_PROVIDER_CLASS.setValue( ctx.params(), initializator );
@@ -106,7 +108,6 @@ public class AddonMccMnemos
       ISkConnection conn = aConnSupp.createConnection( connIdc, guiCtx );
       ISkConnection syncConn = S5SynchronizedConnection.createSynchronizedConnection( conn );
       syncConn.open( ctx );
-      // conn.coreApi().addService( SwtThreadSeparatorService.CREATOR );
       LoggerUtils.defaultLogger().info( "Connection opened" ); //$NON-NLS-1$
       // LoggerUtils.defaultLogger().info( "Connection opened, IDC= %s", connIdc.toString() );
       aConnSupp.setDefaultConnection( connIdc );
