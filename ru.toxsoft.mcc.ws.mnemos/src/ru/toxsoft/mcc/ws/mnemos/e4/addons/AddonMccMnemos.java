@@ -2,28 +2,34 @@ package ru.toxsoft.mcc.ws.mnemos.e4.addons;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 
-import org.eclipse.e4.core.contexts.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
-import org.toxsoft.core.tsgui.mws.bases.*;
-import org.toxsoft.core.tsgui.valed.impl.*;
-import org.toxsoft.core.tslib.bricks.ctx.*;
-import org.toxsoft.core.tslib.bricks.ctx.impl.*;
-import org.toxsoft.core.tslib.bricks.strid.more.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.concurrent.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.impl.*;
-import org.toxsoft.uskat.s5.client.*;
-import org.toxsoft.uskat.s5.client.remote.*;
-import org.toxsoft.uskat.s5.common.*;
-import org.toxsoft.uskat.s5.server.*;
-import org.toxsoft.uskat.s5.utils.threads.impl.*;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.swt.widgets.Display;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.toxsoft.core.tsgui.mws.bases.MwsAbstractAddon;
+import org.toxsoft.core.tsgui.valed.impl.ValedControlFactoriesRegistry;
+import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
+import org.toxsoft.core.tslib.bricks.ctx.impl.TsContext;
+import org.toxsoft.core.tslib.bricks.strid.more.IdChain;
+import org.toxsoft.core.tslib.coll.primtypes.IIntList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.IntArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
+import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
+import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.base.gui.conn.SkConnectionSupplier;
+import org.toxsoft.uskat.concurrent.S5SynchronizedConnection;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.impl.ISkCoreConfigConstants;
+import org.toxsoft.uskat.s5.client.IS5ConnectionParams;
+import org.toxsoft.uskat.s5.client.remote.S5RemoteBackendProvider;
+import org.toxsoft.uskat.s5.common.S5Host;
+import org.toxsoft.uskat.s5.common.S5HostList;
+import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
+import org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable;
 
-import ru.toxsoft.mcc.ws.mnemos.*;
+import ru.toxsoft.mcc.ws.mnemos.Activator;
+import ru.toxsoft.mcc.ws.mnemos.IMccWsMnemosConstants;
 import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 
 /**
@@ -92,14 +98,16 @@ public class AddonMccMnemos
     // 2022-10-25 mvk обязательно для RCP
     IS5ConnectionParams.REF_CLASSLOADER.setRef( ctx, getClass().getClassLoader() );
 
+    SwtThreadSeparatorService.REF_DISPLAY.setRef( ctx, aWinContext.get( Display.class ) );
+
     try {
       // SkUtils.OP_EXT_SERV_PROVIDER_CLASS.setValue( ctx.params(), initializator );
       ITsGuiContext guiCtx = new TsGuiContext( aWinContext );
       IdChain connIdc = new IdChain( "connection.default" ); //$NON-NLS-1$
-      ISkConnection connection =
-          S5SynchronizedConnection.createSynchronizedConnection( aConnSupp.createConnection( connIdc, guiCtx ) );
-      // S5SynchronizedConnection.createSynchronizedConnection( SkCoreUtils.createConnection() );
-      connection.open( ctx );
+      ISkConnection conn = aConnSupp.createConnection( connIdc, guiCtx );
+      ISkConnection syncConn = S5SynchronizedConnection.createSynchronizedConnection( conn );
+      syncConn.open( ctx );
+      conn.coreApi().addService( SwtThreadSeparatorService.CREATOR );
       LoggerUtils.defaultLogger().info( "Connection opened" ); //$NON-NLS-1$
       // LoggerUtils.defaultLogger().info( "Connection opened, IDC= %s", connIdc.toString() );
       aConnSupp.setDefaultConnection( connIdc );
