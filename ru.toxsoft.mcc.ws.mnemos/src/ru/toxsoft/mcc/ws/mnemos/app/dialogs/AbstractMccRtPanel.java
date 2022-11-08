@@ -114,6 +114,10 @@ public abstract class AbstractMccRtPanel
     AbstractValedSkCommand.OPDEF_COMMAND_ID.setValue( params, AvUtils.avStr( aCommandId ) );
     ValedFloatingTextCommand valed = new ValedFloatingTextCommand( ctx );
     valed.createControl( aParent );
+    GridData gd = new GridData();
+    gd.widthHint = 200;
+    gd.minimumWidth = 200;
+    valed.getControl().setLayoutData( gd );
     rtPanel.defineRtData( aDataGwid, valed );
     return valed;
   }

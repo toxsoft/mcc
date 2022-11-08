@@ -16,6 +16,7 @@ import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.events.change.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.*;
@@ -23,8 +24,10 @@ import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
+import org.toxsoft.uskat.core.api.rtdserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.api.sysdescr.dto.*;
+import org.toxsoft.uskat.core.api.users.*;
 
 /**
  * Базовый класс для установки одного атомарного значения посредством посылки команды.
@@ -36,6 +39,8 @@ public abstract class AbstractValedSkCommand
     extends AbstractValedLabelAndButton<IAtomicValue> {
 
   private IAtomicValue value = IAtomicValue.NULL;
+
+  IAtomicValue newVal = IAtomicValue.NULL;
 
   /**
    * ID of context reference {@link #OPDEF_CLASS_ID}.
@@ -93,6 +98,34 @@ public abstract class AbstractValedSkCommand
       TSID_DEFAULT_VALUE, AV_STR_EMPTY //
   );
 
+  IGenericChangeListener commandListener = aSource -> {
+    ISkCommand cmd = (ISkCommand)aSource;
+    SkCommandState cmdState = cmd.state();
+    switch( cmdState.state() ) {
+      case EXECUTING:
+        break;
+      case SENDING:
+        break;
+      case FAILED:
+        cmd.stateEventer().removeListener( this.commandListener );
+        break;
+      case SUCCESS:
+        cmd.stateEventer().removeListener( this.commandListener );
+        break;
+      case TIMEOUTED:
+        cmd.stateEventer().removeListener( this.commandListener );
+        break;
+      case UNHANDLED:
+        cmd.stateEventer().removeListener( this.commandListener );
+        break;
+      default:
+        throw new TsNotAllEnumsUsedRtException();
+    }
+    if( cmd.isComplete() ) {
+      cmd.stateEventer().removeListener( this.commandListener );
+    }
+  };
+
   private final String classId;
   private final String objStrid;
   private final String dataId;
@@ -148,17 +181,35 @@ public abstract class AbstractValedSkCommand
     updateTextControl();
   }
 
+  ISkCommandExecutor commandExecutor = aCmd -> {
+    ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
+    ISkWriteCurrDataChannel channel;
+    GwidList gwil = new GwidList();
+    gwil.add( commandGwid() );
+    channel = coreApi.rtdService().createWriteCurrDataChannels( gwil ).values().first();
+    channel.setValue( newVal );
+    channel.close();
+  };
+
   @Override
   final protected void doProcessButtonPress() {
-    IAtomicValue newVal = editValue( value );
+    newVal = editValue( value );
     if( newVal == null ) {
       return;
     }
     ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
     ISkCommandService cmdService = coreApi.cmdService();
+
+    GwidList gwil = new GwidList();
+    gwil.add( commandGwid() );
+    cmdService.registerExecutor( commandExecutor, gwil );
+
     IOptionSetEdit args = new OptionSet();
     args.setValue( cmdArgId, newVal );
-    ISkCommand command = cmdService.sendCommand( commandGwid(), new Skid( "sk.User", "root" ), args );
+    ISkCommand command = cmdService.sendCommand( commandGwid(), new Skid( ISkUser.CLASS_ID, "root" ), args );
+    command.stateEventer().addListener( commandListener );
+    getButtonControl().setEnabled( false );
+    getLabelControl().setEnabled( false );
     // value = newVal;
     // updateTextControl();
     fireModifyEvent( true );
