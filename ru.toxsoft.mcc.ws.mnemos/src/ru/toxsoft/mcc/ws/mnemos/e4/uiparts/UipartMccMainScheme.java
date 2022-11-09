@@ -14,6 +14,7 @@ import org.toxsoft.core.tsgui.widgets.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.base.gui.e4.uiparts.*;
+import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.mcc.ws.mnemos.*;
@@ -79,8 +80,10 @@ public class UipartMccMainScheme
 
       @Override
       public void mouseDoubleClick( MouseEvent aE ) {
-        // TsDialogUtils.info( null, "Здесь будет диалог" );
-        PanelAnalogInput.showDialog( new MccDialogContext( tsContext() ) );
+        ISkObject skObj = PanelSelectAnalogInput.selectAnalogInput( tsContext() );
+        if( skObj != null ) {
+          PanelAnalogInput.showDialog( new MccDialogContext( tsContext(), skObj ) );
+        }
       }
     } );
   }

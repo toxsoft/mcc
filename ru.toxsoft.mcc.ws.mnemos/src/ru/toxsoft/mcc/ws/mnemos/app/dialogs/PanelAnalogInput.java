@@ -1,32 +1,33 @@
 package ru.toxsoft.mcc.ws.mnemos.app.dialogs;
 
 import static ru.toxsoft.mcc.ws.mnemos.IMccWsMnemosConstants.*;
+import static ru.toxsoft.mcc.ws.mnemos.app.dialogs.IVjResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 
 /**
+ * Панель свойств аналогового сигнала.
+ * <p>
+ *
  * @author vs
  */
 public class PanelAnalogInput
     extends AbstractMccRtPanel {
 
-  public PanelAnalogInput( Composite aParent, TsDialog<Object, MccDialogContext> aOwnerDialog ) {
+  private final ISkObject skObject;
+
+  protected PanelAnalogInput( Composite aParent, TsDialog<Object, MccDialogContext> aOwnerDialog ) {
     super( aParent, aOwnerDialog );
+    skObject = environ().skObject();
     init();
     contentPanel().rtStart();
   }
@@ -39,46 +40,35 @@ public class PanelAnalogInput
     createValueGroup();
     createLimitsGroup();
 
-    // setLayout( new FillLayout() );
-    // Composite bkPanel = new Composite( this, SWT.NONE );
-    // bkPanel.setLayout( new RowLayout( SWT.VERTICAL ) );
-    // CLabel l = new CLabel( bkPanel, SWT.CENTER );
-    // l.setText( "Test string" );
-    //
-    // ITsGuiContext ctx = new TsGuiContext( tsContext() );
-    // IOptionSetEdit params = ctx.params();
-    // ValedBooleanCheckAdv.OPDEF_TRUE_TEXT.setValue( params, AvUtils.avStr( "true" ) ); //$NON-NLS-1$
-    // ValedBooleanCheckAdv.OPDEF_FALSE_TEXT.setValue( params, AvUtils.avStr( "false" ) ); //$NON-NLS-1$
-    //
-    // ValedBooleanCheckAdv.OPDEF_TRUE_ICON_ID.setValue( params, AvUtils.avStr( ICONID_CHECK_TRUE ) );
-    // ValedBooleanCheckAdv.OPDEF_FALSE_ICON_ID.setValue( params, AvUtils.avStr( ICONID_CHECK_FALSE ) );
-    //
-    // ValedAvBooleanCheckAdv v1 = new ValedAvBooleanCheckAdv( ctx );
-    // v1.createControl( bkPanel );
-    // v1.setValue( AvUtils.AV_TRUE );
-    //
-    // ValedIntegerTextCommand t1 = new ValedIntegerTextCommand( ctx );
-    // t1.createControl( bkPanel );
-    // t1.setValue( AvUtils.AV_0 );
-    //
-    // ValedIntegerTextCommand t2 = new ValedIntegerTextCommand( ctx );
-    // t2.createControl( bkPanel );
-    // t2.setValue( AvUtils.AV_0 );
+    Composite buttonBar = new Composite( contentPanel(), SWT.NONE );
+    buttonBar.setLayout( new GridLayout( 2, false ) );
+
+    GridData gd = new GridData();
+    gd.widthHint = 90;
+    // CmdPushButton btn = new CmdPushButton( buttonBar, "Квитировать", serverApi, createCommandUgwi( "confirmation" )
+    // );
+    Button btn = new Button( buttonBar, SWT.PUSH );
+    btn.setText( STR_CONFIRMATION );
+    btn.setLayoutData( gd );
+
+    Button btnSettins = new Button( buttonBar, SWT.PUSH );
+    btnSettins.setText( STR_SETTINGS );
+    btnSettins.setLayoutData( gd );
+    btnSettins.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent e ) {
+        // PanelAnalogInputSettings.showDialog( context(), getShell().getText(), "Установите требуемые параметры" );
+      }
+    } );
+
   }
 
   Group createValueGroup() {
-    Group g = createGroup( contentPanel(), "Выходное значение", 2 );
+    Group g = createGroup( contentPanel(), STR_OUTPUT_VALUE, 2, true );
 
-    Composite leftComp = new Composite( g, SWT.NONE );
-    // leftComp.setLayout( new FillLayout() );
-    // leftComp.setLayout( new BorderLayout() );
-    leftComp.setLayout( new GridLayout( 1, false ) );
-    leftComp.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false, 1, 3 ) );
-    // leftComp.setData( AWTLayout.KEY_PREFERRED_SIZE, new java.awt.Dimension( -1, 63 ) );
-
-    CLabel l = new CLabel( leftComp, SWT.CENTER );
-    l.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, true ) );
-    // l.setLayoutData( BorderLayout.CENTER );
+    CLabel l = new CLabel( g, SWT.CENTER );
+    l.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, false, false, 1, 3 ) );
     FontInfo fi = new FontInfo( "Arial", 24, true, false ); //$NON-NLS-1$
     l.setFont( fontManager().getFont( fi ) );
     l.setText( "123.45" );
@@ -89,77 +79,59 @@ public class PanelAnalogInput
     rightComp.setLayout( gl );
     rightComp.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
-    createBooleanIndicator( rightComp, null, "Авария", ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    createBooleanIndicator( rightComp, null, "Предупреждение", ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP );
-    createBooleanIndicator( rightComp, null, "Блокировка включена", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP );
+    createBooleanIndicator( rightComp, null, STR_ALARM, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
+    createBooleanIndicator( rightComp, null, STR_WARNING, ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP );
+    createBooleanIndicator( rightComp, null, STR_BLOCKING_IS_ON, ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP );
 
     return g;
   }
 
   Group createLimitsGroup() {
-    Group g = createGroup( contentPanel(), "Предельные значения", 6 );
+    Group g = createGroup( contentPanel(), STR_LIMIT_VALUES, 4, false );
 
     CLabel l = new CLabel( g, SWT.CENTER );
     l.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, false, false, 2, 1 ) );
 
     l = new CLabel( g, SWT.CENTER );
-    l.setText( "Индикация" );
-    l.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 2, 1 ) );
+    l.setText( STR_INDICATION );
+    l.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 1, 1 ) );
 
     l = new CLabel( g, SWT.CENTER );
-    l.setText( "Генерация" );
-    l.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 2, 1 ) );
+    l.setText( STR_GENERATION );
+    l.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 1, 1 ) );
 
-    createLimitsRow( g, "Верхний аварийный предел: ", ICONID_RED_LAMP );
-    createLimitsRow( g, "Верхний предупредительный предел: ", ICONID_YELLOW_LAMP );
+    createLimitsRow( 1, g, STR_HI_ALARM_LIMIT, ICONID_GREEN_LAMP );
+    createLimitsRow( 2, g, STR_HI_WARN_LIMIT, ICONID_GREEN_LAMP );
+    createLimitsRow( 3, g, STR_LOW_WARN_LIMIT, ICONID_GREEN_LAMP );
+    createLimitsRow( 4, g, STR_LOW_ALARM_LIMIT, ICONID_GREEN_LAMP );
 
     return g;
   }
 
-  private void createLimitsRow( Composite aParent, String aText, String aTrueImageId ) {
+  private void createLimitsRow( int aNum, Composite aParent, String aText, String aTrueImageId ) {
     CLabel l = new CLabel( aParent, SWT.CENTER );
     l.setText( aText );
 
-    // ITsGuiContext valedContext = new TsGuiContext( tsContext() );
-    // ValedFloatingTextCommand valed = new ValedFloatingTextCommand( valedContext );
-    // valed.createControl( aParent );
+    Gwid gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum );
+    createFloatingEditor( aParent, gwid, "cmdSetPoint" + aNum );
 
-    String classId = "mcc.AnalogInput";
-    String dataId = "rtdSetPoint1";
-    String objId = "n2AI_P62";
-
-    ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
-    IList<ISkObject> objs = coreApi.objService().listObjs( classId, true );
-    for( ISkObject obj : objs ) {
-      System.out.println( obj.skid().toString() );
-    }
-
-    ISkClassInfo clsInfo = coreApi.sysdescr().getClassInfo( "mcc.AnalogInput" );
-    ISkClassProps<IDtoRtdataInfo> info = clsInfo.rtdata();
-    for( IDtoRtdataInfo dInfo : info.list() ) {
-      System.out.println( dInfo.id() );
-    }
-
-    Gwid gwid = Gwid.createRtdata( classId, objId, dataId );
-
-    createFloatinEditor( aParent, gwid, "cmdSetPoint1" );
-
-    // createBooleanIndicator( aParent, null, TsLibUtils.EMPTY_STRING, aTrueImageId, ICONID_GRAY_LAMP );
-    createBooleanIndicator( aParent, null, "a", aTrueImageId, ICONID_GRAY_LAMP );
-    Button btn = new Button( aParent, SWT.CHECK );
-    btn.setText( "a" );
-    btn.setImage( iconManager().loadStdIcon( aTrueImageId, EIconSize.IS_24X24 ) );
-
-    createBooleanIndicator( aParent, null, TsLibUtils.EMPTY_STRING, aTrueImageId, ICONID_GRAY_LAMP );
-    btn = new Button( aParent, SWT.CHECK );
+    gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "Indication" );
+    createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "Indication", ICONID_GRAY_LAMP, aTrueImageId );
+    gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "Generation" );
+    createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "Generation", ICONID_GRAY_LAMP, aTrueImageId );
   }
 
+  /**
+   * Показывает диалог Аналогового сигнала.
+   *
+   * @param aContext MccDialogContext - контекст диалога
+   */
   public static void showDialog( MccDialogContext aContext ) {
     IDialogPanelCreator<Object, MccDialogContext> creator = PanelAnalogInput::new;
     ITsGuiContext ctx = aContext.tsContext();
-    ITsDialogInfo dlgInfo = new TsDialogInfo( ctx, "DLG_T_FILL_INFO", "STR_MSG_FILL_INFO" );
-    // ITsPoint p = new TsPoint( 4 * ABOUT_ICON_SIZE.size(), 2 * ABOUT_ICON_SIZE.size() + 50 );
-    // cdi.setMaxSize( p );
+    Shell shell = ctx.get( Shell.class ).getShell();
+    int flags = ITsDialogConstants.DF_NO_APPROVE;
+    ITsDialogInfo dlgInfo = new TsDialogInfo( ctx, shell, aContext.skObject().readableName(), DLG_SETTINGS_MSG, flags );
     TsDialog<Object, MccDialogContext> d = new TsDialog<>( dlgInfo, null, aContext, creator );
     d.execData();
   }

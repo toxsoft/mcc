@@ -8,12 +8,12 @@
     <elements xsi:type="application:Addon" xmi:id="_W8z58FknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.addon.mnemos" contributionURI="bundleclass://ru.toxsoft.mcc.ws.mnemos/ru.toxsoft.mcc.ws.mnemos.e4.addons.AddonMccMnemos"/>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_NFBVcFknEe2ha568rOfS2w" featurename="children" parentElementId="org.toxsoft.mws.perspectivestack.main">
-    <elements xsi:type="advanced:Perspective" xmi:id="_lrqUAFknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.perspective.mcc_main_scheme" label="%Persp_MccMainScheme" tooltip="%Persp_MccMainScheme_D">
+    <elements xsi:type="advanced:Perspective" xmi:id="_lrqUAFknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.perspective.mcc_main_scheme" label="%Persp_MccMainScheme" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.mnemos/icons/is16x16/mnemoshema.png" tooltip="%Persp_MccMainScheme_D">
       <children xsi:type="basic:Part" xmi:id="_8zVaMFknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.part.mcc_scheme" contributionURI="bundleclass://ru.toxsoft.mcc.ws.mnemos/ru.toxsoft.mcc.ws.mnemos.e4.uiparts.UipartMccMainScheme"/>
     </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_FxMGAFkoEe2ha568rOfS2w" featurename="children" parentElementId="org.toxsoft.mws.menu.main.perspectives">
-    <elements xsi:type="menu:HandledMenuItem" xmi:id="_JmzFoFkoEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.handledmenuitem.persp_mccmainscheme" label="%Persp_MccMainScheme" tooltip="%Persp_MccMainScheme_D" type="Radio" command="_zBsM4FkaEe2ha568rOfS2w">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_JmzFoFkoEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.handledmenuitem.persp_mccmainscheme" label="%Persp_MccMainScheme" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.mnemos/icons/is16x16/mnemoshema.png" tooltip="%Persp_MccMainScheme_D" type="Radio" command="_zBsM4FkaEe2ha568rOfS2w">
       <parameters xmi:id="_NF_wYFkoEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.parameter.0" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId" value="ru.toxsoft.mcc.ws.mnemos.perspective.mcc_main_scheme"/>
     </elements>
   </fragments>

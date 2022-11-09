@@ -75,11 +75,11 @@ public abstract class AbstractMccRtPanel
     return rtPanel;
   }
 
-  Group createGroup( Composite aParent, String aName, int aColumnsCount ) {
+  Group createGroup( Composite aParent, String aName, int aColumnsCount, boolean aEqualSize ) {
     Group group = new Group( aParent, SWT.NONE );
     group.setText( aName );
-    GridLayout gl = new GridLayout( aColumnsCount, false );
-    // gl.verticalSpacing = 0;
+    GridLayout gl = new GridLayout( aColumnsCount, aEqualSize );
+    gl.verticalSpacing = 0;
     group.setLayout( gl );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     return group;
@@ -104,7 +104,7 @@ public abstract class AbstractMccRtPanel
     return valed;
   }
 
-  ValedFloatingTextCommand createFloatinEditor( Composite aParent, Gwid aDataGwid, String aCommandId ) {
+  ValedFloatingTextCommand createFloatingEditor( Composite aParent, Gwid aDataGwid, String aCommandId ) {
     TsNullArgumentRtException.checkNulls( aParent, aDataGwid );
     TsGuiContext ctx = new TsGuiContext( tsContext() );
     IOptionSetEdit params = ctx.params();
@@ -115,10 +115,29 @@ public abstract class AbstractMccRtPanel
     ValedFloatingTextCommand valed = new ValedFloatingTextCommand( ctx );
     valed.createControl( aParent );
     GridData gd = new GridData();
-    gd.widthHint = 200;
-    gd.minimumWidth = 200;
+    gd.widthHint = 130;
+    gd.minimumWidth = 130;
     valed.getControl().setLayoutData( gd );
     rtPanel.defineRtData( aDataGwid, valed );
+    return valed;
+  }
+
+  MccValedAvBooleanCheckCommand createCheckEditor( Composite aParent, Gwid aDataGwid, String aCommandId,
+      String aFalseImageId, String aTrueImageId ) {
+    TsNullArgumentRtException.checkNulls( aParent, aDataGwid );
+    TsGuiContext ctx = new TsGuiContext( tsContext() );
+    IOptionSetEdit params = ctx.params();
+    MccValedAvBooleanCheckCommand.OPDEF_FALSE_ICON_ID.setValue( params, AvUtils.avStr( aFalseImageId ) );
+    MccValedAvBooleanCheckCommand.OPDEF_TRUE_ICON_ID.setValue( params, AvUtils.avStr( aTrueImageId ) );
+    MccValedAvBooleanCheckCommand.OPDEF_ICON_SIZE.setValue( params, AvUtils.avValobj( EIconSize.IS_24X24 ) );
+
+    MccValedAvBooleanCheckCommand.OPDEF_CLASS_ID.setValue( params, AvUtils.avStr( aDataGwid.classId() ) );
+    MccValedAvBooleanCheckCommand.OPDEF_OBJ_STRID.setValue( params, AvUtils.avStr( aDataGwid.strid() ) );
+    MccValedAvBooleanCheckCommand.OPDEF_DATA_ID.setValue( params, AvUtils.avStr( aDataGwid.propId() ) );
+    MccValedAvBooleanCheckCommand.OPDEF_COMMAND_ID.setValue( params, AvUtils.avStr( aCommandId ) );
+    MccValedAvBooleanCheckCommand valed = new MccValedAvBooleanCheckCommand( ctx );
+    Control ctrl = valed.createControl( aParent );
+    ctrl.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, false, false ) );
     return valed;
   }
 

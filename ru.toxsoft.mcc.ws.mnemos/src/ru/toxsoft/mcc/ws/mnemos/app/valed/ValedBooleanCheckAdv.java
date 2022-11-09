@@ -73,7 +73,7 @@ public class ValedBooleanCheckAdv
   public static final String OPID_ICON_ON_LEFT = VALED_OPID_PREFIX + ".IconOnLeft"; //$NON-NLS-1$
 
   /**
-   * ID of context reference {@link #OPDEF_ICON_ON_LEFT}.
+   * ID of context reference {@link #OPDEF_ICON_SIZE}.
    */
   public static final String OPID_ICON_SIZE = VALED_OPID_PREFIX + ".IconSize"; //$NON-NLS-1$
 
@@ -152,7 +152,7 @@ public class ValedBooleanCheckAdv
   );
 
   /**
-   * The gap between icon and text.<br>
+   * The icon size.<br>
    */
   public static final IDataDef OPDEF_ICON_SIZE = DataDef.create( OPID_ICON_SIZE, VALOBJ, //
       TSID_NAME, STR_N_ICON_SIZE, //
@@ -211,7 +211,7 @@ public class ValedBooleanCheckAdv
   /**
    * Constructor.
    *
-   * @param aTsContext {@link ITsGuiContext} - th editor context
+   * @param aTsContext {@link ITsGuiContext} - the editor context
    * @throws TsNullArgumentRtException any argument = <code>null</code>
    * @throws TsIllegalArgumentRtException <code>enum</code> does not contains any constant
    */
@@ -237,10 +237,9 @@ public class ValedBooleanCheckAdv
       EIconSize iconSize = OPDEF_ICON_SIZE.getValue( params ).asValobj();
       String iconId = OPDEF_FALSE_ICON_ID.getValue( params ).asString();
       if( iconId != null && !iconId.isBlank() ) {
-        ITsIconManager im = tsContext().get( ITsIconManager.class );
-        imgCheckFalse = im.loadStdIcon( iconId, iconSize );
+        imgCheckFalse = iconManager().loadStdIcon( iconId, iconSize );
         iconId = OPDEF_TRUE_ICON_ID.getValue( params ).asString();
-        imgCheckTrue = im.loadStdIcon( iconId, iconSize );
+        imgCheckTrue = iconManager().loadStdIcon( iconId, iconSize );
         imgW = iconSize.size();
         imgH = iconSize.size();
       }
