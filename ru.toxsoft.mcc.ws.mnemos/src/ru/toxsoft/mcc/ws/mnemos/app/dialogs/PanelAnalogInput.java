@@ -11,8 +11,12 @@ import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
+
+import ru.toxsoft.mcc.ws.mnemos.app.widgets.*;
 
 /**
  * Панель свойств аналогового сигнала.
@@ -44,21 +48,22 @@ public class PanelAnalogInput
     buttonBar.setLayout( new GridLayout( 2, false ) );
 
     GridData gd = new GridData();
-    gd.widthHint = 90;
-    // CmdPushButton btn = new CmdPushButton( buttonBar, "Квитировать", serverApi, createCommandUgwi( "confirmation" )
-    // );
-    Button btn = new Button( buttonBar, SWT.PUSH );
-    btn.setText( STR_CONFIRMATION );
-    btn.setLayoutData( gd );
+    gd.widthHint = 100;
+    Gwid cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdConfirmation" ); //$NON-NLS-1$
+    OptionSet args = new OptionSet();
+    args.setValue( "value", AvUtils.AV_TRUE );
+    CmdPushButton btn = new CmdPushButton( buttonBar, STR_CONFIRMATION, cmdGwid, args, tsContext() );
+    btn.button().setLayoutData( gd );
 
     Button btnSettins = new Button( buttonBar, SWT.PUSH );
     btnSettins.setText( STR_SETTINGS );
+    btnSettins.setToolTipText( "Вызвать диалог настроек аналогового синала" );
     btnSettins.setLayoutData( gd );
     btnSettins.addSelectionListener( new SelectionAdapter() {
 
       @Override
       public void widgetSelected( SelectionEvent e ) {
-        // PanelAnalogInputSettings.showDialog( context(), getShell().getText(), "Установите требуемые параметры" );
+        PanelAnalogInputSettings.showDialog( environ() );
       }
     } );
 
@@ -115,10 +120,10 @@ public class PanelAnalogInput
     Gwid gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum );
     createFloatingEditor( aParent, gwid, "cmdSetPoint" + aNum );
 
-    gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "Indication" );
-    createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "Indication", ICONID_GRAY_LAMP, aTrueImageId );
-    gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "Generation" );
-    createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "Generation", ICONID_GRAY_LAMP, aTrueImageId );
+    gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "indication" );
+    createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "indication", ICONID_GRAY_LAMP, aTrueImageId );
+    gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "generation" );
+    createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "generation", ICONID_GRAY_LAMP, aTrueImageId );
   }
 
   /**

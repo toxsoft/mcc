@@ -138,6 +138,9 @@ public abstract class AbstractMccRtPanel
     MccValedAvBooleanCheckCommand valed = new MccValedAvBooleanCheckCommand( ctx );
     Control ctrl = valed.createControl( aParent );
     ctrl.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, false, false ) );
+
+    rtPanel.defineRtData( aDataGwid, valed );
+
     return valed;
   }
 

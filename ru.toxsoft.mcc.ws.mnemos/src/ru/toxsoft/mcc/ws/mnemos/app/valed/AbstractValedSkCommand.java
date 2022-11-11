@@ -220,6 +220,7 @@ public abstract class AbstractValedSkCommand
     command.stateEventer().addListener( commandListener );
     getButtonControl().setEnabled( false );
     getLabelControl().setEnabled( false );
+    getLabelControl().setText( "???" ); //$NON-NLS-1$
     // value = newVal;
     // updateTextControl();
     fireModifyEvent( true );

@@ -18,7 +18,17 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.cmdserv.*;
+import org.toxsoft.uskat.core.api.rtdserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
+import org.toxsoft.uskat.core.api.users.*;
 
 /**
  * Специализированный (для МосКокса) редактор логического значения.
@@ -162,10 +172,30 @@ public class MccValedAvBooleanCheckCommand
 
   private Button button = null;
 
-  private boolean value = false;
+  private boolean value  = false;
+  private boolean newVal = false;
 
   private Image imgFalse = null;
   private Image imgTrue  = null;
+
+  private final Gwid dataGwid;
+  private final Gwid cmdGwid;
+
+  ISkCommandExecutor commandExecutor = aCmd -> {
+    ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
+    ISkWriteCurrDataChannel channel;
+    GwidList gwil = new GwidList();
+
+    gwil.add( dataGwid() );
+
+    channel = coreApi.rtdService().createWriteCurrDataChannels( gwil ).values().first();
+    channel.setValue( AvUtils.avBool( newVal ) );
+    channel.close();
+
+    ISkCommandService cmdService = coreApi.cmdService();
+    SkCommandState state = new SkCommandState( System.currentTimeMillis(), ESkCommandState.SUCCESS );
+    cmdService.changeCommandState( new DtoCommandStateChangeInfo( aCmd.instanceId(), state ) );
+  };
 
   /**
    * Constructor.
@@ -176,6 +206,13 @@ public class MccValedAvBooleanCheckCommand
    */
   public MccValedAvBooleanCheckCommand( ITsGuiContext aTsContext ) {
     super( aTsContext );
+    IOptionSet params = aTsContext.params();
+    String classId = OPDEF_CLASS_ID.getValue( params ).asString();
+    String objStrid = OPDEF_OBJ_STRID.getValue( params ).asString();
+    String dataId = OPDEF_DATA_ID.getValue( params ).asString();
+    String cmdId = OPDEF_COMMAND_ID.getValue( params ).asString();
+    dataGwid = Gwid.createRtdata( classId, objStrid, dataId );
+    cmdGwid = Gwid.createCmd( classId, objStrid, cmdId );
   }
 
   // ------------------------------------------------------------------------------------
@@ -202,8 +239,7 @@ public class MccValedAvBooleanCheckCommand
 
       @Override
       public void widgetSelected( SelectionEvent aEvent ) {
-        // FIXME реализовать
-        throw new TsUnderDevelopmentRtException();
+        sendCommand( button.getSelection() );
       }
     } );
 
@@ -235,6 +271,35 @@ public class MccValedAvBooleanCheckCommand
   @Override
   protected void doClearValue() {
     // button.setImage( null );
+  }
+
+  // ------------------------------------------------------------------------------------
+  // Implementation
+  //
+
+  void sendCommand( boolean aArg ) {
+    // button.setEnabled( false );
+    // button.setToolTipText( "Команда в процессе выполнения" );
+
+    ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
+    ISkCommandService cmdService = coreApi.cmdService();
+
+    GwidList gwil = new GwidList();
+    gwil.add( cmdGwid );
+    cmdService.registerExecutor( commandExecutor, gwil );
+
+    ISkClassInfo classInfo = coreApi.sysdescr().findClassInfo( cmdGwid.classId() );
+    IDtoCmdInfo cmdInfo = classInfo.cmds().list().getByKey( cmdGwid.propId() );
+    String argId = cmdInfo.argDefs().first().id();
+
+    OptionSet cmdArgs = new OptionSet();
+    cmdArgs.setValue( argId, AvUtils.avBool( aArg ) );
+    ISkCommand cmd = cmdService.sendCommand( cmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), cmdArgs );
+    // cmd.stateEventer().addListener( commandListener );
+  }
+
+  Gwid dataGwid() {
+    return dataGwid;
   }
 
 }
