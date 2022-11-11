@@ -14,5 +14,6 @@ cd %WILDFLY_HOME%\bin
 rmdir /S /Q ..\standalone-%PROJECT%-%NODE%\data
 rmdir /S /Q ..\standalone-%PROJECT%-%NODE%\tmp
 
+chcp 1251
 rem standalone.bat -c standalone-%PROJECT%-%NODE%.xml -b 0.0.0.0 -Djboss.server.base.dir=../standalone-%PROJECT%-%NODE% -Djboss.server.name=%PROJECT%_%NODE% -Djboss.socket.binding.port-offset=%PORT_OFFSET%
 standalone.bat -c standalone-%PROJECT%-%NODE%.xml -b localhost -Djboss.server.base.dir=../standalone-%PROJECT%-%NODE% -Djboss.server.name=%PROJECT%_%NODE% -Djboss.socket.binding.port-offset=%PORT_OFFSET% -Dfile.encoding=CP866
