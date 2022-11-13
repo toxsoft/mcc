@@ -50,4 +50,10 @@ interface IVjResources {
   String STR_N_COMMAND_ID = "ИД команды";
   String STR_D_COMMAND_ID = "Идентификатор команды";
 
+  /**
+   * {@link ValedMccAnalogInput}
+   */
+  String STR_N_SWT_STYLE = "Стиль";
+  String STR_D_SWT_STYLE = "SWT стиль";
+
 }
