@@ -3,6 +3,7 @@ package ru.toxsoft.mcc.ws.mnemos.app;
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.custom.*;
 import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -10,6 +11,7 @@ import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.uskat.base.gui.glib.*;
 
 import ru.toxsoft.mcc.ws.mnemos.*;
 import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
@@ -23,6 +25,8 @@ import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 public class MccSchemePanel
     extends TsPanel {
 
+  private RtValedsPanel rtPanel;
+
   /**
    * Конструктор.
    *
@@ -31,13 +35,16 @@ public class MccSchemePanel
    */
   public MccSchemePanel( Composite aParent, ITsGuiContext aContext ) {
     super( aParent, aContext );
-    setLayout( null );
+    setLayout( new FillLayout() );
+
+    rtPanel = new RtValedsPanel( this, aContext );
+    rtPanel.setLayout( null );
 
     ImageDescriptor imd;
     imd = AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, "icons/mcc-main.png" ); //$NON-NLS-1$
     Image imgScheme = imd.createImage();
 
-    addPaintListener( aEvent -> aEvent.gc.drawImage( imgScheme, 0, 0 ) );
+    rtPanel.addPaintListener( aEvent -> aEvent.gc.drawImage( imgScheme, 0, 0 ) );
   }
 
   public void addAI( int aX, int aY, String aObjStrid ) {
@@ -49,8 +56,15 @@ public class MccSchemePanel
     ValedMccAnalogInput.OPDEF_DATA_ID.setValue( params, AvUtils.avStr( "currentValue" ) ); //$NON-NLS-1$
 
     ValedMccAnalogInput valedAI = new ValedMccAnalogInput( ctx );
-    CLabel l = (CLabel)valedAI.createControl( this );
+    CLabel l = (CLabel)valedAI.createControl( rtPanel );
     l.setLocation( aX, aY );
     l.setSize( 50, 22 );
+
+    rtPanel.defineRtData( valedAI.dataGwid(), valedAI );
   }
+
+  public void rtStart() {
+    rtPanel.rtStart();
+  }
+
 }

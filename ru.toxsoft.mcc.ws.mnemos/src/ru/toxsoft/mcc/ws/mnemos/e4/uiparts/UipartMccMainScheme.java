@@ -103,6 +103,8 @@ public class UipartMccMainScheme
     rightComp.setLayoutData( BorderLayout.EAST );
     rightComp.setData( AWTLayout.KEY_PREFERRED_SIZE, new Dimension( 438, -1 ) );
 
+    schemeComp.rtStart();
+
     schemeComp.addMouseListener( new MouseListener() {
 
       @Override
