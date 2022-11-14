@@ -284,9 +284,9 @@ public class MccValedAvBooleanCheckCommand
     ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
     ISkCommandService cmdService = coreApi.cmdService();
 
-    GwidList gwil = new GwidList();
-    gwil.add( cmdGwid );
-    cmdService.registerExecutor( commandExecutor, gwil );
+    // GwidList gwil = new GwidList();
+    // gwil.add( cmdGwid );
+    // cmdService.registerExecutor( commandExecutor, gwil );
 
     ISkClassInfo classInfo = coreApi.sysdescr().findClassInfo( cmdGwid.classId() );
     IDtoCmdInfo cmdInfo = classInfo.cmds().list().getByKey( cmdGwid.propId() );

@@ -53,7 +53,7 @@ public class MccSchemePanel
 
     ValedMccAnalogInput.OPDEF_CLASS_ID.setValue( params, AvUtils.avStr( "mcc.AnalogInput" ) ); //$NON-NLS-1$
     ValedMccAnalogInput.OPDEF_OBJ_STRID.setValue( params, AvUtils.avStr( aObjStrid ) );
-    ValedMccAnalogInput.OPDEF_DATA_ID.setValue( params, AvUtils.avStr( "currentValue" ) ); //$NON-NLS-1$
+    ValedMccAnalogInput.OPDEF_DATA_ID.setValue( params, AvUtils.avStr( "rtdCurrentValue" ) ); //$NON-NLS-1$
 
     ValedMccAnalogInput valedAI = new ValedMccAnalogInput( ctx );
     CLabel l = (CLabel)valedAI.createControl( rtPanel );

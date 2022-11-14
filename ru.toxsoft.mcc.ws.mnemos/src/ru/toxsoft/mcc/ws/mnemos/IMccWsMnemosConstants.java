@@ -26,6 +26,15 @@ public interface IMccWsMnemosConstants {
   String ICONID_RED_LAMP    = "red-lamp";    //$NON-NLS-1$
   String ICONID_YELLOW_LAMP = "yellow-lamp"; //$NON-NLS-1$
 
+  String ICONID_VALVE_OPEN     = "valve_open";      //$NON-NLS-1$
+  String ICONID_VALVE_CLOSE    = "valve_close";     //$NON-NLS-1$
+  String ICONID_VALVE_BLINKING = "valve_blinking";  //$NON-NLS-1$
+  String ICONID_VALVE_FAULT    = "valve_fault";     //$NON-NLS-1$
+  String ICONID_VALVE_UPLUGGED = "valve_unplugged"; //$NON-NLS-1$
+
+  String ICONID_CHECK_VALVE_CLOSE = "check_valve_close"; //$NON-NLS-1$
+  String ICONID_CHECK_VALVE_OPEN  = "check_valve_open";  //$NON-NLS-1$
+
   /**
    * Constants registration.
    *

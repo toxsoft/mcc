@@ -210,9 +210,9 @@ public abstract class AbstractValedSkCommand
     ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
     ISkCommandService cmdService = coreApi.cmdService();
 
-    GwidList gwil = new GwidList();
-    gwil.add( commandGwid() );
-    cmdService.registerExecutor( commandExecutor, gwil );
+    // GwidList gwil = new GwidList();
+    // gwil.add( commandGwid() );
+    // cmdService.registerExecutor( commandExecutor, gwil );
 
     IOptionSetEdit args = new OptionSet();
     args.setValue( cmdArgId, newVal );
