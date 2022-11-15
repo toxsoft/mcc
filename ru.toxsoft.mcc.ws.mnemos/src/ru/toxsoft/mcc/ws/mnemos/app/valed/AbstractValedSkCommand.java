@@ -8,6 +8,7 @@ import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static ru.toxsoft.mcc.ws.mnemos.app.valed.IVjResources.*;
 
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.valed.controls.helpers.*;
@@ -21,6 +22,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
@@ -28,6 +30,8 @@ import org.toxsoft.uskat.core.api.rtdserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.api.users.*;
+
+import ru.toxsoft.mcc.ws.mnemos.app.*;
 
 /**
  * Базовый класс для установки одного атомарного значения посредством посылки команды.
@@ -121,9 +125,13 @@ public abstract class AbstractValedSkCommand
       default:
         throw new TsNotAllEnumsUsedRtException();
     }
+    LoggerUtils.errorLogger().info( "command %s state changed %s", cmd.cmdGwid(), cmdState.state() );
     if( cmd.isComplete() ) {
       cmd.stateEventer().removeListener( this.commandListener );
       getButtonControl().setEnabled( true );
+      if( cmd.isComplete() && cmd.state().state() != ESkCommandState.SUCCESS ) {
+        TsDialogUtils.error( getShell(), cmd.state().state().description() );
+      }
     }
   };
 
@@ -217,6 +225,13 @@ public abstract class AbstractValedSkCommand
     IOptionSetEdit args = new OptionSet();
     args.setValue( cmdArgId, newVal );
     ISkCommand command = cmdService.sendCommand( commandGwid(), new Skid( ISkUser.CLASS_ID, "root" ), args );
+    CmdUtils.logCommandHistory( command );
+    String errStr = CmdUtils.errorString( command );
+    if( errStr != null ) {
+      TsDialogUtils.error( getShell(), errStr );
+      return;
+    }
+
     command.stateEventer().addListener( commandListener );
     getButtonControl().setEnabled( false );
     getLabelControl().setEnabled( false );

@@ -11,6 +11,7 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.impl.*;
@@ -19,9 +20,11 @@ import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.events.change.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
@@ -30,9 +33,12 @@ import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.api.users.*;
 
+import ru.toxsoft.mcc.ws.mnemos.app.*;
+
 /**
  * Специализированный (для МосКокса) редактор логического значения.
  * <p>
+ * 21 июня 2001 г.
  *
  * @author vs
  */
@@ -197,6 +203,39 @@ public class MccValedAvBooleanCheckCommand
     cmdService.changeCommandState( new DtoCommandStateChangeInfo( aCmd.instanceId(), state ) );
   };
 
+  IGenericChangeListener commandListener = aSource -> {
+    ISkCommand cmd = (ISkCommand)aSource;
+    SkCommandState cmdState = cmd.state();
+    switch( cmdState.state() ) {
+      case EXECUTING:
+        break;
+      case SENDING:
+        break;
+      case FAILED:
+        cmd.stateEventer().removeListener( this.commandListener );
+        break;
+      case SUCCESS:
+        cmd.stateEventer().removeListener( this.commandListener );
+        break;
+      case TIMEOUTED:
+        cmd.stateEventer().removeListener( this.commandListener );
+        break;
+      case UNHANDLED:
+        cmd.stateEventer().removeListener( this.commandListener );
+        break;
+      default:
+        throw new TsNotAllEnumsUsedRtException();
+    }
+    LoggerUtils.errorLogger().info( "command %s state changed %s", cmd.cmdGwid(), cmdState.state() );
+    if( cmd.isComplete() ) {
+      cmd.stateEventer().removeListener( this.commandListener );
+      if( cmd.isComplete() && cmd.state().state() != ESkCommandState.SUCCESS ) {
+        TsDialogUtils.error( getShell(), cmd.state().state().description() );
+      }
+      // getButtonControl().setEnabled( true );
+    }
+  };
+
   /**
    * Constructor.
    *
@@ -239,7 +278,10 @@ public class MccValedAvBooleanCheckCommand
 
       @Override
       public void widgetSelected( SelectionEvent aEvent ) {
-        sendCommand( button.getSelection() );
+        newVal = button.getSelection();
+        if( !sendCommand( button.getSelection() ) ) {
+          button.setSelection( !newVal );
+        }
       }
     } );
 
@@ -277,9 +319,7 @@ public class MccValedAvBooleanCheckCommand
   // Implementation
   //
 
-  void sendCommand( boolean aArg ) {
-    // button.setEnabled( false );
-    // button.setToolTipText( "Команда в процессе выполнения" );
+  boolean sendCommand( boolean aArg ) {
 
     ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
     ISkCommandService cmdService = coreApi.cmdService();
@@ -295,7 +335,15 @@ public class MccValedAvBooleanCheckCommand
     OptionSet cmdArgs = new OptionSet();
     cmdArgs.setValue( argId, AvUtils.avBool( aArg ) );
     ISkCommand cmd = cmdService.sendCommand( cmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), cmdArgs );
-    // cmd.stateEventer().addListener( commandListener );
+    CmdUtils.logCommandHistory( cmd );
+    String errStr = CmdUtils.errorString( cmd );
+    if( errStr != null ) {
+      TsDialogUtils.error( getShell(), errStr );
+      return false;
+    }
+    cmd.stateEventer().addListener( commandListener );
+    fireModifyEvent( true );
+    return true;
   }
 
   Gwid dataGwid() {
