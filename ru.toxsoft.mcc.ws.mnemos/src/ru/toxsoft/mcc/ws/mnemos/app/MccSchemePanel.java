@@ -17,10 +17,7 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.base.gui.glib.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.objserv.*;
 
 import ru.toxsoft.mcc.ws.mnemos.*;
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
@@ -102,11 +99,11 @@ public class MccSchemePanel
       }
     } );
 
-    ISkCoreApi coreApi = aContext.get( ISkConnectionSupplier.class ).defConn().coreApi();
-    IList<ISkObject> objs = coreApi.objService().listObjs( "mcc.IrreversibleEngine", true ); //$NON-NLS-1$
-    ISkObject obj = objs.first();
+    // ISkCoreApi coreApi = aContext.get( ISkConnectionSupplier.class ).defConn().coreApi();
+    // IList<ISkObject> objs = coreApi.objService().listObjs( "mcc.IrreversibleEngine", true ); //$NON-NLS-1$
+    // ISkObject obj = objs.first();
 
-    Gwid gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Hydro" );
+    Gwid gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Hydro" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     IStringListEdit imgIds = new StringArrayList();
     imgIds.add( "icons/main_engine_on.png" ); //$NON-NLS-1$
@@ -123,12 +120,22 @@ public class MccSchemePanel
     imgIds.add( "icons/oil_pupm_starter_fault.png" ); //$NON-NLS-1$
     imgIds.add( "icons/oil_pupm_starter_unplugged.png" ); //$NON-NLS-1$
 
-    gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Mn" );
+    gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Mn" ); //$NON-NLS-1$//$NON-NLS-2$
     MccReversibleEngineControl reversibleEngine = new MccReversibleEngineControl( this, gwid, imgIds, aContext );
     reversibleEngine.setLocation( 737, 706 );
     controls.add( reversibleEngine );
 
-    objs = coreApi.objService().listObjs( "mcc.ReversibleEngine", true ); //$NON-NLS-1$
+    imgIds.clear();
+    imgIds.add( "icons/engine_on.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/engine_off.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/engine_fault.png" ); //$NON-NLS-1$
+
+    gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_VPU" ); //$NON-NLS-1$//$NON-NLS-2$
+    mainEngine = new MccMainEngineControl( this, gwid, imgIds, aContext );
+    mainEngine.setLocation( 1030, 181 );
+    controls.add( mainEngine );
+
+    // objs = coreApi.objService().listObjs( "mcc.ReversibleEngine", true ); //$NON-NLS-1$
 
     imgIds.clear();
     imgIds.add( "icons/valve_open.png" ); //$NON-NLS-1$
