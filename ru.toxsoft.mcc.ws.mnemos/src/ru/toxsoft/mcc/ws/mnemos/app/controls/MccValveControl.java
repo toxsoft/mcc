@@ -33,7 +33,7 @@ public class MccValveControl
       ((ElemArrayList<Image>)imgList).add( img );
     }
 
-    startAnimation( new int[] { 0, 4 } );
+    // startAnimation( new int[] { 0, 4 } );
   }
 
   // ------------------------------------------------------------------------------------

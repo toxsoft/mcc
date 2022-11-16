@@ -33,7 +33,7 @@ public class MccMainEngineControl
       Image img = AbstractUIPlugin.imageDescriptorFromPlugin( PLUGIN_ID, imgId ).createImage();
       ((ElemArrayList<Image>)imgList).add( img );
     }
-    startAnimation( new int[] { 0, 1, 2 } );
+    // startAnimation( new int[] { 0, 1, 2 } );
   }
 
   // ------------------------------------------------------------------------------------

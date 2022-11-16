@@ -34,7 +34,7 @@ public class MccReversibleEngineControl
       Image img = AbstractUIPlugin.imageDescriptorFromPlugin( PLUGIN_ID, imgId ).createImage();
       ((ElemArrayList<Image>)imgList).add( img );
     }
-    startAnimation( new int[] { 0, 1, 2, 3 } );
+    // startAnimation( new int[] { 0, 1, 2, 3 } );
   }
 
   // ------------------------------------------------------------------------------------
