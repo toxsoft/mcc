@@ -63,7 +63,7 @@ public class CmdUtils {
     if( aCommand == null ) {
       return "Command sending failed: cmd - null"; //$NON-NLS-1$
     }
-    if( aCommand.state().state() != ESkCommandState.SUCCESS ) {
+    if( aCommand.isComplete() && aCommand.state().state() != ESkCommandState.SUCCESS ) {
       return aCommand.state().state().description() + ": " + aCommand.toString(); //$NON-NLS-1$
     }
     return null;
