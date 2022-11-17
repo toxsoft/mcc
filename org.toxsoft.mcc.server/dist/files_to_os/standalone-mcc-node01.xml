@@ -161,13 +161,13 @@
             </logger>
             
             <logger category="S5SequenceWriter">
-                <level name="ALL"/>
+                <level name="INFO"/>
             </logger>
             <logger category="S5SequenceUniter">
-                <level name="ALL"/>
+                <level name="INFO"/>
             </logger>
             <logger category="S5SequenceValidator">
-                <level name="ALL"/>
+                <level name="INFO"/>
             </logger>
             <root-logger>
                 <level name="ALL"/>
@@ -254,7 +254,7 @@
             </concurrent>
             <!-- s5 ===
             <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:jboss/datasources/ExampleDS" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
-	    -->
+      -->
             <default-bindings context-service="java:jboss/ee/concurrency/context/default" datasource="java:/mcc_data_source" managed-executor-service="java:jboss/ee/concurrency/executor/default" managed-scheduled-executor-service="java:jboss/ee/concurrency/scheduler/default" managed-thread-factory="java:jboss/ee/concurrency/factory/default"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ee-security:1.0"/>

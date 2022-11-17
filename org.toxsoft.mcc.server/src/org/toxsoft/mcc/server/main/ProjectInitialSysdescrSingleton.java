@@ -24,7 +24,7 @@ import org.toxsoft.uskat.s5.server.startup.S5InitialSysdescrSingleton;
 // BACKEND_SYSDESCR_SINGLETON, // уже включено неявным образом
 // BACKEND_OBJECTS_SINGLETON, // уже включено неявным образом
 // BACKEND_LINKS_SINGLETON, // уже включено неявным образом
-// BACKEND_LOBS_SINGLETON, // уже включено неявным образом
+// BACKEND_CLOBS_SINGLETON, // уже включено неявным образом
 // BACKEND_EVENTS_SINGLETON, // уже включено неявным образом
 // BACKEND_COMMANDS_SINGLETON, // уже включено неявным образом
 // BACKEND_RTDATA_SINGLETON, // уже включено неявным образом

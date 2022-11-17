@@ -83,6 +83,8 @@
         <zipfileset src="../../ts4-targets/ts4-target-core/lib/org.toxsoft.core.pas-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-core/lib/org.toxsoft.core.log4j-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.core-lib.jar" />
+        <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.dataquality.lib-lib.jar" />
+        <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.dataquality.s5-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.s5-lib.jar">
            <exclude name="**/META-INF/*" />
         </zipfileset>

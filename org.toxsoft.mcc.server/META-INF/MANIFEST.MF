@@ -13,5 +13,7 @@ Require-Bundle: org.toxsoft.extlibs.log4j,
  org.toxsoft.core.log4j,
  org.toxsoft.uskat.core,
  org.toxsoft.uskat.s5,
- org.toxsoft.uskat.s5.histdata10
+ org.toxsoft.uskat.s5.histdata10,
+ org.toxsoft.uskat.dataquality.lib,
+ org.toxsoft.uskat.dataquality.s5
 Eclipse-BuddyPolicy: registered
