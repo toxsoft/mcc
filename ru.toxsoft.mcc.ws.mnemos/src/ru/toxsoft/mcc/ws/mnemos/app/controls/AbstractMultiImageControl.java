@@ -34,7 +34,7 @@ public abstract class AbstractMultiImageControl
   };
 
   protected AbstractMultiImageControl( MccSchemePanel aOwner, Gwid aObjGwid, ITsGuiContext aTsContext ) {
-    super( aOwner, aObjGwid, aTsContext );
+    super( aOwner, aObjGwid, aTsContext, null );
   }
 
   @Override

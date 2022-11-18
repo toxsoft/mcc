@@ -9,9 +9,14 @@ import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.base.gui.glib.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 
@@ -24,6 +29,8 @@ import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 public abstract class AbstractMccRtPanel
     extends AbstractTsDialogPanel<Object, MccDialogContext> {
 
+  private final ISkCoreApi coreApi;
+
   private RtValedsPanel rtPanel;
 
   /**
@@ -35,6 +42,7 @@ public abstract class AbstractMccRtPanel
   public AbstractMccRtPanel( Composite aParent, TsDialog<Object, MccDialogContext> aOwnerDialog ) {
     super( aParent, aOwnerDialog );
     this.setLayout( new FillLayout() );
+    coreApi = environ().tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
     rtPanel = new RtValedsPanel( this, tsContext() );
     // createContentPanel();
     // this.setLayout( new BorderLayout() );
@@ -92,6 +100,29 @@ public abstract class AbstractMccRtPanel
     IOptionSetEdit params = ctx.params();
     ValedBooleanCheckAdv.OPDEF_TRUE_TEXT.setValue( params, AvUtils.avStr( aText ) );
     ValedBooleanCheckAdv.OPDEF_FALSE_TEXT.setValue( params, AvUtils.avStr( aText ) );
+
+    ValedBooleanCheckAdv.OPDEF_TRUE_ICON_ID.setValue( params, AvUtils.avStr( aTrueImageId ) );
+    ValedBooleanCheckAdv.OPDEF_FALSE_ICON_ID.setValue( params, AvUtils.avStr( aFalseImageId ) );
+
+    ValedBooleanCheckAdv.OPDEF_ICON_SIZE.setValue( params, AvUtils.avValobj( EIconSize.IS_24X24 ) );
+
+    ValedBooleanCheckAdv valed = new ValedBooleanCheckAdv( ctx );
+    Control ctrl = valed.createControl( aParent );
+    ctrl.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+    return valed;
+  }
+
+  ValedBooleanCheckAdv createRtBooleanIndicator( Composite aParent, String aDataId, String aTrueImageId,
+      String aFalseImageId ) {
+
+    ISkClassInfo classInfo = coreApi.sysdescr().getClassInfo( environ().skObject().classId() );
+    IStridablesList<IDtoRtdataInfo> rtdInfoes = classInfo.rtdata().list();
+    String text = classInfo.rtdata().list().getByKey( aDataId ).nmName();
+
+    ITsGuiContext ctx = new TsGuiContext( tsContext() );
+    IOptionSetEdit params = ctx.params();
+    ValedBooleanCheckAdv.OPDEF_TRUE_TEXT.setValue( params, AvUtils.avStr( text ) );
+    ValedBooleanCheckAdv.OPDEF_FALSE_TEXT.setValue( params, AvUtils.avStr( text ) );
 
     ValedBooleanCheckAdv.OPDEF_TRUE_ICON_ID.setValue( params, AvUtils.avStr( aTrueImageId ) );
     ValedBooleanCheckAdv.OPDEF_FALSE_ICON_ID.setValue( params, AvUtils.avStr( aFalseImageId ) );

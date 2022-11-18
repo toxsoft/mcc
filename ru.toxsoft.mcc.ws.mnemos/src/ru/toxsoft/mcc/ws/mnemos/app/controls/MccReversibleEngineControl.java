@@ -5,6 +5,7 @@ import static ru.toxsoft.mcc.ws.mnemos.Activator.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
@@ -50,6 +51,22 @@ public class MccReversibleEngineControl
   public void showSettingDialog() {
     MccDialogContext ctx = new MccDialogContext( tsContext(), skObject() );
     PanelIrreversibleEngine.showDialog( ctx );
+  }
+
+  // ------------------------------------------------------------------------------------
+  // IRtDataConsumer
+  //
+
+  @Override
+  public IGwidList listNeededGwids() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void setValues( Gwid[] aGwids, IAtomicValue[] aValues, int aCount ) {
+    // TODO Auto-generated method stub
+
   }
 
 }

@@ -1,27 +1,25 @@
 package ru.toxsoft.mcc.ws.mnemos.app;
 
 import org.eclipse.jface.resource.*;
+import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.graphics.cursors.*;
 import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.uskat.base.gui.glib.*;
+import org.toxsoft.uskat.base.gui.conn.*;
 
 import ru.toxsoft.mcc.ws.mnemos.*;
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
-import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
 
 /**
  * Панель отображения мнемосхемы.
@@ -69,9 +67,11 @@ public class MccSchemePanel
     }
   };
 
-  private RtValedsPanel rtPanel;
+  // private RtValedsPanel rtPanel;
 
   IListEdit<AbstractMccSchemeControl> controls = new ElemArrayList<>();
+
+  IRtDataProvider dataProvider;
 
   Image imgScheme;
 
@@ -83,25 +83,31 @@ public class MccSchemePanel
    */
   public MccSchemePanel( Composite aParent, ITsGuiContext aContext ) {
     super( aParent, aContext );
-    setLayout( new FillLayout() );
+    // setLayout( new FillLayout() );
+    setLayout( null );
 
-    rtPanel = new RtValedsPanel( this, aContext );
-    rtPanel.setLayout( null );
+    dataProvider = new MccRtDataProvider( aContext.get( ISkConnectionSupplier.class ).defConn(), aContext );
+
+    // rtPanel = new RtValedsPanel( this, aContext );
+    // rtPanel.setLayout( null );
 
     ImageDescriptor imd;
     imd = AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, "icons/mcc-main.png" ); //$NON-NLS-1$
     imgScheme = imd.createImage();
 
-    rtPanel.addPaintListener( aEvent -> {
+    // rtPanel.addPaintListener( aEvent -> {
+    // aEvent.gc.drawImage( imgScheme, 0, 0 );
+    // for( AbstractMccSchemeControl control : controls ) {
+    // control.paint( aEvent.gc );
+    // }
+    // } );
+
+    addPaintListener( aEvent -> {
       aEvent.gc.drawImage( imgScheme, 0, 0 );
       for( AbstractMccSchemeControl control : controls ) {
         control.paint( aEvent.gc );
       }
     } );
-
-    // ISkCoreApi coreApi = aContext.get( ISkConnectionSupplier.class ).defConn().coreApi();
-    // IList<ISkObject> objs = coreApi.objService().listObjs( "mcc.IrreversibleEngine", true ); //$NON-NLS-1$
-    // ISkObject obj = objs.first();
 
     Gwid gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Hydro" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -170,14 +176,17 @@ public class MccSchemePanel
     controls.add( valve );
 
     addDisposeListener( aE -> {
+      dataProvider.dispose();
       imgScheme.dispose();
       for( AbstractMccSchemeControl control : controls ) {
         control.dispose();
       }
     } );
 
-    rtPanel.addMouseMoveListener( mouseMoveListener );
-    rtPanel.addMouseListener( mouseListener );
+    // rtPanel.addMouseMoveListener( mouseMoveListener );
+    // rtPanel.addMouseListener( mouseListener );
+    addMouseMoveListener( mouseMoveListener );
+    addMouseListener( mouseListener );
   }
 
   /**
@@ -188,42 +197,59 @@ public class MccSchemePanel
    * @param aObjStrid String - ИД объекта
    */
   public void addAI( int aX, int aY, String aObjStrid ) {
-    ITsGuiContext ctx = new TsGuiContext( tsContext() );
-    IOptionSetEdit params = ctx.params();
+    // ITsGuiContext ctx = new TsGuiContext( tsContext() );
+    // IOptionSetEdit params = ctx.params();
+    //
+    // ValedMccAnalogInput.OPDEF_CLASS_ID.setValue( params, AvUtils.avStr( "mcc.AnalogInput" ) ); //$NON-NLS-1$
+    // ValedMccAnalogInput.OPDEF_OBJ_STRID.setValue( params, AvUtils.avStr( aObjStrid ) );
+    // ValedMccAnalogInput.OPDEF_DATA_ID.setValue( params, AvUtils.avStr( "rtdCurrentValue" ) ); //$NON-NLS-1$
+    //
+    // ValedMccAnalogInput valedAI = new ValedMccAnalogInput( ctx );
+    // CLabel l = (CLabel)valedAI.createControl( rtPanel );
+    // l.setLocation( aX, aY );
+    // l.setSize( 50, 22 );
+    //
+    // rtPanel.defineRtData( valedAI.dataGwid(), valedAI );
 
-    ValedMccAnalogInput.OPDEF_CLASS_ID.setValue( params, AvUtils.avStr( "mcc.AnalogInput" ) ); //$NON-NLS-1$
-    ValedMccAnalogInput.OPDEF_OBJ_STRID.setValue( params, AvUtils.avStr( aObjStrid ) );
-    ValedMccAnalogInput.OPDEF_DATA_ID.setValue( params, AvUtils.avStr( "rtdCurrentValue" ) ); //$NON-NLS-1$
-
-    ValedMccAnalogInput valedAI = new ValedMccAnalogInput( ctx );
-    CLabel l = (CLabel)valedAI.createControl( rtPanel );
+    Gwid gwid = Gwid.createObj( "mcc.AnalogInput", aObjStrid );
+    MccAnalogInputControl aiControl = new MccAnalogInputControl( gwid, tsContext(), null );
+    CLabel l = (CLabel)aiControl.createControl( this, SWT.BORDER | SWT.CENTER );
     l.setLocation( aX, aY );
     l.setSize( 50, 22 );
+    l.setCursor( cursorManager().getCursor( ECursorType.HAND ) );
+    l.addMouseListener( new MouseAdapter() {
 
-    rtPanel.defineRtData( valedAI.dataGwid(), valedAI );
+      @Override
+      public void mouseDown( MouseEvent aE ) {
+        aiControl.showSettingDialog();
+      }
+    } );
+
+    dataProvider.addDataConsumer( aiControl );
   }
 
   /**
    * Запускает процесс мониторинга.
    */
   public void rtStart() {
-    rtPanel.rtStart();
+    // rtPanel.rtStart();
+    dataProvider.start();
   }
 
-  @Override
-  public void redraw() {
-    if( !isDisposed() ) {
-      super.redraw();
-      rtPanel.redraw();
-    }
-  }
-
-  @Override
-  public void redraw( int aX, int aY, int aWidth, int aHeight, boolean aAll ) {
-    if( !isDisposed() ) {
-      super.redraw( aX, aY, aWidth, aHeight, aAll );
-      rtPanel.redraw( aX, aY, aWidth, aHeight, aAll );
-    }
-  }
+  // @Override
+  // public void redraw() {
+  // if( !isDisposed() ) {
+  // super.redraw();
+  // rtPanel.redraw();
+  // }
+  // }
+  //
+  // @Override
+  // public void redraw( int aX, int aY, int aWidth, int aHeight, boolean aAll ) {
+  // if( !isDisposed() ) {
+  // super.redraw( aX, aY, aWidth, aHeight, aAll );
+  // rtPanel.redraw( aX, aY, aWidth, aHeight, aAll );
+  // }
+  // }
 
 }

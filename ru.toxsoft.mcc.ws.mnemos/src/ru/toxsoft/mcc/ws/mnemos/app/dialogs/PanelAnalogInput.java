@@ -12,6 +12,7 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
@@ -70,23 +71,32 @@ public class PanelAnalogInput
   }
 
   Group createValueGroup() {
-    Group g = createGroup( contentPanel(), STR_OUTPUT_VALUE, 2, true );
+
+    IOptionSet attrs = environ().skObject().attrs();
+    String unitStr = attrs.getStr( "atrMeasureValue" );
+
+    Group g = createGroup( contentPanel(), STR_OUTPUT_VALUE + " " + unitStr, 3, true );
 
     CLabel l = new CLabel( g, SWT.CENTER );
-    l.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, false, false, 1, 3 ) );
+    l.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, false, false, 1, 2 ) );
     FontInfo fi = new FontInfo( "Arial", 24, true, false ); //$NON-NLS-1$
     l.setFont( fontManager().getFont( fi ) );
     l.setText( "123.45" );
 
-    Composite rightComp = new Composite( g, SWT.NONE );
-    GridLayout gl = new GridLayout( 1, false );
-    gl.verticalSpacing = 0;
-    rightComp.setLayout( gl );
-    rightComp.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+    // Composite rightComp = new Composite( g, SWT.NONE );
+    // GridLayout gl = new GridLayout( 1, false );
+    // gl.verticalSpacing = 0;
+    // rightComp.setLayout( gl );
+    // rightComp.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
-    createBooleanIndicator( rightComp, null, STR_ALARM, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    createBooleanIndicator( rightComp, null, STR_WARNING, ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP );
-    createBooleanIndicator( rightComp, null, STR_BLOCKING_IS_ON, ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP );
+    createRtBooleanIndicator( g, "rtdAlarm", ICONID_RED_LAMP, ICONID_GRAY_LAMP ); //$NON-NLS-1$
+    createRtBooleanIndicator( g, "rtdWarn", ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP ); //$NON-NLS-1$
+    createRtBooleanIndicator( g, "rtdImitation", ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP ); //$NON-NLS-1$
+    createRtBooleanIndicator( g, "rtdBlockAlarm", ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP ); //$NON-NLS-1$
+
+    // createBooleanIndicator( rightComp, null, STR_ALARM, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
+    // createBooleanIndicator( rightComp, null, STR_WARNING, ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP );
+    // createBooleanIndicator( rightComp, null, STR_BLOCKING_IS_ON, ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP );
 
     return g;
   }
