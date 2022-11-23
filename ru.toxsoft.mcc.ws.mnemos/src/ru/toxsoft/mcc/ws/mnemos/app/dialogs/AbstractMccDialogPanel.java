@@ -6,8 +6,8 @@ import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
@@ -30,35 +30,36 @@ import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
  *
  * @author vs
  */
-public abstract class AbstractMccRtPanel
-    extends AbstractTsDialogPanel<Object, MccDialogContext>
+public abstract class AbstractMccDialogPanel
+    extends TsPanel
     implements ISkConnected {
-
-  // private final ISkCoreApi coreApi;
-
-  // private RtValedsPanel rtPanel;
 
   private final MccRtDataProvider dataProvider;
 
   private final ISkConnection skConnection;
 
+  private final MccDialogContext dlgContext;
+
   /**
    * Конструктор.<br>
    *
    * @param aParent Composite - родительская компонента
-   * @param aOwnerDialog TsDialog - родительский диалог
+   * @param aDialogContext MccDialogContext - контекст диалога
    */
-  public AbstractMccRtPanel( Composite aParent, TsDialog<Object, MccDialogContext> aOwnerDialog ) {
-    super( aParent, aOwnerDialog );
-    skConnection = environ().tsContext().get( ISkConnectionSupplier.class ).defConn();
-    dataProvider = new MccRtDataProvider( skConnection, environ().tsContext() );
-    // this.setLayout( new FillLayout() );
-    // coreApi = environ().tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
-    // rtPanel = new RtValedsPanel( this, tsContext() );
-    // createContentPanel();
-    // this.setLayout( new BorderLayout() );
-    // init();
+  public AbstractMccDialogPanel( Composite aParent, MccDialogContext aDialogContext ) {
+    super( aParent, aDialogContext.tsContext() );
+    dlgContext = aDialogContext;
+    skConnection = tsContext().get( ISkConnectionSupplier.class ).defConn();
+    dataProvider = new MccRtDataProvider( skConnection, tsContext() );
     addDisposeListener( aE -> dataProvider.dispose() );
+  }
+
+  // ------------------------------------------------------------------------------------
+  // ITsContextable
+  //
+  @Override
+  public ITsGuiContext tsContext() {
+    return dlgContext.tsContext();
   }
 
   // ------------------------------------------------------------------------------------
@@ -70,34 +71,16 @@ public abstract class AbstractMccRtPanel
     return skConnection;
   }
 
-  // ------------------------------------------------------------------------------------
-  // AbstractTsDialogPanel
-  //
-
-  @Override
-  protected void doSetDataRecord( Object aData ) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  protected Object doGetDataRecord() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  // public static void showDialog( MccDialogContext aContext ) {
-  // IDialogPanelCreator<Object, MccDialogContext> creator = AbstractMccRtPanel::new;
-  // ITsGuiContext ctx = aContext.tsContext();
-  // ITsDialogInfo dlgInfo = new TsDialogInfo( aContext.tsContext(), "DLG_T_FILL_INFO", "STR_MSG_FILL_INFO" );
-  // // ITsPoint p = new TsPoint( 4 * ABOUT_ICON_SIZE.size(), 2 * ABOUT_ICON_SIZE.size() + 50 );
-  // // cdi.setMaxSize( p );
-  // TsDialog<Object, MccDialogContext> d = new TsDialog<>( dlgInfo, null, aContext, creator );
-  // d.execData();
-  // }
-
   MccRtDataProvider dataProvider() {
     return dataProvider;
+  }
+
+  // ------------------------------------------------------------------------------------
+  // API
+  //
+
+  MccDialogContext dialogContext() {
+    return dlgContext;
   }
 
   // ------------------------------------------------------------------------------------
@@ -140,7 +123,7 @@ public abstract class AbstractMccRtPanel
   ValedBooleanCheckAdv createRtBooleanIndicator( Composite aParent, String aDataId, String aTrueImageId,
       String aFalseImageId ) {
 
-    ISkClassInfo classInfo = coreApi().sysdescr().getClassInfo( environ().skObject().classId() );
+    ISkClassInfo classInfo = coreApi().sysdescr().getClassInfo( dlgContext.skObject().classId() );
     IStridablesList<IDtoRtdataInfo> rtdInfoes = classInfo.rtdata().list();
     String text = classInfo.rtdata().list().getByKey( aDataId ).nmName();
 
@@ -172,7 +155,7 @@ public abstract class AbstractMccRtPanel
    */
   MccRtBooleanLabel createRtBooleanIcon( Composite aParent, String aDataId, String aTrueImageId,
       String aFalseImageId ) {
-    ISkObject skObj = environ().skObject();
+    ISkObject skObj = dlgContext.skObject();
     Gwid gwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
 
     IDtoRtdataInfo dInfo = dataInfo( aDataId );
@@ -198,7 +181,7 @@ public abstract class AbstractMccRtPanel
    */
   MccRtBooleanLabel createRtBooleanLabel( Composite aParent, String aDataId, String aFalseImageId,
       String aTrueImageId ) {
-    ISkObject skObj = environ().skObject();
+    ISkObject skObj = dlgContext.skObject();
     Gwid gwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
 
     IDtoRtdataInfo dInfo = dataInfo( aDataId );
@@ -259,8 +242,8 @@ public abstract class AbstractMccRtPanel
     return valed;
   }
 
-  private IDtoRtdataInfo dataInfo( String aDataId ) {
-    ISkClassInfo clsInfo = coreApi().sysdescr().getClassInfo( environ().skObject().classId() );
+  protected IDtoRtdataInfo dataInfo( String aDataId ) {
+    ISkClassInfo clsInfo = coreApi().sysdescr().getClassInfo( dlgContext.skObject().classId() );
     return clsInfo.rtdata().list().getByKey( aDataId );
   }
 

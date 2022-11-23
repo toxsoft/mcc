@@ -6,17 +6,20 @@ import static ru.toxsoft.mcc.ws.mnemos.app.dialogs.IVjResources.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
 import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 
+import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
 import ru.toxsoft.mcc.ws.mnemos.app.widgets.*;
 
 /**
@@ -26,26 +29,37 @@ import ru.toxsoft.mcc.ws.mnemos.app.widgets.*;
  * @author vs
  */
 public class PanelAnalogInput
-    extends AbstractMccRtPanel {
+    extends AbstractMccDialogPanel {
+  // extends AbstractMccRtPanel {
 
   private final ISkObject skObject;
 
-  protected PanelAnalogInput( Composite aParent, TsDialog<Object, MccDialogContext> aOwnerDialog ) {
-    super( aParent, aOwnerDialog );
-    skObject = environ().skObject();
+  // protected PanelAnalogInput( Composite aParent, TsDialog<Object, MccDialogContext> aOwnerDialog ) {
+  // super( aParent, aOwnerDialog );
+  // skObject = environ().skObject();
+  // init();
+  // // contentPanel().rtStart();
+  // dataProvider().start();
+  // }
+
+  protected PanelAnalogInput( Shell aParent, MccDialogContext aDlgContext ) {
+    super( aParent, aDlgContext );
+    skObject = aDlgContext.skObject();
     init();
-    contentPanel().rtStart();
+    dataProvider().start();
   }
 
   void init() {
 
     GridLayout layout = new GridLayout( 1, false );
-    contentPanel().setLayout( layout );
+    // contentPanel().setLayout( layout );
+    setLayout( layout );
 
     createValueGroup();
     createLimitsGroup();
 
-    Composite buttonBar = new Composite( contentPanel(), SWT.NONE );
+    // Composite buttonBar = new Composite( contentPanel(), SWT.NONE );
+    Composite buttonBar = new Composite( this, SWT.NONE );
     buttonBar.setLayout( new GridLayout( 2, false ) );
 
     GridData gd = new GridData();
@@ -64,7 +78,9 @@ public class PanelAnalogInput
 
       @Override
       public void widgetSelected( SelectionEvent e ) {
-        PanelAnalogInputSettings.showDialog( environ() );
+        Point pl = getParent().getLocation();
+        Point ps = getParent().getSize();
+        PanelAnalogInputSettings.showDialog( pl.x + ps.x, pl.y, dialogContext() );
       }
     } );
 
@@ -72,37 +88,36 @@ public class PanelAnalogInput
 
   Group createValueGroup() {
 
-    IOptionSet attrs = environ().skObject().attrs();
-    String unitStr = attrs.getStr( "atrMeasureValue" );
+    IOptionSet attrs = dialogContext().skObject().attrs();
+    String unitStr = attrs.getStr( "atrMeasureValue" ); //$NON-NLS-1$
+    if( unitStr.isEmpty() ) {
+      unitStr = "ед.изм. "; //$NON-NLS-1$
+    }
 
-    Group g = createGroup( contentPanel(), STR_OUTPUT_VALUE + " " + unitStr, 3, true );
+    Group g = createGroup( this, STR_OUTPUT_VALUE + " " + unitStr, 3, false ); //$NON-NLS-1$
 
-    CLabel l = new CLabel( g, SWT.CENTER );
-    l.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, false, false, 1, 2 ) );
+    Gwid gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), MccAnalogInputControl.DI_CURRENT_VALUE );
+    MccAnalogInputControl aiControl = new MccAnalogInputControl( gwid, tsContext(), null );
+    Control ctrl = aiControl.createControl( g, SWT.BORDER );
     FontInfo fi = new FontInfo( "Arial", 24, true, false ); //$NON-NLS-1$
-    l.setFont( fontManager().getFont( fi ) );
-    l.setText( "123.45" );
+    ctrl.setFont( fontManager().getFont( fi ) );
+    GridData gd = new GridData( SWT.CENTER, SWT.FILL, false, true, 1, 2 );
+    gd.widthHint = 130;
+    gd.minimumWidth = 130;
+    ctrl.setLayoutData( gd );
+    dataProvider().addDataConsumer( aiControl );
 
-    // Composite rightComp = new Composite( g, SWT.NONE );
-    // GridLayout gl = new GridLayout( 1, false );
-    // gl.verticalSpacing = 0;
-    // rightComp.setLayout( gl );
-    // rightComp.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
-
-    createRtBooleanIndicator( g, "rtdAlarm", ICONID_RED_LAMP, ICONID_GRAY_LAMP ); //$NON-NLS-1$
-    createRtBooleanIndicator( g, "rtdWarn", ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP ); //$NON-NLS-1$
-    createRtBooleanIndicator( g, "rtdImitation", ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP ); //$NON-NLS-1$
-    createRtBooleanIndicator( g, "rtdBlockAlarm", ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP ); //$NON-NLS-1$
-
-    // createBooleanIndicator( rightComp, null, STR_ALARM, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    // createBooleanIndicator( rightComp, null, STR_WARNING, ICONID_YELLOW_LAMP, ICONID_GRAY_LAMP );
-    // createBooleanIndicator( rightComp, null, STR_BLOCKING_IS_ON, ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP );
+    createRtBooleanLabel( g, "rtdAlarm", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
+    createRtBooleanLabel( g, "rtdWarn", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
+    createRtBooleanLabel( g, "rtdImitation", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
+    createRtBooleanLabel( g, "rtdBlockAlarm", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
 
     return g;
   }
 
   Group createLimitsGroup() {
-    Group g = createGroup( contentPanel(), STR_LIMIT_VALUES, 4, false );
+    // Group g = createGroup( contentPanel(), STR_LIMIT_VALUES, 4, false );
+    Group g = createGroup( this, STR_LIMIT_VALUES, 4, false );
 
     CLabel l = new CLabel( g, SWT.CENTER );
     l.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, false, false, 2, 1 ) );
@@ -115,25 +130,68 @@ public class PanelAnalogInput
     l.setText( STR_GENERATION );
     l.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, false, false, 1, 1 ) );
 
-    createLimitsRow( 1, g, STR_HI_ALARM_LIMIT, ICONID_GREEN_LAMP );
-    createLimitsRow( 2, g, STR_HI_WARN_LIMIT, ICONID_GREEN_LAMP );
-    createLimitsRow( 3, g, STR_LOW_WARN_LIMIT, ICONID_GREEN_LAMP );
-    createLimitsRow( 4, g, STR_LOW_ALARM_LIMIT, ICONID_GREEN_LAMP );
+    createLimitsRow( 1, g, "rtdAlarmMaxIndication", "rtdAlarmMaxGeneration", ICONID_RED_LAMP ); //$NON-NLS-1$//$NON-NLS-2$
+    createLimitsRow( 2, g, "rtdWarningMaxIndication", "rtdWarningMaxGeneration", ICONID_YELLOW_LAMP ); //$NON-NLS-1$//$NON-NLS-2$
+    createLimitsRow( 3, g, "rtdWarningMinIndication", "rtdWarningMinGeneration", ICONID_YELLOW_LAMP ); //$NON-NLS-1$//$NON-NLS-2$
+    createLimitsRow( 4, g, "rtdAlarmMinIndication", "rtdAlarmMinGeneration", ICONID_RED_LAMP ); //$NON-NLS-1$ //$NON-NLS-2$
 
     return g;
   }
 
-  private void createLimitsRow( int aNum, Composite aParent, String aText, String aTrueImageId ) {
+  private void createLimitsRow( int aNum, Composite aParent, String aIndicationId, String aGenerationId,
+      String aTrueImageId ) {
+    ISkClassInfo clsInfo = coreApi().sysdescr().getClassInfo( MccAnalogInputControl.CLS_ANALOG_INPUT );
+    IDtoRtdataInfo di = clsInfo.rtdata().list().getByKey( "rtdSetPoint" + aNum ); //$NON-NLS-1$
+
     CLabel l = new CLabel( aParent, SWT.CENTER );
-    l.setText( aText );
+    l.setText( di.nmName() );
+    // l.setText( aText );
 
     Gwid gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum );
-    createFloatingEditor( aParent, gwid, "cmdSetPoint" + aNum );
+    // createFloatingEditor( aParent, gwid, "cmdSetPoint" + aNum );
 
-    gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "indication" );
-    createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "indication", ICONID_GRAY_LAMP, aTrueImageId );
-    gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "generation" );
-    createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "generation", ICONID_GRAY_LAMP, aTrueImageId );
+    MccRtTextEditor rtText = createRtTextEditor( skObject, "rtdSetPoint" + aNum, "cmdSetPoint" + aNum, tsContext() );
+    Control ctrl = rtText.сreateControl( aParent );
+    GridData gd = new GridData();
+    gd.widthHint = 130;
+    gd.minimumWidth = 130;
+    ctrl.setLayoutData( gd );
+
+    // gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "indication" );
+    // createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "indication", ICONID_GRAY_LAMP, aTrueImageId );
+    // gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "generation" );
+    // createCheckEditor( aParent, gwid, "cmdSetPoint" + aNum + "generation", ICONID_GRAY_LAMP, aTrueImageId );
+
+    Composite bkPane = new Composite( aParent, SWT.NONE );
+    bkPane.setLayout( new GridLayout( 2, false ) );
+    // l = new CLabel( bkPane, SWT.NONE );
+    // l.setImage( iconManager().loadStdIcon( ICONID_GRAY_LAMP, EIconSize.IS_24X24 ) );
+
+    // MccRtBooleanLabel rtl;
+    // rtl = new MccRtBooleanLabel( gwid, ICONID_GRAY_LAMP, ICONID_ORANGE_LAMP, EIconSize.IS_24X24, tsContext() );
+    // rtl.createControl( bkPane, SWT.NONE );
+    createRtBooleanIcon( bkPane, aIndicationId, aTrueImageId, ICONID_GRAY_LAMP );
+
+    // Button btn = new Button( bkPane, SWT.CHECK );
+
+    Gwid cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdSetPoint" + aNum + "indication" ); //$NON-NLS-1$//$NON-NLS-2$
+    Gwid dataGwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "indication" ); //$NON-NLS-1$//$NON-NLS-2$
+    MccCheckCmdButton mccBtn = new MccCheckCmdButton( cmdGwid, dataGwid, tsContext() );
+    mccBtn.createControl( bkPane, SWT.NONE );
+
+    bkPane = new Composite( aParent, SWT.NONE );
+    bkPane.setLayout( new GridLayout( 2, false ) );
+    // rtl = new MccRtBooleanLabel( gwid, ICONID_GRAY_LAMP, ICONID_ORANGE_LAMP, EIconSize.IS_24X24, tsContext() );
+    // rtl.createControl( bkPane, SWT.NONE );
+    // l.setImage( iconManager().loadStdIcon( ICONID_GREEN_LAMP, EIconSize.IS_24X24 ) );
+    createRtBooleanIcon( bkPane, aGenerationId, aTrueImageId, ICONID_GRAY_LAMP );
+    // Button btn = new Button( bkPane, SWT.CHECK );
+
+    cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdSetPoint" + aNum + "generation" ); //$NON-NLS-1$ //$NON-NLS-2$
+    dataGwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "generation" ); //$NON-NLS-1$ //$NON-NLS-2$
+    mccBtn = new MccCheckCmdButton( cmdGwid, dataGwid, tsContext() );
+    mccBtn.createControl( bkPane, SWT.NONE );
+
   }
 
   /**
@@ -142,13 +200,19 @@ public class PanelAnalogInput
    * @param aContext MccDialogContext - контекст диалога
    */
   public static void showDialog( MccDialogContext aContext ) {
-    IDialogPanelCreator<Object, MccDialogContext> creator = PanelAnalogInput::new;
+    // IDialogPanelCreator<Object, MccDialogContext> creator = PanelAnalogInput::new;
     ITsGuiContext ctx = aContext.tsContext();
     Shell shell = ctx.get( Shell.class ).getShell();
-    int flags = ITsDialogConstants.DF_NO_APPROVE;
-    ITsDialogInfo dlgInfo = new TsDialogInfo( ctx, shell, aContext.skObject().readableName(), DLG_SETTINGS_MSG, flags );
-    TsDialog<Object, MccDialogContext> d = new TsDialog<>( dlgInfo, null, aContext, creator );
-    d.execData();
+    // int flags = ITsDialogConstants.DF_NO_APPROVE;
+    // ITsDialogInfo dlgInfo = new TsDialogInfo( ctx, shell, aContext.skObject().readableName(), DLG_SETTINGS_MSG, flags
+    // );
+    // TsDialog<Object, MccDialogContext> d = new TsDialog<>( dlgInfo, null, aContext, creator );
+    // d.execData();
+
+    MccDialogWindow wnd = new MccDialogWindow( shell, aContext.skObject().readableName() );
+    PanelAnalogInput panel = new PanelAnalogInput( wnd.shell(), aContext );
+    panel.layout();
+    wnd.open();
   }
 
 }
