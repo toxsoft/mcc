@@ -153,11 +153,14 @@
             <logger category="org.toxsoft">
                 <level name="INFO"/>
             </logger>
+            <logger category="org.toxsoft.core.pas.server.PasServer">
+                <level name="ERROR"/>
+            </logger>
             <logger category="org.toxsoft.uskat.s5.utils.threads.impl.S5LockControl">
                 <level name="ALL"/>
             </logger>
             <logger category="org.toxsoft.uskat.s5.server.sessions.pas.S5SessionMessenger">
-                <level name="ALL"/>
+                <level name="ERROR"/>
             </logger>
             
             <logger category="S5SequenceWriter">
