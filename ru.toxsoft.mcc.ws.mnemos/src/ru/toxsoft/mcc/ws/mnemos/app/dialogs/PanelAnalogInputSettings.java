@@ -1,5 +1,7 @@
 package ru.toxsoft.mcc.ws.mnemos.app.dialogs;
 
+import static ru.toxsoft.mcc.ws.mnemos.IMccWsMnemosConstants.*;
+
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
 import org.eclipse.swt.layout.*;
@@ -32,6 +34,24 @@ public class PanelAnalogInputSettings
     GridLayout layout = new GridLayout( 1, false );
     setLayout( layout );
 
+    Composite comp = new Composite( this, SWT.NONE );
+    comp.setLayout( new GridLayout( 2, false ) );
+
+    CLabel l = new CLabel( this, SWT.NONE );
+    l.setText( dataInfo( "rtdChannelAddress" ).nmName() );
+    MccRtLabel rtLabel = new MccRtLabel( skObject, "rtdChannelAddress", tsContext(), null );
+    Control ctrl = rtLabel.createControl( comp, SWT.BORDER );
+    GridData gd = new GridData();
+    gd.widthHint = 130;
+    ctrl.setLayoutData( gd );
+
+    gd = new GridData( SWT.LEFT, SWT.TOP, false, false, 2, 1 );
+    MccRtBooleanLabel rtbLabel;
+    rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationError", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
+    rtbLabel.getControl().setLayoutData( gd );
+    rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationWarning", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
+    rtbLabel.getControl().setLayoutData( gd );
+
     createScaleGroup();
 
     // createValueGroup();
@@ -63,6 +83,7 @@ public class PanelAnalogInputSettings
   }
 
   void createScaleGroup() {
+
     Group group = createGroup( this, "Масштабирование", 2, false );
 
     CLabel l;

@@ -190,6 +190,7 @@ public abstract class AbstractMccDialogPanel
     CLabel l = rtLabel.createControl( aParent, SWT.NONE );
     l.setText( dInfo.nmName() );
     l.setToolTipText( dInfo.description() );
+    rtLabel.setDescription( dInfo.description() );
 
     dataProvider.addDataConsumer( rtLabel );
 
