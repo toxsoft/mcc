@@ -178,6 +178,7 @@ public class PanelAnalogInput
     Gwid dataGwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "indication" ); //$NON-NLS-1$//$NON-NLS-2$
     MccCheckCmdButton mccBtn = new MccCheckCmdButton( cmdGwid, dataGwid, tsContext() );
     mccBtn.createControl( bkPane, SWT.NONE );
+    dataProvider().addDataConsumer( mccBtn );
 
     bkPane = new Composite( aParent, SWT.NONE );
     bkPane.setLayout( new GridLayout( 2, false ) );
@@ -191,6 +192,7 @@ public class PanelAnalogInput
     dataGwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdSetPoint" + aNum + "generation" ); //$NON-NLS-1$ //$NON-NLS-2$
     mccBtn = new MccCheckCmdButton( cmdGwid, dataGwid, tsContext() );
     mccBtn.createControl( bkPane, SWT.NONE );
+    dataProvider().addDataConsumer( mccBtn );
 
   }
 
