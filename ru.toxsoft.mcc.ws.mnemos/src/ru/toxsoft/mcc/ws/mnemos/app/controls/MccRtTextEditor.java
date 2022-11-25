@@ -165,7 +165,14 @@ public class MccRtTextEditor
 
   public Composite сreateControl( Composite aParent ) {
     board = new Composite( aParent, SWT.NO_FOCUS );
-    board.setLayout( new GridLayout( 2, false ) );
+    GridLayout gl = new GridLayout( 2, false );
+    gl.verticalSpacing = 0;
+    gl.horizontalSpacing = 0;
+    gl.marginTop = 0;
+    gl.marginBottom = 0;
+    gl.marginHeight = 0;
+    gl.marginWidth = 0;
+    board.setLayout( gl );
     // label
     label = new CLabel( board, SWT.BORDER | SWT.LEFT );
     label.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false, 1, 1 ) );

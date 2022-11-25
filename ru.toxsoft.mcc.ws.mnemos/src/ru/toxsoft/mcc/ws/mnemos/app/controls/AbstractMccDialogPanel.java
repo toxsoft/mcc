@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.mnemos.app.dialogs;
+package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
@@ -20,7 +20,7 @@ import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.utils.*;
 
-import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
+import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
 import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 
@@ -71,16 +71,32 @@ public abstract class AbstractMccDialogPanel
     return skConnection;
   }
 
-  MccRtDataProvider dataProvider() {
-    return dataProvider;
-  }
-
   // ------------------------------------------------------------------------------------
   // API
   //
 
-  MccDialogContext dialogContext() {
+  public MccDialogContext dialogContext() {
     return dlgContext;
+  }
+
+  public MccRtDataProvider dataProvider() {
+    return dataProvider;
+  }
+
+  /**
+   * Создает однострочный текст, отображающий значение РВ-данного, на основе {@link CLabel}.<br>
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aStyle int - swt стиль контроля
+   * @param aDataId String - ИД данного
+   * @param aTsContext ITsGuiContext - соответствующий контекст
+   * @return MccRtLabel - однострочный текст, отображающий значение РВ-данного
+   */
+  public MccRtLabel createRtLabel( Composite aParent, int aStyle, String aDataId, ITsGuiContext aTsContext ) {
+    MccRtLabel rtl = new MccRtLabel( dlgContext.skObject(), aDataId, aTsContext, null );
+    dataProvider.addDataConsumer( rtl );
+    rtl.createControl( aParent, aStyle );
+    return rtl;
   }
 
   // ------------------------------------------------------------------------------------
@@ -91,17 +107,19 @@ public abstract class AbstractMccDialogPanel
   // return rtPanel;
   // }
 
-  Group createGroup( Composite aParent, String aName, int aColumnsCount, boolean aEqualSize ) {
+  public Group createGroup( Composite aParent, String aName, int aColumnsCount, boolean aEqualSize ) {
     Group group = new Group( aParent, SWT.NONE );
     group.setText( aName );
     GridLayout gl = new GridLayout( aColumnsCount, aEqualSize );
-    gl.verticalSpacing = 0;
+    gl.verticalSpacing = 2;
+    gl.marginTop = 0;
+    gl.marginBottom = 0;
     group.setLayout( gl );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     return group;
   }
 
-  ValedBooleanCheckAdv createBooleanIndicator( Composite aParent, Gwid aGwid, String aText, String aTrueImageId,
+  public ValedBooleanCheckAdv createBooleanIndicator( Composite aParent, Gwid aGwid, String aText, String aTrueImageId,
       String aFalseImageId ) {
 
     ITsGuiContext ctx = new TsGuiContext( tsContext() );
@@ -120,7 +138,7 @@ public abstract class AbstractMccDialogPanel
     return valed;
   }
 
-  ValedBooleanCheckAdv createRtBooleanIndicator( Composite aParent, String aDataId, String aTrueImageId,
+  public ValedBooleanCheckAdv createRtBooleanIndicator( Composite aParent, String aDataId, String aTrueImageId,
       String aFalseImageId ) {
 
     ISkClassInfo classInfo = coreApi().sysdescr().getClassInfo( dlgContext.skObject().classId() );
@@ -153,7 +171,7 @@ public abstract class AbstractMccDialogPanel
    * @param aTrueImageId String - ИД картинки для значения <b>true</b>
    * @return MccRtBooleanLabel - созданный контроль
    */
-  MccRtBooleanLabel createRtBooleanIcon( Composite aParent, String aDataId, String aTrueImageId,
+  public MccRtBooleanLabel createRtBooleanIcon( Composite aParent, String aDataId, String aTrueImageId,
       String aFalseImageId ) {
     ISkObject skObj = dlgContext.skObject();
     Gwid gwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
@@ -179,7 +197,7 @@ public abstract class AbstractMccDialogPanel
    * @param aTrueImageId String - ИД картинки для значения <b>true</b>
    * @return MccRtBooleanLabel - созданный контроль
    */
-  MccRtBooleanLabel createRtBooleanLabel( Composite aParent, String aDataId, String aFalseImageId,
+  public MccRtBooleanLabel createRtBooleanLabel( Composite aParent, String aDataId, String aFalseImageId,
       String aTrueImageId ) {
     ISkObject skObj = dlgContext.skObject();
     Gwid gwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
@@ -197,7 +215,15 @@ public abstract class AbstractMccDialogPanel
     return rtLabel;
   }
 
-  MccRtTextEditor createRtTextEditor( ISkObject aSkObj, String aDataId, String aCmdId, ITsGuiContext aTsContext ) {
+  public MccAttrEditor createAttrEditor( Composite aParent, ISkObject aSkObject, String aAttrId,
+      ITsGuiContext aTsContext ) {
+    MccAttrEditor attrEditor = new MccAttrEditor( aSkObject, aAttrId, aTsContext, null );
+    attrEditor.createControl( aParent );
+    return attrEditor;
+  }
+
+  public MccRtTextEditor createRtTextEditor( ISkObject aSkObj, String aDataId, String aCmdId,
+      ITsGuiContext aTsContext ) {
     MccRtTextEditor rtEditor = new MccRtTextEditor( aSkObj, aDataId, aCmdId, aTsContext );
     dataProvider.addDataConsumer( rtEditor );
     return rtEditor;
@@ -221,7 +247,7 @@ public abstract class AbstractMccDialogPanel
   // return valed;
   // }
 
-  MccValedAvBooleanCheckCommand createCheckEditor( Composite aParent, Gwid aDataGwid, String aCommandId,
+  public MccValedAvBooleanCheckCommand createCheckEditor( Composite aParent, Gwid aDataGwid, String aCommandId,
       String aFalseImageId, String aTrueImageId ) {
     TsNullArgumentRtException.checkNulls( aParent, aDataGwid );
     TsGuiContext ctx = new TsGuiContext( tsContext() );
@@ -246,6 +272,11 @@ public abstract class AbstractMccDialogPanel
   protected IDtoRtdataInfo dataInfo( String aDataId ) {
     ISkClassInfo clsInfo = coreApi().sysdescr().getClassInfo( dlgContext.skObject().classId() );
     return clsInfo.rtdata().list().getByKey( aDataId );
+  }
+
+  protected IDtoAttrInfo attrInfo( String aAttrId ) {
+    ISkClassInfo clsInfo = coreApi().sysdescr().getClassInfo( dlgContext.skObject().classId() );
+    return clsInfo.attrs().list().getByKey( aAttrId );
   }
 
 }

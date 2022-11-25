@@ -18,7 +18,7 @@ public class MccRtLabel
 
   CLabel label = null;
 
-  public MccRtLabel( ISkObject aSkObject, String aDataId, ITsGuiContext aTsContext, IdChain aConnId ) {
+  MccRtLabel( ISkObject aSkObject, String aDataId, ITsGuiContext aTsContext, IdChain aConnId ) {
     super( aSkObject, aDataId, aTsContext, aConnId );
   }
 
