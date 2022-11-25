@@ -30,15 +30,15 @@ public class PanelIrreversibleEngine
     super( aParent, aOwnerDialog );
     skObject = environ().skObject();
     init();
-    contentPanel().rtStart();
+    // contentPanel().rtStart();
   }
 
   void init() {
 
     GridLayout layout = new GridLayout( 1, false );
-    contentPanel().setLayout( layout );
+    // contentPanel().setLayout( layout );
 
-    Composite buttonBar = new Composite( contentPanel(), SWT.NONE );
+    Composite buttonBar = new Composite( this, SWT.NONE );
     buttonBar.setLayout( new GridLayout( 2, false ) );
 
     GridData gd = new GridData();
@@ -57,7 +57,7 @@ public class PanelIrreversibleEngine
 
       @Override
       public void widgetSelected( SelectionEvent e ) {
-        PanelAnalogInputSettings.showDialog( environ() );
+        // PanelAnalogInputSettings.showDialog( environ() );
       }
     } );
 
