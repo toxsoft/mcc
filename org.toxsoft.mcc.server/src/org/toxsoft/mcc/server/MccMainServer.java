@@ -12,6 +12,7 @@ import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.IListEdit;
 import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
 import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.uskat.alarms.s5.addons.S5BaAlarmCreator;
 import org.toxsoft.uskat.dataquality.s5.addons.S5BaDataQualityCreator;
 import org.toxsoft.uskat.s5.common.S5Module;
 import org.toxsoft.uskat.s5.server.backend.addons.IS5BackendAddonCreator;
@@ -55,7 +56,8 @@ public class MccMainServer
     StridablesList<IS5BackendAddonCreator> retValue = new StridablesList<>( uskatServer.baCreators() );
     // Собственные аддоны
     retValue.addAll( //
-        new S5BaDataQualityCreator() //
+        new S5BaDataQualityCreator(), //
+        new S5BaAlarmCreator() //
     );
     return retValue;
   }
