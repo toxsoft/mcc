@@ -61,6 +61,12 @@ public class PanelAnalogInputSettings
     ctrl = rtLabel.getControl();
     ctrl.setLayoutData( gd );
 
+    l = new CLabel( comp, SWT.NONE );
+    l.setText( dataInfo( "rtdFilterConst" ).nmName() );
+    rtLabel = createRtLabel( comp, SWT.BORDER, "rtdFilterConst", tsContext() );
+    ctrl = rtLabel.getControl();
+    ctrl.setLayoutData( gd );
+
     MccRtBooleanLabel rtbLabel;
 
     comp = new Composite( this, SWT.NONE );
@@ -69,9 +75,14 @@ public class PanelAnalogInputSettings
     rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationError", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
     dataProvider().addDataConsumer( rtbLabel );
 
-    rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationWarning", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
+    rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationWarning", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP );
+    // $NON-NLS-1$
     dataProvider().addDataConsumer( rtbLabel );
 
+    MccCheckCmdButton checkBtn = createCheckCmdButton( comp, "cmdEnblAlarmTreat", "rtdEnblAlarmTreat", tsContext() );
+    checkBtn.getControl().setText( dataInfo( "rtdEnblAlarmTreat" ).nmName() );
+
+    createImitationGroup();
     createScaleGroup();
 
     comp = new Composite( this, SWT.NONE );
@@ -95,7 +106,6 @@ public class PanelAnalogInputSettings
     l.setText( attrInfo( "atrDecimalPoint" ).nmName() );
     attrEditor = createAttrEditor( comp, skObject, "atrDecimalPoint", tsContext() );
     attrEditor.getControl().setLayoutData( gd );
-
   }
 
   void createScaleGroup() {
@@ -159,6 +169,25 @@ public class PanelAnalogInputSettings
     gd.minimumWidth = 130;
     ctrl.setLayoutData( gd );
 
+  }
+
+  void createImitationGroup() {
+    Group group = createGroup( this, "Имитация", 2, false );
+
+    MccCheckCmdButton checkBtn = createCheckCmdButton( group, "cmdImitation", "rtdImitation", tsContext() );
+    Button btn = checkBtn.getControl();
+    btn.setText( dataInfo( "rtdImitation" ).nmName() );
+    btn.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, true, false, 2, 1 ) );
+
+    CLabel l = new CLabel( group, SWT.NONE );
+    l.setText( dataInfo( "rtdImitationValue" ).nmName() );
+
+    MccRtTextEditor rtText = createRtTextEditor( skObject, "rtdImitationValue", "cmdImitationValue", tsContext() ); // $NON-NLS-1$ //$NON-NLS-2$
+    Control ctrl = rtText.сreateControl( group );
+    GridData gd = new GridData();
+    gd.widthHint = 130;
+    gd.minimumWidth = 130;
+    ctrl.setLayoutData( gd );
   }
 
   /**

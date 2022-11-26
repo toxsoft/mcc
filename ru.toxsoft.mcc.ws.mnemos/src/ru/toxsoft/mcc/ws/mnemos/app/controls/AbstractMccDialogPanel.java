@@ -99,6 +99,26 @@ public abstract class AbstractMccDialogPanel
     return rtl;
   }
 
+  /**
+   * Создает checkbox для посылки команды.<b>
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aCmdId String - ИД команды
+   * @param aDataId String - ИД данного
+   * @param aTsContext ITsGuiContext - соответствующий контекст
+   * @return MccCheckCmdButton - checkbox для посылки команды
+   */
+  public MccCheckCmdButton createCheckCmdButton( Composite aParent, String aCmdId, String aDataId,
+      ITsGuiContext aTsContext ) {
+    ISkObject skObj = dialogContext().skObject();
+    Gwid cmdGwid = Gwid.createCmd( skObj.classId(), skObj.strid(), aCmdId );
+    Gwid dataGwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
+    MccCheckCmdButton btn = new MccCheckCmdButton( cmdGwid, dataGwid, aTsContext );
+    btn.createControl( aParent, SWT.CHECK );
+    dataProvider.addDataConsumer( btn );
+    return btn;
+  }
+
   // ------------------------------------------------------------------------------------
   // Implementation
   //
