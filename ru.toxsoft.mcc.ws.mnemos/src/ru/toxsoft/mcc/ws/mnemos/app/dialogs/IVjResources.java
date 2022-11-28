@@ -32,6 +32,11 @@ interface IVjResources {
   String STR_LOW_WARN_LIMIT  = "Нижний предупредительный предел: ";
   String STR_LOW_ALARM_LIMIT = "Нижний аварийный предел: ";
 
-  String STR_CONFIRMATION = "Квитировать";
-  String STR_SETTINGS     = "Настройки";
+  String STR_CONFIRMATION        = "Квитировать";
+  String STR_SETTINGS            = "Настройки";
+  String STR_IMITATION           = "Имитация";
+  String STR_SCALING             = "Масштабирование";
+  String STR_UNIT                = "ед.изм.";
+  String STR_INVOKE_SETTINGS_DLG = "Вызвать диалог настроек аналогового синала";
+
 }

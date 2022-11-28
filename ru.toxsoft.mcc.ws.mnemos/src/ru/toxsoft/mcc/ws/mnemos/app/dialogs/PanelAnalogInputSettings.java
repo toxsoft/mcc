@@ -1,6 +1,7 @@
 package ru.toxsoft.mcc.ws.mnemos.app.dialogs;
 
 import static ru.toxsoft.mcc.ws.mnemos.IMccWsMnemosConstants.*;
+import static ru.toxsoft.mcc.ws.mnemos.app.dialogs.IVjResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
@@ -34,7 +35,6 @@ public class PanelAnalogInputSettings
 
     GridLayout layout = new GridLayout( 1, false );
     setLayout( layout );
-    // setLayout( new RowLayout( SWT.VERTICAL ) );
 
     Composite comp = new Composite( this, SWT.NONE );
     GridLayout gl = new GridLayout( 2, false );
@@ -42,8 +42,8 @@ public class PanelAnalogInputSettings
     comp.setLayout( gl );
 
     CLabel l = new CLabel( comp, SWT.NONE );
-    l.setText( dataInfo( "rtdChannelAddress" ).nmName() );
-    MccRtLabel rtLabel = createRtLabel( comp, SWT.BORDER, "rtdChannelAddress", tsContext() );
+    l.setText( dataInfo( "rtdChannelAddress" ).nmName() ); //$NON-NLS-1$
+    MccRtLabel rtLabel = createRtLabel( comp, SWT.BORDER, "rtdChannelAddress", tsContext() ); //$NON-NLS-1$
     Control ctrl = rtLabel.getControl();
     GridData gd = new GridData( SWT.LEFT, SWT.FILL, false, true );
     gd.widthHint = 130;
@@ -51,19 +51,19 @@ public class PanelAnalogInputSettings
     ctrl.setLayoutData( gd );
 
     l = new CLabel( comp, SWT.NONE );
-    IAtomicValue unitVal = skObject.attrs().findByKey( "atrMeasurePhisical" );
-    String unitStr = "ед.изм.";
+    IAtomicValue unitVal = skObject.attrs().findByKey( "atrMeasurePhisical" ); //$NON-NLS-1$
+    String unitStr = STR_UNIT;
     if( unitVal != null && unitVal.isAssigned() && !unitVal.asString().isBlank() ) {
       unitStr = unitVal.asString();
     }
-    l.setText( dataInfo( "rtdPhysicalValue" ).nmName() + " " + unitStr );
-    rtLabel = createRtLabel( comp, SWT.BORDER, "rtdPhysicalValue", tsContext() );
+    l.setText( dataInfo( "rtdPhysicalValue" ).nmName() + " " + unitStr ); //$NON-NLS-1$//$NON-NLS-2$
+    rtLabel = createRtLabel( comp, SWT.BORDER, "rtdPhysicalValue", tsContext() ); //$NON-NLS-1$
     ctrl = rtLabel.getControl();
     ctrl.setLayoutData( gd );
 
     l = new CLabel( comp, SWT.NONE );
-    l.setText( dataInfo( "rtdFilterConst" ).nmName() );
-    rtLabel = createRtLabel( comp, SWT.BORDER, "rtdFilterConst", tsContext() );
+    l.setText( dataInfo( "rtdFilterConst" ).nmName() ); //$NON-NLS-1$
+    rtLabel = createRtLabel( comp, SWT.BORDER, "rtdFilterConst", tsContext() ); //$NON-NLS-1$
     ctrl = rtLabel.getControl();
     ctrl.setLayoutData( gd );
 
@@ -75,53 +75,44 @@ public class PanelAnalogInputSettings
     rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationError", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
     dataProvider().addDataConsumer( rtbLabel );
 
-    rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationWarning", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP );
-    // $NON-NLS-1$
+    rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationWarning", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
     dataProvider().addDataConsumer( rtbLabel );
 
-    MccCheckCmdButton checkBtn = createCheckCmdButton( comp, "cmdEnblAlarmTreat", "rtdEnblAlarmTreat", tsContext() );
-    checkBtn.getControl().setText( dataInfo( "rtdEnblAlarmTreat" ).nmName() );
+    MccCheckCmdButton checkBtn = createCheckCmdButton( comp, "cmdEnblAlarmTreat", "rtdEnblAlarmTreat", tsContext() ); //$NON-NLS-1$//$NON-NLS-2$
+    checkBtn.getControl().setText( dataInfo( "rtdEnblAlarmTreat" ).nmName() ); //$NON-NLS-1$
 
     createImitationGroup();
     createScaleGroup();
 
     comp = new Composite( this, SWT.NONE );
-    // comp.setBackground( colorManager().getColor( ETsColor.GREEN ) );
-    // comp.setLayout( new GridLayout( 2, false ) );
     comp.setLayout( gl );
 
     MccAttrEditor attrEditor;
 
     l = new CLabel( comp, SWT.NONE );
-    l.setText( attrInfo( "atrMeasureValue" ).nmName() );
-    attrEditor = createAttrEditor( comp, skObject, "atrMeasureValue", tsContext() );
+    l.setText( attrInfo( "atrMeasureValue" ).nmName() ); //$NON-NLS-1$
+    attrEditor = createAttrEditor( comp, skObject, "atrMeasureValue", tsContext() ); //$NON-NLS-1$
     attrEditor.getControl().setLayoutData( gd );
 
     l = new CLabel( comp, SWT.NONE );
-    l.setText( attrInfo( "atrMeasurePhisical" ).nmName() );
-    attrEditor = createAttrEditor( comp, skObject, "atrMeasurePhisical", tsContext() );
+    l.setText( attrInfo( "atrMeasurePhisical" ).nmName() ); //$NON-NLS-1$
+    attrEditor = createAttrEditor( comp, skObject, "atrMeasurePhisical", tsContext() ); //$NON-NLS-1$
     attrEditor.getControl().setLayoutData( gd );
 
     l = new CLabel( comp, SWT.NONE );
-    l.setText( attrInfo( "atrDecimalPoint" ).nmName() );
-    attrEditor = createAttrEditor( comp, skObject, "atrDecimalPoint", tsContext() );
+    l.setText( attrInfo( "atrDecimalPoint" ).nmName() ); //$NON-NLS-1$
+    attrEditor = createAttrEditor( comp, skObject, "atrDecimalPoint", tsContext() ); //$NON-NLS-1$
     attrEditor.getControl().setLayoutData( gd );
   }
 
   void createScaleGroup() {
 
-    Group group = createGroup( this, "Масштабирование", 2, false );
+    Group group = createGroup( this, STR_SCALING, 2, false );
 
     CLabel l;
-    int fieldWidth = 60;
-    String formatStr = "%.2f"; //$NON-NLS-1$
-
     l = new CLabel( group, SWT.CENTER );
-    // l.setText( "Значение входного сигнала X0" );
     l.setText( dataInfo( "rtdX0" ).nmName() ); //$NON-NLS-1$
-    // Gwid gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdX0" );
-    // createFloatingEditor( group, gwid, "cmdX0" );
-    // createFloatingEditor( group, "x0", "x0", formatStr, fieldWidth ); //$NON-NLS-1$//$NON-NLS-2$
+
     MccRtTextEditor rtText;
     rtText = createRtTextEditor( skObject, "rtdX0", "cmdX0", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
     Control ctrl = rtText.сreateControl( group );
@@ -131,11 +122,8 @@ public class PanelAnalogInputSettings
     ctrl.setLayoutData( gd );
 
     l = new CLabel( group, SWT.CENTER );
-    // l.setText( "Значение входного сигнала X1" );
     l.setText( dataInfo( "rtdX1" ).nmName() ); //$NON-NLS-1$
-    // gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdX1" );
-    // createFloatingEditor( group, gwid, "cmdX1" );
-    // createFloatingEditor( group, "x1", "x1", formatStr, fieldWidth ); //$NON-NLS-1$//$NON-NLS-2$
+
     rtText = createRtTextEditor( skObject, "rtdX1", "cmdX1", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
     ctrl = rtText.сreateControl( group );
     gd = new GridData();
@@ -144,11 +132,8 @@ public class PanelAnalogInputSettings
     ctrl.setLayoutData( gd );
 
     l = new CLabel( group, SWT.CENTER );
-    // l.setText( "Значение входного сигнала Y0" );
     l.setText( dataInfo( "rtdY0" ).nmName() ); //$NON-NLS-1$
-    // gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdY0" );
-    // createFloatingEditor( group, gwid, "cmdY0" );
-    // createFloatingEditor( group, "y0", "y0", formatStr, fieldWidth ); //$NON-NLS-1$//$NON-NLS-2$
+
     rtText = createRtTextEditor( skObject, "rtdY0", "cmdY0", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
     ctrl = rtText.сreateControl( group );
     gd = new GridData();
@@ -157,11 +142,8 @@ public class PanelAnalogInputSettings
     ctrl.setLayoutData( gd );
 
     l = new CLabel( group, SWT.CENTER );
-    // l.setText( "Значение входного сигнала Y1" );
     l.setText( dataInfo( "rtdY1" ).nmName() ); //$NON-NLS-1$
-    // gwid = Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdY1" );
-    // createFloatingEditor( group, gwid, "cmdY1" );
-    // createFloatingEditor( group, "y1", "y1", formatStr, fieldWidth ); //$NON-NLS-1$//$NON-NLS-2$
+
     rtText = createRtTextEditor( skObject, "rtdY1", "cmdY1", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
     ctrl = rtText.сreateControl( group );
     gd = new GridData();
@@ -172,17 +154,17 @@ public class PanelAnalogInputSettings
   }
 
   void createImitationGroup() {
-    Group group = createGroup( this, "Имитация", 2, false );
+    Group group = createGroup( this, STR_IMITATION, 2, false );
 
-    MccCheckCmdButton checkBtn = createCheckCmdButton( group, "cmdImitation", "rtdImitation", tsContext() );
+    MccCheckCmdButton checkBtn = createCheckCmdButton( group, "cmdImitation", "rtdImitation", tsContext() ); //$NON-NLS-1$//$NON-NLS-2$
     Button btn = checkBtn.getControl();
-    btn.setText( dataInfo( "rtdImitation" ).nmName() );
+    btn.setText( dataInfo( "rtdImitation" ).nmName() ); //$NON-NLS-1$
     btn.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, true, false, 2, 1 ) );
 
     CLabel l = new CLabel( group, SWT.NONE );
-    l.setText( dataInfo( "rtdImitationValue" ).nmName() );
+    l.setText( dataInfo( "rtdImitationValue" ).nmName() ); //$NON-NLS-1$
 
-    MccRtTextEditor rtText = createRtTextEditor( skObject, "rtdImitationValue", "cmdImitationValue", tsContext() ); // $NON-NLS-1$ //$NON-NLS-2$
+    MccRtTextEditor rtText = createRtTextEditor( skObject, "rtdImitationValue", "cmdImitationValue", tsContext() ); // $NON-NLS-1$ //$NON-NLS-1$//$NON-NLS-2$
     Control ctrl = rtText.сreateControl( group );
     GridData gd = new GridData();
     gd.widthHint = 130;
@@ -193,22 +175,15 @@ public class PanelAnalogInputSettings
   /**
    * Показывает диалог Аналогового сигнала.
    *
+   * @param aX int - x координата левого верхнего угла дочернего диалога в пикселях
+   * @param aY int - y координата левого верхнего угла дочернего диалога в пикселях
    * @param aContext MccDialogContext - контекст диалога
    */
   public static void showDialog( int aX, int aY, MccDialogContext aContext ) {
-    // IDialogPanelCreator<Object, MccDialogContext> creator = PanelAnalogInputSettings::new;
-    // ITsGuiContext ctx = aContext.tsContext();
-    // Shell shell = ctx.get( Shell.class ).getShell();
-    // int flags = ITsDialogConstants.DF_NO_APPROVE;
-    // ITsDialogInfo dlgInfo = new TsDialogInfo( ctx, shell, aContext.skObject().readableName(), DLG_SETTINGS_MSG, flags
-    // );
-    // TsDialog<Object, MccDialogContext> d = new TsDialog<>( dlgInfo, null, aContext, creator );
-    // d.execData();
-
     ITsGuiContext ctx = aContext.tsContext();
     Shell shell = ctx.get( Shell.class ).getShell();
 
-    MccDialogWindow wnd = new MccDialogWindow( shell, aContext.skObject().readableName() + " настройки" );
+    MccDialogWindow wnd = new MccDialogWindow( shell, aContext.skObject().readableName() + " " + STR_SETTINGS ); //$NON-NLS-1$
     PanelAnalogInputSettings panel = new PanelAnalogInputSettings( wnd.shell(), aContext );
     panel.layout();
     wnd.open();

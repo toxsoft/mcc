@@ -95,7 +95,7 @@ public class MccCheckCmdButton
    * @param aDataGwid Gwid - ИД данного, по которому ставится галочка
    * @param aTsContext ITsGuiContext - соответствующий контекст
    */
-  public MccCheckCmdButton( Gwid aCmdGwid, Gwid aDataGwid, ITsGuiContext aTsContext ) {
+  MccCheckCmdButton( Gwid aCmdGwid, Gwid aDataGwid, ITsGuiContext aTsContext ) {
     tsContext = aTsContext;
     cmdGwid = aCmdGwid;
     dataGwid = aDataGwid;

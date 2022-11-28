@@ -2,6 +2,7 @@ package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -136,6 +137,10 @@ public abstract class AbstractMccDialogPanel
     gl.marginBottom = 0;
     group.setLayout( gl );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+
+    FontData fd = group.getFont().getFontData()[0];
+    Font f = fontManager().getFont( fd.getName(), (int)(fd.getHeight() * 1.2), SWT.BOLD );
+    group.setFont( f );
     return group;
   }
 
