@@ -59,6 +59,17 @@ public class MccAnalogInputControl
   private static RGB rgbYellow = new RGB( 255, 255, 0 );
   private static RGB rgbRed    = new RGB( 255, 51, 51 );
 
+  private static RGB[] stateRgbs = { //
+      new RGB( 170, 249, 202 ), //
+      new RGB( 107, 195, 255 ), //
+      new RGB( 198, 172, 125 ), //
+      new RGB( 255, 255, 255 ), //
+      new RGB( 85, 229, 230 ), //
+      new RGB( 227, 179, 253 ), //
+      new RGB( 239, 235, 138 ), //
+      new RGB( 255, 142, 179 ) //
+  };
+
   private static Color[] bkColors = new Color[8];
 
   private static Color colorWhite;
@@ -86,15 +97,19 @@ public class MccAnalogInputControl
     colorWhite = colorManager().getColor( ETsColor.WHITE );
     colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
 
-    bkColors[0] = colorManager().getColor( rgbGreen );
-    bkColors[1] = colorManager().getColor( rgbBlue );
-    bkColors[2] = colorManager().getColor( rgbGray );
-    bkColors[3] = colorManager().getColor( rgbViolet );
-    bkColors[4] = colorManager().getColor( rgbViolet );
-    // bkColors[5] = colorManager().getColor( rgbViolet );
-    bkColors[5] = colorMagenta;
-    bkColors[6] = colorManager().getColor( rgbYellow );
-    bkColors[7] = colorManager().getColor( rgbRed );
+    for( int i = 0; i < bkColors.length; i++ ) {
+      bkColors[i] = colorManager().getColor( stateRgbs[i] );
+    }
+
+    // bkColors[0] = colorManager().getColor( rgbGreen );
+    // bkColors[1] = colorManager().getColor( rgbBlue );
+    // bkColors[2] = colorManager().getColor( rgbGray );
+    // bkColors[3] = colorManager().getColor( rgbViolet );
+    // bkColors[4] = colorManager().getColor( rgbViolet );
+    // // bkColors[5] = colorManager().getColor( rgbViolet );
+    // bkColors[5] = colorMagenta;
+    // bkColors[6] = colorManager().getColor( rgbYellow );
+    // bkColors[7] = colorManager().getColor( rgbRed );
   }
 
   // ------------------------------------------------------------------------------------

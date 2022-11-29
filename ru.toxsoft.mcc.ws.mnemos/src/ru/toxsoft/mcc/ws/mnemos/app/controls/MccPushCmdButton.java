@@ -32,10 +32,6 @@ public class MccPushCmdButton
 
   Button button = null;
 
-  IAtomicValue value = IAtomicValue.NULL;
-
-  // private final Image warnImage;
-
   MccCommandSender commandSender;
 
   /**
@@ -48,7 +44,6 @@ public class MccPushCmdButton
   public MccPushCmdButton( Gwid aCmdGwid, ISkCoreApi aCoreApi, ITsGuiContext aTsContext ) {
     tsContext = aTsContext;
     cmdGwid = aCmdGwid;
-    // warnImage = iconManager().loadStdIcon( ITsStdIconIds.ICONID_DIALOG_WARNING, EIconSize.IS_16X16 );
     commandSender = new MccCommandSender( aCmdGwid, aCoreApi );
     commandSender.eventer().addListener( aSource -> {
       button.setEnabled( true );
@@ -73,19 +68,6 @@ public class MccPushCmdButton
    */
   public Button createControl( Composite aParent, int aSwtStyle ) {
     button = new Button( aParent, SWT.PUSH | aSwtStyle );
-    // button.addPaintListener( aE -> {
-    // if( !value.isAssigned() ) {
-    // aE.gc.setAlpha( 160 );
-    // Point size = button.getSize();
-    // aE.gc.fillRectangle( 0, 0, size.x, size.y );
-    // aE.gc.setAlpha( 255 );
-    // aE.gc.drawImage( warnImage, 0, size.y - 16 );
-    // button.setToolTipText( STR_ERR_VALUE_NOT_SET );
-    // }
-    // else {
-    // button.setToolTipText( description );
-    // }
-    // } );
 
     button.addSelectionListener( new SelectionAdapter() {
 
