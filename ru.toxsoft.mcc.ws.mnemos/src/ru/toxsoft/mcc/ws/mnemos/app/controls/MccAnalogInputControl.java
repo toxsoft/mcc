@@ -59,7 +59,7 @@ public class MccAnalogInputControl
   private static RGB rgbYellow = new RGB( 255, 255, 0 );
   private static RGB rgbRed    = new RGB( 255, 51, 51 );
 
-  private static Color[] bkColors = new Color[7];
+  private static Color[] bkColors = new Color[8];
 
   private static Color colorWhite;
   private static Color colorMagenta;
@@ -91,9 +91,10 @@ public class MccAnalogInputControl
     bkColors[2] = colorManager().getColor( rgbGray );
     bkColors[3] = colorManager().getColor( rgbViolet );
     bkColors[4] = colorManager().getColor( rgbViolet );
-    bkColors[5] = colorManager().getColor( rgbYellow );
-    bkColors[6] = colorManager().getColor( rgbRed );
-
+    // bkColors[5] = colorManager().getColor( rgbViolet );
+    bkColors[5] = colorMagenta;
+    bkColors[6] = colorManager().getColor( rgbYellow );
+    bkColors[7] = colorManager().getColor( rgbRed );
   }
 
   // ------------------------------------------------------------------------------------

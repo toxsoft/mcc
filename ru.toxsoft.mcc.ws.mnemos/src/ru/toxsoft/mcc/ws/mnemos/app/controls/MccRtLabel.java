@@ -35,7 +35,12 @@ public class MccRtLabel
 
   @Override
   public void update() {
-    label.setText( AvUtils.printAv( formatString( valueType ), value ) );
+    if( formatter() != null ) {
+      label.setText( formatter().formatValue( value ) );
+    }
+    else {
+      label.setText( AvUtils.printAv( formatString( valueType ), value ) );
+    }
   }
 
 }
