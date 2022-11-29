@@ -204,7 +204,7 @@ public class MccAnalogInputControl
       case BOOLEAN:
         return "%b"; //$NON-NLS-1$
       case FLOATING:
-        return "%0.2f"; //$NON-NLS-1$
+        return "%.2f"; //$NON-NLS-1$
       case INTEGER:
         return "%d"; //$NON-NLS-1$
       case NONE:
