@@ -178,7 +178,7 @@ public class PanelReversibleEngine
     Composite comp = new Composite( aParent, SWT.NONE );
     comp.setLayout( new GridLayout( 5, true ) );
 
-    Gwid cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "awpOpenStart" ); //$NON-NLS-1$
+    Gwid cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStart" ); //$NON-NLS-1$
     MccPushCmdButton cmdButton = new MccPushCmdButton( cmdGwid, coreApi(), tsContext() );
     Button b = cmdButton.createControl( comp, SWT.PUSH );
     b.setImage( images[0] );
@@ -188,7 +188,7 @@ public class PanelReversibleEngine
       btn.setImage( images[i] );
     }
 
-    cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "awpCloseStart" ); //$NON-NLS-1$
+    cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStart" ); //$NON-NLS-1$
     cmdButton = new MccPushCmdButton( cmdGwid, coreApi(), tsContext() );
     b = cmdButton.createControl( comp, SWT.PUSH );
     b.setImage( images[4] );

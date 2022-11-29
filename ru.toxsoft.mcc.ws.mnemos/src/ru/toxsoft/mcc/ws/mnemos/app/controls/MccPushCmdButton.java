@@ -91,7 +91,7 @@ public class MccPushCmdButton
 
       @Override
       public void widgetSelected( SelectionEvent aE ) {
-        if( !commandSender.sendCommand() ) {
+        if( !commandSender.sendCommand( true ) ) {
           TsDialogUtils.error( getShell(), commandSender.errorString() );
           return;
         }

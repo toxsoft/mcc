@@ -1,6 +1,7 @@
 package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.events.change.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
@@ -82,7 +83,7 @@ public class MccCommandSender {
     ISkCommandService cmdService = coreApi.cmdService();
 
     OptionSet cmdArgs = new OptionSet();
-    ISkCommand cmd = cmdService.sendCommand( cmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), cmdArgs );
+    ISkCommand cmd = cmdService.sendCommand( cmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), IOptionSet.NULL );
     CmdUtils.logCommandHistory( cmd );
     errStr = CmdUtils.errorString( cmd );
     if( errStr != null ) {
