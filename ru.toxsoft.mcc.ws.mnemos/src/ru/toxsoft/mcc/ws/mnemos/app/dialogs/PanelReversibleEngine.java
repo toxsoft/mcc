@@ -207,10 +207,10 @@ public class PanelReversibleEngine
       @Override
       public void widgetSelected( SelectionEvent aE ) {
         if( stopClose ) {
-          stopCmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStop" ) ); //$NON-NLS-1$
+          stopCmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStop" ), true ); //$NON-NLS-1$
         }
         if( stopOpen ) {
-          stopCmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStop" ) ); //$NON-NLS-1$
+          stopCmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStop" ), true ); //$NON-NLS-1$
         }
       }
     } );
