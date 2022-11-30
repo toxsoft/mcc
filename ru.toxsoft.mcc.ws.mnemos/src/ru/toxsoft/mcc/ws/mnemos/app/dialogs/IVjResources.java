@@ -39,4 +39,12 @@ interface IVjResources {
   String STR_UNIT                = "ед.изм.";
   String STR_INVOKE_SETTINGS_DLG = "Вызвать диалог настроек аналогового синала";
 
+  /**
+   * {@link PanelIrreversibleEngine}
+   */
+  String STR_START = "Старт";
+  String STR_STOP  = "Стоп";
+
+  String STR_INVOKE_IRR_ENGINE_DIALOG = "Вызвать диалог настроек нереверсивного двигателя";
+
 }

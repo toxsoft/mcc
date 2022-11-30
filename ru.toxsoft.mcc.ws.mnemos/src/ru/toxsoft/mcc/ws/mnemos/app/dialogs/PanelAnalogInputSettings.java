@@ -33,11 +33,11 @@ public class PanelAnalogInputSettings
 
   void init() {
 
-    GridLayout layout = new GridLayout( 1, false );
+    GridLayout layout = createGridLayout( 1, false );
     setLayout( layout );
 
     Composite comp = new Composite( this, SWT.NONE );
-    GridLayout gl = new GridLayout( 2, false );
+    GridLayout gl = createGridLayout( 2, false );
     gl.verticalSpacing = 0;
     comp.setLayout( gl );
 
@@ -70,7 +70,7 @@ public class PanelAnalogInputSettings
     MccRtBooleanLabel rtbLabel;
 
     comp = new Composite( this, SWT.NONE );
-    comp.setLayout( new GridLayout( 1, false ) );
+    comp.setLayout( createGridLayout( 1, false ) );
 
     rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationError", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
     dataProvider().addDataConsumer( rtbLabel );
@@ -78,8 +78,10 @@ public class PanelAnalogInputSettings
     rtbLabel = createRtBooleanLabel( comp, "rtdCalibrationWarning", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
     dataProvider().addDataConsumer( rtbLabel );
 
-    MccCheckCmdButton checkBtn = createCheckCmdButton( comp, "cmdEnblAlarmTreat", "rtdEnblAlarmTreat", tsContext() ); //$NON-NLS-1$//$NON-NLS-2$
-    checkBtn.getControl().setText( dataInfo( "rtdEnblAlarmTreat" ).nmName() ); //$NON-NLS-1$
+    // MccCheckCmdButton checkBtn = createCheckCmdButton( comp, "cmdEnblAlarmTreat", "rtdEnblAlarmTreat", true );
+    // //$NON-NLS-1$//$NON-NLS-2$
+    // checkBtn.getControl().setText( dataInfo( "rtdEnblAlarmTreat" ).nmName() ); //$NON-NLS-1$
+    createCheckCmdButton( comp, "cmdEnblAlarmTreat", "rtdEnblAlarmTreat", true ); //$NON-NLS-1$//$NON-NLS-2$
 
     createImitationGroup();
     createScaleGroup();
@@ -91,17 +93,17 @@ public class PanelAnalogInputSettings
 
     l = new CLabel( comp, SWT.NONE );
     l.setText( attrInfo( "atrMeasureValue" ).nmName() ); //$NON-NLS-1$
-    attrEditor = createAttrEditor( comp, skObject, "atrMeasureValue", tsContext() ); //$NON-NLS-1$
+    attrEditor = createAttrEditor( comp, "atrMeasureValue" ); //$NON-NLS-1$
     attrEditor.getControl().setLayoutData( gd );
 
     l = new CLabel( comp, SWT.NONE );
     l.setText( attrInfo( "atrMeasurePhisical" ).nmName() ); //$NON-NLS-1$
-    attrEditor = createAttrEditor( comp, skObject, "atrMeasurePhisical", tsContext() ); //$NON-NLS-1$
+    attrEditor = createAttrEditor( comp, "atrMeasurePhisical" ); //$NON-NLS-1$
     attrEditor.getControl().setLayoutData( gd );
 
     l = new CLabel( comp, SWT.NONE );
     l.setText( attrInfo( "atrDecimalPoint" ).nmName() ); //$NON-NLS-1$
-    attrEditor = createAttrEditor( comp, skObject, "atrDecimalPoint", tsContext() ); //$NON-NLS-1$
+    attrEditor = createAttrEditor( comp, "atrDecimalPoint" ); //$NON-NLS-1$
     attrEditor.getControl().setLayoutData( gd );
   }
 
@@ -114,8 +116,8 @@ public class PanelAnalogInputSettings
     l.setText( dataInfo( "rtdX0" ).nmName() ); //$NON-NLS-1$
 
     MccRtTextEditor rtText;
-    rtText = createRtTextEditor( skObject, "rtdX0", "cmdX0", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
-    Control ctrl = rtText.сreateControl( group );
+    rtText = createRtTextEditor( "rtdX0", "cmdX0" ); //$NON-NLS-1$ //$NON-NLS-2$
+    Control ctrl = rtText.createControl( group );
     GridData gd = new GridData();
     gd.widthHint = 130;
     gd.minimumWidth = 130;
@@ -124,8 +126,8 @@ public class PanelAnalogInputSettings
     l = new CLabel( group, SWT.CENTER );
     l.setText( dataInfo( "rtdX1" ).nmName() ); //$NON-NLS-1$
 
-    rtText = createRtTextEditor( skObject, "rtdX1", "cmdX1", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
-    ctrl = rtText.сreateControl( group );
+    rtText = createRtTextEditor( "rtdX1", "cmdX1" ); //$NON-NLS-1$ //$NON-NLS-2$
+    ctrl = rtText.createControl( group );
     gd = new GridData();
     gd.widthHint = 130;
     gd.minimumWidth = 130;
@@ -134,8 +136,8 @@ public class PanelAnalogInputSettings
     l = new CLabel( group, SWT.CENTER );
     l.setText( dataInfo( "rtdY0" ).nmName() ); //$NON-NLS-1$
 
-    rtText = createRtTextEditor( skObject, "rtdY0", "cmdY0", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
-    ctrl = rtText.сreateControl( group );
+    rtText = createRtTextEditor( "rtdY0", "cmdY0" ); //$NON-NLS-1$ //$NON-NLS-2$
+    ctrl = rtText.createControl( group );
     gd = new GridData();
     gd.widthHint = 130;
     gd.minimumWidth = 130;
@@ -144,8 +146,8 @@ public class PanelAnalogInputSettings
     l = new CLabel( group, SWT.CENTER );
     l.setText( dataInfo( "rtdY1" ).nmName() ); //$NON-NLS-1$
 
-    rtText = createRtTextEditor( skObject, "rtdY1", "cmdY1", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
-    ctrl = rtText.сreateControl( group );
+    rtText = createRtTextEditor( "rtdY1", "cmdY1" ); //$NON-NLS-1$ //$NON-NLS-2$
+    ctrl = rtText.createControl( group );
     gd = new GridData();
     gd.widthHint = 130;
     gd.minimumWidth = 130;
@@ -156,16 +158,16 @@ public class PanelAnalogInputSettings
   void createImitationGroup() {
     Group group = createGroup( this, STR_IMITATION, 2, false );
 
-    MccCheckCmdButton checkBtn = createCheckCmdButton( group, "cmdImitation", "rtdImitation", tsContext() ); //$NON-NLS-1$//$NON-NLS-2$
+    MccCheckCmdButton checkBtn = createCheckCmdButton( group, "cmdImitation", "rtdImitation", true ); //$NON-NLS-1$//$NON-NLS-2$
     Button btn = checkBtn.getControl();
-    btn.setText( dataInfo( "rtdImitation" ).nmName() ); //$NON-NLS-1$
+    // btn.setText( dataInfo( "rtdImitation" ).nmName() ); //$NON-NLS-1$
     btn.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, true, false, 2, 1 ) );
 
     CLabel l = new CLabel( group, SWT.NONE );
     l.setText( dataInfo( "rtdImitationValue" ).nmName() ); //$NON-NLS-1$
 
-    MccRtTextEditor rtText = createRtTextEditor( skObject, "rtdImitationValue", "cmdImitationValue", tsContext() ); // $NON-NLS-1$ //$NON-NLS-1$//$NON-NLS-2$
-    Control ctrl = rtText.сreateControl( group );
+    MccRtTextEditor rtText = createRtTextEditor( "rtdImitationValue", "cmdImitationValue" ); // $NON-NLS-1$ //$NON-NLS-1$//$NON-NLS-2$
+    Control ctrl = rtText.createControl( group );
     GridData gd = new GridData();
     gd.widthHint = 130;
     gd.minimumWidth = 130;

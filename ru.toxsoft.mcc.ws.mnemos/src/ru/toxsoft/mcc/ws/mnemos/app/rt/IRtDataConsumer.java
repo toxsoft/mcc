@@ -3,6 +3,7 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.bricks.strid.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.*;
 
 /**
  * "Потребитель" данных реального времени.
@@ -45,5 +46,15 @@ public interface IRtDataConsumer
    * @param aCount int - количество данных
    */
   void setValues( Gwid[] aGwids, IAtomicValue[] aValues, int aCount );
+
+  @Override
+  default String nmName() {
+    return TsLibUtils.EMPTY_STRING;
+  }
+
+  @Override
+  default String description() {
+    return TsLibUtils.EMPTY_STRING;
+  }
 
 }

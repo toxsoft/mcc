@@ -163,7 +163,7 @@ public class MccRtTextEditor
   // API
   //
 
-  public Composite сreateControl( Composite aParent ) {
+  public Composite createControl( Composite aParent ) {
     board = new Composite( aParent, SWT.NO_FOCUS );
     GridLayout gl = new GridLayout( 2, false );
     gl.verticalSpacing = 0;
@@ -175,10 +175,10 @@ public class MccRtTextEditor
     board.setLayout( gl );
     // label
     label = new CLabel( board, SWT.BORDER | SWT.LEFT );
-    label.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false, 1, 1 ) );
+    label.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 1, 1 ) );
     // button
     button = new Button( board, SWT.PUSH | SWT.FLAT );
-    button.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, false, 1, 1 ) );
+    button.setLayoutData( new GridData( SWT.FILL, SWT.TOP, false, false, 1, 1 ) );
     button.addSelectionListener( new SelectionAdapter() {
 
       @Override

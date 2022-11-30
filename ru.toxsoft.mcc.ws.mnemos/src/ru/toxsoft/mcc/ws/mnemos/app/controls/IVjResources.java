@@ -16,4 +16,10 @@ interface IVjResources {
   String STR_DLG_T_EDIT_VALUE = "Изменить значение";
   String STR_DLG_M_VALUE      = "Введите значение:";
 
+  /**
+   * {@link AbstractMccDialogPanel}
+   */
+  String STR_OPERATING_TIME       = "Наработка";
+  String STR_CLEAR                = "Сбросить...";
+  String STR_CLEAR_OPERATING_TIME = "Сбросить время наработки?";
 }

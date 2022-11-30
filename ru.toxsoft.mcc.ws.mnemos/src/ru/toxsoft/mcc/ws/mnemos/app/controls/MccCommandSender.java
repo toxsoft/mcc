@@ -25,8 +25,6 @@ import ru.toxsoft.mcc.ws.mnemos.app.*;
  */
 public class MccCommandSender {
 
-  private final Gwid cmdGwid;
-
   private final ISkCoreApi coreApi;
 
   private String errStr = TsLibUtils.EMPTY_STRING;
@@ -69,21 +67,25 @@ public class MccCommandSender {
   /**
    * Конструктор.<br>
    *
-   * @param aCmdGwid Gwid - конкретный ИД команды
    * @param aCoreApi ISkCoreApi - API сервера
    */
-  public MccCommandSender( Gwid aCmdGwid, ISkCoreApi aCoreApi ) {
-    cmdGwid = aCmdGwid;
+  public MccCommandSender( ISkCoreApi aCoreApi ) {
     coreApi = aCoreApi;
     eventer = new GenericChangeEventer( this );
   }
 
-  public boolean sendCommand() {
+  /**
+   * Посылает указанную команду без аргументов.<br>
+   *
+   * @param aCmdGwid Gwid - конкретный ИД команды
+   * @return <b>true</b> - посылка команды прошла успешно (не означает, что команда выполнится с успехом)<br>
+   *         <b>false</b> - не удалось послать команду
+   */
+  public boolean sendCommand( Gwid aCmdGwid ) {
 
     ISkCommandService cmdService = coreApi.cmdService();
 
-    OptionSet cmdArgs = new OptionSet();
-    ISkCommand cmd = cmdService.sendCommand( cmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), IOptionSet.NULL );
+    ISkCommand cmd = cmdService.sendCommand( aCmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), IOptionSet.NULL );
     CmdUtils.logCommandHistory( cmd );
     errStr = CmdUtils.errorString( cmd );
     if( errStr != null ) {
@@ -93,17 +95,25 @@ public class MccCommandSender {
     return true;
   }
 
-  public boolean sendCommand( boolean aArg ) {
+  /**
+   * Посылает указанную команду с булевым аргументом.<br>
+   *
+   * @param aCmdGwid Gwid - конкретный ИД команды
+   * @param aArg boolean - аргумент команды
+   * @return <b>true</b> - посылка команды прошла успешно (не означает, что команда выполнится с успехом)<br>
+   *         <b>false</b> - не удалось послать команду
+   */
+  public boolean sendCommand( Gwid aCmdGwid, boolean aArg ) {
 
     ISkCommandService cmdService = coreApi.cmdService();
 
-    ISkClassInfo classInfo = coreApi.sysdescr().findClassInfo( cmdGwid.classId() );
-    IDtoCmdInfo cmdInfo = classInfo.cmds().list().getByKey( cmdGwid.propId() );
+    ISkClassInfo classInfo = coreApi.sysdescr().findClassInfo( aCmdGwid.classId() );
+    IDtoCmdInfo cmdInfo = classInfo.cmds().list().getByKey( aCmdGwid.propId() );
     String argId = cmdInfo.argDefs().first().id();
 
     OptionSet cmdArgs = new OptionSet();
     cmdArgs.setValue( argId, AvUtils.avBool( aArg ) );
-    ISkCommand cmd = cmdService.sendCommand( cmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), cmdArgs );
+    ISkCommand cmd = cmdService.sendCommand( aCmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), cmdArgs );
     CmdUtils.logCommandHistory( cmd );
     errStr = CmdUtils.errorString( cmd );
     if( errStr != null ) {
@@ -113,10 +123,20 @@ public class MccCommandSender {
     return true;
   }
 
+  /**
+   * Возвращает описание ошибки или <b>null</b> если ошибки не было.
+   *
+   * @return String - описание ошибки или <b>null</b> если ошибки не было
+   */
   public String errorString() {
     return errStr;
   }
 
+  /**
+   * Возвращает помощника по работе с событием изменения состояния.<br>
+   *
+   * @return IGenericChangeEventer - помощник по работе с событием изменения состояния
+   */
   public IGenericChangeEventer eventer() {
     return eventer;
   }

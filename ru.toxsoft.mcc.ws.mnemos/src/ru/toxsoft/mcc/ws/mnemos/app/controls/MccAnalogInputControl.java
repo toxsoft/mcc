@@ -60,10 +60,12 @@ public class MccAnalogInputControl
   private static RGB rgbRed    = new RGB( 255, 51, 51 );
 
   private static RGB[] stateRgbs = { //
-      new RGB( 170, 249, 202 ), //
+      new RGB( 102, 255, 102 ), // зеленый - норма
+      // new RGB( 170, 249, 202 ), // зеленый - норма
       new RGB( 107, 195, 255 ), //
       new RGB( 198, 172, 125 ), //
-      new RGB( 255, 255, 255 ), //
+      new RGB( 160, 160, 160 ), // заблокировано
+      // new RGB( 255, 255, 255 ), // заблокировано
       new RGB( 85, 229, 230 ), //
       new RGB( 227, 179, 253 ), //
       new RGB( 239, 235, 138 ), //

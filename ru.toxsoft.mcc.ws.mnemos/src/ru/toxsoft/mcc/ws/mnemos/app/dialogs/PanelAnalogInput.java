@@ -11,16 +11,13 @@ import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
-import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
-import ru.toxsoft.mcc.ws.mnemos.app.widgets.*;
 
 /**
  * Панель свойств аналогового сигнала.
@@ -42,22 +39,26 @@ public class PanelAnalogInput
 
   void init() {
 
-    GridLayout layout = new GridLayout( 1, false );
+    GridLayout layout = createGridLayout( 1, false );
     setLayout( layout );
 
     createValueGroup();
     createLimitsGroup();
 
     Composite buttonBar = new Composite( this, SWT.NONE );
-    buttonBar.setLayout( new GridLayout( 2, false ) );
+    buttonBar.setLayout( createGridLayout( 2, false ) );
 
     GridData gd = new GridData();
     gd.widthHint = 100;
-    Gwid cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdConfirmation" ); //$NON-NLS-1$
-    OptionSet args = new OptionSet();
-    args.setValue( "value", AvUtils.AV_TRUE ); //$NON-NLS-1$
-    CmdPushButton btn = new CmdPushButton( buttonBar, STR_CONFIRMATION, cmdGwid, args, tsContext() );
-    btn.button().setLayoutData( gd );
+    // Gwid cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdConfirmation" ); //$NON-NLS-1$
+    // OptionSet args = new OptionSet();
+    // args.setValue( "value", AvUtils.AV_TRUE ); //$NON-NLS-1$
+    // CmdPushButton btn = new CmdPushButton( buttonBar, STR_CONFIRMATION, cmdGwid, args, tsContext() );
+    // btn.button().setLayoutData( gd );
+
+    MccPushCmdButton btnConfirm = createPushCmdButton( buttonBar, "cmdConfirmation" ); //$NON-NLS-1$
+    btnConfirm.getControl().setText( STR_CONFIRMATION );
+    btnConfirm.getControl().setLayoutData( gd );
 
     Button btnSettins = new Button( buttonBar, SWT.PUSH );
     btnSettins.setText( STR_SETTINGS );
@@ -134,28 +135,28 @@ public class PanelAnalogInput
     CLabel l = new CLabel( aParent, SWT.CENTER );
     l.setText( di.nmName() );
 
-    MccRtTextEditor rtText = createRtTextEditor( skObject, "rtdSetPoint" + aNum, "cmdSetPoint" + aNum, tsContext() ); //$NON-NLS-1$//$NON-NLS-2$
-    Control ctrl = rtText.сreateControl( aParent );
+    MccRtTextEditor rtText = createRtTextEditor( "rtdSetPoint" + aNum, "cmdSetPoint" + aNum ); //$NON-NLS-1$//$NON-NLS-2$
+    Control ctrl = rtText.createControl( aParent );
     GridData gd = new GridData();
     gd.widthHint = 130;
     gd.minimumWidth = 130;
     ctrl.setLayoutData( gd );
 
     Composite bkPane = new Composite( aParent, SWT.NONE );
-    bkPane.setLayout( new GridLayout( 2, false ) );
+    bkPane.setLayout( createGridLayout( 2, false ) );
 
     createRtBooleanIcon( bkPane, aIndicationId, aTrueImageId, ICONID_GRAY_LAMP );
 
     String cmdPrefix = "cmdSetPoint" + aNum; //$NON-NLS-1$
     String rtdPrefix = "rtdSetPoint" + aNum; //$NON-NLS-1$
 
-    createCheckCmdButton( bkPane, cmdPrefix + "indication", rtdPrefix + "indication", tsContext() ); //$NON-NLS-1$ //$NON-NLS-2$
+    createCheckCmdButton( bkPane, cmdPrefix + "indication", rtdPrefix + "indication", false ); //$NON-NLS-1$ //$NON-NLS-2$
 
     bkPane = new Composite( aParent, SWT.NONE );
-    bkPane.setLayout( new GridLayout( 2, false ) );
+    bkPane.setLayout( createGridLayout( 2, false ) );
     createRtBooleanIcon( bkPane, aGenerationId, aTrueImageId, ICONID_GRAY_LAMP );
 
-    createCheckCmdButton( bkPane, cmdPrefix + "generation", rtdPrefix + "generation", tsContext() ); //$NON-NLS-1$//$NON-NLS-2$
+    createCheckCmdButton( bkPane, cmdPrefix + "generation", rtdPrefix + "generation", false ); //$NON-NLS-1$//$NON-NLS-2$
   }
 
   /**

@@ -12,6 +12,12 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 
+/**
+ * Копонента, отображающая режим управления (АРМ, панель и т.д.)
+ * <p>
+ *
+ * @author vs
+ */
 public class MccControlModeComponent
     extends AbstractMccControl {
 
@@ -21,8 +27,8 @@ public class MccControlModeComponent
 
   private final IMapEdit<Gwid, String> modeNames = new ElemMap<>();
 
-  public MccControlModeComponent( ISkObject aSkObject, ITsGuiContext aTsContext, IdChain aConnId ) {
-    super( aSkObject, "rtdAwpCtrl", aTsContext, aConnId );
+  MccControlModeComponent( ISkObject aSkObject, ITsGuiContext aTsContext, IdChain aConnId ) {
+    super( aSkObject, "rtdAwpCtrl", aTsContext, aConnId ); //$NON-NLS-1$
     Gwid gwid;
     gwid = Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdAwpCtrl" ); //$NON-NLS-1$
     modeNames.put( gwid, dataInfo( gwid.propId() ).nmName() );

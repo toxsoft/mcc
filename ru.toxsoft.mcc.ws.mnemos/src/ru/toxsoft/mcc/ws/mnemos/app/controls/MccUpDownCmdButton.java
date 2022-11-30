@@ -5,7 +5,6 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.*;
-import org.toxsoft.core.tsgui.graphics.cursors.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.*;
@@ -14,15 +13,17 @@ import org.toxsoft.uskat.core.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
 
 /**
- * Копка в виде checkbox для посылки команды для проекта МосКокс.
+ * Нажимающаяся копка, которая при нажатии посылает одну команду, а при отжатии другую для проекта МосКокс.
  * <p>
  *
  * @author vs
  */
-public class MccPushCmdButton
+public class MccUpDownCmdButton
     implements IRtDataConsumer, ITsGuiContextable {
 
-  private final Gwid cmdGwid;
+  private final Gwid downCmdGwid;
+
+  private final Gwid upCmdGwid;
 
   private final ITsGuiContext tsContext;
 
@@ -32,22 +33,22 @@ public class MccPushCmdButton
 
   Button button = null;
 
-  MccCommandSender commandSender;
+  private final MccCommandSender commandSender;
 
   /**
    * Конструктор.
    *
-   * @param aCmdGwid Gwid - ИД посылаемой команды
+   * @param aDownCmdGwid Gwid - ИД команды, посылаемой при нажатии
+   * @param aUpCmdGwid Gwid - ИД команды, посылаемой при отжатии
    * @param aCoreApi API сервера
    * @param aTsContext ITsGuiContext - соответствующий контекст
    */
-  MccPushCmdButton( Gwid aCmdGwid, ISkCoreApi aCoreApi, ITsGuiContext aTsContext ) {
+  public MccUpDownCmdButton( Gwid aDownCmdGwid, Gwid aUpCmdGwid, ISkCoreApi aCoreApi, ITsGuiContext aTsContext ) {
     tsContext = aTsContext;
-    cmdGwid = aCmdGwid;
+    downCmdGwid = aDownCmdGwid;
+    upCmdGwid = aUpCmdGwid;
     commandSender = new MccCommandSender( aCoreApi );
     commandSender.eventer().addListener( aSource -> {
-      button.setEnabled( true );
-      button.setCursor( null );
       String errStr = commandSender.errorString();
       if( errStr != null && !errStr.isBlank() ) {
         TsDialogUtils.error( getShell(), errStr );
@@ -68,18 +69,22 @@ public class MccPushCmdButton
    */
   public Button createControl( Composite aParent, int aSwtStyle ) {
     button = new Button( aParent, SWT.PUSH | aSwtStyle );
-
-    button.addSelectionListener( new SelectionAdapter() {
+    button.addMouseListener( new MouseAdapter() {
 
       @Override
-      public void widgetSelected( SelectionEvent aE ) {
-        if( !commandSender.sendCommand( cmdGwid, true ) ) {
+      public void mouseUp( MouseEvent aE ) {
+        if( !commandSender.sendCommand( upCmdGwid, true ) ) {
           TsDialogUtils.error( getShell(), commandSender.errorString() );
-          return;
         }
-        button.setEnabled( false );
-        button.setCursor( cursorManager().getCursor( ECursorType.WAIT ) );
       }
+
+      @Override
+      public void mouseDown( MouseEvent aE ) {
+        if( !commandSender.sendCommand( downCmdGwid, true ) ) {
+          TsDialogUtils.error( getShell(), commandSender.errorString() );
+        }
+      }
+
     } );
 
     return button;
@@ -124,7 +129,7 @@ public class MccPushCmdButton
 
   @Override
   public String id() {
-    return cmdGwid.classId() + "." + cmdGwid.strid() + "." + cmdGwid.propId(); //$NON-NLS-1$//$NON-NLS-2$
+    return downCmdGwid.classId() + "." + downCmdGwid.strid() + "." + downCmdGwid.propId() + "." + upCmdGwid.propId(); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
   }
 
   @Override

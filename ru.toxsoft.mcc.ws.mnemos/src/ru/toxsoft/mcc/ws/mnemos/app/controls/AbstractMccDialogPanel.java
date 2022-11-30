@@ -1,12 +1,16 @@
 package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
+import static ru.toxsoft.mcc.ws.mnemos.app.controls.IVjResources.*;
+
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tslib.av.impl.*;
@@ -14,6 +18,7 @@ import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
@@ -41,6 +46,8 @@ public abstract class AbstractMccDialogPanel
 
   private final MccDialogContext dlgContext;
 
+  MccCommandSender cmdSender;
+
   /**
    * Конструктор.<br>
    *
@@ -53,6 +60,15 @@ public abstract class AbstractMccDialogPanel
     skConnection = tsContext().get( ISkConnectionSupplier.class ).defConn();
     dataProvider = new MccRtDataProvider( skConnection, tsContext() );
     addDisposeListener( aE -> dataProvider.dispose() );
+
+    cmdSender = new MccCommandSender( coreApi() );
+    cmdSender.eventer().addListener( aSource -> {
+      String errStr = cmdSender.errorString();
+      if( cmdSender.errorString() != null && !errStr.isBlank() ) {
+        LoggerUtils.errorLogger().error( errStr );
+        TsDialogUtils.error( getShell(), errStr );
+      }
+    } );
   }
 
   // ------------------------------------------------------------------------------------
@@ -106,35 +122,52 @@ public abstract class AbstractMccDialogPanel
    * @param aParent Composite - родительская компонента
    * @param aCmdId String - ИД команды
    * @param aDataId String - ИД данного
-   * @param aTsContext ITsGuiContext - соответствующий контекст
+   * @param aAutoText boolean - признак автогенерации текста
    * @return MccCheckCmdButton - checkbox для посылки команды
    */
-  public MccCheckCmdButton createCheckCmdButton( Composite aParent, String aCmdId, String aDataId,
-      ITsGuiContext aTsContext ) {
+  public MccCheckCmdButton createCheckCmdButton( Composite aParent, String aCmdId, String aDataId, boolean aAutoText ) {
     ISkObject skObj = dialogContext().skObject();
     Gwid cmdGwid = Gwid.createCmd( skObj.classId(), skObj.strid(), aCmdId );
     Gwid dataGwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
-    MccCheckCmdButton btn = new MccCheckCmdButton( cmdGwid, dataGwid, aTsContext );
-    btn.createControl( aParent, SWT.CHECK );
+    MccCheckCmdButton btn = new MccCheckCmdButton( cmdGwid, dataGwid, tsContext() );
+    Button b = btn.createControl( aParent, SWT.CHECK );
     dataProvider.addDataConsumer( btn );
+    if( aAutoText ) {
+      b.setText( dataInfo( aDataId ).nmName() );
+    }
     return btn;
   }
 
   // ------------------------------------------------------------------------------------
-  // Implementation
+  // API
   //
 
   // RtValedsPanel contentPanel() {
   // return rtPanel;
   // }
 
+  /**
+   * Создает {@link GridLayout} с нулевыми полями и отступами.<br>
+   *
+   * @param aColumnCount - количество колонок
+   * @param aEqualSize - признак одинаковой ширины клонок
+   * @return GridLayout
+   */
+  public GridLayout createGridLayout( int aColumnCount, boolean aEqualSize ) {
+    GridLayout gl = new GridLayout( aColumnCount, aEqualSize );
+    gl.verticalSpacing = 0;
+    gl.horizontalSpacing = 0;
+    gl.marginTop = 0;
+    gl.marginBottom = 0;
+    gl.marginHeight = 0;
+    gl.marginWidth = 0;
+    return gl;
+  }
+
   public Group createGroup( Composite aParent, String aName, int aColumnsCount, boolean aEqualSize ) {
     Group group = new Group( aParent, SWT.NONE );
     group.setText( aName );
-    GridLayout gl = new GridLayout( aColumnsCount, aEqualSize );
-    gl.verticalSpacing = 2;
-    gl.marginTop = 0;
-    gl.marginBottom = 0;
+    GridLayout gl = createGridLayout( aColumnsCount, aEqualSize );
     group.setLayout( gl );
     group.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
@@ -240,37 +273,126 @@ public abstract class AbstractMccDialogPanel
     return rtLabel;
   }
 
-  public MccAttrEditor createAttrEditor( Composite aParent, ISkObject aSkObject, String aAttrId,
-      ITsGuiContext aTsContext ) {
-    MccAttrEditor attrEditor = new MccAttrEditor( aSkObject, aAttrId, aTsContext, null );
+  /**
+   * Создает редактор атрибута в виде текста.
+   * <p>
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aAttrId String - ИД атрибута
+   * @return MccAttrEditor - редактор атрибута в виде текста
+   */
+  public MccAttrEditor createAttrEditor( Composite aParent, String aAttrId ) {
+    MccAttrEditor attrEditor = new MccAttrEditor( dialogContext().skObject(), aAttrId, tsContext(), null );
     attrEditor.createControl( aParent );
     return attrEditor;
   }
 
-  public MccRtTextEditor createRtTextEditor( ISkObject aSkObj, String aDataId, String aCmdId,
-      ITsGuiContext aTsContext ) {
-    MccRtTextEditor rtEditor = new MccRtTextEditor( aSkObj, aDataId, aCmdId, aTsContext );
+  /**
+   * Создает редактор значения в виде текста. При для изменения значения посылает соответствующую команду.
+   * <p>
+   *
+   * @param aDataId String - ИД данного
+   * @param aCmdId String - ИД команды
+   * @return MccRtTextEditor - редактор значения в виде текста
+   */
+  public MccRtTextEditor createRtTextEditor( String aDataId, String aCmdId ) {
+    MccRtTextEditor rtEditor = new MccRtTextEditor( dialogContext().skObject(), aDataId, aCmdId, tsContext() );
     dataProvider.addDataConsumer( rtEditor );
     return rtEditor;
   }
 
-  // ValedFloatingTextCommand createFloatingEditor( Composite aParent, Gwid aDataGwid, String aCommandId ) {
-  // TsNullArgumentRtException.checkNulls( aParent, aDataGwid );
-  // TsGuiContext ctx = new TsGuiContext( tsContext() );
-  // IOptionSetEdit params = ctx.params();
-  // AbstractValedSkCommand.OPDEF_CLASS_ID.setValue( params, AvUtils.avStr( aDataGwid.classId() ) );
-  // AbstractValedSkCommand.OPDEF_OBJ_STRID.setValue( params, AvUtils.avStr( aDataGwid.strid() ) );
-  // AbstractValedSkCommand.OPDEF_DATA_ID.setValue( params, AvUtils.avStr( aDataGwid.propId() ) );
-  // AbstractValedSkCommand.OPDEF_COMMAND_ID.setValue( params, AvUtils.avStr( aCommandId ) );
-  // ValedFloatingTextCommand valed = new ValedFloatingTextCommand( ctx );
-  // valed.createControl( aParent );
-  // GridData gd = new GridData();
-  // gd.widthHint = 130;
-  // gd.minimumWidth = 130;
-  // valed.getControl().setLayoutData( gd );
-  // rtPanel.defineRtData( aDataGwid, valed );
-  // return valed;
-  // }
+  /**
+   * Создает нажимающуюся кнопку для посылки одной команды.<br>
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aCmdId String - ИД команды
+   * @return MccPushCmdButton нажимающуюся кнопку для посылки одной команды
+   */
+  public MccPushCmdButton createPushCmdButton( Composite aParent, String aCmdId ) {
+    ISkObject skObj = dialogContext().skObject();
+    Gwid cmdGwid = Gwid.createCmd( skObj.classId(), skObj.strid(), aCmdId );
+    MccPushCmdButton btn = new MccPushCmdButton( cmdGwid, coreApi(), tsContext() );
+    btn.createControl( aParent, SWT.PUSH );
+    return btn;
+  }
+
+  /**
+   * Возвращает компоненту, отображающую режим управления (АРМ, Панель и т.д.)
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aSkObject ISkObject - серверный объект
+   * @param aTsContext ITsGuiContext - соответствующий контекст
+   * @return MccControlModeComponent - компонента, отображающую режим управления
+   */
+  public MccControlModeComponent createControlModeComponent( Composite aParent, ISkObject aSkObject,
+      ITsGuiContext aTsContext ) {
+    MccControlModeComponent comp = new MccControlModeComponent( aSkObject, aTsContext, null );
+    comp.createControl( aParent, SWT.NONE );
+    dataProvider.addDataConsumer( comp );
+    return comp;
+  }
+
+  /**
+   * Создает группу "Наработка"
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aEditable boolean - признак наличия кнопки "Сбросить..."
+   * @return Group
+   */
+  public Group createOperatingTimeGroup( Composite aParent, boolean aEditable ) {
+    int columns = 2;
+    if( aEditable ) {
+      columns = 3;
+    }
+    Group g = createGroup( aParent, STR_OPERATING_TIME, columns, false );
+    CLabel l = new CLabel( g, SWT.NONE );
+    l.setText( dataInfo( "rtdHourMeterMin" ).nmName() ); //$NON-NLS-1$
+    MccRtLabel rtLabel = createRtLabel( g, SWT.BORDER, "rtdHourMeterMin", tsContext() ); //$NON-NLS-1$
+    rtLabel.setValueFormatter( aValue -> {
+      if( aValue == null ) {
+        return "NULL"; //$NON-NLS-1$
+      }
+      if( !aValue.isAssigned() ) {
+        return "none"; //$NON-NLS-1$
+      }
+      int minutes = aValue.asInt();
+      return "" + minutes / 60 + ":" + minutes % 60; //$NON-NLS-1$ //$NON-NLS-2$
+    } );
+
+    if( aEditable ) {
+      Button btnClear = new Button( g, SWT.PUSH );
+      btnClear.setLayoutData( new GridData( SWT.LEFT, SWT.FILL, false, true, 1, 2 ) );
+      btnClear.setText( STR_CLEAR );
+      btnClear.addSelectionListener( new SelectionAdapter() {
+
+        @Override
+        public void widgetSelected( SelectionEvent aE ) {
+          if( TsDialogUtils.askYesNoCancel( getShell(), STR_CLEAR_OPERATING_TIME ) == ETsDialogCode.YES ) {
+            ISkObject skObject = dialogContext().skObject();
+            boolean r;
+            r = cmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeterMs" ), true ); //$NON-NLS-1$
+            if( !r ) {
+              TsDialogUtils.error( getShell(), cmdSender.errorString() );
+            }
+            r = cmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeterMin" ), //$NON-NLS-1$
+                true );
+            if( !r ) {
+              TsDialogUtils.error( getShell(), cmdSender.errorString() );
+            }
+            r = cmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdStartCount" ), true ); //$NON-NLS-1$
+            if( !r ) {
+              TsDialogUtils.error( getShell(), cmdSender.errorString() );
+            }
+          }
+        }
+      } );
+    }
+
+    l = new CLabel( g, SWT.NONE );
+    l.setText( dataInfo( "rtdStartCount" ).nmName() );
+    createRtLabel( g, SWT.BORDER, "rtdStartCount", tsContext() );
+    return g;
+  }
 
   public MccValedAvBooleanCheckCommand createCheckEditor( Composite aParent, Gwid aDataGwid, String aCommandId,
       String aFalseImageId, String aTrueImageId ) {
