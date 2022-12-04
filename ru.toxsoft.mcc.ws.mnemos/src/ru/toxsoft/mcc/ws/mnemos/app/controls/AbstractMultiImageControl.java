@@ -29,6 +29,18 @@ public abstract class AbstractMultiImageControl
 
   int animationIndex = 0;
 
+  /**
+   * Цвет фона (заливки описывающего прямоугольника)
+   */
+  Color bkColor = null;
+
+  /**
+   * Цвет границы описывающего прямоугольника
+   */
+  Color fgColor = null;
+
+  LineAttributes lineAttrs = new LineAttributes( 3 );
+
   private final IRealTimeSensitive animationHandler = aGwTime -> {
     onAnimationStep();
   };
@@ -42,6 +54,15 @@ public abstract class AbstractMultiImageControl
     if( images == null ) {
       images = listImages();
       updateBounds();
+    }
+    if( bkColor != null ) {
+      aGc.setBackground( bkColor );
+      aGc.fillRectangle( bounds );
+    }
+    if( fgColor != null ) {
+      aGc.setLineAttributes( lineAttrs );
+      aGc.setForeground( fgColor );
+      aGc.drawRectangle( bounds );
     }
     aGc.drawImage( images.get( imageIndex ), x(), y() );
   }
@@ -60,6 +81,37 @@ public abstract class AbstractMultiImageControl
     for( Image image : images ) {
       image.dispose();
     }
+  }
+
+  // ------------------------------------------------------------------------------------
+  // to use
+  //
+
+  /**
+   * Задает цвет фона, которым закрашивется описывающий прямоугольник. Если <b>null</b>, то фон не рисуется.
+   *
+   * @param aColor Color - цвет заливки описывающего прямоугольника
+   */
+  protected void setBkColor( Color aColor ) {
+    bkColor = aColor;
+  }
+
+  /**
+   * Задает цвет границы описывающего прямоугольника. Если <b>null</b>, то граница не рисуется.
+   *
+   * @param aColor Color - цвет границы описывающего прямоугольника
+   */
+  protected void setFgColor( Color aColor ) {
+    fgColor = aColor;
+  }
+
+  /**
+   * Задает атрибуты границы описывающего прямоугольника.
+   *
+   * @param aAttrs LineAttributes - атрибуты границы описывающего прямоугольника
+   */
+  protected void setLineAttrubutes( LineAttributes aAttrs ) {
+    lineAttrs = aAttrs;
   }
 
   // ------------------------------------------------------------------------------------

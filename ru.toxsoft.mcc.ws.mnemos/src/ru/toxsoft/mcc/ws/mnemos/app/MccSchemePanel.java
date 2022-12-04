@@ -38,10 +38,12 @@ public class MccSchemePanel
     for( AbstractMccSchemeControl control : this.controls ) {
       if( control.contains( aE.x, aE.y ) ) {
         setCursor( cursorManager().getCursor( control.cursorType() ) );
+        setToolTipText( control.tooltipText() );
         return;
       }
     }
     setCursor( null );
+    setToolTipText( null );
   };
 
   MouseListener mouseListener = new MouseListener() {
@@ -162,20 +164,34 @@ public class MccSchemePanel
     // objs = coreApi.objService().listObjs( "mcc.ReversibleEngine", true ); //$NON-NLS-1$
 
     imgIds.clear();
+    imgIds.add( "icons/small_valve_open.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/small_valve_close.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/small_valve_fault.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/small_valve_unplugged.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/small_valve_blinking.png" ); //$NON-NLS-1$
+    gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Kp" ); //$NON-NLS-1$ //$NON-NLS-2$
+    MccValveControl valve = new MccValveControl( this, gwid, imgIds, aContext );
+    valve.setLocation( 323, 94 );
+    controls.add( valve );
+    dataProvider.addDataConsumer( valve );
+
+    imgIds.clear();
     imgIds.add( "icons/valve_open.png" ); //$NON-NLS-1$
     imgIds.add( "icons/valve_close.png" ); //$NON-NLS-1$
     imgIds.add( "icons/valve_fault.png" ); //$NON-NLS-1$
     imgIds.add( "icons/valve_unplugged.png" ); //$NON-NLS-1$
     imgIds.add( "icons/valve_blinking.png" ); //$NON-NLS-1$
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Zn" ); //$NON-NLS-1$ //$NON-NLS-2$
-    MccValveControl valve = new MccValveControl( this, gwid, imgIds, aContext );
+    valve = new MccValveControl( this, gwid, imgIds, aContext );
     valve.setLocation( 1281, 572 );
     controls.add( valve );
+    dataProvider.addDataConsumer( valve );
 
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Kp" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
     valve.setLocation( 1308, 221 );
     controls.add( valve );
+    dataProvider.addDataConsumer( valve );
 
     imgIds.clear();
     imgIds.add( "icons/valve_open_vert.png" ); //$NON-NLS-1$
@@ -187,11 +203,13 @@ public class MccSchemePanel
     valve = new MccValveControl( this, gwid, imgIds, aContext );
     valve.setLocation( 1394, 136 );
     controls.add( valve );
+    dataProvider.addDataConsumer( valve );
 
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Zb" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
     valve.setLocation( 1214, 344 );
     controls.add( valve );
+    dataProvider.addDataConsumer( valve );
 
     addDisposeListener( aE -> {
       dataProvider.dispose();
@@ -229,7 +247,7 @@ public class MccSchemePanel
     //
     // rtPanel.defineRtData( valedAI.dataGwid(), valedAI );
 
-    Gwid gwid = Gwid.createObj( "mcc.AnalogInput", aObjStrid );
+    Gwid gwid = Gwid.createObj( "mcc.AnalogInput", aObjStrid ); //$NON-NLS-1$
     MccAnalogInputControl aiControl = new MccAnalogInputControl( gwid, tsContext(), null );
     CLabel l = (CLabel)aiControl.createControl( this, SWT.BORDER | SWT.CENTER );
     l.setLocation( aX, aY );

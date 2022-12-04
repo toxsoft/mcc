@@ -1,6 +1,9 @@
 package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
+import static ru.toxsoft.mcc.ws.mnemos.app.controls.IVjResources.*;
+
 import org.eclipse.swt.custom.*;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -10,13 +13,8 @@ import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.utils.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
 
 /**
  * Контроль для отображения значения аналогового входа на мнемосхеме и в диалогах.
@@ -25,7 +23,7 @@ import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
  * @author vs
  */
 public class MccAnalogInputControl
-    implements IRtDataConsumer, ITsGuiContextable, ISkConnected {
+    extends AbstractMccSchemeControl {
 
   /**
    * ИД класса - аналоговый вход
@@ -46,18 +44,14 @@ public class MccAnalogInputControl
 
   CLabel label = null;
 
-  private final ITsGuiContext tsContext;
+  private final Rectangle boundsRect = new Rectangle( 0, 0, 0, 0 );
 
-  private final ISkConnection skConnection;
-
-  private final ISkObject skObject;
-
-  private static RGB rgbGreen  = new RGB( 102, 255, 102 );
-  private static RGB rgbBlue   = new RGB( 0, 153, 255 );
-  private static RGB rgbGray   = new RGB( 178, 178, 178 );
-  private static RGB rgbViolet = new RGB( 153, 51, 255 );
-  private static RGB rgbYellow = new RGB( 255, 255, 0 );
-  private static RGB rgbRed    = new RGB( 255, 51, 51 );
+  // private static RGB rgbGreen = new RGB( 102, 255, 102 );
+  // private static RGB rgbBlue = new RGB( 0, 153, 255 );
+  // private static RGB rgbGray = new RGB( 178, 178, 178 );
+  // private static RGB rgbViolet = new RGB( 153, 51, 255 );
+  // private static RGB rgbYellow = new RGB( 255, 255, 0 );
+  // private static RGB rgbRed = new RGB( 255, 51, 51 );
 
   private static RGB[] stateRgbs = { //
       new RGB( 102, 255, 102 ), // зеленый - норма
@@ -72,9 +66,20 @@ public class MccAnalogInputControl
       new RGB( 255, 142, 179 ) //
   };
 
+  private static String[] stateDescriptions = { //
+      STR_STATE_NORMAL, //
+      STR_STATE_IMITATION, //
+      STR_STATE_NO_CONTROL_POWER, //
+      STR_STATE_BLOCKED, //
+      STR_STATE_LESS_FIVE, //
+      STR_STATE_GREATER_FIVE, //
+      STR_STATE_WARNING, //
+      STR_STATE_ALARM //
+  };
+
   private static Color[] bkColors = new Color[8];
 
-  private static Color colorWhite;
+  // private static Color colorWhite;
   private static Color colorMagenta;
 
   /**
@@ -82,21 +87,14 @@ public class MccAnalogInputControl
    *
    * @param aObjGwid Gwid - конкретны ИД объекта
    * @param aTsContext ITsGuiContext - соответствующий контекст
-   * @param aConnectionId IdChain - ИД соединения
+   * @param aConnId IdChain - ИД соединения
    */
-  public MccAnalogInputControl( Gwid aObjGwid, ITsGuiContext aTsContext, IdChain aConnectionId ) {
+  public MccAnalogInputControl( Gwid aObjGwid, ITsGuiContext aTsContext, IdChain aConnId ) {
+    super( aObjGwid, aTsContext, aConnId );
     TsNullArgumentRtException.checkNulls( aObjGwid, aTsContext );
     TsIllegalArgumentRtException.checkTrue( aObjGwid.isAbstract() );
-    tsContext = aTsContext;
-    if( aConnectionId == null ) {
-      skConnection = tsContext.get( ISkConnectionSupplier.class ).defConn();
-    }
-    else {
-      skConnection = tsContext.get( ISkConnectionSupplier.class ).getConn( aConnectionId );
-    }
-    skObject = skObjServ().get( aObjGwid.skid() );
 
-    colorWhite = colorManager().getColor( ETsColor.WHITE );
+    // colorWhite = colorManager().getColor( ETsColor.WHITE );
     colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
 
     for( int i = 0; i < bkColors.length; i++ ) {
@@ -127,62 +125,41 @@ public class MccAnalogInputControl
    */
   public Control createControl( Composite aParent, int aSwtStyle ) {
     label = new CLabel( aParent, aSwtStyle );
+    label.addControlListener( new ControlListener() {
+
+      @Override
+      public void controlResized( ControlEvent aE ) {
+        updateBounds();
+      }
+
+      @Override
+      public void controlMoved( ControlEvent aE ) {
+        updateBounds();
+      }
+    } );
+    updateBounds();
     return label;
   }
 
   /**
    * Вызывает диалог с настроками аналогового сигнала.<br>
    */
+  @Override
   public void showSettingDialog() {
-    PanelAnalogInput.showDialog( new MccDialogContext( tsContext, skObject ) );
-  }
-
-  // ------------------------------------------------------------------------------------
-  // IStridable
-  //
-
-  @Override
-  public String id() {
-    return skObject.id();
-  }
-
-  @Override
-  public String description() {
-    return skObject.description();
-  }
-
-  @Override
-  public String nmName() {
-    return skObject.nmName();
-  }
-
-  // ------------------------------------------------------------------------------------
-  // ITsContextable
-  //
-
-  @Override
-  public ITsGuiContext tsContext() {
-    return tsContext;
-  }
-
-  // ------------------------------------------------------------------------------------
-  // ISkConnected
-  //
-
-  @Override
-  public ISkConnection skConn() {
-    return skConnection;
+    PanelAnalogInput.showDialog( new MccDialogContext( tsContext(), skObject() ) );
   }
 
   // ------------------------------------------------------------------------------------
   // IRtDataConsumer
   //
 
+  IAtomicValue state = IAtomicValue.NULL;
+
   @Override
   public IGwidList listNeededGwids() {
     GwidList gList = new GwidList();
-    gList.add( Gwid.createRtdata( CLS_ANALOG_INPUT, skObject.strid(), DI_CURRENT_VALUE ) );
-    gList.add( Gwid.createRtdata( CLS_ANALOG_INPUT, skObject.strid(), DI_STATE ) );
+    gList.add( Gwid.createRtdata( CLS_ANALOG_INPUT, skObject().strid(), DI_CURRENT_VALUE ) );
+    gList.add( Gwid.createRtdata( CLS_ANALOG_INPUT, skObject().strid(), DI_STATE ) );
     return gList;
   }
 
@@ -194,27 +171,55 @@ public class MccAnalogInputControl
         value = aValues[i];
       }
       if( gwid.propId().equals( DI_STATE ) ) {
-        if( aValues[i] != null && aValues[i].isAssigned() ) {
-          int state = aValues[i].asInt();
-          if( state >= 0 && state < 7 ) {
-            label.setBackground( bkColors[state] );
-          }
-          else {
-            label.setBackground( colorMagenta );
-          }
-        }
-        else {
-          label.setBackground( colorMagenta );
-        }
+        state = aValues[i];
       }
     }
     label.setText( AvUtils.printAv( formatString( value.atomicType() ), value ) );
+    update();
     label.redraw();
+  }
+
+  // ------------------------------------------------------------------------------------
+  // AbstractMccSchemeControl
+  //
+
+  @Override
+  public void paint( GC aGc ) {
+    // nop - никакой дополнительной отрисовки не делается
+  }
+
+  @Override
+  public Rectangle bounds() {
+    return boundsRect;
+  }
+
+  @Override
+  public void dispose() {
+    // nop - нет ресурсов для освобождения
   }
 
   // ------------------------------------------------------------------------------------
   // Implementation
   //
+
+  private void update() {
+    if( state != null && state.isAssigned() ) {
+      int stateNum = state.asInt();
+      if( stateNum >= 0 && stateNum < 8 ) {
+        label.setBackground( bkColors[stateNum] );
+        label.setToolTipText( description() );
+        label.setToolTipText( description() + ": " + stateDescriptions[stateNum] ); //$NON-NLS-1$
+      }
+      else {
+        label.setBackground( colorMagenta );
+        label.setToolTipText( description() + ": " + STR_INVALID_STATE ); //$NON-NLS-1$
+      }
+    }
+    else {
+      label.setBackground( colorMagenta );
+      label.setToolTipText( description() + ": " + STR_NO_DATA ); //$NON-NLS-1$
+    }
+  }
 
   String formatString( EAtomicType aType ) {
     switch( aType ) {
@@ -232,6 +237,13 @@ public class MccAnalogInputControl
       default:
         throw new TsNotAllEnumsUsedRtException();
     }
+  }
+
+  private void updateBounds() {
+    boundsRect.x = label.getLocation().x;
+    boundsRect.y = label.getLocation().y;
+    boundsRect.width = label.getSize().x;
+    boundsRect.height = label.getSize().y;
   }
 
 }

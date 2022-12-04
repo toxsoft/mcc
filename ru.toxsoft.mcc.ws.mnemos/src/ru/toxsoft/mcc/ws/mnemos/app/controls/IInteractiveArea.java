@@ -26,4 +26,11 @@ public interface IInteractiveArea {
    * @return ECursorType - тип курсора мыши для случая когда он находится над данной областью
    */
   ECursorType cursorType();
+
+  /**
+   * Возвращает текст всплывающей подсказки для данной интерактивной области
+   *
+   * @return String - текст всплывающей подсказки для данной интерактивной области
+   */
+  String tooltipText();
 }
