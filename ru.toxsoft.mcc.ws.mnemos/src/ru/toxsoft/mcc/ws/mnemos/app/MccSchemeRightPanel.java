@@ -6,13 +6,9 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.uskat.base.gui.glib.*;
-
-import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
+import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.connection.*;
 
 /**
  * Панель отображения мнемосхемы.
@@ -23,7 +19,7 @@ import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 public class MccSchemeRightPanel
     extends TsPanel {
 
-  private RtValedsPanel rtPanel;
+  private final MccGraphicsHolderPanel graphicsHolder;
 
   /**
    * Конструктор.
@@ -33,41 +29,18 @@ public class MccSchemeRightPanel
    */
   public MccSchemeRightPanel( Composite aParent, ITsGuiContext aContext ) {
     super( aParent, aContext );
-    setLayout( new RowLayout( SWT.VERTICAL ) );
+    GridLayout gl = new GridLayout( 1, false );
+    setLayout( gl );
+
+    ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
 
     CLabel labelTitle = new CLabel( this, SWT.CENTER );
     Font f = fontManager().getFont( "Arial", 24, SWT.BOLD ); //$NON-NLS-1$
     labelTitle.setFont( f );
     labelTitle.setText( "Нагнетатель №" );
 
-    rtPanel = new RtValedsPanel( this, aContext );
-    rtPanel.setLayout( null );
-
-    // ImageDescriptor imd;
-    // imd = AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, "icons/mcc-main.png" ); //$NON-NLS-1$
-    // Image imgScheme = imd.createImage();
-    //
-    // rtPanel.addPaintListener( aEvent -> aEvent.gc.drawImage( imgScheme, 0, 0 ) );
-  }
-
-  public void addAI( int aX, int aY, String aObjStrid ) {
-    ITsGuiContext ctx = new TsGuiContext( tsContext() );
-    IOptionSetEdit params = ctx.params();
-
-    ValedMccAnalogInput.OPDEF_CLASS_ID.setValue( params, AvUtils.avStr( "mcc.AnalogInput" ) ); //$NON-NLS-1$
-    ValedMccAnalogInput.OPDEF_OBJ_STRID.setValue( params, AvUtils.avStr( aObjStrid ) );
-    ValedMccAnalogInput.OPDEF_DATA_ID.setValue( params, AvUtils.avStr( "rtdCurrentValue" ) ); //$NON-NLS-1$
-
-    ValedMccAnalogInput valedAI = new ValedMccAnalogInput( ctx );
-    CLabel l = (CLabel)valedAI.createControl( rtPanel );
-    l.setLocation( aX, aY );
-    l.setSize( 50, 22 );
-
-    rtPanel.defineRtData( valedAI.dataGwid(), valedAI );
-  }
-
-  public void rtStart() {
-    rtPanel.rtStart();
+    graphicsHolder = new MccGraphicsHolderPanel( this, skConn, aContext );
+    graphicsHolder.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
   }
 
 }
