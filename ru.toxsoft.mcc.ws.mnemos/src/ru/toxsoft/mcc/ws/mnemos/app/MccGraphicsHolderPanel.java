@@ -5,6 +5,7 @@ import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.utils.*;
 
@@ -31,7 +32,9 @@ public class MccGraphicsHolderPanel
     super( aParent, aContext );
     skConnection = aSkConn;
 
-    // FIXME Дима, замени на свою инициализацию
+    // FIXME Дима, замени на свою инициализацию (для работы с сервером см. интерфейсы ISkConnected и ITsGuiContextable)
+    ISkCoreApi coreApi = coreApi();
+
     GridLayout gl = new GridLayout( 1, false );
     setLayout( gl );
 
