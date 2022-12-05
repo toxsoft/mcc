@@ -1,13 +1,12 @@
 package ru.toxsoft.mcc.ws.mnemos.app;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.uskat.core.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.utils.*;
+import org.toxsoft.uskat.reptempl.gui.e4.uiparts.*;
 
 /**
  * Панель для размещения графиков в проекте МосКокс.
@@ -33,23 +32,27 @@ public class MccGraphicsHolderPanel
     skConnection = aSkConn;
 
     // FIXME Дима, замени на свою инициализацию (для работы с сервером см. интерфейсы ISkConnected и ITsGuiContextable)
-    ISkCoreApi coreApi = coreApi();
+    setLayout( new BorderLayout() );
+    ChartsTabPanel panel = new ChartsTabPanel( aParent, aContext );
+    panel.setLayoutData( BorderLayout.CENTER );
 
-    GridLayout gl = new GridLayout( 1, false );
-    setLayout( gl );
-
-    GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
-    Text t1 = new Text( this, SWT.BORDER );
-    t1.setText( "Грaфик 1" );
-    t1.setLayoutData( gd );
-
-    Text t2 = new Text( this, SWT.BORDER );
-    t2.setText( "Грaфик 1" );
-    t2.setLayoutData( gd );
-
-    Text t3 = new Text( this, SWT.BORDER );
-    t3.setText( "Грaфик 1" );
-    t3.setLayoutData( gd );
+    // ISkCoreApi coreApi = coreApi();
+    //
+    // GridLayout gl = new GridLayout( 1, false );
+    // setLayout( gl );
+    //
+    // GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
+    // Text t1 = new Text( this, SWT.BORDER );
+    // t1.setText( "Грaфик 1" );
+    // t1.setLayoutData( gd );
+    //
+    // Text t2 = new Text( this, SWT.BORDER );
+    // t2.setText( "Грaфик 1" );
+    // t2.setLayoutData( gd );
+    //
+    // Text t3 = new Text( this, SWT.BORDER );
+    // t3.setText( "Грaфик 1" );
+    // t3.setLayoutData( gd );
 
   }
 
