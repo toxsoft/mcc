@@ -36,6 +36,8 @@ public abstract class AbstractMccControl
 
   private String description = TsLibUtils.EMPTY_STRING;
 
+  private IMccAvValueFormatter formatter = null;
+
   /**
    * Конструктор для наследников.<br>
    *
@@ -113,7 +115,7 @@ public abstract class AbstractMccControl
   public abstract void update();
 
   // ------------------------------------------------------------------------------------
-  //
+  // API
   //
 
   public ISkObject skObject() {
@@ -122,6 +124,15 @@ public abstract class AbstractMccControl
 
   public String dataId() {
     return dataId;
+  }
+
+  public IMccAvValueFormatter formatter() {
+    return formatter;
+  }
+
+  public void setValueFormatter( IMccAvValueFormatter aFormatter ) {
+    formatter = aFormatter;
+    update();
   }
 
   protected IDtoRtdataInfo dataInfo( String aDataId ) {

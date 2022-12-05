@@ -23,4 +23,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.core
 Bundle-ActivationPolicy: lazy
 Export-Package: ru.toxsoft.mcc.ws.core,
+ ru.toxsoft.mcc.ws.core.chart_utils,
+ ru.toxsoft.mcc.ws.core.chart_utils.console,
+ ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup,
  ru.toxsoft.mcc.ws.core.e4.addons
+Import-Package: org.toxsoft.core.tsgui.chart.api,
+ org.toxsoft.core.tsgui.chart.impl,
+ org.toxsoft.core.tsgui.chart.renderers

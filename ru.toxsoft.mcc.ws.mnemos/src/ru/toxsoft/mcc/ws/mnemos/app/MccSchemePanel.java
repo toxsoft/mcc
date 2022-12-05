@@ -9,13 +9,17 @@ import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.graphics.cursors.*;
+import org.toxsoft.core.tsgui.graphics.fonts.*;
 import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.mcc.ws.mnemos.*;
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
@@ -34,10 +38,12 @@ public class MccSchemePanel
     for( AbstractMccSchemeControl control : this.controls ) {
       if( control.contains( aE.x, aE.y ) ) {
         setCursor( cursorManager().getCursor( control.cursorType() ) );
+        setToolTipText( control.tooltipText() );
         return;
       }
     }
     setCursor( null );
+    setToolTipText( null );
   };
 
   MouseListener mouseListener = new MouseListener() {
@@ -73,6 +79,10 @@ public class MccSchemePanel
 
   IRtDataProvider dataProvider;
 
+  private final IMapEdit<Point, String> unitStrings = new ElemMap<>();
+
+  private final Font unitFont;
+
   Image imgScheme;
 
   /**
@@ -85,6 +95,8 @@ public class MccSchemePanel
     super( aParent, aContext );
     // setLayout( new FillLayout() );
     setLayout( null );
+
+    unitFont = tsContext().get( ITsFontManager.class ).getFont( "Arial", 8, SWT.NONE );
 
     dataProvider = new MccRtDataProvider( aContext.get( ISkConnectionSupplier.class ).defConn(), aContext );
 
@@ -107,6 +119,14 @@ public class MccSchemePanel
       for( AbstractMccSchemeControl control : controls ) {
         control.paint( aEvent.gc );
       }
+
+      Font oldFont = aEvent.gc.getFont();
+      aEvent.gc.setFont( unitFont );
+      for( Point p : unitStrings.keys() ) {
+        aEvent.gc.drawString( unitStrings.getByKey( p ), p.x, p.y, true );
+      }
+      aEvent.gc.setFont( oldFont );
+
     } );
 
     Gwid gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Hydro" ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -144,20 +164,34 @@ public class MccSchemePanel
     // objs = coreApi.objService().listObjs( "mcc.ReversibleEngine", true ); //$NON-NLS-1$
 
     imgIds.clear();
+    imgIds.add( "icons/small_valve_open.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/small_valve_close.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/small_valve_fault.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/small_valve_unplugged.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/small_valve_blinking.png" ); //$NON-NLS-1$
+    gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Kp" ); //$NON-NLS-1$ //$NON-NLS-2$
+    MccValveControl valve = new MccValveControl( this, gwid, imgIds, aContext );
+    valve.setLocation( 323, 94 );
+    controls.add( valve );
+    dataProvider.addDataConsumer( valve );
+
+    imgIds.clear();
     imgIds.add( "icons/valve_open.png" ); //$NON-NLS-1$
     imgIds.add( "icons/valve_close.png" ); //$NON-NLS-1$
     imgIds.add( "icons/valve_fault.png" ); //$NON-NLS-1$
     imgIds.add( "icons/valve_unplugged.png" ); //$NON-NLS-1$
     imgIds.add( "icons/valve_blinking.png" ); //$NON-NLS-1$
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Zn" ); //$NON-NLS-1$ //$NON-NLS-2$
-    MccValveControl valve = new MccValveControl( this, gwid, imgIds, aContext );
+    valve = new MccValveControl( this, gwid, imgIds, aContext );
     valve.setLocation( 1281, 572 );
     controls.add( valve );
+    dataProvider.addDataConsumer( valve );
 
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Kp" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
     valve.setLocation( 1308, 221 );
     controls.add( valve );
+    dataProvider.addDataConsumer( valve );
 
     imgIds.clear();
     imgIds.add( "icons/valve_open_vert.png" ); //$NON-NLS-1$
@@ -169,11 +203,13 @@ public class MccSchemePanel
     valve = new MccValveControl( this, gwid, imgIds, aContext );
     valve.setLocation( 1394, 136 );
     controls.add( valve );
+    dataProvider.addDataConsumer( valve );
 
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Zb" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
     valve.setLocation( 1214, 344 );
     controls.add( valve );
+    dataProvider.addDataConsumer( valve );
 
     addDisposeListener( aE -> {
       dataProvider.dispose();
@@ -211,7 +247,7 @@ public class MccSchemePanel
     //
     // rtPanel.defineRtData( valedAI.dataGwid(), valedAI );
 
-    Gwid gwid = Gwid.createObj( "mcc.AnalogInput", aObjStrid );
+    Gwid gwid = Gwid.createObj( "mcc.AnalogInput", aObjStrid ); //$NON-NLS-1$
     MccAnalogInputControl aiControl = new MccAnalogInputControl( gwid, tsContext(), null );
     CLabel l = (CLabel)aiControl.createControl( this, SWT.BORDER | SWT.CENTER );
     l.setLocation( aX, aY );
@@ -226,6 +262,30 @@ public class MccSchemePanel
     } );
 
     dataProvider.addDataConsumer( aiControl );
+
+    ISkConnection skConn = tsContext().get( ISkConnectionSupplier.class ).defConn();
+    ISkObject skObj = skConn.coreApi().objService().get( gwid.skid() );
+    IOptionSet attrs = skObj.attrs();
+    String unitStr = attrs.getStr( "atrMeasureValue" ); //$NON-NLS-1$
+    if( unitStr.isEmpty() ) {
+      unitStr = "ед.изм."; //$NON-NLS-1$
+    }
+
+    GC gc = null;
+    try {
+      gc = new GC( tsContext().get( Display.class ) );
+      Point extent = gc.textExtent( unitStr, SWT.TRANSPARENT );
+      Point p = new Point( 0, 0 );
+      p.x = aX + (50 - extent.x) / 2 + 1;
+      p.y = aY + 20 + (22 - extent.y) / 2;
+      unitStrings.put( p, unitStr );
+    }
+    finally {
+      if( gc != null ) {
+        gc.dispose();
+      }
+    }
+
   }
 
   /**

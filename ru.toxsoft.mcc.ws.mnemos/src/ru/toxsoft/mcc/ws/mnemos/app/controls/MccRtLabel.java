@@ -18,7 +18,7 @@ public class MccRtLabel
 
   CLabel label = null;
 
-  public MccRtLabel( ISkObject aSkObject, String aDataId, ITsGuiContext aTsContext, IdChain aConnId ) {
+  MccRtLabel( ISkObject aSkObject, String aDataId, ITsGuiContext aTsContext, IdChain aConnId ) {
     super( aSkObject, aDataId, aTsContext, aConnId );
   }
 
@@ -35,7 +35,12 @@ public class MccRtLabel
 
   @Override
   public void update() {
-    label.setText( AvUtils.printAv( formatString( valueType ), value ) );
+    if( formatter() != null ) {
+      label.setText( formatter().formatValue( value ) );
+    }
+    else {
+      label.setText( AvUtils.printAv( formatString( valueType ), value ) );
+    }
   }
 
 }

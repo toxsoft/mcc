@@ -35,8 +35,31 @@ public abstract class AbstractMccSchemeControl
 
   private int y = 0;
 
+  private String tooltipText = null;
+
   /**
-   * Конструктор для наследников.
+   * Конструктор для наследников, созданных на основе SWT контролей.
+   *
+   * @param aObjGwid Gwid - конкретный ИД объекта
+   * @param aTsContext ITsGuiContext - соответствующий контекст
+   * @param aConnId IdChain - ИД соединения
+   */
+  protected AbstractMccSchemeControl( Gwid aObjGwid, ITsGuiContext aTsContext, IdChain aConnId ) {
+    TsNullArgumentRtException.checkNulls( aObjGwid, aTsContext );
+    TsIllegalArgumentRtException.checkTrue( aObjGwid.isAbstract() );
+    schemePanel = null;
+    tsContext = aTsContext;
+    if( aConnId == null ) {
+      skConnection = tsContext.get( ISkConnectionSupplier.class ).defConn();
+    }
+    else {
+      skConnection = tsContext.get( ISkConnectionSupplier.class ).getConn( aConnId );
+    }
+    skObject = coreApi().objService().get( new Skid( aObjGwid.classId(), aObjGwid.strid() ) );
+  }
+
+  /**
+   * Конструктор для наследников, которые рисуют себя сами.
    *
    * @param aOwner MccSchemePanel - панель мнемосхемы, содержащая данный контроль
    * @param aObjGwid Gwid - конкретный ИД объекта
@@ -119,6 +142,14 @@ public abstract class AbstractMccSchemeControl
     return ECursorType.HAND;
   }
 
+  @Override
+  public String tooltipText() {
+    if( tooltipText == null ) {
+      return description();
+    }
+    return description() + ": " + tooltipText; //$NON-NLS-1$
+  }
+
   // ------------------------------------------------------------------------------------
   // I2dPlaceable
   //
@@ -170,6 +201,10 @@ public abstract class AbstractMccSchemeControl
 
   MccSchemePanel schemePanel() {
     return schemePanel;
+  }
+
+  void setTooltipText( String aText ) {
+    tooltipText = aText;
   }
 
   // ------------------------------------------------------------------------------------

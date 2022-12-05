@@ -106,7 +106,8 @@ public class MccRtDataProvider
 
     void dispose() {
       for( int i = 0; i < channels.length; i++ ) {
-        channels[i].close();
+        // FIXME разобраться с закрытием канала
+        // channels[i].close();
       }
     }
 
@@ -206,6 +207,7 @@ public class MccRtDataProvider
   /**
    * Освобождает ресурсы
    */
+  @Override
   public void dispose() {
     running = false;
     guiTimersService().slowTimers().removeListener( timerHandler );

@@ -5,11 +5,14 @@ import static ru.toxsoft.mcc.ws.mnemos.Activator.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.*;
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
@@ -25,6 +28,18 @@ public class MccValveControl
 
   final IList<Image> imgList;
 
+  private final Color colorDarkGray;
+  private final Color colorImitation;
+  private final Color colorMagenta;
+
+  /**
+   * Конструктор.
+   *
+   * @param aOwner MccSchemePanel - родительская панель мнемосхемы
+   * @param aObjGwid Gwid - ИД объекта
+   * @param aImageIds IStringList - список ИДов изображений
+   * @param aTsContext ITsGuiContext - соответствующий контекст
+   */
   public MccValveControl( MccSchemePanel aOwner, Gwid aObjGwid, IStringList aImageIds, ITsGuiContext aTsContext ) {
     super( aOwner, aObjGwid, aTsContext );
 
@@ -34,6 +49,9 @@ public class MccValveControl
       ((ElemArrayList<Image>)imgList).add( img );
     }
 
+    colorDarkGray = colorManager().getColor( ETsColor.DARK_GRAY );
+    colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
+    colorImitation = colorManager().getColor( new RGB( 107, 195, 255 ) );
     // startAnimation( new int[] { 0, 4 } );
   }
 
@@ -56,16 +74,130 @@ public class MccValveControl
   // IRtDataConsumer
   //
 
+  /**
+   * Карта значений необходимых данных
+   */
+  private final IStringMapEdit<IAtomicValue> values = new StringMap<>();
+
   @Override
   public IGwidList listNeededGwids() {
-    // TODO Auto-generated method stub
-    return null;
+
+    values.put( "rtdAlarm", IAtomicValue.NULL ); //$NON-NLS-1$
+    values.put( "rtdEnabled", IAtomicValue.NULL ); //$NON-NLS-1$
+    values.put( "rtdImitation", IAtomicValue.NULL ); //$NON-NLS-1$
+    values.put( "rtdOpened", IAtomicValue.NULL ); //$NON-NLS-1$
+    values.put( "rtdClosed", IAtomicValue.NULL ); //$NON-NLS-1$
+    values.put( "rtdOpen", IAtomicValue.NULL ); //$NON-NLS-1$
+    values.put( "rtdClose", IAtomicValue.NULL ); //$NON-NLS-1$
+
+    String classId = skObject().classId();
+    String strid = skObject().strid();
+    GwidList gl = new GwidList();
+    for( String dataId : values.keys() ) {
+      Gwid gwid = Gwid.createRtdata( classId, strid, dataId );
+      gl.add( gwid );
+    }
+    return gl;
   }
 
   @Override
   public void setValues( Gwid[] aGwids, IAtomicValue[] aValues, int aCount ) {
-    // TODO Auto-generated method stub
+    for( int i = 0; i < aCount; i++ ) {
+      values.put( aGwids[i].propId(), aValues[i] );
+    }
+    update();
+  }
 
+  private void update() {
+    setBkColor( null );
+    setFgColor( null );
+    setTooltipText( null );
+
+    EReversibleEngineState state = calcState( values );
+    switch( state ) {
+      case UNKNOWN:
+        setBkColor( colorMagenta );
+        stopAnimation( 3 );
+        break;
+      case INVALID:
+        stopAnimation( 3 );
+        break;
+      case CLOSED:
+        stopAnimation( 1 );
+        break;
+      case CLOSING:
+        startAnimation( new int[] { 1, 4 } );
+        break;
+      case FAULT:
+        stopAnimation( 2 );
+        break;
+      case OPENED:
+        stopAnimation( 0 );
+        break;
+      case OPENING:
+        startAnimation( new int[] { 0, 4 } );
+        break;
+      case PARTIALLY_OPENED:
+        break;
+      default:
+        throw new TsNotAllEnumsUsedRtException();
+    }
+    setTooltipText( state.description() );
+
+    IAtomicValue val = values.getByKey( "rtdEnabled" ); //$NON-NLS-1$
+    if( val != null && val.isAssigned() && !val.asBool() ) {
+      setBkColor( colorDarkGray );
+    }
+    val = values.getByKey( "rtdImitation" ); //$NON-NLS-1$
+    if( val != null && val.isAssigned() && !val.asBool() ) {
+      setFgColor( colorImitation );
+    }
+  }
+
+  private static EReversibleEngineState calcState( IStringMap<IAtomicValue> aValuesMap ) {
+    EReversibleEngineState state = EReversibleEngineState.UNKNOWN;
+
+    IAtomicValue alarm = aValuesMap.getByKey( "rtdAlarm" ); //$NON-NLS-1$
+    if( alarm != null && alarm.isAssigned() && alarm.asBool() ) {
+      return EReversibleEngineState.FAULT;
+    }
+
+    IAtomicValue opened = aValuesMap.getByKey( "rtdOpened" );
+    IAtomicValue closed = aValuesMap.getByKey( "rtdClosed" );
+    IAtomicValue opening = aValuesMap.getByKey( "rtdOpen" );
+    IAtomicValue closing = aValuesMap.getByKey( "rtdClose" );
+
+    if( opened == null || !opened.isAssigned() || //
+        closed == null || !opened.isAssigned() || //
+        opening == null || !opened.isAssigned() || //
+        closing == null || !opened.isAssigned() ) {
+      return EReversibleEngineState.UNKNOWN;
+    }
+
+    int count = 0;
+    state = EReversibleEngineState.PARTIALLY_OPENED;
+    if( opened.asBool() ) {
+      state = EReversibleEngineState.OPENED;
+      count++;
+    }
+    if( closed.asBool() ) {
+      state = EReversibleEngineState.CLOSED;
+      count++;
+    }
+    if( opening.asBool() ) {
+      state = EReversibleEngineState.OPENING;
+      count++;
+    }
+    if( closing.asBool() ) {
+      state = EReversibleEngineState.CLOSING;
+      count++;
+    }
+
+    if( count > 1 ) {
+      return EReversibleEngineState.INVALID;
+    }
+
+    return state;
   }
 
 }
