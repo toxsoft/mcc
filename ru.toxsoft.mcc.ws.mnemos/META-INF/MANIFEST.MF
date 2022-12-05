@@ -23,7 +23,8 @@ Require-Bundle: javax.annotation,
  ru.toxsoft.mcc.ws.core,
  org.toxsoft.uskat.s5,
  org.toxsoft.uskat.dataquality.lib,
- org.toxsoft.uskat.dataquality.s5
+ org.toxsoft.uskat.dataquality.s5,
+ ru.toxsoft.mcc.ws.reports;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.mnemos
 Bundle-ActivationPolicy: lazy
@@ -37,3 +38,5 @@ Export-Package: ru.toxsoft.mcc.ws.mnemos,
  ru.toxsoft.mcc.ws.mnemos.app.widgets,
  ru.toxsoft.mcc.ws.mnemos.e4.addons,
  ru.toxsoft.mcc.ws.mnemos.e4.uiparts
+Import-Package: org.toxsoft.core.tsgui.chart.api,
+ org.toxsoft.core.tsgui.chart.impl
