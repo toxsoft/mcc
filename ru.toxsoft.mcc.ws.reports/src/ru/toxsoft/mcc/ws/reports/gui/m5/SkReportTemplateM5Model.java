@@ -4,8 +4,8 @@ import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
 import static ru.toxsoft.mcc.ws.reports.gui.m5.ISkResources.*;
-import static ru.toxsoft.mcc.ws.reports.lib.ISkTemplateEditorServiceHardConstants.*;
 
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.m5.model.*;
@@ -18,7 +18,7 @@ import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.base.gui.km5.*;
 import org.toxsoft.uskat.core.connection.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * M5-model of {@link ISkReportTemplate}.

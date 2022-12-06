@@ -7,6 +7,7 @@ import org.toxsoft.uskat.base.gui.*;
 
 import ru.toxsoft.mcc.ws.core.*;
 import ru.toxsoft.mcc.ws.core.Activator;
+import ru.toxsoft.mcc.ws.core.templates.*;
 
 /**
  * Plugin adoon.
@@ -30,6 +31,8 @@ public class AddonMccWsCore
   @Override
   protected void doRegisterQuants( IQuantRegistrator aQuantRegistrator ) {
     aQuantRegistrator.registerQuant( new QuantSkBaseGui() );
+    aQuantRegistrator.registerQuant( new QuantSkReportTemplate() );
+
   }
 
   @Override

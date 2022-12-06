@@ -9,13 +9,13 @@ import org.toxsoft.uskat.base.gui.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.connection.*;
 
+import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
 import ru.toxsoft.mcc.ws.reports.*;
 import ru.toxsoft.mcc.ws.reports.Activator;
 import ru.toxsoft.mcc.ws.reports.e4.uiparts.*;
 import ru.toxsoft.mcc.ws.reports.gui.m5.*;
 import ru.toxsoft.mcc.ws.reports.gui.valed.*;
-import ru.toxsoft.mcc.ws.reports.lib.*;
-import ru.toxsoft.mcc.ws.reports.lib.impl.*;
 
 /**
  * Plugin adoon.
@@ -39,8 +39,6 @@ public class AddonMccWsReports
   @Override
   protected void doRegisterQuants( IQuantRegistrator aQuantRegistrator ) {
     aQuantRegistrator.registerQuant( new QuantSkBaseGui() );
-    aQuantRegistrator.registerQuant( new QuantSkReportTemplate() );
-
   }
 
   @Override

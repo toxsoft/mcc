@@ -1,7 +1,7 @@
 package ru.toxsoft.mcc.ws.reports.gui.m5;
 
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
-import static ru.toxsoft.mcc.ws.reports.lib.ISkTemplateEditorServiceHardConstants.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
 
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tslib.bricks.strid.idgen.*;
@@ -16,8 +16,8 @@ import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 import org.toxsoft.uskat.s5.utils.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
-import ru.toxsoft.mcc.ws.reports.lib.impl.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
 
 /**
  * Lifecycle manager for {@link SkReportTemplateM5Model}.

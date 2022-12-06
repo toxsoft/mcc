@@ -4,8 +4,8 @@ import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
 import static ru.toxsoft.mcc.ws.reports.gui.m5.ISkResources.*;
-import static ru.toxsoft.mcc.ws.reports.lib.ISkTemplateEditorServiceHardConstants.*;
 
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.m5.model.*;
@@ -16,7 +16,7 @@ import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.base.gui.km5.*;
 import org.toxsoft.uskat.core.connection.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * M5-model of {@link ISkGraphTemplate}.
@@ -31,7 +31,7 @@ public class SkGraphTemplateM5Model
    * объектам в том что по связи объекты хранятся отдельно от сущности.
    */
   public final IM5MultiModownFieldDef<ISkGraphTemplate, ISkGraphParam> REPORT_PARAMS =
-      new M5MultiModownFieldDef<>( CLBID_TEMPLATE_PARAMS, SkGraphParamM5Model.MODEL_ID ) {
+      new M5MultiModownFieldDef<>( CLBID_TEMPLATE_PARAMS, ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID ) {
 
         @Override
         protected void doInit() {
@@ -46,14 +46,9 @@ public class SkGraphTemplateM5Model
       };
 
   /**
-   * id field of aggregation step
-   */
-  public static final String FID_AGGR_STEP = "aggrStep"; //$NON-NLS-1$
-
-  /**
    * Attribute {@link ISkGraphTemplate#aggrStep() } step of aggregation for values
    */
-  public M5AttributeFieldDef<ISkGraphTemplate> AGGR_STEP = new M5AttributeFieldDef<>( FID_AGGR_STEP, VALOBJ, //
+  public M5AttributeFieldDef<ISkGraphTemplate> AGGR_STEP = new M5AttributeFieldDef<>( ATRID_AGGR_STEP, VALOBJ, //
       TSID_NAME, STR_N_PARAM_AGGR_STEP, //
       TSID_DESCRIPTION, STR_D_PARAM_AGGR_STEP, //
       TSID_KEEPER_ID, ETimeUnit.KEEPER_ID, //

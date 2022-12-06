@@ -1,10 +1,10 @@
-package ru.toxsoft.mcc.ws.reports.lib.impl;
+package ru.toxsoft.mcc.ws.core.templates.api.impl;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.gw.IGwHardConstants.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
-import static ru.toxsoft.mcc.ws.reports.lib.ISkTemplateEditorServiceHardConstants.*;
-import static ru.toxsoft.mcc.ws.reports.lib.impl.ISkResources.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.impl.ISkResources.*;
 
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
@@ -31,7 +31,7 @@ import org.toxsoft.uskat.core.impl.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 import org.toxsoft.uskat.s5.utils.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * {@link ISkReportTemplateService} implementation.

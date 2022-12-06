@@ -26,8 +26,8 @@ import org.toxsoft.uskat.core.api.rtdserv.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 import org.toxsoft.uskat.s5.legacy.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
-import ru.toxsoft.mcc.ws.reports.lib.utils.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.utils.*;
 
 /**
  * Набор данных для графика реального времени.

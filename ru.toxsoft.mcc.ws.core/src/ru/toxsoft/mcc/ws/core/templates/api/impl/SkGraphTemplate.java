@@ -1,10 +1,10 @@
-package ru.toxsoft.mcc.ws.reports.lib.impl;
+package ru.toxsoft.mcc.ws.core.templates.api.impl;
 
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * {@link ISkGraphTemplate} implementation.

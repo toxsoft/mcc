@@ -1,6 +1,6 @@
-package ru.toxsoft.mcc.ws.reports.lib.utils;
+package ru.toxsoft.mcc.ws.core.templates.utils;
 
-import static ru.toxsoft.mcc.ws.reports.lib.utils.ITsResources.*;
+import static ru.toxsoft.mcc.ws.core.templates.utils.ITsResources.*;
 
 import java.util.*;
 

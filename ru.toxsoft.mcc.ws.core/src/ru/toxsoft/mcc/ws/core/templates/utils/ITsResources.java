@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.lib.utils;
+package ru.toxsoft.mcc.ws.core.templates.utils;
 
 /**
  * Локализуемые ресурсы.

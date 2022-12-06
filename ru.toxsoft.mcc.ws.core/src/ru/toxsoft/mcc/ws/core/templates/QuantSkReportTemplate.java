@@ -1,9 +1,11 @@
-package ru.toxsoft.mcc.ws.reports.lib;
+package ru.toxsoft.mcc.ws.core.templates;
 
 import org.eclipse.e4.core.contexts.*;
 import org.toxsoft.core.tsgui.bricks.quant.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tslib.utils.valobj.*;
+
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * The libtary quant.

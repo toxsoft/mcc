@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.lib.impl;
+package ru.toxsoft.mcc.ws.core.templates.api.impl;
 
 import static org.toxsoft.core.tslib.bricks.strio.IStrioHardConstants.*;
 
@@ -9,7 +9,7 @@ import org.toxsoft.core.tslib.bricks.keeper.AbstractEntityKeeper.*;
 import org.toxsoft.core.tslib.bricks.strio.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * {@link ISkGraphParam} immutable implementation.

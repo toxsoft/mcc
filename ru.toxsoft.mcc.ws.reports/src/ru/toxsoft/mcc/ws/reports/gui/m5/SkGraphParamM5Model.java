@@ -18,8 +18,8 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.connection.*;
 
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.reports.gui.valed.*;
-import ru.toxsoft.mcc.ws.reports.lib.*;
 
 /**
  * M5-model of {@link ISkGraphParam}.
@@ -32,7 +32,7 @@ public class SkGraphParamM5Model
   /**
    * model id
    */
-  public static final String MODEL_ID         = "sk.GraphParam"; //$NON-NLS-1$
+  // public static final String MODEL_ID = "sk.GraphParam"; //$NON-NLS-1$
   /**
    * id field of Gwid
    */
@@ -270,7 +270,7 @@ public class SkGraphParamM5Model
    * Constructor
    */
   public SkGraphParamM5Model() {
-    super( MODEL_ID, ISkGraphParam.class );
+    super( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
 
     addFieldDefs( GWID, TITLE, DESCR, UNIT_ID, UNIT_NAME, AGGR_FUNC, DISPL_FORMAT, COLOR, LINE_WIDTH, IS_LADDER );
 

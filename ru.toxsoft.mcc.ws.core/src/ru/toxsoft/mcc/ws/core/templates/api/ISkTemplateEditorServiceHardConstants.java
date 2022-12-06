@@ -1,7 +1,7 @@
-package ru.toxsoft.mcc.ws.reports.lib;
+package ru.toxsoft.mcc.ws.core.templates.api;
 
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static ru.toxsoft.mcc.ws.reports.lib.ISkResources.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.ISkResources.*;
 
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tslib.coll.helpers.*;
@@ -100,5 +100,10 @@ public interface ISkTemplateEditorServiceHardConstants {
       TSID_NAME, STR_N_AGGR_STEP, //
       TSID_DESCRIPTION, STR_D_AGGR_STEP, //
       TSID_DEFAULT_VALUE, ETimeUnit.MIN01 );
+
+  /**
+   * SkGraphParamM5Model model id
+   */
+  String GRAPH_PARAM_MODEL_ID = "sk.GraphParam"; //$NON-NLS-1$
 
 }

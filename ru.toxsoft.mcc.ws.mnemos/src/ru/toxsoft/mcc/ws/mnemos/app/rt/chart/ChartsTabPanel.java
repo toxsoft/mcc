@@ -16,8 +16,7 @@ import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.core.connection.*;
 
-import ru.toxsoft.mcc.ws.reports.gui.m5.*;
-import ru.toxsoft.mcc.ws.reports.lib.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * Панель отображения графиков реального времени.<br>
@@ -46,7 +45,7 @@ public class ChartsTabPanel
     this.setLayout( new BorderLayout() );
     // toolbar
     toolbar = new TsToolbar( tsContext() );
-    toolbar.setNameLabelText( "Панель Rt Charts" );
+    toolbar.setNameLabelText( "RtCharts" );
     toolbar.addActionDefs( //
         ACDEF_ADD, ACDEF_SEPARATOR //
     );
@@ -63,7 +62,6 @@ public class ChartsTabPanel
           RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), newRtGraph, aConnection );
           tabItem.setControl( chartPanel );
           tabFolder.setSelection( tabItem );
-          // chartPanel.start();
         }
       }
     } );
@@ -75,7 +73,8 @@ public class ChartsTabPanel
   }
 
   protected ISkGraphParam doAddItem() {
-    IM5Model<ISkGraphParam> model = m5().getModel( SkGraphParamM5Model.MODEL_ID, ISkGraphParam.class );
+    IM5Model<ISkGraphParam> model =
+        m5().getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
     IM5BunchEdit<ISkGraphParam> initVals = new M5BunchEdit<>( model );
     return M5GuiUtils.askCreate( tsContext(), model, initVals, cdi, model.getLifecycleManager( null ) );

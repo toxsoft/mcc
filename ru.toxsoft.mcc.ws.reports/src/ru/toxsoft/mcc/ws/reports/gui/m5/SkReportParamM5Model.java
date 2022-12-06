@@ -17,8 +17,8 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.connection.*;
 
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.reports.gui.valed.*;
-import ru.toxsoft.mcc.ws.reports.lib.*;
 
 /**
  * M5-model of {@link ISkReportParam}.

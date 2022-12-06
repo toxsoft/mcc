@@ -11,8 +11,8 @@ import org.toxsoft.core.tslib.coll.helpers.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.connection.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
-import ru.toxsoft.mcc.ws.reports.lib.impl.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
 
 /**
  * @author dima

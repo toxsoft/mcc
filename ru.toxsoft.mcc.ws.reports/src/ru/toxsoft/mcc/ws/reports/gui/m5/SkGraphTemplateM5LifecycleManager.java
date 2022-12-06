@@ -1,7 +1,7 @@
 package ru.toxsoft.mcc.ws.reports.gui.m5;
 
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
-import static ru.toxsoft.mcc.ws.reports.lib.ISkTemplateEditorServiceHardConstants.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
 
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tslib.bricks.strid.idgen.*;
@@ -16,8 +16,8 @@ import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 import org.toxsoft.uskat.s5.utils.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
-import ru.toxsoft.mcc.ws.reports.lib.impl.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
 
 /**
  * Lifecycle manager for {@link SkGraphTemplateM5Model}.
@@ -104,8 +104,7 @@ public class SkGraphTemplateM5LifecycleManager
     DtoFullObject dtoGraphTemplate = DtoFullObject.createDtoFullObject( skid, aConnection.coreApi() );
     dtoGraphTemplate.attrs().setValue( AID_NAME, aValues.getAsAv( AID_NAME ) );
     dtoGraphTemplate.attrs().setValue( AID_DESCRIPTION, aValues.getAsAv( AID_DESCRIPTION ) );
-    dtoGraphTemplate.attrs().setValue( SkGraphTemplateM5Model.FID_AGGR_STEP,
-        aValues.getAsAv( SkGraphTemplateM5Model.FID_AGGR_STEP ) );
+    dtoGraphTemplate.attrs().setValue( ATRID_AGGR_STEP, aValues.getAsAv( ATRID_AGGR_STEP ) );
 
     IList<ISkGraphParam> paramsList = aValues.getAs( CLBID_TEMPLATE_PARAMS, IList.class );
     String paramsStr = SkGraphParam.KEEPER.coll2str( paramsList );

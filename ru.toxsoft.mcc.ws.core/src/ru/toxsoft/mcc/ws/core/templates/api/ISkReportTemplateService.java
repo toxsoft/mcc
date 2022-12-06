@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.lib;
+package ru.toxsoft.mcc.ws.core.templates.api;
 
 import org.toxsoft.core.tslib.bricks.events.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
@@ -11,64 +11,63 @@ import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
- * The graph template managment service.
+ * The report template managment service.
  *
  * @author dima
  */
-public interface ISkGraphTemplateService
+public interface ISkReportTemplateService
     extends ISkService {
 
   /**
    * Service identifier.
    */
-  String SERVICE_ID = ISkHardConstants.SK_CORE_SERVICE_ID_PREFIX + ".GraphTemplate"; //$NON-NLS-1$
+  String SERVICE_ID = ISkHardConstants.SK_CORE_SERVICE_ID_PREFIX + ".ReportTemplate"; //$NON-NLS-1$
 
   /**
-   * Returns the list of graph templates.
+   * Returns the list of report tenmplates.
    *
-   * @return {@link IList}&lt;{@link ISkGraphTemplate}&gt; - the list of graph templates
+   * @return {@link IList}&lt;{@link ISkReportTemplate}&gt; - the list of report templates
    */
-  IList<ISkGraphTemplate> listGraphTemplates();
+  IList<ISkReportTemplate> listReportTemplates();
 
   /**
-   * Finds graph template.
+   * Finds report template.
    *
    * @param aTempId String - ID of template {@link ISkObject#strid()}
    * @return {@link ISkReportTemplate} - found template or <code>null</code>
    */
-  ISkGraphTemplate findGraphTemplate( String aTempId );
+  ISkReportTemplate findReportTemplate( String aTempId );
 
   /**
-   * Creates new graph template.
+   * Creates new report template.
    *
-   * @param aDtoGraphTemplate {@link IDtoFullObject} - the template data
+   * @param aDtoReportTemplate {@link IDtoFullObject} - the template data
    * @return {@link ISkReportTemplate} - created/update template object
    * @throws TsNullArgumentRtException any argument = <code>null</code>
-   * @throws TsIllegalArgumentRtException object DTO does not refers to {@link ISkGraphTemplate#CLASS_ID}
+   * @throws TsIllegalArgumentRtException object DTO does not refers to {@link ISkReportTemplate#CLASS_ID}
    * @throws TsValidationFailedRtException failed check of {@link ISkReportTemplateServiceValidator}
    */
-  ISkGraphTemplate createGraphTemplate( IDtoFullObject aDtoGraphTemplate );
+  ISkReportTemplate createReportTemplate( IDtoFullObject aDtoReportTemplate );
 
   /**
    * Edits an existing template.
    * <p>
    *
-   * @param aDtoGraphTemplate {@link IDtoFullObject} - the template data
+   * @param aDtoReportTemplate {@link IDtoFullObject} - the template data
    * @return {@link ISkReportTemplate} - created/update template object
    * @throws TsNullArgumentRtException any argument = <code>null</code>
-   * @throws TsIllegalArgumentRtException object DTO does not refers to {@link ISkGraphTemplate#CLASS_ID}
-   * @throws TsValidationFailedRtException failed check of {@link ISkGraphTemplateServiceValidator}
+   * @throws TsValidationFailedRtException failed check of {@link ISkReportTemplateServiceValidator}
    */
-  ISkGraphTemplate editGraphTemplate( IDtoFullObject aDtoGraphTemplate );
+  ISkReportTemplate editReportTemplate( IDtoFullObject aDtoReportTemplate );
 
   /**
    * Removes the template.
    *
-   * @param aGraphTemplateId String - template ID and {@link ISkObject#strid()}
+   * @param aReportTemplateId String - template ID and {@link ISkObject#strid()}
    * @throws TsNullArgumentRtException any argument = <code>null</code>
    * @throws TsValidationFailedRtException failed check of {@link ISkReportTemplateServiceValidator}
    */
-  void removeGraphTemplate( String aGraphTemplateId );
+  void removeReportTemplate( String aReportTemplateId );
 
   /**
    * Set current connection.
@@ -84,15 +83,15 @@ public interface ISkGraphTemplateService
   /**
    * Returns the service validator.
    *
-   * @return {@link ITsValidationSupport}&lt;{@link ISkGraphTemplateServiceValidator}&gt; - the service validator
+   * @return {@link ITsValidationSupport}&lt;{@link ISkReportTemplateServiceValidator}&gt; - the service validator
    */
-  ITsValidationSupport<ISkGraphTemplateServiceValidator> svs();
+  ITsValidationSupport<ISkReportTemplateServiceValidator> svs();
 
   /**
    * Returns the service eventer.
    *
-   * @return {@link ITsEventer}&lt;{@link ISkGraphTemplateServiceListener}&gt; - the service eventer
+   * @return {@link ITsEventer}&lt;{@link ISkReportTemplateServiceListener}&gt; - the service eventer
    */
-  ITsEventer<ISkGraphTemplateServiceListener> eventer();
+  ITsEventer<ISkReportTemplateServiceListener> eventer();
 
 }

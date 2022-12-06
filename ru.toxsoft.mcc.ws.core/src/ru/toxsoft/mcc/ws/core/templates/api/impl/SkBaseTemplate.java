@@ -1,6 +1,6 @@
-package ru.toxsoft.mcc.ws.reports.lib.impl;
+package ru.toxsoft.mcc.ws.core.templates.api.impl;
 
-import static ru.toxsoft.mcc.ws.reports.lib.ISkTemplateEditorServiceHardConstants.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
 
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
@@ -8,7 +8,7 @@ import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.impl.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * {@link ISkReportTemplate} implementation.

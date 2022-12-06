@@ -1,6 +1,6 @@
-package ru.toxsoft.mcc.ws.reports.lib;
+package ru.toxsoft.mcc.ws.core.templates.api;
 
-import static ru.toxsoft.mcc.ws.reports.lib.ISkResources.*;
+import static ru.toxsoft.mcc.ws.core.templates.api.ISkResources.*;
 
 import org.toxsoft.core.tslib.bricks.keeper.*;
 import org.toxsoft.core.tslib.bricks.keeper.std.*;

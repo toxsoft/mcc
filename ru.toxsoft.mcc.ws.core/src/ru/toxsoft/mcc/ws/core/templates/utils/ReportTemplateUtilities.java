@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.lib.utils;
+package ru.toxsoft.mcc.ws.core.templates.utils;
 
 import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
@@ -29,7 +29,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 
-import ru.toxsoft.mcc.ws.reports.lib.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * Утилитный класс для работы с шаблонами

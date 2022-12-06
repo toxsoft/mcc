@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.lib;
+package ru.toxsoft.mcc.ws.core.templates.api;
 
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tslib.gw.gwid.*;

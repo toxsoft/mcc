@@ -1,11 +1,9 @@
-package ru.toxsoft.mcc.ws.reports.lib;
+package ru.toxsoft.mcc.ws.core.templates.api;
 
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
-
-import ru.toxsoft.mcc.ws.reports.gui.m5.*;
 
 /**
  * Interface to specify template of doc report.
@@ -44,7 +42,7 @@ public interface ISkBaseTemplate<T extends ISkTemplateParam>
    * @return { @link ETimeUnit} - time step of aggregation
    */
   default ETimeUnit aggrStep() {
-    return attrs().getValobj( SkGraphTemplateM5Model.FID_AGGR_STEP );
+    return attrs().getValobj( ISkTemplateEditorServiceHardConstants.ATRID_AGGR_STEP );
   }
 
 }

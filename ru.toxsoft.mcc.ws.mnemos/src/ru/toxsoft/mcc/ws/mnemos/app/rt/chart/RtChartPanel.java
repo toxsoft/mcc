@@ -34,9 +34,9 @@ import org.toxsoft.uskat.core.connection.*;
 import ru.toxsoft.mcc.ws.core.chart_utils.*;
 import ru.toxsoft.mcc.ws.core.chart_utils.console.*;
 import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.utils.*;
 import ru.toxsoft.mcc.ws.mnemos.*;
-import ru.toxsoft.mcc.ws.reports.lib.*;
-import ru.toxsoft.mcc.ws.reports.lib.utils.*;
 
 /**
  * Компонента, отображающая график одного параметра в реальном времени. <br>

@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.lib.impl;
+package ru.toxsoft.mcc.ws.core.templates.api.impl;
 
 /**
  * Localizable resources.
