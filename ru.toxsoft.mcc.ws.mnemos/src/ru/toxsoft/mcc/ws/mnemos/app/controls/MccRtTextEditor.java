@@ -285,7 +285,7 @@ public class MccRtTextEditor
         return AvUtils.avFloat( Double.parseDouble( dlg.getValue() ) );
       }
       if( valueType == EAtomicType.INTEGER ) {
-        return AvUtils.avFloat( Long.parseLong( dlg.getValue() ) );
+        return AvUtils.avInt( Long.parseLong( dlg.getValue() ) );
       }
       return AvUtils.avStr( dlg.getValue() );
     }
