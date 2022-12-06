@@ -58,6 +58,8 @@ public class MccRtTextEditor
   private final String commandId;
   private final String cmdArgId;
 
+  private final EAtomicType valueType;
+
   private IAtomicValue value = IAtomicValue.NULL;
 
   IAtomicValue newVal = IAtomicValue.NULL;
@@ -95,6 +97,12 @@ public class MccRtTextEditor
     }
   };
 
+  /**
+   * @param aSkObject ISkObject - серверный объект
+   * @param aDataId String - ИД данного
+   * @param aCmdId String - ИД команды
+   * @param aTsContext ITsGuiContext - соответствующий контекст
+   */
   public MccRtTextEditor( ISkObject aSkObject, String aDataId, String aCmdId, ITsGuiContext aTsContext ) {
     skObject = aSkObject;
     dataId = aDataId;
@@ -110,6 +118,7 @@ public class MccRtTextEditor
       }
     }
     cmdArgId = argId;
+    valueType = clsInfo.rtdata().list().getByKey( aDataId ).dataType().atomicType();
   }
 
   // ------------------------------------------------------------------------------------
@@ -118,7 +127,7 @@ public class MccRtTextEditor
 
   @Override
   public String id() {
-    return skObject.id() + "." + dataId;
+    return skObject.id() + "." + dataId; //$NON-NLS-1$
   }
 
   @Override
@@ -163,6 +172,12 @@ public class MccRtTextEditor
   // API
   //
 
+  /**
+   * Создает SWT контроль.
+   *
+   * @param aParent Composite - родительская компонента
+   * @return Composite - SWT контроль
+   */
   public Composite createControl( Composite aParent ) {
     board = new Composite( aParent, SWT.NO_FOCUS );
     GridLayout gl = new GridLayout( 2, false );
@@ -266,7 +281,13 @@ public class MccRtTextEditor
     }
     InputDialog dlg = new InputDialog( getShell(), STR_DLG_T_EDIT_VALUE, STR_DLG_M_VALUE, strValue, null );
     if( dlg.open() == IDialogConstants.OK_ID ) {
-      return AvUtils.avFloat( Double.parseDouble( dlg.getValue() ) );
+      if( valueType == EAtomicType.FLOATING ) {
+        return AvUtils.avFloat( Double.parseDouble( dlg.getValue() ) );
+      }
+      if( valueType == EAtomicType.INTEGER ) {
+        return AvUtils.avFloat( Long.parseLong( dlg.getValue() ) );
+      }
+      return AvUtils.avStr( dlg.getValue() );
     }
     return null;
   }

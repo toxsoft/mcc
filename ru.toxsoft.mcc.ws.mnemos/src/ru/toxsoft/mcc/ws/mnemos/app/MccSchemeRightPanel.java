@@ -1,8 +1,6 @@
 package ru.toxsoft.mcc.ws.mnemos.app;
 
 import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -34,10 +32,10 @@ public class MccSchemeRightPanel
 
     ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
 
-    CLabel labelTitle = new CLabel( this, SWT.CENTER );
-    Font f = fontManager().getFont( "Arial", 24, SWT.BOLD ); //$NON-NLS-1$
-    labelTitle.setFont( f );
-    labelTitle.setText( "Нагнетатель №" );
+    // CLabel labelTitle = new CLabel( this, SWT.CENTER );
+    // Font f = fontManager().getFont( "Arial", 24, SWT.BOLD ); //$NON-NLS-1$
+    // labelTitle.setFont( f );
+    // labelTitle.setText( "Нагнетатель №" );
 
     graphicsHolder = new MccGraphicsHolderPanel( this, skConn, aContext );
     graphicsHolder.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );

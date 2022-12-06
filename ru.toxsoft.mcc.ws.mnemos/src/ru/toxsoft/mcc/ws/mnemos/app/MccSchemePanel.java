@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tsgui.graphics.cursors.*;
 import org.toxsoft.core.tsgui.graphics.fonts.*;
 import org.toxsoft.core.tsgui.panels.*;
@@ -83,6 +84,8 @@ public class MccSchemePanel
 
   private final Font unitFont;
 
+  private final Color colorBlack;
+
   Image imgScheme;
 
   /**
@@ -96,9 +99,16 @@ public class MccSchemePanel
     // setLayout( new FillLayout() );
     setLayout( null );
 
-    unitFont = tsContext().get( ITsFontManager.class ).getFont( "Arial", 8, SWT.NONE );
+    unitFont = tsContext().get( ITsFontManager.class ).getFont( "Arial", 8, SWT.NONE ); //$NON-NLS-1$
+    colorBlack = colorManager().getColor( ETsColor.BLACK );
 
-    dataProvider = new MccRtDataProvider( aContext.get( ISkConnectionSupplier.class ).defConn(), aContext );
+    ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
+    dataProvider = new MccRtDataProvider( skConn, aContext );
+
+    IList<ISkObject> objs = skConn.coreApi().objService().listObjs( "mcc.IrreversibleEngine", true ); //$NON-NLS-1$
+    for( ISkObject obj : objs ) {
+      System.out.println( obj.nmName() + ": " + obj.strid() ); //$NON-NLS-1$
+    }
 
     // rtPanel = new RtValedsPanel( this, aContext );
     // rtPanel.setLayout( null );
@@ -122,6 +132,7 @@ public class MccSchemePanel
 
       Font oldFont = aEvent.gc.getFont();
       aEvent.gc.setFont( unitFont );
+      aEvent.gc.setForeground( colorBlack );
       for( Point p : unitStrings.keys() ) {
         aEvent.gc.drawString( unitStrings.getByKey( p ), p.x, p.y, true );
       }
@@ -139,6 +150,7 @@ public class MccSchemePanel
     MccMainEngineControl mainEngine = new MccMainEngineControl( this, gwid, imgIds, aContext );
     mainEngine.setLocation( 199, 126 );
     controls.add( mainEngine );
+    dataProvider.addDataConsumer( mainEngine );
 
     imgIds.clear();
     imgIds.add( "icons/oil_pupm_starter_on.png" ); //$NON-NLS-1$
@@ -147,9 +159,10 @@ public class MccSchemePanel
     imgIds.add( "icons/oil_pupm_starter_unplugged.png" ); //$NON-NLS-1$
 
     gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Mn" ); //$NON-NLS-1$//$NON-NLS-2$
-    MccReversibleEngineControl reversibleEngine = new MccReversibleEngineControl( this, gwid, imgIds, aContext );
+    MccIrreversibleEngineControl reversibleEngine = new MccIrreversibleEngineControl( this, gwid, imgIds, aContext );
     reversibleEngine.setLocation( 737, 706 );
     controls.add( reversibleEngine );
+    dataProvider.addDataConsumer( reversibleEngine );
 
     imgIds.clear();
     imgIds.add( "icons/engine_on.png" ); //$NON-NLS-1$
@@ -157,11 +170,32 @@ public class MccSchemePanel
     imgIds.add( "icons/engine_fault.png" ); //$NON-NLS-1$
 
     gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_VPU" ); //$NON-NLS-1$//$NON-NLS-2$
-    mainEngine = new MccMainEngineControl( this, gwid, imgIds, aContext );
-    mainEngine.setLocation( 1030, 181 );
-    controls.add( mainEngine );
+    MccIrreversibleEngineControl engine = new MccIrreversibleEngineControl( this, gwid, imgIds, aContext );
+    engine.setLocation( 1030, 181 );
+    controls.add( engine );
+    dataProvider.addDataConsumer( engine );
 
-    // objs = coreApi.objService().listObjs( "mcc.ReversibleEngine", true ); //$NON-NLS-1$
+    imgIds.clear();
+    imgIds.add( "icons/reserve-fan-green.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/reserve-fan-gray.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/reserve-fan-red.png" ); //$NON-NLS-1$
+
+    gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Vent1" ); //$NON-NLS-1$//$NON-NLS-2$
+    MccIrreversibleEngineControl irreversibleEngine = new MccIrreversibleEngineControl( this, gwid, imgIds, aContext );
+    irreversibleEngine.setLocation( 231, 51 );
+    controls.add( irreversibleEngine );
+    dataProvider.addDataConsumer( irreversibleEngine );
+
+    imgIds.clear();
+    imgIds.add( "icons/main-fan-green.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/main-fan-gray.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/main-fan-red.png" ); //$NON-NLS-1$
+
+    gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Vent2" ); //$NON-NLS-1$//$NON-NLS-2$
+    irreversibleEngine = new MccIrreversibleEngineControl( this, gwid, imgIds, aContext );
+    irreversibleEngine.setLocation( 330, 51 );
+    controls.add( irreversibleEngine );
+    dataProvider.addDataConsumer( irreversibleEngine );
 
     imgIds.clear();
     imgIds.add( "icons/small_valve_open.png" ); //$NON-NLS-1$
@@ -171,7 +205,7 @@ public class MccSchemePanel
     imgIds.add( "icons/small_valve_blinking.png" ); //$NON-NLS-1$
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Kp" ); //$NON-NLS-1$ //$NON-NLS-2$
     MccValveControl valve = new MccValveControl( this, gwid, imgIds, aContext );
-    valve.setLocation( 323, 94 );
+    valve.setLocation( 105, 89 );
     controls.add( valve );
     dataProvider.addDataConsumer( valve );
 
@@ -183,13 +217,13 @@ public class MccSchemePanel
     imgIds.add( "icons/valve_blinking.png" ); //$NON-NLS-1$
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Zn" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
-    valve.setLocation( 1281, 572 );
+    valve.setLocation( 1294, 591 );
     controls.add( valve );
     dataProvider.addDataConsumer( valve );
 
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Kp" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
-    valve.setLocation( 1308, 221 );
+    valve.setLocation( 1316, 239 );
     controls.add( valve );
     dataProvider.addDataConsumer( valve );
 
@@ -201,13 +235,15 @@ public class MccSchemePanel
     imgIds.add( "icons/valve_blinking_vert.png" ); //$NON-NLS-1$
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Zvs" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
-    valve.setLocation( 1394, 136 );
+    // valve.setLocation( 1394, 136 );
+    valve.setLocation( 1398, 143 );
     controls.add( valve );
     dataProvider.addDataConsumer( valve );
 
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Zb" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
-    valve.setLocation( 1214, 344 );
+    // valve.setLocation( 1214, 344 );
+    valve.setLocation( 1219, 354 );
     controls.add( valve );
     dataProvider.addDataConsumer( valve );
 

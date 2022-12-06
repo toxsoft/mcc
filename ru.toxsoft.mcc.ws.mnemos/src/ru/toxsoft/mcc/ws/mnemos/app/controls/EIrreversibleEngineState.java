@@ -13,41 +13,33 @@ import org.toxsoft.core.tslib.utils.errors.*;
  * @author hazard157
  */
 @SuppressWarnings( { "nls", "javadoc" } )
-public enum EReversibleEngineState
+public enum EIrreversibleEngineState
     implements IStridable {
 
   UNKNOWN( "unknown", "Входные данные отсутствуют", "Неопределено" ),
 
-  INVALID( "invalid", "Недопустимая комбинация значений входных данных", "Недопустимое состояние" ),
-
   FAULT( "fault", "Авария", "Авария" ),
 
-  OPENED( "opened", "Полностью открыта", "Открыта" ),
+  ON( "on", "Включен", "Включен" ),
 
-  CLOSED( "closed", "Полностью закрыта", "Закрыта" ),
-
-  OPENING( "opening", "В процессе открывания", "Открывается" ),
-
-  CLOSING( "closing", "В процессе закрывания", "Закрывается" ),
-
-  PARTIALLY_OPENED( "partiallyOpened", "Частично открыта", "Приоткрыта" );
+  OFF( "closed", "Выключен", "Выключен" );
 
   /**
    * Keeper ID.
    */
-  public static final String KEEPER_ID = "EReversibleEngineState"; //$NON-NLS-1$
+  public static final String KEEPER_ID = "EIrreversibleEngineState"; //$NON-NLS-1$
 
   /**
    * Keeper singleton.
    */
-  public static IEntityKeeper<EReversibleEngineState> KEEPER =
-      new StridableEnumKeeper<>( EReversibleEngineState.class );
+  public static IEntityKeeper<EIrreversibleEngineState> KEEPER =
+      new StridableEnumKeeper<>( EIrreversibleEngineState.class );
 
   private final String id;
   private final String description;
   private final String name;
 
-  EReversibleEngineState( String aId, String aDescr, String aName ) {
+  EIrreversibleEngineState( String aId, String aDescr, String aName ) {
     id = aId;
     description = aDescr;
     name = aName;
@@ -126,9 +118,9 @@ public enum EReversibleEngineState
    * @return ETsRectFulcrum - найденная константа, или null если нет константы с таимк идентификатором
    * @throws TsNullArgumentRtException аргумент = null
    */
-  public static EReversibleEngineState findByIdOrNull( String aId ) {
+  public static EIrreversibleEngineState findByIdOrNull( String aId ) {
     TsNullArgumentRtException.checkNull( aId );
-    for( EReversibleEngineState item : values() ) {
+    for( EIrreversibleEngineState item : values() ) {
       if( item.id.equals( aId ) ) {
         return item;
       }
@@ -144,7 +136,7 @@ public enum EReversibleEngineState
    * @throws TsNullArgumentRtException аргумент = null
    * @throws TsItemNotFoundRtException нет константы с таким идентификатором
    */
-  public static EReversibleEngineState findById( String aId ) {
+  public static EIrreversibleEngineState findById( String aId ) {
     return TsItemNotFoundRtException.checkNull( findByIdOrNull( aId ) );
   }
 
@@ -155,9 +147,9 @@ public enum EReversibleEngineState
    * @return ETsRectFulcrum - найденная константа, или null если нет константы с таким описанием
    * @throws TsNullArgumentRtException аргумент = null
    */
-  public static EReversibleEngineState findByDescriptionOrNull( String aDescription ) {
+  public static EIrreversibleEngineState findByDescriptionOrNull( String aDescription ) {
     TsNullArgumentRtException.checkNull( aDescription );
-    for( EReversibleEngineState item : values() ) {
+    for( EIrreversibleEngineState item : values() ) {
       if( item.description.equals( aDescription ) ) {
         return item;
       }
@@ -173,7 +165,7 @@ public enum EReversibleEngineState
    * @throws TsNullArgumentRtException аргумент = null
    * @throws TsItemNotFoundRtException нет константы с таким описанием
    */
-  public static EReversibleEngineState findByDescription( String aDescription ) {
+  public static EIrreversibleEngineState findByDescription( String aDescription ) {
     return TsItemNotFoundRtException.checkNull( findByDescriptionOrNull( aDescription ) );
   }
 
@@ -184,9 +176,9 @@ public enum EReversibleEngineState
    * @return ETsRectFulcrum - найденная константа, или null если нет константы с таким именем
    * @throws TsNullArgumentRtException аргумент = null
    */
-  public static EReversibleEngineState findByNameOrNull( String aName ) {
+  public static EIrreversibleEngineState findByNameOrNull( String aName ) {
     TsNullArgumentRtException.checkNull( aName );
-    for( EReversibleEngineState item : values() ) {
+    for( EIrreversibleEngineState item : values() ) {
       if( item.name.equals( aName ) ) {
         return item;
       }
@@ -202,7 +194,7 @@ public enum EReversibleEngineState
    * @throws TsNullArgumentRtException аргумент = null
    * @throws TsItemNotFoundRtException нет константы с таким именем
    */
-  public static EReversibleEngineState findByName( String aName ) {
+  public static EIrreversibleEngineState findByName( String aName ) {
     return TsItemNotFoundRtException.checkNull( findByNameOrNull( aName ) );
   }
 

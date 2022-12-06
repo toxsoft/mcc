@@ -138,6 +138,7 @@ public class MccValveControl
         startAnimation( new int[] { 0, 4 } );
         break;
       case PARTIALLY_OPENED:
+        stopAnimation( 4 );
         break;
       default:
         throw new TsNotAllEnumsUsedRtException();
@@ -162,10 +163,10 @@ public class MccValveControl
       return EReversibleEngineState.FAULT;
     }
 
-    IAtomicValue opened = aValuesMap.getByKey( "rtdOpened" );
-    IAtomicValue closed = aValuesMap.getByKey( "rtdClosed" );
-    IAtomicValue opening = aValuesMap.getByKey( "rtdOpen" );
-    IAtomicValue closing = aValuesMap.getByKey( "rtdClose" );
+    IAtomicValue opened = aValuesMap.getByKey( "rtdOpened" ); //$NON-NLS-1$
+    IAtomicValue closed = aValuesMap.getByKey( "rtdClosed" ); //$NON-NLS-1$
+    IAtomicValue opening = aValuesMap.getByKey( "rtdOpen" ); //$NON-NLS-1$
+    IAtomicValue closing = aValuesMap.getByKey( "rtdClose" ); //$NON-NLS-1$
 
     if( opened == null || !opened.isAssigned() || //
         closed == null || !opened.isAssigned() || //

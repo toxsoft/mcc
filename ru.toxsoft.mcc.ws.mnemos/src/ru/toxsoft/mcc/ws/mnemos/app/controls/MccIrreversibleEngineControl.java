@@ -5,37 +5,48 @@ import static ru.toxsoft.mcc.ws.mnemos.Activator.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.*;
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
 
 /**
- * Главный двигатель нагнетателя (проект МосКокс).
+ * Реверсивный двигатель нагнетателя (проект МосКокс).
  * <p>
  *
  * @author vs
  */
-public class MccMainEngineControl
+public class MccIrreversibleEngineControl
     extends AbstractMultiImageControl {
 
   final IList<Image> imgList;
 
+  private final Color colorDarkGray;
+  private final Color colorImitation;
+  private final Color colorMagenta;
+
   /**
-   * Коструктор.
+   * Конструктор.
    *
    * @param aOwner MccSchemePanel - родительская панель мнемосхемы
    * @param aObjGwid Gwid - конкретный ИД объекта
    * @param aImageIds IStringList - список ИДов изображений
-   * @param aTsContext ITsGuiContext - соответствующий контекст
+   * @param aTsContext ITsGuiContext - соотвествующий контекст
    */
-  public MccMainEngineControl( MccSchemePanel aOwner, Gwid aObjGwid, IStringList aImageIds, ITsGuiContext aTsContext ) {
+  public MccIrreversibleEngineControl( MccSchemePanel aOwner, Gwid aObjGwid, IStringList aImageIds,
+      ITsGuiContext aTsContext ) {
     super( aOwner, aObjGwid, aTsContext );
+
+    colorDarkGray = colorManager().getColor( ETsColor.DARK_GRAY );
+    colorImitation = colorManager().getColor( new RGB( 107, 195, 255 ) );
+    colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
 
     imgList = new ElemArrayList<>();
 
@@ -91,7 +102,56 @@ public class MccMainEngineControl
   // Implementation
   //
 
-  void update() {
-    //
+  private void update() {
+    setBkColor( null );
+    setFgColor( null );
+    setTooltipText( null );
+
+    EIrreversibleEngineState state = calcState( values );
+    switch( state ) {
+      case ON:
+        setImageIndex( 0 );
+        break;
+      case OFF:
+        setImageIndex( 1 );
+        break;
+      case UNKNOWN:
+        setImageIndex( 1 );
+        setBkColor( colorMagenta );
+        break;
+      case FAULT:
+        setImageIndex( 2 );
+        break;
+      default:
+        throw new TsNotAllEnumsUsedRtException();
+    }
+    setTooltipText( state.description() );
+
+    IAtomicValue val = values.getByKey( "rtdEnabled" ); //$NON-NLS-1$
+    if( val != null && val.isAssigned() && !val.asBool() ) {
+      setBkColor( colorDarkGray );
+    }
+    val = values.getByKey( "rtdImitation" ); //$NON-NLS-1$
+    if( val != null && val.isAssigned() && !val.asBool() ) {
+      setFgColor( colorImitation );
+    }
   }
+
+  EIrreversibleEngineState calcState( IStringMap<IAtomicValue> aValuesMap ) {
+    IAtomicValue alarm = aValuesMap.getByKey( "rtdAlarm" ); //$NON-NLS-1$
+    if( alarm != null && alarm.isAssigned() && alarm.asBool() ) {
+      return EIrreversibleEngineState.FAULT;
+    }
+
+    IAtomicValue on = aValuesMap.getByKey( "rtdOn" ); //$NON-NLS-1$
+    if( !on.isAssigned() ) {
+      return EIrreversibleEngineState.UNKNOWN;
+    }
+
+    if( on.asBool() ) {
+      return EIrreversibleEngineState.ON;
+    }
+    return EIrreversibleEngineState.OFF;
+  }
+
 }

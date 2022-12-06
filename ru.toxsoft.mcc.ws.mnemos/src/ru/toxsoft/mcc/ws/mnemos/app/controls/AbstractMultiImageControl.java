@@ -5,6 +5,7 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.*;
 
@@ -40,6 +41,8 @@ public abstract class AbstractMultiImageControl
   Color fgColor = null;
 
   LineAttributes lineAttrs = new LineAttributes( 3 );
+
+  private boolean animated = false;
 
   private final IRealTimeSensitive animationHandler = aGwTime -> {
     onAnimationStep();
@@ -87,6 +90,15 @@ public abstract class AbstractMultiImageControl
   // to use
   //
 
+  protected void setImageIndex( int aIndex ) {
+    if( images == null ) {
+      images = listImages();
+      updateBounds();
+    }
+    TsIllegalArgumentRtException.checkTrue( aIndex < 0 || aIndex >= images.size() );
+    imageIndex = aIndex;
+  }
+
   /**
    * Задает цвет фона, которым закрашивется описывающий прямоугольник. Если <b>null</b>, то фон не рисуется.
    *
@@ -124,11 +136,13 @@ public abstract class AbstractMultiImageControl
     animationIndexes = aImageIndexes;
     animationIndex = 0;
     imageIndex = animationIndexes[animationIndex];
+    animated = true;
     guiTimersService().slowTimers().addListener( animationHandler );
 
   }
 
   void stopAnimation( int aImageIndex ) {
+    animated = false;
     guiTimersService().slowTimers().removeListener( animationHandler );
     imageIndex = aImageIndex;
     animationIndexes = null;
@@ -140,10 +154,12 @@ public abstract class AbstractMultiImageControl
   //
 
   private void onAnimationStep() {
-    animationIndex = (animationIndex + 1) % animationIndexes.length;
-    imageIndex = animationIndexes[animationIndex];
-    schemePanel().redraw( bounds.x, bounds.y, bounds.width, bounds.height, false );
-    // System.out.println( "Animation step: " + imageIndex ); //$NON-NLS-1$
+    if( animated ) {
+      animationIndex = (animationIndex + 1) % animationIndexes.length;
+      imageIndex = animationIndexes[animationIndex];
+      schemePanel().redraw( bounds.x, bounds.y, bounds.width, bounds.height, false );
+      // System.out.println( "Animation step: " + imageIndex ); //$NON-NLS-1$
+    }
   }
 
   private void updateBounds() {

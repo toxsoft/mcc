@@ -35,6 +35,14 @@ public interface IMccWsMnemosConstants {
   String ICONID_CHECK_VALVE_CLOSE = "check_valve_close"; //$NON-NLS-1$
   String ICONID_CHECK_VALVE_OPEN  = "check_valve_open";  //$NON-NLS-1$
 
+  String ICONID_MAIN_FAN_RED   = "main-fan-red";   //$NON-NLS-1$
+  String ICONID_MAIN_FAN_GREEN = "main-fan-green"; //$NON-NLS-1$
+  String ICONID_MAIN_FAN_GRAY  = "main-fan-gray";  //$NON-NLS-1$
+
+  String ICONID_RESERVE_FAN_RED   = "reserve-fan-red";   //$NON-NLS-1$
+  String ICONID_RESERVE_FAN_GREEN = "reserve-fan-green"; //$NON-NLS-1$
+  String ICONID_RESERVE_FAN_GRAY  = "reserve-fan-gray";  //$NON-NLS-1$
+
   /**
    * Constants registration.
    *
