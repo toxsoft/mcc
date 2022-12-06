@@ -22,15 +22,15 @@ public enum EReversibleEngineState
 
   FAULT( "fault", "Авария", "Авария" ),
 
-  OPENED( "opened", "Полностью открыта", "Открыта" ),
+  OPENED( "opened", "Полностью открыто", "Открыто" ),
 
-  CLOSED( "closed", "Полностью закрыта", "Закрыта" ),
+  CLOSED( "closed", "Полностью закрыто", "Закрыто" ),
 
   OPENING( "opening", "В процессе открывания", "Открывается" ),
 
   CLOSING( "closing", "В процессе закрывания", "Закрывается" ),
 
-  PARTIALLY_OPENED( "partiallyOpened", "Частично открыта", "Приоткрыта" );
+  PARTIALLY_OPENED( "partiallyOpened", "Частично открыто", "Промежуточное" );
 
   /**
    * Keeper ID.

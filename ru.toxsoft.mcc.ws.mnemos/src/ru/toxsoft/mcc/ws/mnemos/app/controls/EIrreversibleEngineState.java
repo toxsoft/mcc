@@ -20,9 +20,9 @@ public enum EIrreversibleEngineState
 
   FAULT( "fault", "Авария", "Авария" ),
 
-  ON( "on", "Включен", "Включен" ),
+  ON( "on", "Включено", "Включено" ),
 
-  OFF( "closed", "Выключен", "Выключен" );
+  OFF( "closed", "Выключено", "Выключено" );
 
   /**
    * Keeper ID.

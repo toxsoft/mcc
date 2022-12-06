@@ -28,7 +28,8 @@ public class MccIrreversibleEngineControl
 
   final IList<Image> imgList;
 
-  private final Color colorDarkGray;
+  // private final Color colorDarkGray;
+  private final Color colorRed;
   private final Color colorImitation;
   private final Color colorMagenta;
 
@@ -44,7 +45,8 @@ public class MccIrreversibleEngineControl
       ITsGuiContext aTsContext ) {
     super( aOwner, aObjGwid, aTsContext );
 
-    colorDarkGray = colorManager().getColor( ETsColor.DARK_GRAY );
+    // colorDarkGray = colorManager().getColor( ETsColor.DARK_GRAY );
+    colorRed = colorManager().getColor( ETsColor.RED );
     colorImitation = colorManager().getColor( new RGB( 107, 195, 255 ) );
     colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
 
@@ -125,16 +127,22 @@ public class MccIrreversibleEngineControl
       default:
         throw new TsNotAllEnumsUsedRtException();
     }
-    setTooltipText( state.description() );
+
+    StringBuilder tooltipStr = new StringBuilder().append( state.nmName() );
 
     IAtomicValue val = values.getByKey( "rtdEnabled" ); //$NON-NLS-1$
     if( val != null && val.isAssigned() && !val.asBool() ) {
-      setBkColor( colorDarkGray );
+      // setBkColor( colorDarkGray );
+      setFgColor( colorRed );
+      tooltipStr.append( "/блокировка" );
     }
     val = values.getByKey( "rtdImitation" ); //$NON-NLS-1$
     if( val != null && val.isAssigned() && val.asBool() ) {
       setFgColor( colorImitation );
+      tooltipStr.append( "/имитация" );
     }
+    setTooltipText( tooltipStr.toString() );
+    schemePanel().redraw( bounds.x, bounds.y, bounds.width, bounds.height, false );
   }
 
   EIrreversibleEngineState calcState( IStringMap<IAtomicValue> aValuesMap ) {

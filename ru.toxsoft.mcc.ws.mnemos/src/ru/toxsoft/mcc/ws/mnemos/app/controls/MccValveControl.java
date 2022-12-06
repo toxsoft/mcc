@@ -161,6 +161,7 @@ public class MccValveControl
     }
 
     setTooltipText( strTooltip.toString() );
+    schemePanel().redraw( bounds.x, bounds.y, bounds.width, bounds.height, false );
   }
 
   private static EReversibleEngineState calcState( IStringMap<IAtomicValue> aValuesMap ) {
