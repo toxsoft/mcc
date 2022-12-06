@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>ru.toxsoft.mcc</groupId>
+        <artifactId>org.toxsoft.mcc.releng</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>ru.toxsoft.mcc.server</artifactId>
+    <packaging>eclipse-plugin</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>task0</id>
+            <!-- a lifecycle phase: https://maven.apache.org/ref/3.6.3/maven-core/lifecycles.html -->
+            <phase>compile</phase>
+            <configuration>
+              <target>
+
+                <echo message="call ant task: ts-build.xml (make clean)" level="info" /> 
+                <ant dir="" antfile="ts-build.xml" target="clean" inheritAll="false" inheritRefs="false" useNativeBasedir="true" /> 
+
+                <echo message="call ant task: ts-build.xml (make build_jar)" level="info" /> 
+                <ant dir="" antfile="ts-build.xml" target="build_jar" inheritAll="false" inheritRefs="false" useNativeBasedir="true" /> 
+
+                <echo message="call ant task: ts-build.xml (make build_deploy)" level="info" /> 
+                <ant dir="" antfile="ts-build.xml" target="build_deploy" inheritAll="false" inheritRefs="false" useNativeBasedir="true" /> 
+
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
