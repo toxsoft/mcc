@@ -145,9 +145,9 @@ public abstract class AbstractMccSchemeControl
   @Override
   public String tooltipText() {
     if( tooltipText == null ) {
-      return description();
+      return nmName();
     }
-    return description() + ": " + tooltipText; //$NON-NLS-1$
+    return nmName() + "/" + tooltipText; //$NON-NLS-1$
   }
 
   // ------------------------------------------------------------------------------------
