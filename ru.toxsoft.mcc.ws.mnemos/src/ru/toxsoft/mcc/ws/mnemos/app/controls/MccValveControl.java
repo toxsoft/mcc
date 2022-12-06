@@ -31,6 +31,7 @@ public class MccValveControl
   private final Color colorDarkGray;
   private final Color colorImitation;
   private final Color colorMagenta;
+  private final Color colorRed;
 
   /**
    * Конструктор.
@@ -51,6 +52,7 @@ public class MccValveControl
 
     colorDarkGray = colorManager().getColor( ETsColor.DARK_GRAY );
     colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
+    colorRed = colorManager().getColor( ETsColor.RED );
     colorImitation = colorManager().getColor( new RGB( 107, 195, 255 ) );
     // startAnimation( new int[] { 0, 4 } );
   }
@@ -143,16 +145,22 @@ public class MccValveControl
       default:
         throw new TsNotAllEnumsUsedRtException();
     }
-    setTooltipText( state.description() );
+
+    StringBuilder strTooltip = new StringBuilder().append( state.nmName() );
 
     IAtomicValue val = values.getByKey( "rtdEnabled" ); //$NON-NLS-1$
     if( val != null && val.isAssigned() && !val.asBool() ) {
-      setBkColor( colorDarkGray );
+      // setBkColor( colorDarkGray );
+      setFgColor( colorRed );
+      strTooltip.append( "/блокировка" );
     }
     val = values.getByKey( "rtdImitation" ); //$NON-NLS-1$
-    if( val != null && val.isAssigned() && !val.asBool() ) {
+    if( val != null && val.isAssigned() && val.asBool() ) {
       setFgColor( colorImitation );
+      strTooltip.append( "/имитация" );
     }
+
+    setTooltipText( strTooltip.toString() );
   }
 
   private static EReversibleEngineState calcState( IStringMap<IAtomicValue> aValuesMap ) {
