@@ -132,7 +132,7 @@ public class MccIrreversibleEngineControl
       setBkColor( colorDarkGray );
     }
     val = values.getByKey( "rtdImitation" ); //$NON-NLS-1$
-    if( val != null && val.isAssigned() && !val.asBool() ) {
+    if( val != null && val.isAssigned() && val.asBool() ) {
       setFgColor( colorImitation );
     }
   }
