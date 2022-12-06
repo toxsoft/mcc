@@ -24,7 +24,9 @@ Require-Bundle: javax.annotation,
  org.toxsoft.uskat.s5,
  org.toxsoft.uskat.dataquality.lib,
  org.toxsoft.uskat.dataquality.s5,
- ru.toxsoft.mcc.ws.reports;bundle-version="1.0.0"
+ org.toxsoft.uskat.alarms.lib,
+ org.toxsoft.uskat.alarms.s5,
+ ru.toxsoft.mcc.ws.reports
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.mnemos
 Bundle-ActivationPolicy: lazy
@@ -33,6 +35,7 @@ Export-Package: ru.toxsoft.mcc.ws.mnemos,
  ru.toxsoft.mcc.ws.mnemos.app.controls,
  ru.toxsoft.mcc.ws.mnemos.app.dialogs,
  ru.toxsoft.mcc.ws.mnemos.app.rt,
+ ru.toxsoft.mcc.ws.mnemos.app.rt.chart,
  ru.toxsoft.mcc.ws.mnemos.app.utils,
  ru.toxsoft.mcc.ws.mnemos.app.valed,
  ru.toxsoft.mcc.ws.mnemos.app.widgets,
