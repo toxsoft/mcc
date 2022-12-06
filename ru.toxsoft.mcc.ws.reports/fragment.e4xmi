@@ -10,7 +10,8 @@
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_VLSwMHSKEe2iQ77ib3AL1A" featurename="children" parentElementId="org.toxsoft.mws.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_YEXPEHSKEe2iQ77ib3AL1A" elementId="ru.toxsoft.mcc.ws.perps.reports" label="%Persp_MccReports" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.reports/icons/is24x24/reports.png" tooltip="%Persp_MccReports_D">
       <children xsi:type="basic:PartStack" xmi:id="_ew93sHSPEe2iQ77ib3AL1A" elementId="ru.toxsoft.mcc.ws.reports.partstack.0">
-        <children xsi:type="basic:Part" xmi:id="_fDtNgHSPEe2iQ77ib3AL1A" elementId="ru.toxsoft.mcc.ws.reports.part.part_reptempllist" contributionURI="bundleclass://ru.toxsoft.mcc.ws.reports/ru.toxsoft.mcc.ws.reports.e4.uiparts.UipartReportsFoo" label="%Part_RepTemplList" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.reports/icons/is24x24/reports.png" tooltip="%Part_RepTemplList_D"/>
+        <children xsi:type="basic:Part" xmi:id="_fDtNgHSPEe2iQ77ib3AL1A" elementId="ru.toxsoft.mcc.ws.reports.part.part_reptempllist" contributionURI="bundleclass://ru.toxsoft.mcc.ws.reports/ru.toxsoft.mcc.ws.reports.e4.uiparts.UipartReportTemplates" label="%Part_RepTemplList" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.reports/icons/is24x24/pattern_otchet_txt.png" tooltip="%Part_RepTemplList_D"/>
+        <children xsi:type="basic:Part" xmi:id="_Qod9oHUsEe2FAN3tJRPDww" elementId="ru.toxsoft.mcc.ws.reports.part.part_charttempllist" contributionURI="bundleclass://ru.toxsoft.mcc.ws.reports/ru.toxsoft.mcc.ws.reports.e4.uiparts.UipartGraphTemplates" label="%Part_GraphTemplList" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.reports/icons/is24x24/pattern_otchet_graf.png" tooltip="%Part_GraphTemplListD"/>
       </children>
     </elements>
   </fragments>
