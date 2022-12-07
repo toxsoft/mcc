@@ -1,8 +1,8 @@
-package ru.toxsoft.mcc.ws.reports.gui.valed;
+package ru.toxsoft.mcc.ws.core.templates.gui.valed;
 
 import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
-import static ru.toxsoft.mcc.ws.reports.gui.valed.ITsResources.*;
+import static ru.toxsoft.mcc.ws.core.templates.gui.valed.ITsResources.*;
 
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.valed.api.*;
@@ -14,7 +14,7 @@ import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 
-import ru.toxsoft.mcc.ws.reports.e4.uiparts.*;
+import ru.toxsoft.mcc.ws.core.templates.gui.*;
 
 /**
  * Allows to select {@link Gwid} by accessing {@link ISkObjectService}.

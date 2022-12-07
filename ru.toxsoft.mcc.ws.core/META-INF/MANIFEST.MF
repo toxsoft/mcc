@@ -30,6 +30,7 @@ Export-Package: ru.toxsoft.mcc.ws.core,
  ru.toxsoft.mcc.ws.core.e4.addons,
  ru.toxsoft.mcc.ws.core.templates.api,
  ru.toxsoft.mcc.ws.core.templates.api.impl,
+ ru.toxsoft.mcc.ws.core.templates.gui.m5,
  ru.toxsoft.mcc.ws.core.templates.utils
 Import-Package: org.toxsoft.core.tsgui.chart.api,
  org.toxsoft.core.tsgui.chart.impl,

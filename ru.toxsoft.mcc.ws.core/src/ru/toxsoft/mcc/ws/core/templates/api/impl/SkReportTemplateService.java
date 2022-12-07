@@ -315,7 +315,7 @@ public class SkReportTemplateService
       ISkReportTemplate retVal = DtoFullObject.defineFullObject( coreApi(), aDtoReportTemplate );
       // установим ему автора
       if( connection != null ) {
-        ISkUser currUser = S5ConnectionUtils.getConnectedUser( connection );
+        ISkUser currUser = S5ConnectionUtils.getConnectedUser( coreApi() );
         coreApi().linkService().defineLink( retVal.skid(), LNKID_TEMPLATE_AUTHOR, null,
             new SkidList( currUser.skid() ) );
       }
@@ -354,12 +354,6 @@ public class SkReportTemplateService
       resumeCoreValidation();
     }
 
-  }
-
-  @Override
-  public void setConnection( ISkConnection aConnection ) {
-    TsNullArgumentRtException.checkNull( aConnection );
-    connection = aConnection;
   }
 
 }

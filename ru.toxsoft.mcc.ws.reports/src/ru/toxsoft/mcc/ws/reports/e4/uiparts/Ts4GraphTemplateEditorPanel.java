@@ -31,8 +31,10 @@ import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.*;
 import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
@@ -41,9 +43,10 @@ import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.s5.legacy.*;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.gui.m5.*;
 import ru.toxsoft.mcc.ws.core.templates.utils.*;
 import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.*;
-import ru.toxsoft.mcc.ws.reports.gui.m5.*;
+import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.dataset.*;
 
 /**
  * Панель редактора шаблонов графиков ts4.<br>
@@ -205,13 +208,20 @@ public class Ts4GraphTemplateEditorPanel
 
                   IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
 
-                  IList<IG2DataSet> graphData = ReportTemplateUtilities.createG2DataSetList( selTemplate, reportData );
+                  // IList<IG2DataSet> graphData = ReportTemplateUtilities.createG2DataSetList( selTemplate, reportData
+                  // );
+                  IList<IG2DataSet> graphData =
+                      createG2SelfUploDataSetList( selTemplate, reportData, connSupp.defConn() );
                   // создаем новую закладку
                   CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-                  tabItem.setText( String.format( "%s [%s - %s]", selTemplate.nmName(),
-                      sdf.format( Long.valueOf( retVal.startTime() ) ),
-                      sdf.format( Long.valueOf( retVal.endTime() ) ) ) );
+                  tabItem.setText( selTemplate.nmName() );
                   ChartPanel chartPanel = new ChartPanel( tabFolder, tsContext() );
+
+                  for( IG2DataSet ds : graphData ) {
+                    if( ds instanceof G2SelfUploadHistoryDataSet ) {
+                      ((G2SelfUploadHistoryDataSet)ds).addListener( aSource -> chartPanel.refresh() );
+                    }
+                  }
                   chartPanel.setReportAnswer( graphData, selTemplate );
                   tabItem.setControl( chartPanel );
                   tabFolder.setSelection( tabItem );
@@ -248,4 +258,48 @@ public class Ts4GraphTemplateEditorPanel
     sf.setWeights( 300, 500 );
 
   }
+
+  /**
+   * По шаблону графика и результату запроса к сервису отчетов создает список наборов данных для графической компоненты
+   *
+   * @param aGraphTemplate {@link ISkGraphTemplate} - шаблон графика
+   * @param aReportData - результат запроса к сервису отчетов
+   * @param aConnection - соединение с сервером
+   * @return - список наборов данных для графика
+   */
+  public static IList<IG2DataSet> createG2SelfUploDataSetList( ISkGraphTemplate aGraphTemplate,
+      IList<ITimedList<?>> aReportData, ISkConnection aConnection ) {
+    IListEdit<IG2DataSet> retVal = new ElemArrayList<>();
+    IList<ISkGraphParam> graphParams = aGraphTemplate.listParams();
+    // создаем нужные наборы данных
+    for( int i = 0; i < graphParams.size(); i++ ) {
+      ISkGraphParam graphParam = graphParams.get( i );
+      String gdsId = ReportTemplateUtilities.graphDataSetId( graphParam );
+
+      G2SelfUploadHistoryDataSet dataSet = new G2SelfUploadHistoryDataSet( aConnection, gdsId, new IDataSetParam() {
+
+        @Override
+        public Gwid gwid() {
+          return graphParam.gwid();
+        }
+
+        @Override
+        public String aggrFuncId() {
+          return ReportTemplateUtilities.convertFunc( graphParam.aggrFunc() );
+        }
+
+        @Override
+        public int aggrStep() {
+          return (int)aGraphTemplate.aggrStep().timeInMills();
+        }
+
+      } );
+      retVal.add( dataSet );
+      // наполняем его данными
+      ITimedList<?> timedList = aReportData.get( i );
+      dataSet.setValues( ReportTemplateUtilities.convertList2List( timedList ) );
+    }
+    return retVal;
+  }
+
 }

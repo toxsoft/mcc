@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.gui.valed;
+package ru.toxsoft.mcc.ws.core.templates.gui.valed;
 
 import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
 

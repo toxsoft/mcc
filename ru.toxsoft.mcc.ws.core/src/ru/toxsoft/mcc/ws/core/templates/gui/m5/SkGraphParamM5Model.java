@@ -1,11 +1,11 @@
-package ru.toxsoft.mcc.ws.reports.gui.m5;
+package ru.toxsoft.mcc.ws.core.templates.gui.m5;
 
 import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static ru.toxsoft.mcc.ws.reports.gui.m5.ISkResources.*;
+import static ru.toxsoft.mcc.ws.core.templates.gui.m5.ISkResources.*;
 
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
@@ -19,7 +19,7 @@ import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
-import ru.toxsoft.mcc.ws.reports.gui.valed.*;
+import ru.toxsoft.mcc.ws.core.templates.gui.valed.*;
 
 /**
  * M5-model of {@link ISkGraphParam}.

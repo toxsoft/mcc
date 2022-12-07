@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.gui.m5;
+package ru.toxsoft.mcc.ws.core.templates.gui.m5;
 
 /**
  * Localizable resources.

@@ -5,8 +5,7 @@ Bundle-SymbolicName: ru.toxsoft.mcc.ws.reports;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ru.toxsoft.mcc.ws.reports.Activator
 Bundle-Vendor: toxsoft.ru
-Export-Package: ru.toxsoft.mcc.ws.reports,
- ru.toxsoft.mcc.ws.reports.gui.m5
+Export-Package: ru.toxsoft.mcc.ws.reports
 Require-Bundle: javax.annotation,
  javax.inject,
  org.eclipse.core.runtime,

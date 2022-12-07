@@ -25,7 +25,6 @@ import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.devapi.*;
 import org.toxsoft.uskat.core.impl.*;
 import org.toxsoft.uskat.core.impl.dto.*;
@@ -203,7 +202,6 @@ public class SkGraphTemplateService
   private final ValidationSupport          validationSupport = new ValidationSupport();
   private final Eventer                    eventer           = new Eventer();
   private final ClassClaimingCoreValidator claimingValidator = new ClassClaimingCoreValidator();
-  private ISkConnection                    connection        = null;
 
   /**
    * Constructor.
@@ -313,11 +311,8 @@ public class SkGraphTemplateService
     try {
       ISkGraphTemplate retVal = DtoFullObject.defineFullObject( coreApi(), aDtoGraphTemplate );
       // установим ему автора
-      if( connection != null ) {
-        ISkUser currUser = S5ConnectionUtils.getConnectedUser( connection );
-        coreApi().linkService().defineLink( retVal.skid(), LNKID_TEMPLATE_AUTHOR, null,
-            new SkidList( currUser.skid() ) );
-      }
+      ISkUser currUser = S5ConnectionUtils.getConnectedUser( coreApi() );
+      coreApi().linkService().defineLink( retVal.skid(), LNKID_TEMPLATE_AUTHOR, null, new SkidList( currUser.skid() ) );
       return retVal;
     }
     finally {
@@ -353,12 +348,6 @@ public class SkGraphTemplateService
       resumeCoreValidation();
     }
 
-  }
-
-  @Override
-  public void setConnection( ISkConnection aConnection ) {
-    TsNullArgumentRtException.checkNull( aConnection );
-    connection = aConnection;
   }
 
 }
