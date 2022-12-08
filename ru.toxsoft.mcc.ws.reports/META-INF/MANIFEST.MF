@@ -25,8 +25,7 @@ Require-Bundle: javax.annotation,
  org.toxsoft.uskat.s5,
  org.toxsoft.uskat.dataquality.lib,
  org.toxsoft.uskat.dataquality.s5,
- org.toxsoft.core.tsgui.chart;bundle-version="1.0.0"
+ org.toxsoft.core.tsgui.chart
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.reports
 Bundle-ActivationPolicy: lazy
-Import-Package: org.toxsoft.sandbox.m5.table.lib.jasper
