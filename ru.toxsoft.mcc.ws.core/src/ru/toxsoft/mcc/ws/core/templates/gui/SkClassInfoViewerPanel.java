@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.e4.uiparts;
+package ru.toxsoft.mcc.ws.core.templates.gui;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 

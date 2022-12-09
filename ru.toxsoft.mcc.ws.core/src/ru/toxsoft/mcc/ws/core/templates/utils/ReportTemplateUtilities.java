@@ -128,7 +128,13 @@ public class ReportTemplateUtilities {
     return new ReportM5ItemProvider( aReportTemplate, aReportData );
   }
 
-  private static String convertFunc( EAggregationFunc aAggrFunc ) {
+  /**
+   * Перевод значение enum в id понятный сервису запросов
+   *
+   * @param aAggrFunc enum
+   * @return String
+   */
+  public static String convertFunc( EAggregationFunc aAggrFunc ) {
     switch( aAggrFunc ) {
       case AVERAGE:
         return HQFUNC_ID_AVERAGE;
@@ -187,7 +193,7 @@ public class ReportTemplateUtilities {
    * @param aTimedList ответ сервиса данных
    * @return набор данных одного графика
    */
-  private static IList<ITemporalAtomicValue> convertList2List( ITimedList<?> aTimedList ) {
+  public static IList<ITemporalAtomicValue> convertList2List( ITimedList<?> aTimedList ) {
     IListEdit<ITemporalAtomicValue> retVal = new ElemArrayList<>();
     for( Object value : aTimedList ) {
       if( value instanceof TemporalAtomicValue tav ) {

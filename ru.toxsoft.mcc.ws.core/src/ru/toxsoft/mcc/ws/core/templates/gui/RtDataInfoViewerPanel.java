@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.e4.uiparts;
+package ru.toxsoft.mcc.ws.core.templates.gui;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 
@@ -18,34 +18,34 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.base.gui.km5.sgw.*;
-import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
- * Панель просмотра списка объектов выбранного класса.<br>
+ * Панель просмотра списка параметров класса {#link IDtoRtdataInfo}.<br>
  *
  * @author dima
  */
-public class SkObjectViewerPanel
+public class RtDataInfoViewerPanel
     extends TsPanel
-    implements IM5ItemsProvider<ISkObject> {
+    implements IM5ItemsProvider<IDtoRtdataInfo> {
 
-  private final ITsSelectionChangeListener<ISkObject> objChangeListener = ( aSource, aSelectedItem ) -> {
-    this.selectedObj = aSelectedItem;
+  private final ITsSelectionChangeListener<IDtoRtdataInfo> dataChangeListener = ( aSource, aSelectedItem ) -> {
+    this.selectedRtData = aSelectedItem;
   };
 
-  private final ISkConnection           conn;
-  private IM5CollectionPanel<ISkObject> skObjectPanel;
-  private ISkClassInfo                  currClass;
-  private ISkObject                     selectedObj = null;
-  private final PanelGwidSelector       panelGwidSelector;
+  private final ISkConnection                conn;
+  private IM5CollectionPanel<IDtoRtdataInfo> rtDataInfoPanel;
+  private ISkClassInfo                       currClass;
+  private IDtoRtdataInfo                     selectedRtData = null;
+  private final PanelGwidSelector            panelGwidSelector;
 
   /**
-   * @return {#link ISkObject} skObject selected by user
+   * @return {#link IDtoRtdataInfo} parameter selected by user
    */
-  public ISkObject getSelectedObj() {
-    return selectedObj;
+  public IDtoRtdataInfo getSelectedRtData() {
+    return selectedRtData;
   }
 
   /**
@@ -58,7 +58,7 @@ public class SkObjectViewerPanel
    * @param aPanelGwidSelector {@link PanelGwidSelector} - диалог в который вставлена панель
    * @throws TsNullArgumentRtException любой аргумент = null
    */
-  public SkObjectViewerPanel( Composite aParent, ITsGuiContext aContext, PanelGwidSelector aPanelGwidSelector ) {
+  public RtDataInfoViewerPanel( Composite aParent, ITsGuiContext aContext, PanelGwidSelector aPanelGwidSelector ) {
     super( aParent, aContext );
     panelGwidSelector = aPanelGwidSelector;
     this.setLayout( new BorderLayout() );
@@ -66,7 +66,7 @@ public class SkObjectViewerPanel
     conn = connSup.defConn();
     IM5Domain m5Domain = conn.scope().get( IM5Domain.class );
     // тут получаем KM5 модель ISkObject
-    IM5Model<ISkObject> model = m5Domain.getModel( ISgwM5Constants.MID_SGW_SK_OBJECT, ISkObject.class );
+    IM5Model<IDtoRtdataInfo> model = m5Domain.getModel( ISgwM5Constants.MID_SGW_RTDATA_INFO, IDtoRtdataInfo.class );
     ITsGuiContext ctx = new TsGuiContext( aContext );
     ctx.params().addAll( aContext.params() );
     IMultiPaneComponentConstants.OPDEF_IS_DETAILS_PANE.setValue( ctx.params(), AvUtils.AV_FALSE );
@@ -75,12 +75,12 @@ public class SkObjectViewerPanel
     // добавляем в панель фильтр
     IMultiPaneComponentConstants.OPDEF_IS_FILTER_PANE.setValue( ctx.params(), AvUtils.AV_TRUE );
 
-    skObjectPanel = model.panelCreator().createCollViewerPanel( ctx, this );
-    skObjectPanel.addTsSelectionListener( objChangeListener );
-    skObjectPanel.addTsSelectionListener( ( aSource, aSelectedItem ) -> panelGwidSelector.fireContentChangeEvent() );
+    rtDataInfoPanel = model.panelCreator().createCollViewerPanel( ctx, this );
+    rtDataInfoPanel.addTsSelectionListener( dataChangeListener );
+    rtDataInfoPanel.addTsSelectionListener( ( aSource, aSelectedItem ) -> panelGwidSelector.fireContentChangeEvent() );
 
-    skObjectPanel.setItemsProvider( this );
-    skObjectPanel.createControl( this );
+    rtDataInfoPanel.setItemsProvider( this );
+    rtDataInfoPanel.createControl( this );
 
   }
 
@@ -89,24 +89,25 @@ public class SkObjectViewerPanel
    */
   public void setClass( ISkClassInfo aClassInfo ) {
     currClass = aClassInfo;
-    skObjectPanel.refresh();
+    rtDataInfoPanel.refresh();
   }
 
   @Override
-  public IList<ISkObject> listItems() {
+  public IList<IDtoRtdataInfo> listItems() {
     if( currClass != null ) {
-      return conn.coreApi().objService().listObjs( currClass.id(), false );
+      return conn.coreApi().sysdescr().getClassInfo( currClass.id() ).rtdata().list();
     }
     return IList.EMPTY;
   }
 
   /**
-   * Установить выбранный объект
+   * Установить выбранный параметр
    *
    * @param aGwid выбранный параметр
    */
   public void select( Gwid aGwid ) {
-    ISkObject skObj = conn.coreApi().objService().find( aGwid.skid() );
-    skObjectPanel.setSelectedItem( skObj );
+    ISkClassInfo classInfo = conn.coreApi().sysdescr().findClassInfo( aGwid.classId() );
+    IDtoRtdataInfo dataInfo = classInfo.rtdata().list().findByKey( aGwid.propId() );
+    rtDataInfoPanel.setSelectedItem( dataInfo );
   }
 }

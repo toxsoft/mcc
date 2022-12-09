@@ -589,4 +589,10 @@ public class ChartPanel
     }
   }
 
+  /**
+   * Обновляем всю компоненту
+   */
+  public void refresh() {
+    chart.refresh();
+  }
 }

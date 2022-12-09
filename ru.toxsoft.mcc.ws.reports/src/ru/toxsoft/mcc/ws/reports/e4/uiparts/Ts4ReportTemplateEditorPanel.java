@@ -42,8 +42,8 @@ import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.s5.legacy.*;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.gui.m5.*;
 import ru.toxsoft.mcc.ws.core.templates.utils.*;
-import ru.toxsoft.mcc.ws.reports.gui.m5.*;
 
 /**
  * Панель редактора шаблонов отчетов ts4.<br>

@@ -1,6 +1,6 @@
-package ru.toxsoft.mcc.ws.reports.e4.uiparts;
+package ru.toxsoft.mcc.ws.core.templates.gui;
 
-import static ru.toxsoft.mcc.ws.reports.e4.uiparts.ISkResources.*;
+import static ru.toxsoft.mcc.ws.core.templates.gui.ISkResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;

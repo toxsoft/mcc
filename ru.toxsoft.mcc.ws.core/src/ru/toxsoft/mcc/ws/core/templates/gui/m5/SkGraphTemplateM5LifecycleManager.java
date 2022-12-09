@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.gui.m5;
+package ru.toxsoft.mcc.ws.core.templates.gui.m5;
 
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
@@ -110,7 +110,7 @@ public class SkGraphTemplateM5LifecycleManager
     String paramsStr = SkGraphParam.KEEPER.coll2str( paramsList );
     dtoGraphTemplate.clobs().put( CLBID_TEMPLATE_PARAMS, paramsStr );
     // установим ему автора
-    ISkUser currUser = S5ConnectionUtils.getConnectedUser( aConnection );
+    ISkUser currUser = S5ConnectionUtils.getConnectedUser( aConnection.coreApi() );
     dtoGraphTemplate.links().map().put( LNKID_TEMPLATE_AUTHOR, new SkidList( currUser.skid() ) );
 
     return dtoGraphTemplate;

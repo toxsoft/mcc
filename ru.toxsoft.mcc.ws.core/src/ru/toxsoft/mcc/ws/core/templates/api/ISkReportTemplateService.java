@@ -8,7 +8,6 @@ import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.*;
 import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.connection.*;
 
 /**
  * The report template managment service.
@@ -68,14 +67,6 @@ public interface ISkReportTemplateService
    * @throws TsValidationFailedRtException failed check of {@link ISkReportTemplateServiceValidator}
    */
   void removeReportTemplate( String aReportTemplateId );
-
-  /**
-   * Set current connection.
-   *
-   * @param aConnection {@link ISkConnection} - connection info
-   * @throws TsNullArgumentRtException any argument = <code>null</code>
-   */
-  void setConnection( ISkConnection aConnection );
 
   // ------------------------------------------------------------------------------------
   // Service support
