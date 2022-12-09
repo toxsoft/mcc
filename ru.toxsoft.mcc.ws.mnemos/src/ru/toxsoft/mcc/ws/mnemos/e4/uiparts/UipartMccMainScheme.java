@@ -87,8 +87,10 @@ public class UipartMccMainScheme
     schemeComp.addAI( 439, 467, "n2AI_P7" ); //$NON-NLS-1$
     schemeComp.addAI( 1176, 514, "n2AI_P9" ); //$NON-NLS-1$
     schemeComp.addAI( 1254, 211, "n2AI_P14" ); //$NON-NLS-1$
-    schemeComp.addAI( 1029, 346, "n2AI_P61" ); //$NON-NLS-1$
-    schemeComp.addAI( 1154, 347, "n2AI_P62" ); //$NON-NLS-1$
+    schemeComp.addAI( 1029, 346, "n2AI_P62" ); //$NON-NLS-1$
+    schemeComp.addAI( 1154, 347, "n2AI_P61" ); //$NON-NLS-1$
+
+    schemeComp.addAI( 1322, 308, "n2AI_DDZ" ); //$NON-NLS-1$
 
     schemeComp.addAI( 867, 183, "n2AI_T15" ); //$NON-NLS-1$
     schemeComp.addAI( 1178, 594, "n2AI_T14" ); //$NON-NLS-1$
