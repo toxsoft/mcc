@@ -221,11 +221,16 @@ public class MccSchemePanel
     controls.add( valve );
     dataProvider.addDataConsumer( valve );
 
-    gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Kp" ); //$NON-NLS-1$ //$NON-NLS-2$
-    valve = new MccValveControl( this, gwid, imgIds, aContext );
-    valve.setLocation( 1316, 239 );
-    controls.add( valve );
-    dataProvider.addDataConsumer( valve );
+    imgIds.clear();
+    imgIds.add( "icons/valve_open.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/valve_close.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/valve_fault.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/valve_unplugged.png" ); //$NON-NLS-1$
+    gwid = Gwid.createObj( "mcc.AnalogEngine", "n2AE_Dz" ); //$NON-NLS-1$ //$NON-NLS-2$
+    MccAnalogEngineControl ae = new MccAnalogEngineControl( this, gwid, imgIds, aContext );
+    ae.setLocation( 1316, 239 );
+    controls.add( ae );
+    dataProvider.addDataConsumer( ae );
 
     imgIds.clear();
     imgIds.add( "icons/valve_open_vert.png" ); //$NON-NLS-1$
@@ -235,7 +240,6 @@ public class MccSchemePanel
     imgIds.add( "icons/valve_blinking_vert.png" ); //$NON-NLS-1$
     gwid = Gwid.createObj( "mcc.ReversibleEngine", "n2RE_Zvs" ); //$NON-NLS-1$ //$NON-NLS-2$
     valve = new MccValveControl( this, gwid, imgIds, aContext );
-    // valve.setLocation( 1394, 136 );
     valve.setLocation( 1398, 143 );
     controls.add( valve );
     dataProvider.addDataConsumer( valve );
