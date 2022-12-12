@@ -34,7 +34,7 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.sandbox.m5.table.lib.jasper.*;
+import org.toxsoft.sandbox.m5.table.lib.jasper.JasperReportViewer;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.users.*;
