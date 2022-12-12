@@ -229,7 +229,8 @@ public class Ts4ReportTemplateEditorPanel
     ISkConnectionSupplier connSup = aContext.get( ISkConnectionSupplier.class );
     conn = connSup.defConn();
 
-    IM5Model<ISkReportTemplate> model = m5().getModel( ISkReportTemplate.CLASS_ID, ISkReportTemplate.class );
+    IM5Domain m5 = conn.scope().get( IM5Domain.class );
+    IM5Model<ISkReportTemplate> model = m5.getModel( ISkReportTemplate.CLASS_ID, ISkReportTemplate.class );
 
     IM5LifecycleManager<ISkReportTemplate> lm = new SkReportTemplateM5LifecycleManager( model, conn );
     ITsGuiContext ctx = new TsGuiContext( aContext );
