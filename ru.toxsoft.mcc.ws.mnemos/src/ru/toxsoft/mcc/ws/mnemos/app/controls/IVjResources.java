@@ -8,7 +8,8 @@ package ru.toxsoft.mcc.ws.mnemos.app.controls;
 @SuppressWarnings( "nls" )
 interface IVjResources {
 
-  String STR_ERR_VALUE_NOT_SET = "Значение не установлено"; // Значение не установлено
+  String STR_ERR_VALUE_NOT_SET      = "Значение не установлено";         // Значение не установлено
+  String STR_ERR_VALUES_COMBINATION = "Недопустимое сочетание сигналов"; // Недопустимое сочетание сигналов
 
   /**
    * {@link MccRtTextEditor}

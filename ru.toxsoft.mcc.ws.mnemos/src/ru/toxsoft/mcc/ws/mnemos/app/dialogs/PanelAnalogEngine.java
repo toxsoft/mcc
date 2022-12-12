@@ -2,6 +2,7 @@ package ru.toxsoft.mcc.ws.mnemos.app.dialogs;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -72,10 +73,18 @@ public class PanelAnalogEngine
     }
   }
 
+  /**
+   * ИД команды задания для дроссельной заслонки
+   */
+  private final Gwid cmdGwid;
+
   protected PanelAnalogEngine( Shell aParent, MccDialogContext aDlgContext ) {
     super( aParent, aDlgContext );
     skObject = aDlgContext.skObject();
     init();
+
+    cmdGwid = Gwid.createCmd( "mcc.AnalogEngine", "n2AI_DDZ", "cmdTaskDz" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
     // stopCmdSender = new MccCommandSender( coreApi() );
     // stopCmdSender.eventer().addListener( aSource -> {
     // String errStr = stopCmdSender.errorString();
@@ -107,130 +116,41 @@ public class PanelAnalogEngine
     dataProvider().addDataConsumer( aiControl );
 
     createControlPanel( this );
-
-    // createOpeningGroup( this );
-    // createClosingGroup( this );
-    //
-    // Composite bkPanel = new Composite( this, SWT.NONE );
-    // bkPanel.setLayout( new GridLayout( 2, true ) );
-    //
-    // createRtBooleanLabel( bkPanel, "rtdPwr", ICONID_RED_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
-    // createRtBooleanLabel( bkPanel, "rtdPowerControl", ICONID_GRAY_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
-    // createRtBooleanLabel( bkPanel, "rtdEnabled", ICONID_RED_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
-    // createRtBooleanLabel( bkPanel, "rtdImitation", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
-    //
-    // CLabel l = new CLabel( bkPanel, SWT.NONE );
-    // l.setText( dataInfo( "rtdDegree" ).nmName() ); //$NON-NLS-1$
-    // createRtLabel( bkPanel, SWT.BORDER, "rtdDegree", tsContext() ); //$NON-NLS-1$
-    //
-    // createControlPanel( this );
-    //
-    // bkPanel = new Composite( this, SWT.NONE );
-    // bkPanel.setLayout( new GridLayout( 2, false ) );
-    // createOperatingTimeGroup( bkPanel, false );
-    //
-    // Composite buttonBar = new Composite( this, SWT.NONE );
-    // buttonBar.setLayout( new GridLayout( 2, false ) );
-    //
-    // GridData gd = new GridData();
-    // gd.widthHint = 100;
-    //
-    // MccPushCmdButton btnConfirm = createPushCmdButton( buttonBar, "cmdConfirmation" ); //$NON-NLS-1$
-    // btnConfirm.getControl().setText( STR_CONFIRMATION );
-    // btnConfirm.getControl().setLayoutData( gd );
-    //
-    // Button btnSettins = new Button( buttonBar, SWT.PUSH );
-    // btnSettins.setText( STR_SETTINGS );
-    // btnSettins.setToolTipText( "Вызвать диалог настроек реверсивного двигателя" );
-    // btnSettins.setLayoutData( gd );
-    // btnSettins.addSelectionListener( new SelectionAdapter() {
-    //
-    // @Override
-    // public void widgetSelected( SelectionEvent e ) {
-    // Point pl = getParent().getLocation();
-    // Point ps = getParent().getSize();
-    // PanelReversibleEngineSettings.showDialog( pl.x + ps.x, pl.y, dialogContext() );
-    // }
-    // } );
-
   }
-
-  MccUpDownCmdButton leftBtn;
-  MccUpDownCmdButton rightBtn;
 
   void createControlPanel( Composite aParent ) {
     Composite comp = new Composite( aParent, SWT.NONE );
-    comp.setLayout( new GridLayout( 5, false ) );
+    comp.setLayout( new GridLayout( 4, false ) );
 
     GridData gd = new GridData();
     gd.widthHint = 80;
 
     CLabel l = new CLabel( comp, SWT.CENTER );
-    l = new CLabel( comp, SWT.CENTER );
     l.setText( "Задание ДЗ:" );
 
     createRtLabel( comp, SWT.CENTER | SWT.BORDER, "rtdTaskDz", tsContext() ).getControl().setLayoutData( gd );
+
+    Button btn = new Button( comp, SWT.PUSH );
+    btn.setText( " - " );
+    btn.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        // if( !commandSender.sendCommand( cmdGwid, AvUtils.avBool( true ) ) ) {
+        // TsDialogUtils.error( getShell(), commandSender.errorString() );
+        // return;
+        // }
+      }
+    } );
+
+    btn = new Button( comp, SWT.PUSH );
+    btn.setText( "+" );
 
     l = new CLabel( comp, SWT.CENTER );
     l.setText( "Шаг изменения:" );
     MccRtTextEditor stepEditor = createRtTextEditor( "rtdStepControl", "cmdStepControl" );
     stepEditor.createControl( comp ).setLayoutData( gd );
 
-    // MccPushCmdButton cmdMinusButton = createPushCmdButton( comp, "cmdAwpOpenStart" ); //$NON-NLS-1$
-    // MccPushCmdButton cmdPlusButton = createPushCmdButton( comp, "cmdAwpOpenStart" ); //$NON-NLS-1$
-
-    // String[] imgNames = { "double_left", "left", "stop", "right", "double_right" };
-    // //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
-    // Image[] images = new Image[imgNames.length];
-    //
-    // for( int i = 0; i < imgNames.length; i++ ) {
-    // ImageDescriptor imd;
-    // imd = AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, "icons/" + imgNames[i] + ".png" );
-    // //$NON-NLS-1$ //$NON-NLS-2$
-    // images[i] = imd.createImage();
-    // }
-    //
-    // Composite comp = new Composite( aParent, SWT.NONE );
-    // comp.setLayout( new GridLayout( 5, true ) );
-    //
-    // MccPushCmdButton cmdButton = createPushCmdButton( comp, "cmdAwpOpenStart" ); //$NON-NLS-1$
-    // cmdButton.getControl().setImage( images[0] );
-    //
-    // Gwid cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStart" ); //$NON-NLS-1$
-    // Gwid stopOpenGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStop" ); //$NON-NLS-1$
-    // leftBtn = new MccUpDownCmdButton( cmdGwid, stopOpenGwid, coreApi(), tsContext() );
-    // leftBtn.createControl( comp, SWT.PUSH ).setImage( images[1] );
-    //
-    // btnStop = new Button( comp, SWT.PUSH );
-    // btnStop.setImage( images[2] );
-    // btnStop.addSelectionListener( new SelectionAdapter() {
-    //
-    // @Override
-    // public void widgetSelected( SelectionEvent aE ) {
-    // if( stopClose ) {
-    // stopCmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStop" ), true );
-    // //$NON-NLS-1$
-    // }
-    // if( stopOpen ) {
-    // stopCmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStop" ), true );
-    // //$NON-NLS-1$
-    // }
-    // }
-    // } );
-    //
-    // cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStart" ); //$NON-NLS-1$
-    // Gwid stopCloseGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStop" ); //$NON-NLS-1$
-    // rightBtn = new MccUpDownCmdButton( cmdGwid, stopCloseGwid, coreApi(), tsContext() );
-    // rightBtn.createControl( comp, SWT.PUSH ).setImage( images[3] );
-    //
-    // cmdButton = createPushCmdButton( comp, "cmdAwpCloseStart" ); //$NON-NLS-1$
-    // cmdButton.getControl().setImage( images[4] );
-    //
-    // comp.addDisposeListener( aE -> {
-    // for( int i = 0; i < images.length; i++ ) {
-    // images[i].dispose();
-    // }
-    // } );
   }
 
   /**

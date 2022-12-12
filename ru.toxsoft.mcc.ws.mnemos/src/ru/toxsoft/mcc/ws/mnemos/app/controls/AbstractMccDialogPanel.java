@@ -345,9 +345,13 @@ public abstract class AbstractMccDialogPanel
       columns = 3;
     }
     Group g = createGroup( aParent, STR_OPERATING_TIME, columns, false );
+
+    GridData gd = new GridData();
+    gd.widthHint = 80;
     CLabel l = new CLabel( g, SWT.NONE );
     l.setText( dataInfo( "rtdHourMeterMin" ).nmName() ); //$NON-NLS-1$
     MccRtLabel rtLabel = createRtLabel( g, SWT.BORDER, "rtdHourMeterMin", tsContext() ); //$NON-NLS-1$
+    rtLabel.getControl().setLayoutData( gd );
     rtLabel.setValueFormatter( aValue -> {
       if( aValue == null ) {
         return "NULL"; //$NON-NLS-1$
@@ -370,16 +374,18 @@ public abstract class AbstractMccDialogPanel
           if( TsDialogUtils.askYesNoCancel( getShell(), STR_CLEAR_OPERATING_TIME ) == ETsDialogCode.YES ) {
             ISkObject skObject = dialogContext().skObject();
             boolean r;
-            r = cmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeterMs" ), true ); //$NON-NLS-1$
+            Gwid cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeterMs" ); //$NON-NLS-1$
+            r = cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) );
             if( !r ) {
               TsDialogUtils.error( getShell(), cmdSender.errorString() );
             }
-            r = cmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeterMin" ), //$NON-NLS-1$
-                true );
+            cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeterMin" ); //$NON-NLS-1$
+            r = cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) );
             if( !r ) {
               TsDialogUtils.error( getShell(), cmdSender.errorString() );
             }
-            r = cmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdStartCount" ), true ); //$NON-NLS-1$
+            cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdStartCount" ); //$NON-NLS-1$
+            r = cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) );
             if( !r ) {
               TsDialogUtils.error( getShell(), cmdSender.errorString() );
             }
@@ -390,7 +396,9 @@ public abstract class AbstractMccDialogPanel
 
     l = new CLabel( g, SWT.NONE );
     l.setText( dataInfo( "rtdStartCount" ).nmName() );
-    createRtLabel( g, SWT.BORDER, "rtdStartCount", tsContext() );
+    rtLabel = createRtLabel( g, SWT.BORDER, "rtdStartCount", tsContext() );
+    rtLabel.getControl().setLayoutData( gd );
+
     return g;
   }
 

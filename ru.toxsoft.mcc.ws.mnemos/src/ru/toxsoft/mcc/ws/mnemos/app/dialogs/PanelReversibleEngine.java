@@ -14,6 +14,7 @@ import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 
@@ -207,10 +208,12 @@ public class PanelReversibleEngine
       @Override
       public void widgetSelected( SelectionEvent aE ) {
         if( stopClose ) {
-          stopCmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStop" ), true ); //$NON-NLS-1$
+          Gwid cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStop" ); //$NON-NLS-1$
+          stopCmdSender.sendCommand( cmdg, AvUtils.avBool( true ) );
         }
         if( stopOpen ) {
-          stopCmdSender.sendCommand( Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStop" ), true ); //$NON-NLS-1$
+          Gwid cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStop" ); //$NON-NLS-1$
+          stopCmdSender.sendCommand( cmdg, AvUtils.avBool( true ) );
         }
       }
     } );

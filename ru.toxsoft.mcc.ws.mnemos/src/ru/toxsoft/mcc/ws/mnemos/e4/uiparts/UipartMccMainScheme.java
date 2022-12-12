@@ -82,9 +82,9 @@ public class UipartMccMainScheme
 
     schemeComp.addAI( 487, 377, "n2AI_P1" ); //$NON-NLS-1$
     schemeComp.addAI( 568, 377, "n2AI_P2" ); //$NON-NLS-1$
-    schemeComp.addAI( 143, 555, "n2AI_P3" ); //$NON-NLS-1$
+    schemeComp.addAI( 142, 555, "n2AI_P3" ); //$NON-NLS-1$
     schemeComp.addAI( 411, 770, "n2AI_P5" ); //$NON-NLS-1$
-    schemeComp.addAI( 439, 467, "n2AI_P7" ); //$NON-NLS-1$
+    schemeComp.addAI( 438, 467, "n2AI_P7" ); //$NON-NLS-1$
     schemeComp.addAI( 1176, 514, "n2AI_P9" ); //$NON-NLS-1$
     schemeComp.addAI( 1254, 211, "n2AI_P14" ); //$NON-NLS-1$
     schemeComp.addAI( 1029, 346, "n2AI_P62" ); //$NON-NLS-1$
@@ -93,9 +93,9 @@ public class UipartMccMainScheme
     schemeComp.addAI( 1322, 308, "n2AI_DDZ" ); //$NON-NLS-1$
 
     schemeComp.addAI( 867, 183, "n2AI_T15" ); //$NON-NLS-1$
-    schemeComp.addAI( 1178, 594, "n2AI_T14" ); //$NON-NLS-1$
+    schemeComp.addAI( 1176, 594, "n2AI_T14" ); //$NON-NLS-1$
     schemeComp.addAI( 1414, 237, "n2AI_T13" ); //$NON-NLS-1$
-    schemeComp.addAI( 423, 293, "n2AI_T9" ); //$NON-NLS-1$
+    schemeComp.addAI( 424, 293, "n2AI_T9" ); //$NON-NLS-1$
     schemeComp.addAI( 369, 294, "n2AI_T8" ); //$NON-NLS-1$
     schemeComp.addAI( 146, 274, "n2AI_T7" ); //$NON-NLS-1$
     schemeComp.addAI( 115, 378, "n2AI_T3" ); //$NON-NLS-1$

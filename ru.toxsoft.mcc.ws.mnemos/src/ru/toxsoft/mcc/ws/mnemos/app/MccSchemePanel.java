@@ -105,7 +105,7 @@ public class MccSchemePanel
     ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
     dataProvider = new MccRtDataProvider( skConn, aContext );
 
-    IList<ISkObject> objs = skConn.coreApi().objService().listObjs( "mcc.IrreversibleEngine", true ); //$NON-NLS-1$
+    IList<ISkObject> objs = skConn.coreApi().objService().listObjs( "mcc.MainSwitch", true ); //$NON-NLS-1$
     for( ISkObject obj : objs ) {
       System.out.println( obj.nmName() + ": " + obj.strid() ); //$NON-NLS-1$
     }
@@ -153,25 +153,25 @@ public class MccSchemePanel
     dataProvider.addDataConsumer( mainEngine );
 
     imgIds.clear();
-    imgIds.add( "icons/oil_pupm_starter_on.png" ); //$NON-NLS-1$
-    imgIds.add( "icons/oil_pupm_starter_off.png" ); //$NON-NLS-1$
-    imgIds.add( "icons/oil_pupm_starter_fault.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/oil_pump_starter_on.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/oil_pump_starter_off.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/oil_pump_starter_fault.png" ); //$NON-NLS-1$
     imgIds.add( "icons/oil_pupm_starter_unplugged.png" ); //$NON-NLS-1$
 
     gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Mn" ); //$NON-NLS-1$//$NON-NLS-2$
     MccIrreversibleEngineControl reversibleEngine = new MccIrreversibleEngineControl( this, gwid, imgIds, aContext );
-    reversibleEngine.setLocation( 737, 706 );
+    reversibleEngine.setLocation( 735, 715 );
     controls.add( reversibleEngine );
     dataProvider.addDataConsumer( reversibleEngine );
 
     imgIds.clear();
-    imgIds.add( "icons/engine_on.png" ); //$NON-NLS-1$
-    imgIds.add( "icons/engine_off.png" ); //$NON-NLS-1$
-    imgIds.add( "icons/engine_fault.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/vpu_engine_on.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/vpu_engine_off.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/vpu_engine_fault.png" ); //$NON-NLS-1$
 
     gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_VPU" ); //$NON-NLS-1$//$NON-NLS-2$
     MccIrreversibleEngineControl engine = new MccIrreversibleEngineControl( this, gwid, imgIds, aContext );
-    engine.setLocation( 1030, 181 );
+    engine.setLocation( 1036, 169 );
     controls.add( engine );
     dataProvider.addDataConsumer( engine );
 
@@ -250,6 +250,17 @@ public class MccSchemePanel
     valve.setLocation( 1219, 354 );
     controls.add( valve );
     dataProvider.addDataConsumer( valve );
+
+    // Добавим MainSwitch (высоковольтный выключатель)
+    imgIds.clear();
+    imgIds.add( "icons/main_switch_on.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/main_switch_off.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/main_switch_fault.png" ); //$NON-NLS-1$
+    gwid = Gwid.createObj( "mcc.MainSwitch", "n2MainSwitch" ); //$NON-NLS-1$ //$NON-NLS-2$
+    MccMainSwitchControl ms = new MccMainSwitchControl( this, gwid, imgIds, aContext );
+    ms.setLocation( 15, 160 );
+    controls.add( ms );
+    dataProvider.addDataConsumer( ms );
 
     addDisposeListener( aE -> {
       dataProvider.dispose();

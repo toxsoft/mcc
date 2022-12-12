@@ -1,6 +1,6 @@
 package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
-import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.events.change.*;
@@ -95,15 +95,24 @@ public class MccCommandSender {
     return true;
   }
 
+  // /**
+  // * Посылает указанную команду с булевым аргументом.<br>
+  // *
+  // * @param aCmdGwid Gwid - конкретный ИД команды
+  // * @param aArg boolean - аргумент команды
+  // * @return <b>true</b> - посылка команды прошла успешно (не означает, что команда выполнится с успехом)<br>
+  // * <b>false</b> - не удалось послать команду
+  // */
+  // public boolean sendCommand( Gwid aCmdGwid, boolean aArg ) {
   /**
-   * Посылает указанную команду с булевым аргументом.<br>
+   * Посылает указанную команду с одним аргументом.<br>
    *
    * @param aCmdGwid Gwid - конкретный ИД команды
-   * @param aArg boolean - аргумент команды
+   * @param aArg IAtomicValue - аргумент команды
    * @return <b>true</b> - посылка команды прошла успешно (не означает, что команда выполнится с успехом)<br>
    *         <b>false</b> - не удалось послать команду
    */
-  public boolean sendCommand( Gwid aCmdGwid, boolean aArg ) {
+  public boolean sendCommand( Gwid aCmdGwid, IAtomicValue aArg ) {
 
     ISkCommandService cmdService = coreApi.cmdService();
 
@@ -112,7 +121,8 @@ public class MccCommandSender {
     String argId = cmdInfo.argDefs().first().id();
 
     OptionSet cmdArgs = new OptionSet();
-    cmdArgs.setValue( argId, AvUtils.avBool( aArg ) );
+    // cmdArgs.setValue( argId, AvUtils.avBool( aArg ) );
+    cmdArgs.setValue( argId, aArg );
     ISkCommand cmd = cmdService.sendCommand( aCmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), cmdArgs );
     CmdUtils.logCommandHistory( cmd );
     errStr = CmdUtils.errorString( cmd );

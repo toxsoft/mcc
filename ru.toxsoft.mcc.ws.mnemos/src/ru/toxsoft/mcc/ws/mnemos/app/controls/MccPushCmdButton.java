@@ -7,6 +7,7 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.graphics.cursors.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.uskat.core.*;
@@ -73,7 +74,7 @@ public class MccPushCmdButton
 
       @Override
       public void widgetSelected( SelectionEvent aE ) {
-        if( !commandSender.sendCommand( cmdGwid, true ) ) {
+        if( !commandSender.sendCommand( cmdGwid, AvUtils.avBool( true ) ) ) {
           TsDialogUtils.error( getShell(), commandSender.errorString() );
           return;
         }

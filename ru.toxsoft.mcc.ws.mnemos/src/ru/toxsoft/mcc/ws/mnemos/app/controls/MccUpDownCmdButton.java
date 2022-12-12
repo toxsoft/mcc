@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.uskat.core.*;
@@ -73,14 +74,14 @@ public class MccUpDownCmdButton
 
       @Override
       public void mouseUp( MouseEvent aE ) {
-        if( !commandSender.sendCommand( upCmdGwid, true ) ) {
+        if( !commandSender.sendCommand( upCmdGwid, AvUtils.avBool( true ) ) ) {
           TsDialogUtils.error( getShell(), commandSender.errorString() );
         }
       }
 
       @Override
       public void mouseDown( MouseEvent aE ) {
-        if( !commandSender.sendCommand( downCmdGwid, true ) ) {
+        if( !commandSender.sendCommand( downCmdGwid, AvUtils.avBool( true ) ) ) {
           TsDialogUtils.error( getShell(), commandSender.errorString() );
         }
       }
