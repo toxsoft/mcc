@@ -19,8 +19,12 @@ public interface IMccWsReportsConstants {
   // ------------------------------------------------------------------------------------
   // Icons
 
-  String PREFIX_OF_ICON_FIELD_NAME = "ICONID_"; //$NON-NLS-1$
-  // String ICONID_APP_ICON = "app-icon"; //$NON-NLS-1$
+  String PREFIX_OF_ICON_FIELD_NAME = "ICONID_";            //$NON-NLS-1$
+  String ICON_USER                 = "user-red";           //$NON-NLS-1$
+  String ICON_RUN                  = "run";                //$NON-NLS-1$
+  String ICON_TEMPLATE             = "gdp-shablons";       //$NON-NLS-1$
+  String ICON_REPORT_TEMPLATE      = "uipart-events";      //$NON-NLS-1$
+  String ICON_GRAPH_TEMPLATE       = "uipart-ws-profiles"; //$NON-NLS-1$
 
   /**
    * Constants registration.

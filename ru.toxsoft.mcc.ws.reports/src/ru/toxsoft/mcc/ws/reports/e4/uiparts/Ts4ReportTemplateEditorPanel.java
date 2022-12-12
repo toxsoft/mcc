@@ -34,7 +34,7 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.sandbox.m5.table.lib.jasper.*;
+import org.toxsoft.sandbox.m5.table.lib.jasper.JasperReportViewer;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.users.*;
@@ -229,7 +229,8 @@ public class Ts4ReportTemplateEditorPanel
     ISkConnectionSupplier connSup = aContext.get( ISkConnectionSupplier.class );
     conn = connSup.defConn();
 
-    IM5Model<ISkReportTemplate> model = m5().getModel( ISkReportTemplate.CLASS_ID, ISkReportTemplate.class );
+    IM5Domain m5 = conn.scope().get( IM5Domain.class );
+    IM5Model<ISkReportTemplate> model = m5.getModel( ISkReportTemplate.CLASS_ID, ISkReportTemplate.class );
 
     IM5LifecycleManager<ISkReportTemplate> lm = new SkReportTemplateM5LifecycleManager( model, conn );
     ITsGuiContext ctx = new TsGuiContext( aContext );

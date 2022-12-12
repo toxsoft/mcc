@@ -5,12 +5,12 @@ import org.toxsoft.core.tsgui.bricks.quant.*;
 import org.toxsoft.core.tsgui.mws.bases.*;
 import org.toxsoft.core.tsgui.valed.impl.*;
 import org.toxsoft.uskat.base.gui.*;
-import org.toxsoft.uskat.base.gui.km5.*;
+import org.toxsoft.uskat.core.impl.*;
 
 import ru.toxsoft.mcc.ws.core.*;
 import ru.toxsoft.mcc.ws.core.Activator;
 import ru.toxsoft.mcc.ws.core.templates.*;
-import ru.toxsoft.mcc.ws.core.templates.gui.m5.*;
+import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
 import ru.toxsoft.mcc.ws.core.templates.gui.valed.*;
 
 /**
@@ -26,7 +26,7 @@ public class AddonMccWsCore
    */
   public AddonMccWsCore() {
     super( Activator.PLUGIN_ID );
-    KM5Utils.registerContributorCreator( KM5TemplateContributor.CREATOR );
+    // KM5Utils.registerContributorCreator( KM5TemplateContributor.CREATOR );
 
   }
 
@@ -49,19 +49,19 @@ public class AddonMccWsCore
   @Override
   protected void initWin( IEclipseContext aWinContext ) {
     IMccWsCoreConstants.init( aWinContext );
-    // TODO вынести в отдельный реестр, Гога должен подготовить
-    // ISkConnectionSupplier cs = aWinContext.get( ISkConnectionSupplier.class );
-    // TsInternalErrorRtException.checkNull( cs );
-    // ISkConnection conn = cs.defConn();
-    // TsInternalErrorRtException.checkNull( conn );
+
+    SkCoreUtils.registerSkServiceCreator( SkReportTemplateService.CREATOR );
+    SkCoreUtils.registerSkServiceCreator( SkGraphTemplateService.CREATOR );
+
+    // ISkConnectionSupplier connSup = aWinContext.get( ISkConnectionSupplier.class );
+    // ISkConnection conn = connSup.defConn();
     //
-    // conn.coreApi().addService( SkReportTemplateService.CREATOR );
-    // conn.coreApi().addService( SkGraphTemplateService.CREATOR );
-    // // обязательно нужно для того чтобы знать автора
-    // ISkGraphTemplateService graphTemplateService = conn.coreApi().getService( ISkGraphTemplateService.SERVICE_ID );
-    // graphTemplateService.setConnection( conn );
-    // ISkReportTemplateService reportTemplService = conn.coreApi().getService( ISkReportTemplateService.SERVICE_ID );
-    // reportTemplService.setConnection( conn );
+    // // регистрируем свои m5 модели
+    // IM5Domain m5 = aWinContext.get( IM5Domain.class );
+    // m5.addModel( new SkReportParamM5Model() );
+    // m5.addModel( new SkReportTemplateM5Model( conn ) );
+    // m5.addModel( new SkGraphParamM5Model() );
+    // m5.addModel( new SkGraphTemplateM5Model( conn ) );
 
     ValedControlFactoriesRegistry vcReg = aWinContext.get( ValedControlFactoriesRegistry.class );
     vcReg.registerFactory( ValedGwidEditor.FACTORY );
