@@ -1,6 +1,8 @@
 package ru.toxsoft.mcc.ws.core.templates.gui.m5;
 
 import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.model.impl.*;
+import org.toxsoft.core.tslib.coll.helpers.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
@@ -29,6 +31,8 @@ public class KM5TemplateContributor
       ISkGraphTemplate.CLASS_ID //
   );
 
+  private final IStringListEdit myModels = new StringArrayList();
+
   /**
    * Constructor.
    *
@@ -42,13 +46,58 @@ public class KM5TemplateContributor
 
   @Override
   protected IStringList papiCreateModels() {
-
     m5().addModel( new SkReportParamM5Model() );
-    m5().addModel( new SkReportTemplateM5Model( skConn() ) );
+    SkReportTemplateM5Model m5ReportTemplateModel = new SkReportTemplateM5Model( skConn() );
+    myModels.add( m5ReportTemplateModel.id() );
+    m5().addModel( m5ReportTemplateModel );
     m5().addModel( new SkGraphParamM5Model() );
-    m5().addModel( new SkGraphTemplateM5Model( skConn() ) );
+    SkGraphTemplateM5Model m5GraphTemplateModel = new SkGraphTemplateM5Model( skConn() );
+    myModels.add( m5GraphTemplateModel.id() );
+    m5().addModel( m5GraphTemplateModel );
 
     return CONRTIBUTED_MODEL_IDS;
+  }
+
+  @Override
+  protected boolean papiUpdateModel( ECrudOp aOp, String aClassId ) {
+    switch( aOp ) {
+      case CREATE:
+      case EDIT: {
+        if( isMine( aClassId ) ) {
+          m5().replaceModel( mineModel( aClassId ) );
+        }
+        break;
+      }
+      case REMOVE: {
+        m5().removeModel( aClassId );
+        break;
+      }
+      case LIST:
+        throw new TsInternalErrorRtException();
+      default:
+        throw new TsNotAllEnumsUsedRtException();
+    }
+    return true;
+  }
+
+  private M5Model<?> mineModel( String aClassId ) {
+    M5Model<?> retVal = new SkReportTemplateM5Model( skConn() );
+    switch( aClassId ) {
+      case ISkReportTemplate.CLASS_ID: {
+        break;
+      }
+      case ISkGraphTemplate.CLASS_ID: {
+        retVal = new SkGraphTemplateM5Model( skConn() );
+        break;
+      }
+      default:
+        throw new TsNotAllEnumsUsedRtException( aClassId );
+    }
+    return retVal;
+  }
+
+  private boolean isMine( String aClassId ) {
+    return myModels.hasElem( aClassId );
   }
 
 }

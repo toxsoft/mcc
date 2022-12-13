@@ -147,7 +147,8 @@ public class Ts4GraphTemplateEditorPanel
     ISkConnectionSupplier connSup = aContext.get( ISkConnectionSupplier.class );
     conn = connSup.defConn();
 
-    IM5Model<ISkGraphTemplate> model = m5().getModel( ISkGraphTemplate.CLASS_ID, ISkGraphTemplate.class );
+    IM5Domain m5 = conn.scope().get( IM5Domain.class );
+    IM5Model<ISkGraphTemplate> model = m5.getModel( ISkGraphTemplate.CLASS_ID, ISkGraphTemplate.class );
 
     IM5LifecycleManager<ISkGraphTemplate> lm = new SkGraphTemplateM5LifecycleManager( model, conn );
     ITsGuiContext ctx = new TsGuiContext( aContext );
