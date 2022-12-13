@@ -29,7 +29,7 @@ public class MccBlockingPanel
     gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_PRU_EmrStopVV", "rtdCurrentValue" );
     rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
-    gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_Upwr380_Norm ", "rtdCurrentValue" );
+    gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_Upwr380_Norm", "rtdCurrentValue" );
     rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdIrrEngineAlarm" );
@@ -44,7 +44,7 @@ public class MccBlockingPanel
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdRevEngineBlock" );
     rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
-    gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdWaterAlarm " );
+    gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdWaterAlarm" );
     rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdLoOil" );
