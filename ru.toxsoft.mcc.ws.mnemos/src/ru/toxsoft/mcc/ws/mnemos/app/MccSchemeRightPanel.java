@@ -32,10 +32,8 @@ public class MccSchemeRightPanel
 
     ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
 
-    // CLabel labelTitle = new CLabel( this, SWT.CENTER );
-    // Font f = fontManager().getFont( "Arial", 24, SWT.BOLD ); //$NON-NLS-1$
-    // labelTitle.setFont( f );
-    // labelTitle.setText( "Нагнетатель №" );
+    MccMainControlPanel ctrlPanel = new MccMainControlPanel( this, aContext, skConn );
+    ctrlPanel.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
     graphicsHolder = new MccGraphicsHolderPanel( this, skConn, aContext );
     graphicsHolder.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );

@@ -152,6 +152,17 @@ public class MccSchemePanel
     controls.add( mainEngine );
     dataProvider.addDataConsumer( mainEngine );
 
+    // Добавим гидрораспределитель
+    imgIds.clear();
+    imgIds.add( "icons/gr_on.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/gr_off.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/gr_fault.png" ); //$NON-NLS-1$
+
+    MccHydraulicValveControl hydValve = new MccHydraulicValveControl( this, gwid, imgIds, aContext );
+    hydValve.setLocation( 1096, 305 );
+    controls.add( hydValve );
+    dataProvider.addDataConsumer( hydValve );
+
     imgIds.clear();
     imgIds.add( "icons/oil_pump_starter_on.png" ); //$NON-NLS-1$
     imgIds.add( "icons/oil_pump_starter_off.png" ); //$NON-NLS-1$

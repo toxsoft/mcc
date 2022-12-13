@@ -260,9 +260,25 @@ public abstract class AbstractMccDialogPanel
     ISkObject skObj = dlgContext.skObject();
     Gwid gwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
 
-    IDtoRtdataInfo dInfo = dataInfo( aDataId );
+    return createRtBooleanLabel( aParent, gwid, aFalseImageId, aTrueImageId );
+  }
+
+  /**
+   * Создает надпись с иконкой, отображающей логическое значение.
+   * <p>
+   * Надпись берется из описания данного.
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aDataGwid Gwid - конкретный ИД данного
+   * @param aFalseImageId String- ИД картинки для значения <b>true</b>
+   * @param aTrueImageId String - ИД картинки для значения <b>true</b>
+   * @return MccRtBooleanLabel - созданный контроль
+   */
+  public MccRtBooleanLabel createRtBooleanLabel( Composite aParent, Gwid aDataGwid, String aFalseImageId,
+      String aTrueImageId ) {
+    IDtoRtdataInfo dInfo = dataInfo( aDataGwid.propId() );
     MccRtBooleanLabel rtLabel;
-    rtLabel = new MccRtBooleanLabel( gwid, aFalseImageId, aTrueImageId, EIconSize.IS_24X24, tsContext() );
+    rtLabel = new MccRtBooleanLabel( aDataGwid, aFalseImageId, aTrueImageId, EIconSize.IS_24X24, tsContext() );
     CLabel l = rtLabel.createControl( aParent, SWT.NONE );
     l.setText( dInfo.nmName() );
     l.setToolTipText( dInfo.description() );
