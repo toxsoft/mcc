@@ -2,25 +2,27 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 
-import org.eclipse.swt.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
+import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.s5.utils.*;
+import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
+import org.toxsoft.core.tsgui.m5.model.impl.M5BunchEdit;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.panels.toolbar.TsToolbar;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
-import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkGraphParam;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants;
 
 /**
  * Панель отображения графиков реального времени.<br>
@@ -169,8 +171,11 @@ public class ChartsTabPanel
   // }
 
   protected ISkGraphParam doAddItem() {
+    // IM5Model<ISkGraphParam> model =
+    // m5().getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
+    IM5Domain m5 = conn.scope().get( IM5Domain.class );
     IM5Model<ISkGraphParam> model =
-        m5().getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
+        m5.getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
     IM5BunchEdit<ISkGraphParam> initVals = new M5BunchEdit<>( model );
     return M5GuiUtils.askCreate( tsContext(), model, initVals, cdi, model.getLifecycleManager( null ) );
