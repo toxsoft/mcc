@@ -40,21 +40,6 @@ public class AddonMccWsReports
   @Override
   protected void initWin( IEclipseContext aWinContext ) {
     IMccWsReportsConstants.init( aWinContext );
-
-    // IReportTemplateConstants.init( aWinContext );
-    // ISkConnectionSupplier connSup = aWinContext.get( ISkConnectionSupplier.class );
-    // ISkConnection conn = connSup.defConn();
-    //
-    // conn.coreApi().addService( SkReportTemplateService.CREATOR );
-    // conn.coreApi().addService( SkGraphTemplateService.CREATOR );
-
-    // регистрируем свои m5 модели
-    // IM5Domain m5 = aWinContext.get( IM5Domain.class );
-    // m5.addModel( new SkReportParamM5Model() );
-    // m5.addModel( new SkReportTemplateM5Model( conn ) );
-    // m5.addModel( new SkGraphParamM5Model() );
-    // m5.addModel( new SkGraphTemplateM5Model( conn ) );
-
   }
 
 }
