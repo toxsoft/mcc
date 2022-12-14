@@ -61,10 +61,12 @@ public class MccMainControlPanel
    * Конструктор.
    *
    * @param aParent Composite - родительская панель
+   * @param aDataProvider IRtDataProvider - поставщик данных
    * @param aContext ITsGuiContext - соответствующий
    * @param aSkConn ISkConnection - соединение с сервером
    */
-  public MccMainControlPanel( Composite aParent, ITsGuiContext aContext, ISkConnection aSkConn ) {
+  public MccMainControlPanel( Composite aParent, IRtDataProvider aDataProvider, ISkConnection aSkConn,
+      ITsGuiContext aContext ) {
     super( aParent, aContext );
 
     skConn = aSkConn;
@@ -112,6 +114,8 @@ public class MccMainControlPanel
     btnAuto.setLayoutData( gd );
 
     createLaunchPanel( this );
+
+    aDataProvider.addDataConsumer( this );
   }
 
   // ------------------------------------------------------------------------------------

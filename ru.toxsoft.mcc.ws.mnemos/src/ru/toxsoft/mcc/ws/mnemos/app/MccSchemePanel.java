@@ -358,20 +358,8 @@ public class MccSchemePanel
     dataProvider.start();
   }
 
-  // @Override
-  // public void redraw() {
-  // if( !isDisposed() ) {
-  // super.redraw();
-  // rtPanel.redraw();
-  // }
-  // }
-  //
-  // @Override
-  // public void redraw( int aX, int aY, int aWidth, int aHeight, boolean aAll ) {
-  // if( !isDisposed() ) {
-  // super.redraw( aX, aY, aWidth, aHeight, aAll );
-  // rtPanel.redraw( aX, aY, aWidth, aHeight, aAll );
-  // }
-  // }
+  public IRtDataProvider dataProvider() {
+    return dataProvider;
+  }
 
 }
