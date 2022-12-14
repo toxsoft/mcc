@@ -40,7 +40,7 @@ public class MccMainControlPanel
   /**
    * ИД объекта класса система управления
    */
-  public static String OBJID_CTRL_SYSTEM = "mcc.CtrlSystem"; //$NON-NLS-1$
+  public static String OBJID_CTRL_SYSTEM = "n2CtrlSystem";   //$NON-NLS-1$
 
   private final ISkConnection skConn;
 
@@ -61,12 +61,10 @@ public class MccMainControlPanel
    * Конструктор.
    *
    * @param aParent Composite - родительская панель
-   * @param aDataProvider IRtDataProvider - поставщик данных
    * @param aContext ITsGuiContext - соответствующий
    * @param aSkConn ISkConnection - соединение с сервером
    */
-  public MccMainControlPanel( Composite aParent, IRtDataProvider aDataProvider, ISkConnection aSkConn,
-      ITsGuiContext aContext ) {
+  public MccMainControlPanel( Composite aParent, ISkConnection aSkConn, ITsGuiContext aContext ) {
     super( aParent, aContext );
 
     skConn = aSkConn;
@@ -114,8 +112,6 @@ public class MccMainControlPanel
     btnAuto.setLayoutData( gd );
 
     createLaunchPanel( this );
-
-    aDataProvider.addDataConsumer( this );
   }
 
   // ------------------------------------------------------------------------------------

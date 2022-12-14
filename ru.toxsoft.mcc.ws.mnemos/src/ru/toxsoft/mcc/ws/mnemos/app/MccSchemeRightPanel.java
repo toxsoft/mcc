@@ -21,25 +21,36 @@ public class MccSchemeRightPanel
 
   private final MccGraphicsHolderPanel graphicsHolder;
 
+  IRtDataProvider dataProvider;
+
   /**
    * Конструктор.
    *
    * @param aParent Composite - родительская компонента
-   * @param aDataProvider IRtDataProvider - поставщик РВ-данных
    * @param aContext ITsGuiContext - контекст панели
    */
-  public MccSchemeRightPanel( Composite aParent, IRtDataProvider aDataProvider, ITsGuiContext aContext ) {
+  public MccSchemeRightPanel( Composite aParent, ITsGuiContext aContext ) {
     super( aParent, aContext );
     GridLayout gl = new GridLayout( 1, false );
     setLayout( gl );
 
     ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
+    dataProvider = new MccRtDataProvider( skConn, aContext );
 
-    MccMainControlPanel ctrlPanel = new MccMainControlPanel( this, aDataProvider, skConn, aContext );
+    addDisposeListener( aE -> {
+      dataProvider.dispose();
+    } );
+
+    MccMainControlPanel ctrlPanel = new MccMainControlPanel( this, skConn, aContext );
     ctrlPanel.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
     graphicsHolder = new MccGraphicsHolderPanel( this, skConn, aContext );
     graphicsHolder.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+    dataProvider.addDataConsumer( ctrlPanel );
   }
 
+  public void rtStart() {
+    dataProvider.start();
+  }
 }
