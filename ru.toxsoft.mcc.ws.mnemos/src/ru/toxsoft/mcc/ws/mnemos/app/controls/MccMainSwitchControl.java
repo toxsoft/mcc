@@ -18,7 +18,7 @@ import ru.toxsoft.mcc.ws.mnemos.app.*;
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
 
 /**
- * Реверсивный двигатель нагнетателя (проект МосКокс).
+ * Главный "включатель" нагнетателя (проект МосКокс).
  * <p>
  *
  * @author vs
@@ -28,7 +28,6 @@ public class MccMainSwitchControl
 
   final IList<Image> imgList;
 
-  // private final Color colorDarkGray;
   private final Color colorRed;
   private final Color colorImitation;
   private final Color colorMagenta;
@@ -44,7 +43,6 @@ public class MccMainSwitchControl
   public MccMainSwitchControl( MccSchemePanel aOwner, Gwid aObjGwid, IStringList aImageIds, ITsGuiContext aTsContext ) {
     super( aOwner, aObjGwid, aTsContext );
 
-    // colorDarkGray = colorManager().getColor( ETsColor.DARK_GRAY );
     colorRed = colorManager().getColor( ETsColor.RED );
     colorImitation = colorManager().getColor( new RGB( 107, 195, 255 ) );
     colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
@@ -55,6 +53,7 @@ public class MccMainSwitchControl
       Image img = AbstractUIPlugin.imageDescriptorFromPlugin( PLUGIN_ID, imgId ).createImage();
       ((ElemArrayList<Image>)imgList).add( img );
     }
+
   }
 
   // ------------------------------------------------------------------------------------

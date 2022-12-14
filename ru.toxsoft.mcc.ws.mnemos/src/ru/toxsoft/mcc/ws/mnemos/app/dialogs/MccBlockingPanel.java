@@ -70,7 +70,7 @@ public class MccBlockingPanel
     ITsGuiContext ctx = aContext.tsContext();
     Shell shell = ctx.get( Shell.class ).getShell();
 
-    MccDialogWindow wnd = new MccDialogWindow( shell, aContext.skObject().readableName() );
+    MccDialogWindow wnd = new MccDialogWindow( shell, "Блокировки" );
     MccBlockingPanel panel = new MccBlockingPanel( wnd.shell(), aContext );
     panel.layout();
     wnd.open();
