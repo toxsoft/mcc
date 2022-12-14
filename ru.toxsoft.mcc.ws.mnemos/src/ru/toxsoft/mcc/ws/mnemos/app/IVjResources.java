@@ -16,4 +16,10 @@ interface IVjResources {
   String STR_PANEL_CTRL   = "Панель";
   String STR_AUTO_CTRL    = "Автомат";
 
+  String STR_START      = "Запуск";
+  String STR_STEP       = "Шаг: ";
+  String STR_START_AUTO = "Старт АВТ";
+  String STR_STOP_AUTO  = "Стоп АВТ";
+
+  String STR_BLOCKS = "Блокировки";
 }

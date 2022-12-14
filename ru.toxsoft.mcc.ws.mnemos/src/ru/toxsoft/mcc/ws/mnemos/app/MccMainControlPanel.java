@@ -9,8 +9,10 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
@@ -80,6 +82,12 @@ public class MccMainControlPanel
     valuesMap.put( autoCtrlGwid, IAtomicValue.NULL );
 
     cmdSender = new MccCommandSender( coreApi() );
+    cmdSender.eventer().addListener( aSource -> {
+      String errStr = cmdSender.errorString();
+      if( errStr != null && !errStr.isBlank() ) {
+        TsDialogUtils.error( getShell(), errStr );
+      }
+    } );
 
     GridLayout gl = new GridLayout( 1, false );
     setLayout( gl );
@@ -102,14 +110,50 @@ public class MccMainControlPanel
     btnArm = new Button( buttonBar, SWT.TOGGLE );
     btnArm.setText( STR_ARM_CTRL );
     btnArm.setLayoutData( gd );
+    btnArm.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        if( !btnArm.getSelection() ) {
+          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdAwpCtrl" ); //$NON-NLS-1$
+          if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+            TsDialogUtils.error( getShell(), cmdSender.errorString() );
+          }
+        }
+      }
+    } );
 
     btnPanel = new Button( buttonBar, SWT.TOGGLE );
     btnPanel.setText( STR_PANEL_CTRL );
     btnPanel.setLayoutData( gd );
+    btnPanel.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        if( !btnPanel.getSelection() ) {
+          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdPanelCtrl" ); //$NON-NLS-1$
+          if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+            TsDialogUtils.error( getShell(), cmdSender.errorString() );
+          }
+        }
+      }
+    } );
 
     btnAuto = new Button( buttonBar, SWT.TOGGLE );
     btnAuto.setText( STR_AUTO_CTRL );
     btnAuto.setLayoutData( gd );
+    btnAuto.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        if( !btnAuto.getSelection() ) {
+          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdAutoCtrl" ); //$NON-NLS-1$
+          if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+            TsDialogUtils.error( getShell(), cmdSender.errorString() );
+          }
+        }
+      }
+    } );
 
     createLaunchPanel( this );
   }
@@ -155,22 +199,25 @@ public class MccMainControlPanel
     IAtomicValue val;
 
     val = valuesMap.getByKey( armCtrlGwid );
+    btnArm.setEnabled( val.isAssigned() );
     if( val.isAssigned() ) {
       btnArm.setSelection( val.asBool() );
     }
     val = valuesMap.getByKey( panelCtrlGwid );
+    btnPanel.setEnabled( val.isAssigned() );
     if( val.isAssigned() ) {
       btnPanel.setSelection( val.asBool() );
     }
     val = valuesMap.getByKey( autoCtrlGwid );
+    btnAuto.setEnabled( val.isAssigned() );
     if( val.isAssigned() ) {
       btnAuto.setSelection( val.asBool() );
     }
   }
 
   private void createLaunchPanel( Composite aParent ) {
-    Group stepHolder = new Group( this, SWT.NONE );
-    stepHolder.setText( "Запуск" );
+    Group stepHolder = new Group( aParent, SWT.NONE );
+    stepHolder.setText( STR_START );
     stepHolder.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
     stepHolder.setLayout( new GridLayout( 3, false ) );
     FontData fd = stepHolder.getFont().getFontData()[0];
@@ -181,7 +228,7 @@ public class MccMainControlPanel
     gd.widthHint = 50;
 
     CLabel l = new CLabel( stepHolder, SWT.NONE );
-    l.setText( "Шаг: " );
+    l.setText( STR_STEP );
 
     l = new CLabel( stepHolder, SWT.CENTER | SWT.BORDER );
     l.setLayoutData( gd );
@@ -198,15 +245,15 @@ public class MccMainControlPanel
     // buttonsHolder.setBackground( colorManager().getColor( ETsColor.RED ) );
 
     Button btnStart = new Button( buttonsHolder, SWT.PUSH );
-    btnStart.setText( "Старт АВТ" );
+    btnStart.setText( STR_START_AUTO );
     // btnStart.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, true, false ) );
 
     Button btnStop = new Button( buttonsHolder, SWT.PUSH );
-    btnStop.setText( "Стоп АВТ" );
+    btnStop.setText( STR_STOP_AUTO );
     btnStop.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, true, false ) );
 
     Button btnBlocks = new Button( buttonsHolder, SWT.PUSH );
-    btnBlocks.setText( "Блокировки" );
+    btnBlocks.setText( STR_BLOCKS );
     btnBlocks.setLayoutData( new GridData( SWT.RIGHT, SWT.TOP, true, false ) );
     btnBlocks.addSelectionListener( new SelectionAdapter() {
 
