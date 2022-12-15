@@ -82,6 +82,7 @@ public class MccMainControlPanel
     valuesMap.put( panelCtrlGwid, IAtomicValue.NULL );
     valuesMap.put( localCtrlGwid, IAtomicValue.NULL );
     valuesMap.put( autoCtrlGwid, IAtomicValue.NULL );
+    valuesMap.put( stepGwid, IAtomicValue.NULL );
 
     cmdSender = new MccCommandSender( coreApi() );
     cmdSender.eventer().addListener( aSource -> {
