@@ -15,8 +15,11 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.utils.*;
@@ -59,6 +62,48 @@ public class MccMainControlPanel
   private final Button btnArm;
   private final Button btnPanel;
   private final Button btnAuto;
+
+  // Этапы запуска
+  static final IIntMapEdit<String> statesMap = new IntMap<>();
+
+  static {
+    statesMap.put( 0, "Работа без регулирования" );
+
+    statesMap.put( 1, "Включение предпусковой сигнализации (7 сек.)" );
+    statesMap.put( 2, "Активация регулятора масляного насоса" );
+    statesMap.put( 4, "Включение вентсистемы ГЭД" );
+    statesMap.put( 7, "Открытие задвижки байпаса" );
+    statesMap.put( 8, "Закрытие дроссельной заслонки" );
+    statesMap.put( 9, "Закрытие задвижки нагнетания" );
+    statesMap.put( 10, "Открытие задвижки всаса" );
+    statesMap.put( 11, "Включение гидрораспределителя ВПУ" );
+    statesMap.put( 12, "Включение ВПУ" );
+    statesMap.put( 13, "Прогрев ГЭД паром" );
+    statesMap.put( 14, "Продувка ГЭД газом" );
+    statesMap.put( 15, "Расцепление и отключение ВПУ" );
+    statesMap.put( 16, "Ожидание включения ГЭД (20 минут)" );
+    statesMap.put( 17, "Прогрев нагнетателя (20 минут)" );
+    statesMap.put( 18, "Открытие дроссельной заслонки до 35 град." );
+    statesMap.put( 19, "Открытие задвижки нагнетания" );
+    statesMap.put( 20, "Запуск завершён" );
+
+    statesMap.put( 25, "Работа с регулированием" );
+
+    // Этапы останова
+    statesMap.put( 31, "Закрытие дроссельной заслонки до 35 град." );
+    statesMap.put( 32, "Открытие задвижки байпаса" );
+    statesMap.put( 33, "Закрытие задвижки нагнетания" );
+    statesMap.put( 34, "Отключение ГЭД" );
+    statesMap.put( 35, "Открытие задвижки байпаса" );
+    statesMap.put( 36, "Закрытие дроссельной заслонки" );
+    statesMap.put( 37, "Закрытие задвижки нагнетания" );
+    statesMap.put( 38, "Закрытие задвижки всаса" );
+    statesMap.put( 39, "Останов нагнетателя (15 мин.)" );
+    statesMap.put( 40, "Отключение вентсистемы ГЭД" );
+    statesMap.put( 42, "Останов завершён" );
+
+    statesMap.put( 50, "Остановлен" );
+  }
 
   /**
    * Конструктор.
@@ -218,10 +263,14 @@ public class MccMainControlPanel
     }
     val = valuesMap.getByKey( stepGwid );
     if( val.isAssigned() ) {
-      labelStepNo.setText( "" + val.asInt() ); //$NON-NLS-1$
+      int state = val.asInt();
+
+      labelStepNo.setText( Integer.toString( state ) );
+      labelStepDescr.setText( statesMap.getByKey( state ) );
     }
     else {
       labelStepNo.setText( "???" ); //$NON-NLS-1$
+      labelStepDescr.setText( TsLibUtils.EMPTY_STRING );
     }
   }
 
