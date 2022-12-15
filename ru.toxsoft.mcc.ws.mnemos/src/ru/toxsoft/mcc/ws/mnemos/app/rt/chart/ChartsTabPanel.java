@@ -2,27 +2,25 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 
-import org.eclipse.swt.SWT;
+import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
-import org.eclipse.swt.widgets.Composite;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
-import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
+import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
-import org.toxsoft.core.tsgui.m5.model.impl.M5BunchEdit;
-import org.toxsoft.core.tsgui.panels.TsPanel;
-import org.toxsoft.core.tsgui.panels.toolbar.TsToolbar;
-import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.gw.skid.Skid;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.uskat.core.api.users.ISkUser;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
+import org.toxsoft.core.tsgui.m5.gui.*;
+import org.toxsoft.core.tsgui.m5.model.impl.*;
+import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tsgui.panels.toolbar.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.s5.utils.*;
 
-import ru.toxsoft.mcc.ws.core.templates.api.ISkGraphParam;
-import ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
  * Панель отображения графиков реального времени.<br>
