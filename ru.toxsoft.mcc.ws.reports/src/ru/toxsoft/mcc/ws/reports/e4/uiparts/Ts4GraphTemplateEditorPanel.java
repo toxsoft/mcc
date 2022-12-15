@@ -3,7 +3,8 @@ package ru.toxsoft.mcc.ws.reports.e4.uiparts;
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
-import static ru.toxsoft.mcc.ws.reports.e4.uiparts.IReportTemplateConstants.*;
+import static ru.toxsoft.mcc.ws.reports.IMccWsReportsConstants.*;
+import static ru.toxsoft.mcc.ws.reports.e4.uiparts.ISkResources.*;
 
 import java.text.*;
 
@@ -56,10 +57,10 @@ import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.dataset.*;
 public class Ts4GraphTemplateEditorPanel
     extends TsPanel {
 
-  final static String ACTID_FORM_GRAPH = SK_ID + ".users.gui.RunGraphForm";
+  final static String ACTID_FORM_GRAPH = SK_ID + ".users.gui.RunGraphForm"; //$NON-NLS-1$
 
-  final static TsActionDef ACDEF_FORM_GRAPH = TsActionDef.ofPush2( ACTID_FORM_GRAPH, "Сформировать график",
-      "Загрузка данных из БД и формирование графика", ICON_RUN );
+  final static TsActionDef ACDEF_FORM_GRAPH =
+      TsActionDef.ofPush2( ACTID_FORM_GRAPH, STR_N_GENERATE_CHART, STR_D_GENERATE_CHART, ICONID_RUN );
 
   final ISkConnection                  conn;
   IM5CollectionPanel<ISkGraphTemplate> graphTemplatesPanel;
@@ -73,12 +74,12 @@ public class Ts4GraphTemplateEditorPanel
    * лист отчета
    */
   final ITsNodeKind<ISkGraphTemplate> NK_TEMPLATE_LEAF =
-      new TsNodeKind<>( "LeafTemplate", ISkGraphTemplate.class, false, ICON_TEMPLATE );               //$NON-NLS-1$
+      new TsNodeKind<>( "LeafTemplate", ISkGraphTemplate.class, false, ICONID_GRAPH_TEMPLATE );       //$NON-NLS-1$
 
   /**
    * узел пользователя
    */
-  final ITsNodeKind<ISkUser> NK_USER_NODE = new TsNodeKind<>( "NodeUser", ISkUser.class, true, ICON_USER ); //$NON-NLS-1$
+  final ITsNodeKind<ISkUser> NK_USER_NODE = new TsNodeKind<>( "NodeUser", ISkUser.class, true, ICONID_USER ); //$NON-NLS-1$
 
   static final String TMID_GROUP_BY_USER = "GroupByUser"; //$NON-NLS-1$
 
@@ -166,8 +167,8 @@ public class Ts4GraphTemplateEditorPanel
         new MultiPaneComponentModown<>( ctx, model, lm.itemsProvider(), lm ) {
 
           @Override
-          protected ITsToolbar doCreateToolbar( ITsGuiContext aContext, String aName, EIconSize aIconSize,
-              IListEdit<ITsActionDef> aActs ) {
+          protected ITsToolbar doCreateToolbar( @SuppressWarnings( "hiding" ) ITsGuiContext aContext, String aName,
+              EIconSize aIconSize, IListEdit<ITsActionDef> aActs ) {
             aActs.add( ACDEF_SEPARATOR );
             aActs.add( ACDEF_FORM_GRAPH );
 

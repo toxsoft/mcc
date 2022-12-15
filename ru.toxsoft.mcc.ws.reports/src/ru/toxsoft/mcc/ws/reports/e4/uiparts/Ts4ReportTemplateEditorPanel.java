@@ -3,11 +3,13 @@ package ru.toxsoft.mcc.ws.reports.e4.uiparts;
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
-import static ru.toxsoft.mcc.ws.reports.e4.uiparts.IReportTemplateConstants.*;
+import static ru.toxsoft.mcc.ws.reports.IMccWsReportsConstants.*;
+import static ru.toxsoft.mcc.ws.reports.e4.uiparts.ISkResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
 import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.jasperreports.gui.main.*;
 import org.toxsoft.core.tsgui.bricks.actions.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
@@ -34,7 +36,6 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.sandbox.m5.table.lib.jasper.JasperReportViewer;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.users.*;
@@ -87,6 +88,7 @@ public class Ts4ReportTemplateEditorPanel
       return toolbar;
     }
 
+    @SuppressWarnings( "nls" )
     @Override
     protected void doProcessAction( String aActionId ) {
       ISkReportTemplate selTemplate = selectedItem();
@@ -139,10 +141,10 @@ public class Ts4ReportTemplateEditorPanel
 
   }
 
-  final static String ACTID_FORM_REPORT = SK_ID + ".users.gui.RunReportForm";
+  final static String ACTID_FORM_REPORT = SK_ID + ".users.gui.RunReportForm"; //$NON-NLS-1$
 
-  final static TsActionDef ACDEF_FORM_REPORT = TsActionDef.ofPush2( ACTID_FORM_REPORT, "Сформировать отчёт",
-      "Загрузка данных из БД и формирование отчёта", ICON_RUN );
+  final static TsActionDef ACDEF_FORM_REPORT =
+      TsActionDef.ofPush2( ACTID_FORM_REPORT, STR_N_GENERATE_REPORT, STR_D_GENERATE_REPORT, ICONID_RUN );
 
   static TimeInterval initValues =
       new TimeInterval( System.currentTimeMillis() - 24L * 60L * 60L * 1000L, System.currentTimeMillis() );
@@ -155,12 +157,12 @@ public class Ts4ReportTemplateEditorPanel
    * лист шаблона
    */
   final ITsNodeKind<ISkReportTemplate> NK_TEMPLATE_LEAF =
-      new TsNodeKind<>( "LeafTemplate", ISkReportTemplate.class, false, ICON_TEMPLATE ); //$NON-NLS-1$
+      new TsNodeKind<>( "LeafTemplate", ISkReportTemplate.class, false, ICONID_REPORT_TEMPLATE ); //$NON-NLS-1$
 
   /**
    * узел пользователя
    */
-  final ITsNodeKind<ISkUser> NK_USER_NODE = new TsNodeKind<>( "NodeUser", ISkUser.class, true, ICON_USER ); //$NON-NLS-1$
+  final ITsNodeKind<ISkUser> NK_USER_NODE = new TsNodeKind<>( "NodeUser", ISkUser.class, true, ICONID_USER ); //$NON-NLS-1$
 
   static final String TMIID_GROUP_BY_USER = "GroupByUser"; //$NON-NLS-1$
 

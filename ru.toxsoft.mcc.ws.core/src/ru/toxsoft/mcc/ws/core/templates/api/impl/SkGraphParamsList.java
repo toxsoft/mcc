@@ -47,6 +47,15 @@ public final class SkGraphParamsList
     // nop
   }
 
+  /**
+   * Constructor.
+   *
+   * @param aList {@link ISkGraphParam} список параметров
+   */
+  public SkGraphParamsList( IList<ISkGraphParam> aList ) {
+    items.addAll( aList );
+  }
+
   @Override
   public IListEdit<ISkGraphParam> items() {
     return items;
