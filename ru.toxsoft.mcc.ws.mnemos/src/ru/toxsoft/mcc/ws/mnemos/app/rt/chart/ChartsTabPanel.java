@@ -169,9 +169,11 @@ public class ChartsTabPanel
   // }
 
   protected ISkGraphParam doAddItem() {
-
+    // IM5Model<ISkGraphParam> model =
+    // m5().getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
+    IM5Domain m5 = conn.scope().get( IM5Domain.class );
     IM5Model<ISkGraphParam> model =
-        m5().getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
+        m5.getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
     IM5BunchEdit<ISkGraphParam> initVals = new M5BunchEdit<>( model );
     return M5GuiUtils.askCreate( tsContext(), model, initVals, cdi, model.getLifecycleManager( null ) );

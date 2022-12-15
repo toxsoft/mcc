@@ -105,6 +105,7 @@ public class UipartMccMainScheme
     rightComp.setData( AWTLayout.KEY_PREFERRED_SIZE, new Dimension( 440, -1 ) );
 
     schemeComp.rtStart();
+    rightComp.rtStart();
 
     schemeComp.addMouseListener( new MouseListener() {
 

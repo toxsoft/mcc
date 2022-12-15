@@ -133,7 +133,8 @@ public abstract class AbstractMccDialogPanel
     Button b = btn.createControl( aParent, SWT.CHECK );
     dataProvider.addDataConsumer( btn );
     if( aAutoText ) {
-      b.setText( dataInfo( aDataId ).nmName() );
+      // b.setText( dataInfo( aDataId ).nmName() );
+      b.setText( dataInfo( dataGwid ).nmName() );
     }
     return btn;
   }
@@ -234,7 +235,8 @@ public abstract class AbstractMccDialogPanel
     ISkObject skObj = dlgContext.skObject();
     Gwid gwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
 
-    IDtoRtdataInfo dInfo = dataInfo( aDataId );
+    // IDtoRtdataInfo dInfo = dataInfo( aDataId );
+    IDtoRtdataInfo dInfo = dataInfo( gwid );
     MccRtBooleanLabel rtLabel;
     rtLabel = new MccRtBooleanLabel( gwid, aFalseImageId, aTrueImageId, EIconSize.IS_24X24, tsContext() );
     CLabel l = rtLabel.createControl( aParent, SWT.NONE );
@@ -260,9 +262,26 @@ public abstract class AbstractMccDialogPanel
     ISkObject skObj = dlgContext.skObject();
     Gwid gwid = Gwid.createRtdata( skObj.classId(), skObj.strid(), aDataId );
 
-    IDtoRtdataInfo dInfo = dataInfo( aDataId );
+    return createRtBooleanLabel( aParent, gwid, aFalseImageId, aTrueImageId );
+  }
+
+  /**
+   * Создает надпись с иконкой, отображающей логическое значение.
+   * <p>
+   * Надпись берется из описания данного.
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aDataGwid Gwid - конкретный ИД данного
+   * @param aFalseImageId String- ИД картинки для значения <b>true</b>
+   * @param aTrueImageId String - ИД картинки для значения <b>true</b>
+   * @return MccRtBooleanLabel - созданный контроль
+   */
+  public MccRtBooleanLabel createRtBooleanLabel( Composite aParent, Gwid aDataGwid, String aFalseImageId,
+      String aTrueImageId ) {
+    // IDtoRtdataInfo dInfo = dataInfo( aDataGwid.propId() );
+    IDtoRtdataInfo dInfo = dataInfo( aDataGwid );
     MccRtBooleanLabel rtLabel;
-    rtLabel = new MccRtBooleanLabel( gwid, aFalseImageId, aTrueImageId, EIconSize.IS_24X24, tsContext() );
+    rtLabel = new MccRtBooleanLabel( aDataGwid, aFalseImageId, aTrueImageId, EIconSize.IS_24X24, tsContext() );
     CLabel l = rtLabel.createControl( aParent, SWT.NONE );
     l.setText( dInfo.nmName() );
     l.setToolTipText( dInfo.description() );
@@ -422,6 +441,11 @@ public abstract class AbstractMccDialogPanel
     // rtPanel.defineRtData( aDataGwid, valed );
 
     return valed;
+  }
+
+  protected IDtoRtdataInfo dataInfo( Gwid aDataGwid ) {
+    ISkClassInfo clsInfo = coreApi().sysdescr().getClassInfo( aDataGwid.classId() );
+    return clsInfo.rtdata().list().getByKey( aDataGwid.propId() );
   }
 
   protected IDtoRtdataInfo dataInfo( String aDataId ) {

@@ -8,6 +8,7 @@ import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.uskat.core.api.rtdserv.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.utils.*;
@@ -95,6 +96,9 @@ public class MccRtDataProvider
 
     void selectChannels( IMap<Gwid, ISkReadCurrDataChannel> aChannels ) {
       for( int i = 0; i < allGwids.length; i++ ) {
+        if( !aChannels.hasKey( allGwids[i] ) ) {
+          LoggerUtils.errorLogger().error( "Can not create read chanel fo gwid" + allGwids[i].toString() ); //$NON-NLS-1$
+        }
         ISkReadCurrDataChannel channel = aChannels.getByKey( allGwids[i] );
         channels[i] = channel;
         oldValues[i] = channel.getValue();

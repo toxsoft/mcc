@@ -8,6 +8,8 @@ import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.connection.*;
 
+import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+
 /**
  * Панель отображения мнемосхемы.
  * <p>
@@ -18,6 +20,8 @@ public class MccSchemeRightPanel
     extends TsPanel {
 
   private final MccGraphicsHolderPanel graphicsHolder;
+
+  IRtDataProvider dataProvider;
 
   /**
    * Конструктор.
@@ -31,14 +35,22 @@ public class MccSchemeRightPanel
     setLayout( gl );
 
     ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
+    dataProvider = new MccRtDataProvider( skConn, aContext );
 
-    // CLabel labelTitle = new CLabel( this, SWT.CENTER );
-    // Font f = fontManager().getFont( "Arial", 24, SWT.BOLD ); //$NON-NLS-1$
-    // labelTitle.setFont( f );
-    // labelTitle.setText( "Нагнетатель №" );
+    addDisposeListener( aE -> {
+      dataProvider.dispose();
+    } );
+
+    MccMainControlPanel ctrlPanel = new MccMainControlPanel( this, skConn, aContext );
+    ctrlPanel.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
     graphicsHolder = new MccGraphicsHolderPanel( this, skConn, aContext );
     graphicsHolder.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
+
+    dataProvider.addDataConsumer( ctrlPanel );
   }
 
+  public void rtStart() {
+    dataProvider.start();
+  }
 }

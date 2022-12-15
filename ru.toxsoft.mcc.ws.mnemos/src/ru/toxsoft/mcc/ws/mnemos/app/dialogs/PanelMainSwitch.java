@@ -9,7 +9,9 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 
@@ -17,7 +19,7 @@ import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
 
 /**
- * Панель свойств аналогового сигнала.
+ * Панель свойств высоковольтного выключателя.
  * <p>
  *
  * @author vs
@@ -27,12 +29,21 @@ public class PanelMainSwitch
 
   private final ISkObject skObject;
 
+  final MccCommandSender cmdSender;
+
   SingleDataConsumer switchOff;
 
   protected PanelMainSwitch( Shell aParent, MccDialogContext aDlgContext ) {
     super( aParent, aDlgContext );
     skObject = aDlgContext.skObject();
     init();
+    cmdSender = new MccCommandSender( coreApi() );
+    cmdSender.eventer().addListener( aSource -> {
+      String errStr = cmdSender.errorString();
+      if( errStr != null && !errStr.isBlank() ) {
+        TsDialogUtils.error( getShell(), errStr );
+      }
+    } );
     dataProvider().start();
   }
 
@@ -44,7 +55,7 @@ public class PanelMainSwitch
     MccControlModeComponent modeComp = createControlModeComponent( this, skObject, tsContext() );
     modeComp.getControl().setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
-    Composite comp = new Composite( this, SWT.NONE );
+    Group comp = createGroup( this, "Состояние", 2, false );
     comp.setLayout( createGridLayout( 2, true ) );
 
     switchOff = new SingleDataConsumer( Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdOff" ) );
@@ -63,9 +74,43 @@ public class PanelMainSwitch
     bl.createControl( comp, SWT.NONE ).setText( "Включен" );
     dataProvider().addDataConsumer( bl );
 
-    createRtBooleanLabel( this, "rtdReady2Start", ICONID_RED_LAMP, ICONID_GREEN_LAMP );
+    createRtBooleanLabel( comp, "rtdReady2Start", ICONID_RED_LAMP, ICONID_GREEN_LAMP );
     createRtBooleanLabel( comp, "rtdSwitchOnFailure", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
     createRtBooleanLabel( comp, "rtdSwitchOffFailure", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+
+    Composite btnsHolder = new Composite( this, SWT.NONE );
+    btnsHolder.setLayout( createGridLayout( 2, false ) );
+    btnsHolder.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+
+    Button btnStart = new Button( btnsHolder, SWT.PUSH );
+    btnStart.setText( "ПУСК" );
+    btnStart.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        if( TsDialogUtils.askYesNoCancel( getShell(), "Запустить?" ) == ETsDialogCode.YES ) {
+          Gwid cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpStart" ); //$NON-NLS-1$
+          if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+            TsDialogUtils.error( getShell(), cmdSender.errorString() );
+          }
+        }
+      }
+    } );
+
+    Button btnStop = new Button( btnsHolder, SWT.PUSH );
+    btnStop.setText( "СТОП" );
+    btnStop.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        if( TsDialogUtils.askYesNoCancel( getShell(), "Остановить?" ) == ETsDialogCode.YES ) {
+          Gwid cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpStop" ); //$NON-NLS-1$
+          if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+            TsDialogUtils.error( getShell(), cmdSender.errorString() );
+          }
+        }
+      }
+    } );
 
     Composite bkPanel = new Composite( this, SWT.NONE );
     bkPanel.setLayout( new GridLayout( 2, false ) );
