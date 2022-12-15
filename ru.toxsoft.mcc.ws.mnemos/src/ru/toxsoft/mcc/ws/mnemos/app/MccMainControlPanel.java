@@ -54,6 +54,7 @@ public class MccMainControlPanel
   private final Gwid panelCtrlGwid;
   private final Gwid localCtrlGwid;
   private final Gwid autoCtrlGwid;
+  private final Gwid stepGwid;
 
   private final Button btnArm;
   private final Button btnPanel;
@@ -75,6 +76,7 @@ public class MccMainControlPanel
     panelCtrlGwid = Gwid.createRtdata( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "rtdPanelCtrl" ); //$NON-NLS-1$
     localCtrlGwid = Gwid.createRtdata( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "rtdLocalCtrl" ); //$NON-NLS-1$
     autoCtrlGwid = Gwid.createRtdata( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "rtdAutoCtrl" ); //$NON-NLS-1$
+    stepGwid = Gwid.createRtdata( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "rtdStep" ); //$NON-NLS-1$
 
     valuesMap.put( armCtrlGwid, IAtomicValue.NULL );
     valuesMap.put( panelCtrlGwid, IAtomicValue.NULL );
@@ -213,7 +215,17 @@ public class MccMainControlPanel
     if( val.isAssigned() ) {
       btnAuto.setSelection( val.asBool() );
     }
+    val = valuesMap.getByKey( stepGwid );
+    if( val.isAssigned() ) {
+      labelStepNo.setText( "" + val.asInt() ); //$NON-NLS-1$
+    }
+    else {
+      labelStepNo.setText( "???" ); //$NON-NLS-1$
+    }
   }
+
+  CLabel labelStepNo;
+  CLabel labelStepDescr;
 
   private void createLaunchPanel( Composite aParent ) {
     Group stepHolder = new Group( aParent, SWT.NONE );
@@ -230,11 +242,11 @@ public class MccMainControlPanel
     CLabel l = new CLabel( stepHolder, SWT.NONE );
     l.setText( STR_STEP );
 
-    l = new CLabel( stepHolder, SWT.CENTER | SWT.BORDER );
-    l.setLayoutData( gd );
+    labelStepNo = new CLabel( stepHolder, SWT.CENTER | SWT.BORDER );
+    labelStepNo.setLayoutData( gd );
 
-    l = new CLabel( stepHolder, SWT.CENTER | SWT.BORDER );
-    l.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+    labelStepDescr = new CLabel( stepHolder, SWT.CENTER | SWT.BORDER );
+    labelStepDescr.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
     Composite buttonsHolder = new Composite( stepHolder, SWT.NONE );
     GridLayout gl = new GridLayout( 3, false );
