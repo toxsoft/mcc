@@ -117,8 +117,8 @@ public class MccMainControlPanel
 
       @Override
       public void widgetSelected( SelectionEvent aE ) {
-        if( !btnArm.getSelection() ) {
-          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdAwpCtrl" ); //$NON-NLS-1$
+        if( btnArm.getSelection() ) {
+          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetAwpCtrl" ); //$NON-NLS-1$
           if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
             TsDialogUtils.error( getShell(), cmdSender.errorString() );
           }
@@ -133,8 +133,8 @@ public class MccMainControlPanel
 
       @Override
       public void widgetSelected( SelectionEvent aE ) {
-        if( !btnPanel.getSelection() ) {
-          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdPanelCtrl" ); //$NON-NLS-1$
+        if( btnPanel.getSelection() ) {
+          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetPanelCtrl" ); //$NON-NLS-1$
           if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
             TsDialogUtils.error( getShell(), cmdSender.errorString() );
           }
@@ -149,8 +149,8 @@ public class MccMainControlPanel
 
       @Override
       public void widgetSelected( SelectionEvent aE ) {
-        if( !btnAuto.getSelection() ) {
-          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdAutoCtrl" ); //$NON-NLS-1$
+        if( btnAuto.getSelection() ) {
+          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetAutoCtrl" ); //$NON-NLS-1$
           if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
             TsDialogUtils.error( getShell(), cmdSender.errorString() );
           }
