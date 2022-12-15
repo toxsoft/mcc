@@ -118,7 +118,7 @@ public class MccMainControlPanel
       @Override
       public void widgetSelected( SelectionEvent aE ) {
         if( btnArm.getSelection() ) {
-          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetAwpCtrl" ); //$NON-NLS-1$
+          Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetApwCtrl" ); //$NON-NLS-1$
           if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
             TsDialogUtils.error( getShell(), cmdSender.errorString() );
           }
