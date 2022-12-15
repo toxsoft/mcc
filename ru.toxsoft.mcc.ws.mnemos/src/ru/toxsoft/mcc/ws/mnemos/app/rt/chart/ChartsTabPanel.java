@@ -169,6 +169,7 @@ public class ChartsTabPanel
   // }
 
   protected ISkGraphParam doAddItem() {
+
     IM5Model<ISkGraphParam> model =
         m5().getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
