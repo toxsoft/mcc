@@ -154,8 +154,8 @@ public class MccSchemePanel
 
     // Добавим гидрораспределитель
     imgIds.clear();
-    imgIds.add( "icons/gr_on.png" ); //$NON-NLS-1$
-    imgIds.add( "icons/gr_off.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/gidro-On.png" ); //$NON-NLS-1$
+    imgIds.add( "icons/gidro-Off.png" ); //$NON-NLS-1$
     imgIds.add( "icons/gr_fault.png" ); //$NON-NLS-1$
 
     MccHydraulicValveControl hydValve = new MccHydraulicValveControl( this, gwid, imgIds, aContext );
