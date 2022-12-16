@@ -85,8 +85,18 @@ public class RtGraphDataSet
             values.add( tav );
           }
         }
+        // только после поучения данных запускаем таймер
         aRtChartPanel.init( aGraphParam );
         aRtChartPanel.start();
+        TimerTask repeatedTask = new TimerTask() {
+
+          @Override
+          public void run() {
+            // обновим текущее значение
+            addCurrValue( rtDataChannel.getValue() );
+          }
+        };
+        timer.scheduleAtFixedRate( repeatedTask, 1000L, 1000L );
       }
     } );
 
@@ -97,17 +107,6 @@ public class RtGraphDataSet
     IMap<Gwid, ISkReadCurrDataChannel> channelMap =
         aServerApi.rtdService().createReadCurrDataChannels( new GwidList( aGraphParam.gwid() ) );
     rtDataChannel = channelMap.getByKey( aGraphParam.gwid() );
-
-    TimerTask repeatedTask = new TimerTask() {
-
-      @Override
-      public void run() {
-        // обновим текущее значение
-        addCurrValue( rtDataChannel.getValue() );
-      }
-    };
-
-    timer.scheduleAtFixedRate( repeatedTask, 0L, 1000L );
 
   }
 

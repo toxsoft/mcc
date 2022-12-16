@@ -1,6 +1,7 @@
 package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
+import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.ISkResources.*;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
@@ -13,14 +14,28 @@ import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.panels.toolbar.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.ggprefs.gui.*;
+import org.toxsoft.uskat.ggprefs.lib.*;
+import org.toxsoft.uskat.ggprefs.lib.impl.*;
 import org.toxsoft.uskat.s5.utils.*;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
 
 /**
  * Панель отображения графиков реального времени.<br>
@@ -33,28 +48,13 @@ public class ChartsTabPanel
   private final TsToolbar toolbar;
   private CTabFolder      tabFolder;
 
-  /**
-   * ID атрибута класса - маркер того что это внутренний класс для работы с настройками ГДП.
-   */
-  private static final String AID_GUI_GW_PREFS_MARKER = "Class4RtChartsPanelPrefs"; //$NON-NLS-1$
-
-  // TODO ts4 замена IOptionDef
-  // private ISkGuiGwPrefsService ggpService;
-  // private IGuiGwPrefsSection prefSection;
-  //
-  // /**
-  // * Набор rtCharts у панели.
-  // */
-  // public static final IOptionDef RTСHARTS = AvMetaUtils.createFimbedColl2( "rtChartsOptId", //
-  // SkGraphParam.KEEPER, //
-  // TSID_DESCRIPTION, "настройки панели RtCharts", //
-  // TSID_NAME, "настройки панели RtCharts", //
-  // TSID_DEFAULT_VALUE, avValobj( IList.EMPTY ) ); // тут пустой список
+  private IGuiGwPrefsSection prefSection;
 
   private final ISkConnection conn;
 
-  private final Skid userSkid;
-  private final Gwid userGwid;
+  private final Skid       userSkid;
+  private final Gwid       userGwid;
+  IListEdit<ISkGraphParam> rtCharts = new ElemArrayList<>();
 
   /**
    * Конструктор панели.
@@ -76,23 +76,25 @@ public class ChartsTabPanel
 
     // toolbar
     toolbar = new TsToolbar( tsContext() );
-    toolbar.setNameLabelText( "RtCharts" );
+    toolbar.setNameLabelText( RTCHARTS_TOOLBAR_TITLE );
     toolbar.addActionDefs( //
-        ACDEF_ADD, ACDEF_SEPARATOR //
+        ACDEF_ADD, ACDEF_SEPARATOR, ACDEF_EDIT //
     );
     toolbar.createControl( this );
     toolbar.getControl().setLayoutData( BorderLayout.NORTH );
     toolbar.addListener( aActionId -> {
       if( aActionId.equals( ACDEF_ADD.id() ) ) {
         ISkGraphParam newRtGraph = doAddItem();
+        addRtChart( newRtGraph );
+      }
+      if( aActionId.equals( ACDEF_EDIT.id() ) ) {
+        // получаем текущий график
+        CTabItem selTab = tabFolder.getSelection();
+        ISkGraphParam selelectedGraphParam = (ISkGraphParam)selTab.getData();
+        ISkGraphParam newRtGraph = doEditItem( selelectedGraphParam );
         if( newRtGraph != null ) {
-          // создаем новую закладку
-          CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-          // закладке дадим имя параметра
-          tabItem.setText( newRtGraph.title() );
-          RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), newRtGraph, aConnection );
-          tabItem.setControl( chartPanel );
-          tabFolder.setSelection( tabItem );
+          selTab.dispose();
+          addRtChart( newRtGraph );
         }
       }
     } );
@@ -104,79 +106,162 @@ public class ChartsTabPanel
 
       @Override
       public void close( CTabFolderEvent event ) {
-        // TODO удаляем описание RtChart из настроек
+        // удаляем описание RtChart из настроек
+        ISkGraphParam graphParam = (ISkGraphParam)event.item.getData();
+        rtCharts.remove( graphParam );
+        // TODO восстановить при подключении сервиса настроек
+        // saveUserSettings();
       }
     } );
-    // инициализируем настройки панели
-    initPanelPrefs( aConnection );
-    // восстанавливаем внешний вид панели
-    restoreUserSettings();
+    // TODO восстановить при подключении сервиса настроек
+    // // инициализируем настройки панели
+    // initPanelPrefs();
+    // // восстанавливаем внешний вид панели
+    // restoreUserSettings();
+  }
+
+  private ISkGraphParam doEditItem( ISkGraphParam aSelelectedGraphParam ) {
+    IM5Domain m5 = conn.scope().get( IM5Domain.class );
+    IM5Model<ISkGraphParam> model =
+        m5.getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
+    ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
+    return M5GuiUtils.askEdit( tsContext(), model, aSelelectedGraphParam, cdi, model.getLifecycleManager( null ) );
+  }
+
+  private void addRtChart( ISkGraphParam aRtGraph ) {
+    if( aRtGraph != null ) {
+      // создаем новую закладку
+      CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
+      // закладке дадим имя параметра
+      tabItem.setText( aRtGraph.title() );
+      RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), aRtGraph, conn );
+      tabItem.setControl( chartPanel );
+      tabFolder.setSelection( tabItem );
+      rtCharts.add( aRtGraph );
+      tabItem.setData( aRtGraph );
+      // TODO восстановить при подключении сервиса настроек
+      // saveUserSettings();
+    }
   }
 
   private void restoreUserSettings() {
     // получаем список графиков и создаем для каждого свой RtChart
-    // IOptionSet userPrefs = getUserPrefs();
-    // теперь получаем список
-    // TODO замена getFimbedColl
-    // IList<SkGraphParam> rtCharts = RTСHARTS.getFimbedColl( userPrefs );
-
+    IOptionSet userPrefs = getUserPrefs();
+    ISkGraphParamsList rtChartsList = RtChartPanelOptions.RTCHARTS.getValue( userPrefs ).asValobj();
+    rtCharts.addAll( rtChartsList.items() );
+    for( ISkGraphParam rtChart : rtCharts ) {
+      addRtChart( rtChart );
+    }
   }
 
-  private void initPanelPrefs( ISkConnection aConnection ) {
-    // ISkCoreApi coreApi = aConnection.coreApi();
-    //
-    // if( !coreApi.services().hasKey( ISkGuiGwPrefsService.SERVICE_ID ) ) {
-    // coreApi.addService( SkGuiGwPrefsService.CREATOR );
-    // }
-    // ggpService = coreApi.getService( ISkGuiGwPrefsService.SERVICE_ID );
-    // prefSection = GdpPrefUtils.section( GUI_GW_PREFS_SECTION_ID, docConn );
-    //
-    // // Задание опций
-    // IStridablesListEdit<IOptionDef> panelPrefs = new StridablesList<>();
-    // panelPrefs.add( RTСHARTS );
-    //
-    // IList<IOptionDef> currOpDefs = prefSection.listOptionDefs( systemSkid );
-    // IStridablesListEdit<IOptionDef> newPrefDefs = new StridablesList<>();
-    // // перебираем все устанавливаемые опции и добавляем только новые
-    // for( IOptionDef addingOptDef : aDefs ) {
-    // if( !hasOptionDef( currOpDefs, addingOptDef ) ) {
-    // newPrefDefs.add( addingOptDef );
-    // }
-    // }
-    // prefSection.bindOptions( userGwid, newPrefDefs );
-
+  private void saveUserSettings() {
+    IOptionSetEdit userPrefs = new OptionSet( getUserPrefs() );
+    ISkGraphParamsList rtChartsList = new SkGraphParamsList( rtCharts );
+    RtChartPanelOptions.RTCHARTS.setValue( userPrefs, AvUtils.avValobj( rtChartsList ) );
+    prefSection.setOptions( userSkid, getUserPrefs() );
   }
 
-  // private IOptionSet getUserPrefs() {
-  // // проверим наличие этого (специального) класса для настроек
-  // ISkClassInfo clsInfo = conn.coreApi().sysdescr().classInfoManager().findClassInfo( userSkid.classId() );
-  // if( clsInfo == null ) {
-  // return IOptionSet.NULL;
-  // }
-  // // Проверяем существование объекта
-  // ISkObject prefsObj = conn.coreApi().objService().find( userSkid );
-  // if( prefsObj == null ) {
-  // // тут проверяем что это объект который "на совести" helper'а
-  // if( isPrefClass( userSkid.classId() ) ) {
-  // // создаем новый объект
-  // DpuObject dpu = DpuObject.create( userSkid.classId(), userSkid.strid(), //
-  // AID_GUI_GW_PREFS_MARKER, avBool( true ) //
-  // );
-  // conn.coreApi().objService().defineObject( dpu );
-  // }
-  // }
-  // return prefSection.getOptions( userSkid );
-  // }
+  private void initPanelPrefs() {
+    ISkCoreApi coreApi = conn.coreApi();
+
+    if( !coreApi.services().hasKey( ISkGuiGwPrefsService.SERVICE_ID ) ) {
+      coreApi.addService( SkGuiGwPrefsService.CREATOR );
+    }
+    prefSection = PrefUtils.section( PrefUtils.RTCHARTS_PREFS_SECTION_ID, conn );
+
+    // Задание опций
+    IStridablesListEdit<IDataDef> panelPrefs = new StridablesList<>();
+    panelPrefs.addAll( RtChartPanelOptions.allOptions() );
+
+    IList<IDataDef> currOpDefs = prefSection.listOptionDefs( userSkid );
+    IStridablesListEdit<IDataDef> newPrefDefs = new StridablesList<>();
+    // перебираем все устанавливаемые опции и добавляем только новые
+    for( IDataDef addingOptDef : RtChartPanelOptions.allOptions() ) {
+      if( !hasOptionDef( currOpDefs, addingOptDef ) ) {
+        newPrefDefs.add( addingOptDef );
+      }
+    }
+    prefSection.bindOptions( userGwid, newPrefDefs );
+  }
+
+  /**
+   * Проверяет наличие описание опции в текущем списке
+   *
+   * @param aCurrOpDefs текущий список описания опций
+   * @param aOptDef описание добавляемой опции
+   * @return true опция уже определена
+   */
+  private static boolean hasOptionDef( IList<IDataDef> aCurrOpDefs, IDataDef aOptDef ) {
+    for( IDataDef currOptDef : aCurrOpDefs ) {
+      if( currOptDef.id().equals( aOptDef.id() ) ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private IOptionSet getUserPrefs() {
+    return prefSection.getOptions( userSkid );
+  }
 
   protected ISkGraphParam doAddItem() {
-    // IM5Model<ISkGraphParam> model =
-    // m5().getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
     IM5Domain m5 = conn.scope().get( IM5Domain.class );
     IM5Model<ISkGraphParam> model =
         m5.getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
     IM5BunchEdit<ISkGraphParam> initVals = new M5BunchEdit<>( model );
     return M5GuiUtils.askCreate( tsContext(), model, initVals, cdi, model.getLifecycleManager( null ) );
+  }
+
+  // ------------------------------------------------------------------------------------
+  // Кусок реализации настроек для АРМа, здесь временно после отладки <br>
+  // TODO перенести в нужное место в АРМе
+  //
+
+  /**
+   * TODO перенести в нужное место <br>
+   * Вызывает редактор настроек GUI.
+   *
+   * @param aShell окно
+   * @return boolean true - признак, что пользователь сделал изменения, а false отказался от правок
+   */
+  private boolean editGwGuiPrefs( Shell aShell ) {
+    ITsDialogInfo dialogInfo = new TsDialogInfo( tsContext(), DLC_C_PREFS_EDIT, DLC_T_PREFS_EDIT );
+
+    // подготовка и вызов диалога редактирования
+    return GuiGwPrefsUtils.editGuiGwPrefs( tsContext(), dialogInfo, conn, prefSection, new SkidList( userSkid ),
+        groupDefs );
+  }
+
+  private final IStridablesListEdit<IDataDef> groupDefs            = new StridablesList<>();
+  private static final String                 GUI_PREFS_SECTION_ID = "VJ_GUI_PREF_SECTION";
+
+  private void initGroupDefs() {
+    // data aliases
+    groupDefs.addAll( MccSystemOptions.GROUP_OPTION_DEF );
+  }
+
+  private void initGuiPrefs() {
+    ISkCoreApi coreApi = conn.coreApi();
+
+    if( !coreApi.services().hasKey( ISkGuiGwPrefsService.SERVICE_ID ) ) {
+      coreApi.addService( SkGuiGwPrefsService.CREATOR );
+    }
+    prefSection = PrefUtils.section( GUI_PREFS_SECTION_ID, conn );
+
+    // Задание опций
+    IStridablesListEdit<IDataDef> guiPrefs = new StridablesList<>();
+    guiPrefs.addAll( MccSystemOptions.allOptions() );
+
+    IList<IDataDef> currOpDefs = prefSection.listOptionDefs( userSkid );
+    IStridablesListEdit<IDataDef> newPrefDefs = new StridablesList<>();
+    // перебираем все устанавливаемые опции и добавляем только новые
+    for( IDataDef addingOptDef : MccSystemOptions.allOptions() ) {
+      if( !hasOptionDef( currOpDefs, addingOptDef ) ) {
+        newPrefDefs.add( addingOptDef );
+      }
+    }
+    prefSection.bindOptions( userGwid, newPrefDefs );
   }
 
 }

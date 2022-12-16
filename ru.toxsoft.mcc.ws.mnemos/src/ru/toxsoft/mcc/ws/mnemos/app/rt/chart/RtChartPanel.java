@@ -59,13 +59,16 @@ public class RtChartPanel
   Button btnStepRight;
   Button btnPageRight;
 
-  Button                          btnVisir;
-  Button                          btnLegend;
+  Button btnVisir;
+  Button btnLegend;
+  Button btnConsole;
+
   ValedComboSelector<ETimeUnit>   timeUnitCombo;
   final IStringMapEdit<YAxisInfo> axisInfoes = new StringMap<>();
 
-  ETimeUnit      axisTimeUnit = null;
-  G2ChartConsole console      = null;
+  ETimeUnit      axisTimeUnit  = null;
+  G2ChartConsole console       = null;
+  ConsoleWindow  consoleWindow = null;
 
   RtGraphDataSet      graphDataSet;
   private GraphicInfo graphInfo;
@@ -136,7 +139,7 @@ public class RtChartPanel
     Composite chartComp = chart.createControl( this );
     fillChartData( graphDataSet, aGraphParam );
 
-    createYAxis( chart );
+    createYAxis( chart, aGraphParam );
     createPlot( aGraphParam );
     chartComp.setLayoutData( BorderLayout.CENTER );
     console = new G2ChartConsole( (G2Chart)chart );
@@ -166,19 +169,20 @@ public class RtChartPanel
     chart.plotDefs().add( plotDef );
   }
 
-  void createYAxis( IG2Chart aChart ) {
+  void createYAxis( IG2Chart aChart, ISkGraphParam aGraphParam ) {
     for( YAxisInfo axisInfo : axisInfoes ) {
       double min = axisInfo.graphicInfoes().values().get( 0 ).minMax().left().doubleValue();
       double max = axisInfo.graphicInfoes().values().get( 0 ).minMax().right().doubleValue();
-      for( GraphicInfo graphInfo : axisInfo.graphicInfoes() ) {
-        if( graphInfo.minMax().left().doubleValue() < min ) {
-          min = graphInfo.minMax().left().doubleValue();
+      for( GraphicInfo chartInfo : axisInfo.graphicInfoes() ) {
+        if( chartInfo.minMax().left().doubleValue() < min ) {
+          min = chartInfo.minMax().left().doubleValue();
         }
-        if( graphInfo.minMax().right().doubleValue() > max ) {
-          max = graphInfo.minMax().right().doubleValue();
+        if( chartInfo.minMax().right().doubleValue() > max ) {
+          max = chartInfo.minMax().right().doubleValue();
         }
       }
-      IYAxisDef yAxisDef = createYAxisDef( axisInfo.id(), min, max, "%.1f", axisInfo.unitInfo() );
+      IYAxisDef yAxisDef =
+          createYAxisDef( axisInfo.id(), min, max, aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
       aChart.yAxisDefs().add( yAxisDef );
     }
   }
@@ -330,91 +334,12 @@ public class RtChartPanel
 
   void createToolBar() {
 
-    // ToolBarManager tbManager = new ToolBarManager( SWT.FLAT );
     String pluginId = Activator.PLUGIN_ID;
     ImageDescriptor imgDescr;
 
     Composite comp = new Composite( this, SWT.NONE );
-    // comp.setLayout( new RowLayout() );
     comp.setLayout( new GridLayout( 20, false ) );
     comp.setLayoutData( BorderLayout.NORTH );
-
-    // для графика реального времени это не нужно
-    // btnPageLeft = new Button( comp, SWT.PUSH );
-    // btnPageLeft.setToolTipText( "Экран назад" );
-    // imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/sdvig_ekran_left.png" );
-    // //$NON-NLS-1$
-    // btnPageLeft.setImage( imgDescr.createImage() );
-    // // явно удаляем ранее загруженную картинку
-    // btnPageLeft.addDisposeListener( aE -> btnPageLeft.getImage().dispose() );
-    //
-    // btnPageLeft.addSelectionListener( new SelectionAdapter() {
-    //
-    // @Override
-    // public void widgetSelected( SelectionEvent e ) {
-    // if( console != null && axisTimeUnit != null ) {
-    // console.locateX( console.getX1() - (console.getX2() - console.getX1()) );
-    // chart.refresh();
-    // }
-    // }
-    // } );
-    //
-    // btnStepLeft = new Button( comp, SWT.PUSH );
-    // btnStepLeft.setToolTipText( "Назад" );
-    // imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/sdvig_shag_left.png" );
-    // //$NON-NLS-1$
-    // btnStepLeft.setImage( imgDescr.createImage() );
-    // // явно удаляем ранее загруженную картинку
-    // btnStepLeft.addDisposeListener( aE -> btnStepLeft.getImage().dispose() );
-    //
-    // btnStepLeft.addSelectionListener( new SelectionAdapter() {
-    //
-    // @Override
-    // public void widgetSelected( SelectionEvent e ) {
-    // if( console != null && axisTimeUnit != null ) {
-    // console.locateX( console.getX1() - axisTimeUnit.timeInMills() );
-    // chart.refresh();
-    // }
-    // }
-    // } );
-    //
-    // btnStepRight = new Button( comp, SWT.PUSH );
-    // btnStepRight.setToolTipText( "Вперед" );
-    // imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/sdvig_shag_right.png" );
-    // //$NON-NLS-1$
-    // btnStepRight.setImage( imgDescr.createImage() );
-    // // явно удаляем ранее загруженную картинку
-    // btnStepRight.addDisposeListener( aE -> btnStepRight.getImage().dispose() );
-    //
-    // btnStepRight.addSelectionListener( new SelectionAdapter() {
-    //
-    // @Override
-    // public void widgetSelected( SelectionEvent e ) {
-    // if( chart != null && axisTimeUnit != null ) {
-    // console.locateX( console.getX1() + axisTimeUnit.timeInMills() );
-    // chart.refresh();
-    // }
-    // }
-    // } );
-    //
-    // btnPageRight = new Button( comp, SWT.PUSH );
-    // btnPageRight.setToolTipText( "Экран вперед" );
-    // imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/sdvig_ekran_right.png" );
-    // //$NON-NLS-1$
-    // btnPageRight.setImage( imgDescr.createImage() );
-    // // явно удаляем ранее загруженную картинку
-    // btnPageRight.addDisposeListener( aE -> btnPageRight.getImage().dispose() );
-    //
-    // btnPageRight.addSelectionListener( new SelectionAdapter() {
-    //
-    // @Override
-    // public void widgetSelected( SelectionEvent e ) {
-    // if( console != null && axisTimeUnit != null ) {
-    // console.locateX( console.getX1() + (console.getX2() - console.getX1()) );
-    // chart.refresh();
-    // }
-    // }
-    // } );
 
     btnVisir = new Button( comp, SWT.CHECK );
     btnVisir.setText( "Визир" );
@@ -430,6 +355,32 @@ public class RtChartPanel
       public void widgetSelected( SelectionEvent e ) {
         chart.visir().setVisible( btnVisir.getSelection() );
         chart.refresh();
+      }
+    } );
+
+    btnConsole = new Button( comp, SWT.CHECK );
+    btnConsole.setText( "Пульт" );
+    imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/manage_pult.png" ); //$NON-NLS-1$
+    btnConsole.setImage( imgDescr.createImage() );
+    // явно удаляем ранее загруженную картинку
+    btnConsole.addDisposeListener( aE -> btnConsole.getImage().dispose() );
+
+    btnConsole.setSelection( false );
+    btnConsole.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent e ) {
+        if( !btnConsole.getSelection() && consoleWindow != null ) {
+          consoleWindow.dispose();
+          consoleWindow = null;
+        }
+        else {
+          consoleWindow = new ConsoleWindow( getParent(), (G2Chart)chart, tsContext() );
+          consoleWindow.shell().addDisposeListener( aE -> {
+            btnConsole.setSelection( false );
+            consoleWindow = null;
+          } );
+        }
       }
     } );
 
