@@ -93,6 +93,10 @@ public class ChartsTabPanel
         ISkGraphParam selelectedGraphParam = (ISkGraphParam)selTab.getData();
         ISkGraphParam newRtGraph = doEditItem( selelectedGraphParam );
         if( newRtGraph != null ) {
+          rtCharts.remove( selelectedGraphParam );
+          // гасим RtChart
+          RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
+          chartPanel.dispose();
           selTab.dispose();
           addRtChart( newRtGraph );
         }

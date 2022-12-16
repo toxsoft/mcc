@@ -128,8 +128,11 @@ public class RtChartPanel
     createToolBar();
 
     graphDataSet = new RtGraphDataSet( aGraphParam, serverApi, this );
-    // init( aGraphParam );
+    addDisposeListener( aEvent -> onDispose() );
+  }
 
+  void onDispose() {
+    graphDataSet.close();
   }
 
   void init( ISkGraphParam aGraphParam ) {
