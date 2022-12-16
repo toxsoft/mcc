@@ -63,9 +63,12 @@ public class PanelAnalogInputSettings
 
     l = new CLabel( comp, SWT.NONE );
     l.setText( dataInfo( "rtdFilterConst" ).nmName() ); //$NON-NLS-1$
-    rtLabel = createRtLabel( comp, SWT.BORDER, "rtdFilterConst", tsContext() ); //$NON-NLS-1$
-    ctrl = rtLabel.getControl();
-    ctrl.setLayoutData( gd );
+
+    MccRtTextEditor filterEditor = createRtTextEditor( "rtdFilterConst", "cmdFilterConst" );
+    filterEditor.createControl( comp ).setLayoutData( gd );
+    // rtLabel = createRtLabel( comp, SWT.BORDER, "rtdFilterConst", tsContext() ); //$NON-NLS-1$
+    // ctrl = rtLabel.getControl();
+    // ctrl.setLayoutData( gd );
 
     MccRtBooleanLabel rtbLabel;
 

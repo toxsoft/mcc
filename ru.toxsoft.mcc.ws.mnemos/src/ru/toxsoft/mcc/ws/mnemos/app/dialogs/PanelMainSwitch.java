@@ -78,6 +78,14 @@ public class PanelMainSwitch
     createRtBooleanLabel( comp, "rtdSwitchOnFailure", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
     createRtBooleanLabel( comp, "rtdSwitchOffFailure", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
+    comp = createGroup( this, "Блокировка пуска", 2, true );
+    createRtBooleanLabel( comp, "rtdMainSwitchAlarm", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+    createRtBooleanLabel( comp, "rtdEmergencyStop", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+    Gwid gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_AirInGED_Norm", "rtdCurrentValue" );
+    createRtBooleanLabel( comp, gwid, ICONID_RED_LAMP, ICONID_GREEN_LAMP );
+    createRtBooleanLabel( comp, "rtdAlarm", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+
+    // Создадим кнопки управления
     Composite btnsHolder = new Composite( this, SWT.NONE );
     btnsHolder.setLayout( createGridLayout( 2, false ) );
     btnsHolder.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
@@ -136,7 +144,7 @@ public class PanelMainSwitch
       public void widgetSelected( SelectionEvent e ) {
         Point pl = getParent().getLocation();
         Point ps = getParent().getSize();
-        PanelAnalogInputSettings.showDialog( pl.x + ps.x, pl.y, dialogContext() );
+        PanelMainSwitchSettings.showDialog( pl.x + ps.x, pl.y, dialogContext() );
       }
     } );
 
