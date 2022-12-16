@@ -100,6 +100,8 @@ public class UipartMccMainScheme
     schemeComp.addAI( 146, 274, "n2AI_T7" ); //$NON-NLS-1$
     schemeComp.addAI( 115, 378, "n2AI_T3" ); //$NON-NLS-1$
 
+    schemeComp.addAI( 258, 268, "n2AI_IS" ); //$NON-NLS-1$
+
     MccSchemeRightPanel rightComp = new MccSchemeRightPanel( aParent, tsContext() );
     rightComp.setLayoutData( BorderLayout.EAST );
     rightComp.setData( AWTLayout.KEY_PREFERRED_SIZE, new Dimension( 440, -1 ) );
