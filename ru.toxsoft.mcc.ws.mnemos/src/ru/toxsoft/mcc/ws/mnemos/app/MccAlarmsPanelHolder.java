@@ -38,7 +38,7 @@ public class MccAlarmsPanelHolder
     GridLayout gl = new GridLayout( 1, false );
     setLayout( gl );
     GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
-    FooAlarmsPanel alarmsPanel = new FooAlarmsPanel( this, aSkConn, aContext );
+    Ts4AlarmPanel alarmsPanel = new Ts4AlarmPanel( this, aSkConn, aContext );
     alarmsPanel.setLayoutData( gd );
   }
 

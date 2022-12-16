@@ -6,6 +6,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.swt.widgets.Display;
 import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.mws.bases.MwsAbstractAddon;
 import org.toxsoft.core.tsgui.valed.impl.ValedControlFactoriesRegistry;
 import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
@@ -30,6 +31,7 @@ import org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable;
 
 import ru.toxsoft.mcc.ws.mnemos.Activator;
 import ru.toxsoft.mcc.ws.mnemos.IMccWsMnemosConstants;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.alarm.*;
 import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 
 /**
@@ -65,6 +67,10 @@ public class AddonMccMnemos
     ISkConnectionSupplier connSupplier = new SkConnectionSupplier();
     createConnection( connSupplier, aWinContext );
     aWinContext.set( ISkConnectionSupplier.class, connSupplier );
+    
+    // регистрируем свои m5 модели
+    IM5Domain m5 = aWinContext.get( IM5Domain.class );
+    m5.addModel( new SkAlarmM5Model() );
   }
 
   private void createConnection( ISkConnectionSupplier aConnSupp, IEclipseContext aWinContext ) {

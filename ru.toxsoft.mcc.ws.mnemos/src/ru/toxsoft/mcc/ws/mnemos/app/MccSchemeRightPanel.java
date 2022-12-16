@@ -21,7 +21,7 @@ public class MccSchemeRightPanel
 
   private final MccGraphicsHolderPanel graphicsHolder;
 
-  // private final MccAlarmsPanelHolder alarmsHolder;
+  private final MccAlarmsPanelHolder alarmsHolder;
 
   IRtDataProvider dataProvider;
 
@@ -49,10 +49,10 @@ public class MccSchemeRightPanel
     graphicsHolder = new MccGraphicsHolderPanel( this, skConn, aContext );
     graphicsHolder.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
 
-    // alarmsHolder = new MccAlarmsPanelHolder( this, skConn, aContext );
-    // GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
-    // gd.heightHint = 150;
-    // alarmsHolder.setLayoutData( gd );
+    alarmsHolder = new MccAlarmsPanelHolder( this, skConn, aContext );
+    GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
+    gd.heightHint = 150;
+    alarmsHolder.setLayoutData( gd );
 
     dataProvider.addDataConsumer( ctrlPanel );
   }
