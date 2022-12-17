@@ -4,6 +4,9 @@
   <imports xsi:type="commands:Command" xmi:id="_zBsM4FkaEe2ha568rOfS2w" elementId="org.toxsoft.mws.cmd.switch_persp">
     <parameters xmi:id="_3hh1QFkaEe2ha568rOfS2w" elementId="org.toxsoft.mws.cmd.switch_persp.arg.perspId" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId"/>
   </imports>
+  <imports xsi:type="commands:Command" xmi:id="_R5ABUHexEe2dYfEMh9iLBw" elementId="org.toxsoft.mws.cmd.switch_persp">
+    <parameters xmi:id="_URj0IHexEe2dYfEMh9iLBw" elementId="org.toxsoft.mws.cmd.switch_persp.arg.perspId" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId"/>
+  </imports>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_GeqsgFknEe2ha568rOfS2w" featurename="addons" parentElementId="org.toxsoft.mws.app.main">
     <elements xsi:type="application:Addon" xmi:id="_W8z58FknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.addon.mnemos" contributionURI="bundleclass://ru.toxsoft.mcc.ws.mnemos/ru.toxsoft.mcc.ws.mnemos.e4.addons.AddonMccMnemos"/>
   </fragments>
@@ -11,10 +14,16 @@
     <elements xsi:type="advanced:Perspective" xmi:id="_lrqUAFknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.perspective.mcc_main_scheme" label="%Persp_MccMainScheme" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.mnemos/icons/is16x16/mnemoshema.png" tooltip="%Persp_MccMainScheme_D">
       <children xsi:type="basic:Part" xmi:id="_8zVaMFknEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.part.mcc_scheme" contributionURI="bundleclass://ru.toxsoft.mcc.ws.mnemos/ru.toxsoft.mcc.ws.mnemos.e4.uiparts.UipartMccMainScheme"/>
     </elements>
+    <elements xsi:type="advanced:Perspective" xmi:id="_EZ7CgHewEe2dYfEMh9iLBw" elementId="ru.toxsoft.mcc.ws.mnemos.perspective.rtbrowser" label="RtBrowser" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.mnemos/icons/is16x16/clock.png" tooltip="&#x41e;&#x431;&#x43e;&#x437;&#x440;&#x435;&#x432;&#x430;&#x442;&#x435;&#x43b;&#x44c; &#x434;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x440;&#x435;&#x430;&#x43b;&#x44c;&#x43d;&#x43e;&#x433;&#x43e; &#x432;&#x440;&#x435;&#x43c;&#x435;&#x43d;&#x438;">
+      <children xsi:type="basic:Part" xmi:id="_EZ7pkHewEe2dYfEMh9iLBw" elementId="ru.toxsoft.mcc.ws.mnemos.part.mcc_scheme" contributionURI="bundleclass://ru.toxsoft.mcc.ws.mnemos/ru.toxsoft.mcc.ws.mnemos.e4.uiparts.UipartRtBrowser"/>
+    </elements>
   </fragments>
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_FxMGAFkoEe2ha568rOfS2w" featurename="children" parentElementId="org.toxsoft.mws.menu.main.perspectives">
     <elements xsi:type="menu:HandledMenuItem" xmi:id="_JmzFoFkoEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.handledmenuitem.persp_mccmainscheme" label="%Persp_MccMainScheme" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.mnemos/icons/is16x16/mnemoshema.png" tooltip="%Persp_MccMainScheme_D" type="Radio" command="_zBsM4FkaEe2ha568rOfS2w">
       <parameters xmi:id="_NF_wYFkoEe2ha568rOfS2w" elementId="ru.toxsoft.mcc.ws.mnemos.parameter.0" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId" value="ru.toxsoft.mcc.ws.mnemos.perspective.mcc_main_scheme"/>
+    </elements>
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_3Nm8wHewEe2dYfEMh9iLBw" elementId="ru.toxsoft.mcc.ws.mnemos.handledmenuitem.persp_rtbrowser" label="RtBrowser" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.mnemos/icons/clock.png" tooltip="&#x41e;&#x431;&#x43e;&#x437;&#x440;&#x435;&#x432;&#x430;&#x442;&#x435;&#x43b;&#x44c; &#x434;&#x430;&#x43d;&#x43d;&#x44b;&#x445; &#x440;&#x435;&#x430;&#x43b;&#x44c;&#x43d;&#x43e;&#x433;&#x43e; &#x432;&#x440;&#x435;&#x43c;&#x435;&#x43d;&#x438;" type="Radio" command="_zBsM4FkaEe2ha568rOfS2w">
+      <parameters xmi:id="_3Nm8wXewEe2dYfEMh9iLBw" elementId="ru.toxsoft.mcc.ws.mnemos.parameter.0" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId" value="ru.toxsoft.mcc.ws.mnemos.perspective.rtbrowser"/>
     </elements>
   </fragments>
 </fragment:ModelFragments>

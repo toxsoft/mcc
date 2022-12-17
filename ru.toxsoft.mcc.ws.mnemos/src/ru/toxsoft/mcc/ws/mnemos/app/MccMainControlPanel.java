@@ -308,11 +308,37 @@ public class MccMainControlPanel
 
     Button btnStart = new Button( buttonsHolder, SWT.PUSH );
     btnStart.setText( STR_START_AUTO );
+    btnStart.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        if( TsDialogUtils.askYesNoCancel( getShell(),
+            "Начать запуск агрегата в автоматическом режиме?" ) == ETsDialogCode.YES ) {
+          Gwid cmdGwid = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdStart" );
+          if( !cmdSender.sendCommand( cmdGwid, AvUtils.avBool( true ) ) ) {
+            TsDialogUtils.error( getShell(), cmdSender.errorString() );
+          }
+        }
+      }
+    } );
     // btnStart.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, true, false ) );
 
     Button btnStop = new Button( buttonsHolder, SWT.PUSH );
     btnStop.setText( STR_STOP_AUTO );
     btnStop.setLayoutData( new GridData( SWT.LEFT, SWT.TOP, true, false ) );
+    btnStop.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        if( TsDialogUtils.askYesNoCancel( getShell(),
+            "Остановить агрегат в автоматическом режиме?" ) == ETsDialogCode.YES ) {
+          Gwid cmdGwid = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdStop" );
+          if( !cmdSender.sendCommand( cmdGwid, AvUtils.avBool( true ) ) ) {
+            TsDialogUtils.error( getShell(), cmdSender.errorString() );
+          }
+        }
+      }
+    } );
 
     Button btnBlocks = new Button( buttonsHolder, SWT.PUSH );
     btnBlocks.setText( STR_BLOCKS );
