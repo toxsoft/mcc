@@ -26,6 +26,7 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 
@@ -39,13 +40,29 @@ import ru.toxsoft.mcc.ws.core.templates.api.*;
  */
 public class ReportTemplateUtilities {
 
-  static final String QUERY_PARAM_ID_FORMAT = "param%d";
+  private static boolean IS_SAME_TIME_IN_EACH_COLUMN = true;
+
+  private static final String STR_TIME_COLUMN_VALUE_DEFAULT = "-";
+
+  private static final String FMT_TIME_COLUMN_VALUE = "MM.dd HH:mm:ss";
+
+  private static final String FMT_N_TIME_COLUMN = "Время: %s";
+
+  private static final String STR_N_TIME_COLUMN = "Время";
+
+  /**
+   * Формат идентификатора параметра запроса данных.
+   */
+  static final String QUERY_PARAM_ID_FORMAT = "param%d"; //$NON-NLS-1$
 
   /**
    * Формат идентификатора столбца модели - в качестве параметра - номер столбца, начиная с 0 [int].
    */
   public static final String MODEL_COLUMN_ID_FORMAT = "column%d"; //$NON-NLS-1$
 
+  /**
+   * Формат идентификатора столбца времени модели - в качестве параметра - номер столбца, начиная с 0 [int].
+   */
   public static final String MODEL_TIME_COLUMN_ID_FORMAT = "timeColumn%d"; //$NON-NLS-1$
 
   /**
@@ -109,23 +126,23 @@ public class ReportTemplateUtilities {
   /**
    * Creates M5 Model according to report template params.
    *
-   * @param aReportTemplate
-   * @return
+   * @param aReportTemplate ISkReportTemplate - report template params.
+   * @return IM5Model - M5 Model according to report template params.
    */
   public static IM5Model<IStringMap<IAtomicValue>> createM5ModelForTemplate( ISkReportTemplate aReportTemplate ) {
-    return new ReportM5Model( aReportTemplate );
+    return new ReportM5Model( aReportTemplate, IS_SAME_TIME_IN_EACH_COLUMN );
   }
 
   /**
-   * Creates M5 Model according to report template params.
+   * Creates M5 data provider according to report template params and report data.
    *
-   * @param aReportTemplate
-   * @param aReportData
-   * @return
+   * @param aReportTemplate ISkReportTemplate - report template params.
+   * @param aReportData IList - report data.
+   * @return IM5ItemsProvider - M5 data provider.
    */
   public static IM5ItemsProvider<IStringMap<IAtomicValue>> createM5ItemProviderForTemplate(
       ISkReportTemplate aReportTemplate, IList<ITimedList<?>> aReportData ) {
-    return new ReportM5ItemProvider( aReportTemplate, aReportData );
+    return new ReportM5ItemProvider( aReportTemplate, aReportData, IS_SAME_TIME_IN_EACH_COLUMN );
   }
 
   /**
@@ -222,8 +239,10 @@ public class ReportTemplateUtilities {
      * Конструктор модели по шаблону отчёта.
      *
      * @param aReportTemplate ISkReportTemplate - report template.
+     * @param aIsSameTimeInEachColumn boolean - признак того, что время всех элементов в одной строке отчёта - одно
+     *          (один столбец времени).
      */
-    public ReportM5Model( ISkReportTemplate aReportTemplate ) {
+    public ReportM5Model( ISkReportTemplate aReportTemplate, boolean aIsSameTimeInEachColumn ) {
       super( generateId( aReportTemplate ), (Class)IStringMap.class );
 
       reportTemplate = aReportTemplate;
@@ -232,6 +251,14 @@ public class ReportTemplateUtilities {
 
       IList<ISkReportParam> reportParams = aReportTemplate.listParams();
 
+      if( aIsSameTimeInEachColumn ) {
+        String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( 0 ) );
+
+        M5AttributeFieldDef<IStringMap<IAtomicValue>> timeField =
+            createFieldDef( timeId, STR_N_TIME_COLUMN, STR_N_TIME_COLUMN, EDisplayFormat.AS_INTEGER );
+        fDefs.add( timeField );
+      }
+
       for( int i = 0; i < reportParams.size(); i++ ) {
         ISkReportParam param = reportParams.get( i );
 
@@ -239,11 +266,13 @@ public class ReportTemplateUtilities {
         String fieldDescr = param.description();
         EDisplayFormat displayFormat = param.displayFormat();
 
-        String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( i ) );
-
-        M5AttributeFieldDef<IStringMap<IAtomicValue>> jointModelTimeField =
-            createFieldDef( timeId, "time_" + fieldName, "time_" + fieldDescr, displayFormat );
-        fDefs.add( jointModelTimeField );
+        if( !aIsSameTimeInEachColumn ) {
+          String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( i ) );
+          M5AttributeFieldDef<IStringMap<IAtomicValue>> jointModelTimeField =
+              createFieldDef( timeId, String.format( FMT_N_TIME_COLUMN, fieldName ),
+                  String.format( FMT_N_TIME_COLUMN, fieldDescr ), displayFormat );
+          fDefs.add( jointModelTimeField );
+        }
 
         String id = String.format( MODEL_COLUMN_ID_FORMAT, Integer.valueOf( i ) );
 
@@ -299,20 +328,24 @@ public class ReportTemplateUtilities {
   static class ReportM5ItemProvider
       extends M5DefaultItemsProvider<IStringMap<IAtomicValue>> {
 
-    ISkReportTemplate    reportTemplate;
-    IList<ITimedList<?>> reportData;
+    private ISkReportTemplate    reportTemplate;
+    private IList<ITimedList<?>> reportData;
+    private boolean              isSameTimeInEachColumn;
 
     /**
-     * Конструктор по объединённой модели и массиву поставщиков, упорядоченных в соответствии с моделями.
+     * Конструктор поставщика данных по шаблону и результату запроса.
      *
-     * @param aJointModels JointM5Model - объединённая модель.
-     * @param aProviders IM5ItemsProvider<?>[] - массив поставщиков, упорядоченных в соответствии с моделями.
-     * @param aExcludedFields - исключаемые из модели столбцы
+     * @param aReportTemplate ISkReportTemplate - шаблон запроса.
+     * @param aReportData IList - результат запроса.
+     * @param aIsSameTimeInEachColumn boolean - признак того, что время всех элементов в одной строке отчёта - одно
+     *          (один столбец времени).
      */
-    public ReportM5ItemProvider( ISkReportTemplate aReportTemplate, IList<ITimedList<?>> aReportData ) {
+    public ReportM5ItemProvider( ISkReportTemplate aReportTemplate, IList<ITimedList<?>> aReportData,
+        boolean aIsSameTimeInEachColumn ) {
       super();
       reportTemplate = aReportTemplate;
       reportData = aReportData;
+      isSameTimeInEachColumn = aIsSameTimeInEachColumn;
 
       formItems();
     }
@@ -322,9 +355,40 @@ public class ReportTemplateUtilities {
 
       IList<ISkReportParam> reportParams = reportTemplate.listParams();
 
-      for( int j = 0; j < reportData.first().size(); j++ ) {
+      if( reportParams.size() == 0 ) {
+        return;
+      }
 
+      // количество строк - максимальное количество элементов в истории одного из параметров
+      int rowCount = 0;
+      int longestColumnIndex = 0;
+      for( int i = 0; i < reportParams.size(); i++ ) {
+        ITimedList<?> timedList = reportData.get( i );
+        if( timedList.size() > rowCount ) {
+          rowCount = timedList.size();
+          longestColumnIndex = i;
+        }
+      }
+
+      // набор со временем самого длинного столбца
+      IStringListEdit timeColumnValue = new StringArrayList();
+      if( isSameTimeInEachColumn ) {
+        ITimedList<?> longestTimedList = reportData.get( longestColumnIndex );
+        for( int j = 0; j < rowCount; j++ ) {
+          Object val = longestTimedList.get( j );
+          String strTime = convertTime( val );
+          timeColumnValue.add( strTime );
+        }
+      }
+
+      for( int j = 0; j < rowCount; j++ ) {
         IStringMapEdit<IAtomicValue> rowValues = new StringMap<>();
+        if( isSameTimeInEachColumn ) {
+          String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( 0 ) );
+
+          rowValues.put( timeId, AvUtils.avStr( timeColumnValue.get( j ) ) );
+        }
+
         for( int i = 0; i < reportParams.size(); i++ ) {
 
           ISkReportParam param = reportParams.get( i );
@@ -333,16 +397,15 @@ public class ReportTemplateUtilities {
 
           ITimedList<?> timedList = reportData.get( i );
 
-          Object val = timedList.get( j );
+          Object val = j < timedList.size() ? timedList.get( j ) : TsLibUtils.EMPTY_STRING;
+
+          if( !isSameTimeInEachColumn ) {
+            String strTime = convertTime( val );
+            String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( i ) );
+            rowValues.put( timeId, AvUtils.avStr( strTime ) );
+          }
 
           String strVal = convertValue( val, displayFormat );
-
-          String strTime = convertTime( val );
-
-          String timeId = String.format( MODEL_TIME_COLUMN_ID_FORMAT, Integer.valueOf( i ) );
-
-          rowValues.put( timeId, AvUtils.avStr( strTime ) );
-
           String id = String.format( MODEL_COLUMN_ID_FORMAT, Integer.valueOf( i ) );
 
           rowValues.put( id, AvUtils.avStr( strVal ) );
@@ -417,11 +480,11 @@ public class ReportTemplateUtilities {
   public static String convertTime( Object aVal ) {
     if( aVal instanceof TemporalAtomicValue ) {
 
-      DateFormat formatter = new SimpleDateFormat( "MM.dd HH:mm:ss" );
+      DateFormat formatter = new SimpleDateFormat( FMT_TIME_COLUMN_VALUE );
 
       return formatter.format( new Date( ((TemporalAtomicValue)aVal).timestamp() ) );
     }
-    return "withoutTime";
+    return STR_TIME_COLUMN_VALUE_DEFAULT;
   }
 
   public static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
@@ -442,7 +505,6 @@ public class ReportTemplateUtilities {
       result.add( data );
     }
     return result;
-
   }
 
   public static IList<ITimedList<?>> createTestResult( IStringMap<IDtoQueryParam> aQueryParams ) {
