@@ -3,39 +3,45 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.ISkResources.*;
 
-import org.eclipse.swt.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
+import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.ggprefs.gui.*;
-import org.toxsoft.uskat.ggprefs.lib.*;
-import org.toxsoft.uskat.ggprefs.lib.impl.*;
-import org.toxsoft.uskat.s5.utils.*;
+import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
+import org.toxsoft.core.tsgui.m5.model.impl.M5BunchEdit;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.panels.toolbar.TsToolbar;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesListEdit;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.StridablesList;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.gw.skid.SkidList;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.ggprefs.gui.GuiGwPrefsUtils;
+import org.toxsoft.uskat.ggprefs.lib.IGuiGwPrefsSection;
+import org.toxsoft.uskat.ggprefs.lib.ISkGuiGwPrefsService;
+import org.toxsoft.uskat.ggprefs.lib.impl.SkGuiGwPrefsService;
+import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
-import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.core.templates.api.impl.SkGraphParamsList;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.MccSystemOptions;
 
 /**
  * Панель отображения графиков реального времени.<br>
@@ -132,17 +138,21 @@ public class ChartsTabPanel
 
   private void addRtChart( ISkGraphParam aRtGraph ) {
     if( aRtGraph != null ) {
-      // создаем новую закладку
-      CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-      // закладке дадим имя параметра
-      tabItem.setText( aRtGraph.title() );
-      RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), aRtGraph, conn );
-      tabItem.setControl( chartPanel );
-      tabFolder.setSelection( tabItem );
+      addRtChartToTabPanel( aRtGraph );
       rtCharts.add( aRtGraph );
-      tabItem.setData( aRtGraph );
       saveUserSettings();
     }
+  }
+
+  private void addRtChartToTabPanel( ISkGraphParam aRtGraph ) {
+    // создаем новую закладку
+    CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
+    // закладке дадим имя параметра
+    tabItem.setText( aRtGraph.title() );
+    RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), aRtGraph, conn );
+    tabItem.setControl( chartPanel );
+    tabFolder.setSelection( tabItem );
+    tabItem.setData( aRtGraph );
   }
 
   private void restoreUserSettings() {
@@ -151,7 +161,7 @@ public class ChartsTabPanel
     ISkGraphParamsList rtChartsList = RtChartPanelOptions.RTCHARTS.getValue( userPrefs ).asValobj();
     rtCharts.addAll( rtChartsList.items() );
     for( ISkGraphParam rtChart : rtCharts ) {
-      addRtChart( rtChart );
+      addRtChartToTabPanel( rtChart );
     }
   }
 
@@ -159,7 +169,7 @@ public class ChartsTabPanel
     IOptionSetEdit userPrefs = new OptionSet( getUserPrefs() );
     ISkGraphParamsList rtChartsList = new SkGraphParamsList( rtCharts );
     RtChartPanelOptions.RTCHARTS.setValue( userPrefs, AvUtils.avValobj( rtChartsList ) );
-    prefSection.setOptions( userSkid, getUserPrefs() );
+    prefSection.setOptions( userSkid, userPrefs );
   }
 
   private void initPanelPrefs() {
