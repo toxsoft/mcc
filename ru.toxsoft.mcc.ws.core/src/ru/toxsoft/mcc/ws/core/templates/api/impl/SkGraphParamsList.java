@@ -1,12 +1,16 @@
 package ru.toxsoft.mcc.ws.core.templates.api.impl;
 
-import org.toxsoft.core.tslib.bricks.keeper.*;
-import org.toxsoft.core.tslib.bricks.keeper.AbstractEntityKeeper.*;
-import org.toxsoft.core.tslib.bricks.strio.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.bricks.keeper.AbstractEntityKeeper;
+import org.toxsoft.core.tslib.bricks.keeper.AbstractEntityKeeper.EEncloseMode;
+import org.toxsoft.core.tslib.bricks.keeper.IEntityKeeper;
+import org.toxsoft.core.tslib.bricks.strio.IStrioReader;
+import org.toxsoft.core.tslib.bricks.strio.IStrioWriter;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
 
-import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkGraphParam;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkGraphParamsList;
 
 /**
  * {@link ISkGraphParamsList} mutable implementation.
@@ -34,7 +38,7 @@ public final class SkGraphParamsList
 
         @Override
         protected ISkGraphParamsList doRead( IStrioReader aSr ) {
-          return (ISkGraphParamsList)SkGraphParam.KEEPER.readColl( aSr );
+          return new SkGraphParamsList( SkGraphParam.KEEPER.readColl( aSr ) );
         }
       };
 
