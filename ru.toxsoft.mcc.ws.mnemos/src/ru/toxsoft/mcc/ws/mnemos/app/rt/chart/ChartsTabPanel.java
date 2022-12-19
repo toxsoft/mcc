@@ -113,15 +113,13 @@ public class ChartsTabPanel
         // удаляем описание RtChart из настроек
         ISkGraphParam graphParam = (ISkGraphParam)event.item.getData();
         rtCharts.remove( graphParam );
-        // TODO восстановить при подключении сервиса настроек
-        // saveUserSettings();
+        saveUserSettings();
       }
     } );
-    // TODO восстановить при подключении сервиса настроек
-    // // инициализируем настройки панели
-    // initPanelPrefs();
-    // // восстанавливаем внешний вид панели
-    // restoreUserSettings();
+    // инициализируем настройки панели
+    initPanelPrefs();
+    // восстанавливаем внешний вид панели
+    restoreUserSettings();
   }
 
   private ISkGraphParam doEditItem( ISkGraphParam aSelelectedGraphParam ) {
@@ -143,8 +141,7 @@ public class ChartsTabPanel
       tabFolder.setSelection( tabItem );
       rtCharts.add( aRtGraph );
       tabItem.setData( aRtGraph );
-      // TODO восстановить при подключении сервиса настроек
-      // saveUserSettings();
+      saveUserSettings();
     }
   }
 
