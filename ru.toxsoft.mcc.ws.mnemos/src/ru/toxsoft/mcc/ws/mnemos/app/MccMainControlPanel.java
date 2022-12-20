@@ -131,6 +131,7 @@ public class MccMainControlPanel
 
     cmdSender = new MccCommandSender( coreApi() );
     cmdSender.eventer().addListener( aSource -> {
+      internalUpdate();
       String errStr = cmdSender.errorString();
       if( errStr != null && !errStr.isBlank() ) {
         TsDialogUtils.error( getShell(), errStr );
@@ -165,6 +166,7 @@ public class MccMainControlPanel
         if( btnArm.getSelection() ) {
           Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetApwCtrl" ); //$NON-NLS-1$
           if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+            internalUpdate();
             TsDialogUtils.error( getShell(), cmdSender.errorString() );
           }
         }
@@ -181,6 +183,7 @@ public class MccMainControlPanel
         if( btnPanel.getSelection() ) {
           Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetPanelCtrl" ); //$NON-NLS-1$
           if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+            internalUpdate();
             TsDialogUtils.error( getShell(), cmdSender.errorString() );
           }
         }
@@ -197,6 +200,7 @@ public class MccMainControlPanel
         if( btnAuto.getSelection() ) {
           Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetAutoCtrl" ); //$NON-NLS-1$
           if( !cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+            internalUpdate();
             TsDialogUtils.error( getShell(), cmdSender.errorString() );
           }
         }
