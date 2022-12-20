@@ -39,9 +39,9 @@ public class MccGraphicsHolderPanel
     GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
     ChartsTabPanel chartPanel1 = new ChartsTabPanel( this, aSkConn, aContext );
     chartPanel1.setLayoutData( gd );
-
-    ChartsTabPanel chartPanel2 = new ChartsTabPanel( this, aSkConn, aContext );
-    chartPanel2.setLayoutData( gd );
+    // dima 20.12.22 второй график уже не помещается
+    // ChartsTabPanel chartPanel2 = new ChartsTabPanel( this, aSkConn, aContext );
+    // chartPanel2.setLayoutData( gd );
 
   }
 
