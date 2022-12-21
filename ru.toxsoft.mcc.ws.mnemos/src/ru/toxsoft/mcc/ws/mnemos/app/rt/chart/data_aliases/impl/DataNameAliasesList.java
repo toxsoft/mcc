@@ -35,7 +35,7 @@ public final class DataNameAliasesList
 
         @Override
         protected IDataNameAliasesList doRead( IStrioReader aSr ) {
-          return (IDataNameAliasesList)DataNameAlias.KEEPER.readColl( aSr );
+          return new DataNameAliasesList( DataNameAlias.KEEPER.readColl( aSr ) );
         }
       };
 

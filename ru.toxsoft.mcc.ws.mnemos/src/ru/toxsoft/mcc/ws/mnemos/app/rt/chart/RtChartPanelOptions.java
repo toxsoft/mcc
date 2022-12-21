@@ -58,6 +58,7 @@ public class RtChartPanelOptions {
   public static final IDataDef RTCHARTS = DataDef.create( createId( "rtCharts" ), EAtomicType.VALOBJ, // //$NON-NLS-1$
       TSID_DESCRIPTION, STR_D_RTCHARTS, //
       TSID_NAME, STR_N_RTCHARTS, //
+      // EValedControlParam.EDITOR_FACTORY_NAME, ValedAvListLookupEditor.FACTORY_NAME, //
       TSID_KEEPER_ID, SkGraphParamsList.KEEPER_ID, //
       TSID_DEFAULT_VALUE, avValobj( new SkGraphParamsList() ), //
       OPID_TREE_PATH1, RTCHARTS_PANEL_GROUP_PATH );

@@ -36,6 +36,7 @@ import org.toxsoft.uskat.s5.utils.*;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.*;
 
 /**
  * Панель отображения графиков реального времени.<br>
@@ -88,7 +89,7 @@ public class ChartsTabPanel
         addRtChart( newRtGraph );
       }
       if( aActionId.equals( ACDEF_EDIT.id() ) ) {
-      //  editGwGuiPrefs( aContext.get( Shell.class ) );
+        editGwGuiPrefs( aContext.get( Shell.class ) );
         // получаем текущий график
         CTabItem selTab = tabFolder.getSelection();
         ISkGraphParam selelectedGraphParam = (ISkGraphParam)selTab.getData();
@@ -235,8 +236,18 @@ public class ChartsTabPanel
     ITsDialogInfo dialogInfo = new TsDialogInfo( tsContext(), DLC_C_PREFS_EDIT, DLC_T_PREFS_EDIT );
 
     // подготовка и вызов диалога редактирования
-    return GuiGwPrefsUtils.editGuiGwPrefs( tsContext(), dialogInfo, conn, prefSection, new SkidList( userSkid ),
-        groupDefs );
+    // return GuiGwPrefsUtils.editGuiGwPrefs( tsContext(), dialogInfo, conn, prefSection, new SkidList( userSkid ),
+    // groupDefs );
+
+    GuiDataAliasesPrefsEditModel model = new GuiDataAliasesPrefsEditModel( prefSection, userSkid );
+
+    IM5Domain d = conn.scope().get( IM5Domain.class );
+    d.initTemporaryModel( model );
+
+    GuiGwPrefsEditLifecycleManager manager = new GuiGwPrefsEditLifecycleManager( model, prefSection );
+
+    return M5GuiUtils.askEdit( tsContext(), model, userSkid, dialogInfo, manager ) != null;
+
   }
 
   private final IStridablesListEdit<IDataDef> groupDefs            = new StridablesList<>();

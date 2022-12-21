@@ -2,36 +2,33 @@ package ru.toxsoft.mcc.ws.mnemos.e4.addons;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.swt.widgets.Display;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.eclipse.e4.core.contexts.*;
+import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.bricks.quant.*;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.mws.bases.MwsAbstractAddon;
-import org.toxsoft.core.tsgui.valed.impl.ValedControlFactoriesRegistry;
-import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
-import org.toxsoft.core.tslib.bricks.ctx.impl.TsContext;
-import org.toxsoft.core.tslib.bricks.strid.more.IdChain;
-import org.toxsoft.core.tslib.coll.primtypes.IIntList;
-import org.toxsoft.core.tslib.coll.primtypes.IStringList;
-import org.toxsoft.core.tslib.coll.primtypes.impl.IntArrayList;
-import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
-import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.base.gui.conn.SkConnectionSupplier;
-import org.toxsoft.uskat.concurrent.S5SynchronizedConnection;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.impl.ISkCoreConfigConstants;
-import org.toxsoft.uskat.s5.client.IS5ConnectionParams;
-import org.toxsoft.uskat.s5.client.remote.S5RemoteBackendProvider;
-import org.toxsoft.uskat.s5.common.S5Host;
-import org.toxsoft.uskat.s5.common.S5HostList;
-import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
-import org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable;
+import org.toxsoft.core.tsgui.mws.bases.*;
+import org.toxsoft.core.tsgui.valed.impl.*;
+import org.toxsoft.core.tslib.bricks.ctx.*;
+import org.toxsoft.core.tslib.bricks.ctx.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.more.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.concurrent.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.impl.*;
+import org.toxsoft.uskat.s5.client.*;
+import org.toxsoft.uskat.s5.client.remote.*;
+import org.toxsoft.uskat.s5.common.*;
+import org.toxsoft.uskat.s5.server.*;
+import org.toxsoft.uskat.s5.utils.threads.impl.*;
 
-import ru.toxsoft.mcc.ws.mnemos.Activator;
-import ru.toxsoft.mcc.ws.mnemos.IMccWsMnemosConstants;
+import ru.toxsoft.mcc.ws.mnemos.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.alarm.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
 import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 
 /**
@@ -47,12 +44,16 @@ public class AddonMccMnemos
    */
   public AddonMccMnemos() {
     super( Activator.PLUGIN_ID );
-    // TODO Auto-generated constructor stub
   }
 
   @Override
   protected void initApp( IEclipseContext aAppContext ) {
     // TODO Auto-generated method stub
+  }
+
+  @Override
+  protected void doRegisterQuants( IQuantRegistrator aQuantRegistrator ) {
+    aQuantRegistrator.registerQuant( new QuantDataAliases() );
   }
 
   @Override
@@ -67,8 +68,8 @@ public class AddonMccMnemos
     ISkConnectionSupplier connSupplier = new SkConnectionSupplier();
     createConnection( connSupplier, aWinContext );
     aWinContext.set( ISkConnectionSupplier.class, connSupplier );
-    
-    // регистрируем свои m5 модели
+
+    // регистрируем свои m5 модели TODO перенести в специальное место, см. KM5DataAliasesContributor
     IM5Domain m5 = aWinContext.get( IM5Domain.class );
     m5.addModel( new SkAlarmM5Model() );
   }
