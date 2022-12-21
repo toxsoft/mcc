@@ -114,7 +114,9 @@ public class CmdEditDataAliases {
   //
 
   private void restoreSystemSettings() {
-    // получаем список графиков и создаем для каждого свой RtChart
+    // FIXME перед использованием необходимо один раз вызывать initMnemosPrefs()
+
+    // получаем список псевдонимов
     IOptionSet systemPrefs = prefSection.getOptions( systemSkid );
     IDataNameAliasesList dnaList = MccSystemOptions.DATA_NAME_ALIASES.getValue( systemPrefs ).asValobj();
     for( IDataNameAlias alias : dnaList.items() ) {
