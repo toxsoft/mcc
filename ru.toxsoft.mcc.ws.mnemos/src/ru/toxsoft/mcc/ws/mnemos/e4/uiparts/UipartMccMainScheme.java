@@ -2,8 +2,6 @@ package ru.toxsoft.mcc.ws.mnemos.e4.uiparts;
 
 import java.awt.*;
 
-import org.eclipse.jface.dialogs.*;
-import org.eclipse.swt.events.*;
 import org.eclipse.swt.widgets.Composite;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
@@ -11,11 +9,9 @@ import org.toxsoft.core.tsgui.widgets.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.base.gui.e4.uiparts.*;
-import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.*;
-import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
 
 /**
  * Экран мнемосхемы нагнетателя.
@@ -109,34 +105,34 @@ public class UipartMccMainScheme
     schemeComp.rtStart();
     rightComp.rtStart();
 
-    schemeComp.addMouseListener( new MouseListener() {
-
-      @Override
-      public void mouseUp( MouseEvent aE ) {
-        // TODO Auto-generated method stub
-
-      }
-
-      @Override
-      public void mouseDown( MouseEvent aE ) {
-        if( aE.button == 3 ) {
-          InputDialog dlg = new InputDialog( getShell(), "Создать контроль для AI", "Имя объекта:", "", null );
-          if( dlg.open() == org.eclipse.jface.window.Window.OK ) {
-            String objStrid = "n2AI_" + dlg.getValue(); //$NON-NLS-1$
-            // System.out.println( "x = " + aE.x + "; y = " + aE.y + "; Strid: " + objStrid );
-            String str = String.format( "schemeComp.addAI(%s, %s, \"%s\" );", aE.x, aE.y, objStrid );
-            System.out.println( str );
-          }
-        }
-      }
-
-      @Override
-      public void mouseDoubleClick( MouseEvent aE ) {
-        ISkObject skObj = PanelSelectAnalogInput.selectAnalogInput( tsContext() );
-        if( skObj != null ) {
-          PanelAnalogInput.showDialog( new MccDialogContext( tsContext(), skObj ) );
-        }
-      }
-    } );
+    // schemeComp.addMouseListener( new MouseListener() {
+    //
+    // @Override
+    // public void mouseUp( MouseEvent aE ) {
+    // // TODO Auto-generated method stub
+    //
+    // }
+    //
+    // @Override
+    // public void mouseDown( MouseEvent aE ) {
+    // if( aE.button == 3 ) {
+    // InputDialog dlg = new InputDialog( getShell(), "Создать контроль для AI", "Имя объекта:", "", null );
+    // if( dlg.open() == org.eclipse.jface.window.Window.OK ) {
+    // String objStrid = "n2AI_" + dlg.getValue(); //$NON-NLS-1$
+    // // System.out.println( "x = " + aE.x + "; y = " + aE.y + "; Strid: " + objStrid );
+    // String str = String.format( "schemeComp.addAI(%s, %s, \"%s\" );", aE.x, aE.y, objStrid );
+    // System.out.println( str );
+    // }
+    // }
+    // }
+    //
+    // @Override
+    // public void mouseDoubleClick( MouseEvent aE ) {
+    // ISkObject skObj = PanelSelectAnalogInput.selectAnalogInput( tsContext() );
+    // if( skObj != null ) {
+    // PanelAnalogInput.showDialog( new MccDialogContext( tsContext(), skObj ) );
+    // }
+    // }
+    // } );
   }
 }

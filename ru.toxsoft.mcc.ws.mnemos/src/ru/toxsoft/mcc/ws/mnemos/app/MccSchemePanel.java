@@ -1,5 +1,6 @@
 package ru.toxsoft.mcc.ws.mnemos.app;
 
+import org.eclipse.jface.action.*;
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
@@ -18,12 +19,15 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.utils.*;
 
 import ru.toxsoft.mcc.ws.mnemos.*;
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
+import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
 
 /**
@@ -33,7 +37,8 @@ import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
  * @author vs
  */
 public class MccSchemePanel
-    extends TsPanel {
+    extends TsPanel
+    implements ISkConnected {
 
   MouseMoveListener mouseMoveListener = aE -> {
     for( AbstractMccSchemeControl control : this.controls ) {
@@ -47,6 +52,37 @@ public class MccSchemePanel
     setToolTipText( null );
   };
 
+  MenuDetectListener menuListener = aEvent -> {
+    // Point p = toControl( aEvent.x, aEvent.y );
+    MenuManager mm = new MenuManager();
+
+    mm.add( new Action( "Настройки 2-х позиционного регулятора" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.TwoPositionReg", "n2TwoPositionReg_MN" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelTwoPositionsRegulator.showDialog( ctx );
+      }
+    } );
+
+    mm.add( new Action( "Настройки аналогового регулятора" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.AnalogReg", "n2AnalogReg_DZ" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelAnalogRegulator.showDialog( ctx );
+      }
+    } );
+
+    Menu contextMenu = mm.createContextMenu( this );
+    contextMenu.setLocation( aEvent.x, aEvent.y );
+    contextMenu.setVisible( true );
+  };
+
   MouseListener mouseListener = new MouseListener() {
 
     @Override
@@ -57,14 +93,14 @@ public class MccSchemePanel
 
     @Override
     public void mouseDown( MouseEvent aE ) {
-      if( aE.button == 1 ) {
-        for( AbstractMccSchemeControl control : MccSchemePanel.this.controls ) {
-          if( control.contains( aE.x, aE.y ) ) {
-            control.showSettingDialog();
-            return;
-          }
-        }
-      }
+      // if( aE.button == 1 ) {
+      // for( AbstractMccSchemeControl control : MccSchemePanel.this.controls ) {
+      // if( control.contains( aE.x, aE.y ) ) {
+      // control.showSettingDialog();
+      // return;
+      // }
+      // }
+      // }
     }
 
     @Override
@@ -88,6 +124,8 @@ public class MccSchemePanel
 
   Image imgScheme;
 
+  ISkConnection skConn;
+
   /**
    * Конструктор.
    *
@@ -102,7 +140,7 @@ public class MccSchemePanel
     unitFont = tsContext().get( ITsFontManager.class ).getFont( "Arial", 8, SWT.NONE ); //$NON-NLS-1$
     colorBlack = colorManager().getColor( ETsColor.BLACK );
 
-    ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
+    skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
     dataProvider = new MccRtDataProvider( skConn, aContext );
 
     IList<ISkObject> objs = skConn.coreApi().objService().listObjs( "mcc.MainSwitch", true ); //$NON-NLS-1$
@@ -284,8 +322,22 @@ public class MccSchemePanel
     // rtPanel.addMouseMoveListener( mouseMoveListener );
     // rtPanel.addMouseListener( mouseListener );
     addMouseMoveListener( mouseMoveListener );
-    addMouseListener( mouseListener );
+    addMenuDetectListener( menuListener );
+    // addMouseListener( mouseListener );
   }
+
+  // ------------------------------------------------------------------------------------
+  // ISkConnected
+  //
+
+  @Override
+  public ISkConnection skConn() {
+    return skConn;
+  }
+
+  // ------------------------------------------------------------------------------------
+  // API
+  //
 
   /**
    * Добавляет аналоговый вход для мониторинга его значения.

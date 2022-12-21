@@ -13,6 +13,7 @@ import org.toxsoft.uskat.core.api.objserv.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+import ru.toxsoft.mcc.ws.mnemos.app.utils.*;
 
 /**
  * Панель свойств аналогового сигнала.
@@ -148,8 +149,21 @@ public class PanelAnalogEngine
 
     l = new CLabel( comp, SWT.CENTER );
     l.setText( "Шаг изменения:" );
-    MccRtTextEditor stepEditor = createRtTextEditor( "rtdStepControl", "cmdStepControl" );
+
+    Gwid stepControlGwid = Gwid.createRtdata( "mcc.AnalogEngine", "n2AE_Dz", "rtdStepControl" );
+
+    IEditingFinisher finisher = aNewValue -> {
+      MccRtUtils.writeRtData( aNewValue, stepControlGwid, coreApi() );
+      return true;
+    };
+
+    MccTextEditor stepEditor = new MccTextEditor( finisher, EAtomicType.FLOATING, tsContext() );
+    // MccRtTextEditor stepEditor = createRtTextEditor( "rtdStepControl", "cmdStepControl" );
+    gd = new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 );
     stepEditor.createControl( comp ).setLayoutData( gd );
+
+    IAtomicValue v = MccRtUtils.readRtData( stepControlGwid, coreApi() );
+    stepEditor.setValue( v );
 
   }
 
