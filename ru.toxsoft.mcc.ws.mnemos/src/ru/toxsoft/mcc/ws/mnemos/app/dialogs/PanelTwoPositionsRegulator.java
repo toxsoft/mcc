@@ -1,5 +1,7 @@
 package ru.toxsoft.mcc.ws.mnemos.app.dialogs;
 
+import static ru.toxsoft.mcc.ws.mnemos.IMccWsMnemosConstants.*;
+
 import org.eclipse.swt.*;
 import org.eclipse.swt.custom.*;
 import org.eclipse.swt.layout.*;
@@ -39,43 +41,23 @@ public class PanelTwoPositionsRegulator
     }
     l.setText( strUnit );
 
-    // Gwid gwid;
-    // gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_VV_Alarm", "rtdCurrentValue" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_PRU_EmrStopVV", "rtdCurrentValue" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_Upwr380_Norm", "rtdCurrentValue" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdIrrEngineAlarm" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdIrrEngineBlock" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdRevEngineAlarm" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdRevEngineBlock" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdWaterAlarm" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdLoOil" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_PS_G2_Norm", "rtdCurrentValue" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_Usig_Norm", "rtdCurrentValue" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    //
-    // gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdEnableSiren" );
-    // rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    //
+    MccRtTextEditor textEditor;
+
+    l = new CLabel( this, SWT.CENTER );
+    l.setText( dataInfo( "rtdSetPointOn" ).nmName() );
+    textEditor = createRtTextEditor( "rtdSetPointOn", "cmdSetPointOn" );
+    textEditor.createControl( this ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
+
+    l = new CLabel( this, SWT.CENTER );
+    l.setText( dataInfo( "rtdSetPointOff" ).nmName() );
+    textEditor = createRtTextEditor( "rtdSetPointOff", "cmdSetPointOff" );
+    textEditor.createControl( this ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
+
+    MccCheckCmdButton checkCmd;
+    checkCmd = createCheckCmdButton( this, "cmdAuto", "rtdAuto", true );
+    checkCmd.getControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
+
+    createRtBooleanLabel( this, "rtdOn", ICONID_GRAY_LAMP, ICONID_GREEN_LAMP );
   }
 
   /**
