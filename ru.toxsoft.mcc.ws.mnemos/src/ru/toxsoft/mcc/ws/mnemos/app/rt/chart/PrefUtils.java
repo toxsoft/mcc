@@ -17,21 +17,14 @@ import org.toxsoft.uskat.ggprefs.lib.impl.*;
 public class PrefUtils {
 
   /**
-   * ИД раздела настроек {@link IGuiGwPrefsSection} для работы с настройками панели RtCharts.
+   * ИД раздела настроек {@link IGuiGwPrefsSection} для работы с настройками верхней панели RtCharts.
    */
-  public static final String RTCHARTS_PREFS_SECTION_ID = "RtChartsSection"; //$NON-NLS-1$
+  public static final String TOP_RTCHARTS_PREFS_SECTION_ID = "topRtChartsSection"; //$NON-NLS-1$
 
   /**
-   * Возвращает секцию настроек панели RtCharts.
-   * <p>
-   * Если секция в переданном контексте отсутствует, то создает её и помещает в контекст.
-   *
-   * @param aConn ISkConnection - соединение с сервером
-   * @return IGuiGwPrefsSection - секция настроек редактора ГДП
+   * ИД раздела настроек {@link IGuiGwPrefsSection} для работы с настройками нижней панели RtCharts.
    */
-  public static IGuiGwPrefsSection section( ISkConnection aConn ) {
-    return section( RTCHARTS_PREFS_SECTION_ID, aConn );
-  }
+  public static final String BOTTOM_RTCHARTS_PREFS_SECTION_ID = "bottomRtChartsSection"; //$NON-NLS-1$
 
   /**
    * Возвращает секцию настроек панели RtCharts.

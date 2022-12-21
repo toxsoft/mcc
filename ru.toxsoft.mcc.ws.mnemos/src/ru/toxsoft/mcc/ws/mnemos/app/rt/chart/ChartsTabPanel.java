@@ -43,6 +43,10 @@ import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
 public class ChartsTabPanel
     extends TsPanel {
 
+  /**
+   * признак того что панель сверху
+   */
+  private final boolean   top;
   private final TsToolbar toolbar;
   private CTabFolder      tabFolder;
 
@@ -62,12 +66,14 @@ public class ChartsTabPanel
    * @param aParent {@link Composite} - родительская панель
    * @param aConnection {@link ISkConnection} - соединение с сервером
    * @param aContext {@link ITsGuiContext} - контекст панели
+   * @param isTop признак того что панель сверху
    * @throws TsNullArgumentRtException любой аргумент = null
    */
-  public ChartsTabPanel( Composite aParent, ISkConnection aConnection, ITsGuiContext aContext ) {
+  public ChartsTabPanel( Composite aParent, ISkConnection aConnection, ITsGuiContext aContext, boolean isTop ) {
     super( aParent, aContext );
     this.setLayout( new BorderLayout() );
     conn = aConnection;
+    top = isTop;
     ISkUser currUser = S5ConnectionUtils.getConnectedUser( aConnection.coreApi() );
     userSkid = new Skid( ISkUser.CLASS_ID, currUser.strid() );
     userGwid = Gwid.createObj( ISkUser.CLASS_ID, currUser.strid() );
@@ -170,7 +176,8 @@ public class ChartsTabPanel
     if( !coreApi.services().hasKey( ISkGuiGwPrefsService.SERVICE_ID ) ) {
       coreApi.addService( SkGuiGwPrefsService.CREATOR );
     }
-    prefSection = PrefUtils.section( PrefUtils.RTCHARTS_PREFS_SECTION_ID, conn );
+    prefSection = PrefUtils
+        .section( top ? PrefUtils.TOP_RTCHARTS_PREFS_SECTION_ID : PrefUtils.BOTTOM_RTCHARTS_PREFS_SECTION_ID, conn );
 
     // Задание опций
     IStridablesListEdit<IDataDef> panelPrefs = new StridablesList<>();

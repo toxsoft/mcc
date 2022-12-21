@@ -37,11 +37,10 @@ public class MccGraphicsHolderPanel
     setLayout( gl );
 
     GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
-    ChartsTabPanel chartPanel1 = new ChartsTabPanel( this, aSkConn, aContext );
-    chartPanel1.setLayoutData( gd );
-    // dima 20.12.22 второй график уже не помещается
-    // ChartsTabPanel chartPanel2 = new ChartsTabPanel( this, aSkConn, aContext );
-    // chartPanel2.setLayoutData( gd );
+    ChartsTabPanel topChartPanel = new ChartsTabPanel( this, aSkConn, aContext, true );
+    topChartPanel.setLayoutData( gd );
+    ChartsTabPanel bottomChartPanel = new ChartsTabPanel( this, aSkConn, aContext, false );
+    bottomChartPanel.setLayoutData( gd );
 
   }
 
