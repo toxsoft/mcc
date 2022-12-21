@@ -8,9 +8,13 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.mnemos.app.utils.*;
 
 public class MccBlockingPanel
     extends AbstractMccDialogPanel {
+
+  RtDataAliasHelper aliasHelper;
 
   public MccBlockingPanel( Shell aParent, MccDialogContext aDialogContext ) {
     super( aParent, aDialogContext );
@@ -21,40 +25,42 @@ public class MccBlockingPanel
     GridLayout gl = createGridLayout( 1, false );
     setLayout( gl );
 
+    aliasHelper = new RtDataAliasHelper( skConn() );
+
     MccRtBooleanLabel rtLabel;
     Gwid gwid;
     gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_VV_Alarm", "rtdCurrentValue" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_PRU_EmrStopVV", "rtdCurrentValue" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_Upwr380_Norm", "rtdCurrentValue" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdIrrEngineAlarm" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdIrrEngineBlock" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdRevEngineAlarm" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdRevEngineBlock" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdWaterAlarm" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdLoOil" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_PS_G2_Norm", "rtdCurrentValue" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_Usig_Norm", "rtdCurrentValue" );
-    rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
+    rtLabel = createRtLabel( gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
     gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdEnableSiren" );
     rtLabel = createRtBooleanLabel( this, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
@@ -74,6 +80,20 @@ public class MccBlockingPanel
     MccBlockingPanel panel = new MccBlockingPanel( wnd.shell(), aContext );
     panel.layout();
     wnd.open();
+  }
+
+  // ------------------------------------------------------------------------------------
+  // Implementation
+  //
+
+  private MccRtBooleanLabel createRtLabel( Gwid aGwid, String aFalseIconId, String aTrueIconId ) {
+    MccRtBooleanLabel rtLabel = createRtBooleanLabel( this, aGwid, aFalseIconId, aTrueIconId );
+    IDataNameAlias alias = aliasHelper.alias( aGwid );
+    if( alias != null ) {
+      rtLabel.setName( alias.title() );
+      rtLabel.setDescription( alias.description() );
+    }
+    return rtLabel;
   }
 
 }
