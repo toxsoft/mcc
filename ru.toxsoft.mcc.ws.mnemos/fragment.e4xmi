@@ -26,4 +26,13 @@
       <parameters xmi:id="_3Nm8wXewEe2dYfEMh9iLBw" elementId="ru.toxsoft.mcc.ws.mnemos.parameter.0" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId" value="ru.toxsoft.mcc.ws.mnemos.perspective.rtbrowser"/>
     </elements>
   </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_A6hdgIDyEe27kpKaA6eWQA" featurename="commands" parentElementId="org.toxsoft.mws.app.main">
+    <elements xsi:type="commands:Command" xmi:id="_D6Yg4IDyEe27kpKaA6eWQA" elementId="ru.toxsoft.mcc.ws.mnemos.command.cmd_editdataaliases" commandName="%Cmd_EditDataAliases" description="%Cmd_EditDataAliases_D" category="_euyUYFkaEe2ha568rOfS2w"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_mAhfwIDyEe27kpKaA6eWQA" featurename="handlers" parentElementId="org.toxsoft.mws.window.main">
+    <elements xsi:type="commands:Handler" xmi:id="_qHXZUIDyEe27kpKaA6eWQA" elementId="ru.toxsoft.mcc.ws.mnemos.handler.0" contributionURI="bundleclass://ru.toxsoft.mcc.ws.mnemos/ru.toxsoft.mcc.ws.mnemos.e4.handlers.CmdEditDataAliases" command="_D6Yg4IDyEe27kpKaA6eWQA"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_70APoIDxEe27kpKaA6eWQA" featurename="children" parentElementId="org.toxsoft.mws.menu.main.view">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_6wz30IDyEe27kpKaA6eWQA" elementId="ru.toxsoft.mcc.ws.mnemos.handledmenuitem.0" command="_D6Yg4IDyEe27kpKaA6eWQA"/>
+  </fragments>
 </fragment:ModelFragments>
