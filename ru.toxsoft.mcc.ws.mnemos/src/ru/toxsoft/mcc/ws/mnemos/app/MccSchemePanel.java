@@ -93,14 +93,14 @@ public class MccSchemePanel
 
     @Override
     public void mouseDown( MouseEvent aE ) {
-      // if( aE.button == 1 ) {
-      // for( AbstractMccSchemeControl control : MccSchemePanel.this.controls ) {
-      // if( control.contains( aE.x, aE.y ) ) {
-      // control.showSettingDialog();
-      // return;
-      // }
-      // }
-      // }
+      if( aE.button == 1 ) {
+        for( AbstractMccSchemeControl control : MccSchemePanel.this.controls ) {
+          if( control.contains( aE.x, aE.y ) ) {
+            control.showSettingDialog();
+            return;
+          }
+        }
+      }
     }
 
     @Override
@@ -323,7 +323,7 @@ public class MccSchemePanel
     // rtPanel.addMouseListener( mouseListener );
     addMouseMoveListener( mouseMoveListener );
     addMenuDetectListener( menuListener );
-    // addMouseListener( mouseListener );
+    addMouseListener( mouseListener );
   }
 
   // ------------------------------------------------------------------------------------
