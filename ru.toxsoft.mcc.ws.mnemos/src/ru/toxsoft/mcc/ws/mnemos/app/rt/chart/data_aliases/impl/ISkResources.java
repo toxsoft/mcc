@@ -13,5 +13,7 @@ interface ISkResources {
   String STR_D_PARAM_TITLE       = "название параметра";
   String STR_N_PARAM_DESCRIPTION = "описание";
   String STR_D_PARAM_DESCRIPTION = "описание параметра";
+  String STR_N_DATA_ALIAS        = "псевдонимы";
+  String STR_D_DATA_ALIAS        = "псевдонимы данных системы";
 
 }

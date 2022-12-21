@@ -10,6 +10,7 @@ import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.gui.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.coll.*;
@@ -56,7 +57,7 @@ public class CmdEditDataAliases {
     initMnemosPrefs();
 
     // подготовка и вызов диалога редактирования
-    ITsDialogInfo dialogInfo = new TsDialogInfo( ctx, DLC_C_PREFS_EDIT, DLC_T_PREFS_EDIT );
+    ITsDialogInfo dialogInfo = new TsDialogInfo( ctx, DLC_C_DATA_ALIESES_EDIT, DLC_T_DATA_ALIESES_EDIT );
 
     GuiDataAliasesPrefsEditModel model = new GuiDataAliasesPrefsEditModel( prefSection, systemSkid );
 
@@ -64,11 +65,7 @@ public class CmdEditDataAliases {
     d.initTemporaryModel( model );
 
     GuiDataAliasesPrefsEditLifecycleManager manager = new GuiDataAliasesPrefsEditLifecycleManager( model, prefSection );
-    Object retVal = M5GuiUtils.askEdit( ctx, model, systemSkid, dialogInfo, manager );
-    if( retVal != null ) {
-      // TODO
-      System.out.print( retVal.toString() );
-    }
+    M5GuiUtils.askEdit( ctx, model, systemSkid, dialogInfo, manager );
 
   }
 
@@ -111,4 +108,17 @@ public class CmdEditDataAliases {
     return false;
   }
 
+  // ------------------------------------------------------------------------------------
+  // Кусок реализации настроек для АРМа, здесь временно после отладки <br>
+  // TODO перенести в нужное место в АРМе
+  //
+
+  private void restoreSystemSettings() {
+    // получаем список графиков и создаем для каждого свой RtChart
+    IOptionSet systemPrefs = prefSection.getOptions( systemSkid );
+    IDataNameAliasesList dnaList = MccSystemOptions.DATA_NAME_ALIASES.getValue( systemPrefs ).asValobj();
+    for( IDataNameAlias alias : dnaList.items() ) {
+      System.out.print( alias.gwid() );
+    }
+  }
 }

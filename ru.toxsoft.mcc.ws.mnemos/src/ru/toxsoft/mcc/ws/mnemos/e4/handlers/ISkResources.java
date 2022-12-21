@@ -7,7 +7,7 @@ package ru.toxsoft.mcc.ws.mnemos.e4.handlers;
  */
 interface ISkResources {
 
-  String DLC_C_PREFS_EDIT = "Настройки мнемосхемы";
-  String DLC_T_PREFS_EDIT = "Отредактируйте настройки";
+  String DLC_C_DATA_ALIESES_EDIT = "Псевдонимы данных";
+  String DLC_T_DATA_ALIESES_EDIT = "Редактирование названий данных отображаемых на мнемосхеме";
 
 }

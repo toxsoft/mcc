@@ -1,5 +1,7 @@
 package ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl;
 
+import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.ISkResources.*;
+
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
@@ -43,8 +45,6 @@ public class GuiDataAliasesPrefsEditModel
   public GuiDataAliasesPrefsEditModel( IGuiGwPrefsSection aPrefsSection, Skid aObjSkid ) {
     super( MODEL_ID, Skid.class );
 
-    setNameAndDescription( "Опции объекта", "Опции объекта для редактирования" ); //$NON-NLS-1$//$NON-NLS-2$
-
     prefsSection = aPrefsSection;
 
     IStridablesList<IDataDef> optDefs = prefsSection.listOptionDefs( aObjSkid );
@@ -65,10 +65,9 @@ public class GuiDataAliasesPrefsEditModel
     IM5MultiModownFieldDef<Skid, IDataNameAlias> fDef =
         new M5MultiModownFieldDef<>( DATA_ALIASES_MODEL_ID, MccDataAliasM5Model.MODEL_ID ) {
 
-          @SuppressWarnings( "nls" )
           @Override
           protected void doInit() {
-            setNameAndDescription( "data aliases", "data aliases" );
+            setNameAndDescription( STR_N_DATA_ALIAS, STR_D_DATA_ALIAS );
           }
 
           @Override
