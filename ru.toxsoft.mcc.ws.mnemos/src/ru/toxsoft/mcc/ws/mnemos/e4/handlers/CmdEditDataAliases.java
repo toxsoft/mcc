@@ -66,7 +66,7 @@ public class CmdEditDataAliases {
 
     GuiDataAliasesPrefsEditLifecycleManager manager = new GuiDataAliasesPrefsEditLifecycleManager( model, prefSection );
     M5GuiUtils.askEdit( ctx, model, systemSkid, dialogInfo, manager );
-
+    restoreSystemSettings();
   }
 
   private void initMnemosPrefs() {
@@ -118,7 +118,8 @@ public class CmdEditDataAliases {
     IOptionSet systemPrefs = prefSection.getOptions( systemSkid );
     IDataNameAliasesList dnaList = MccSystemOptions.DATA_NAME_ALIASES.getValue( systemPrefs ).asValobj();
     for( IDataNameAlias alias : dnaList.items() ) {
-      System.out.print( alias.gwid() );
+      System.out.printf( " gwid: %s\n title: %s\n description: %s\n", alias.gwid(), alias.title(),
+          alias.description() );
     }
   }
 }
