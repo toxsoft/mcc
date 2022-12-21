@@ -41,7 +41,6 @@ import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.s5.legacy.*;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.core.templates.gui.m5.*;

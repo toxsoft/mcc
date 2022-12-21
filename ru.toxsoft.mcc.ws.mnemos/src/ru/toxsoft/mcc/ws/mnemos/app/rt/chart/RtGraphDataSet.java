@@ -24,7 +24,6 @@ import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.rtdserv.*;
 import org.toxsoft.uskat.core.impl.dto.*;
-import org.toxsoft.uskat.s5.legacy.*;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.core.templates.utils.*;

@@ -21,7 +21,6 @@ import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.impl.dto.*;
-import org.toxsoft.uskat.s5.legacy.*;
 
 import ru.toxsoft.mcc.ws.core.templates.utils.*;
 
