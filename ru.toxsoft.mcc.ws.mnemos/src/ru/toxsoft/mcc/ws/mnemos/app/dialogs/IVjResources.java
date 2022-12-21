@@ -47,4 +47,8 @@ interface IVjResources {
 
   String STR_INVOKE_IRR_ENGINE_DIALOG = "Вызвать диалог настроек нереверсивного двигателя";
 
+  /**
+   * {@link MccBlockingPanel}
+   */
+  String STR_BLOCKS = "Блокировки";
 }
