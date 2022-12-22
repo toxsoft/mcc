@@ -20,6 +20,7 @@ class LegendWindow {
   Color normColor;
   Color lowColor;
   Color hiColor;
+  Color whiteColor;
 
   final IStridablesList<IPlotDef> plotDefs;
 
@@ -32,6 +33,7 @@ class LegendWindow {
     normColor = colorManager().getColor( ETsColor.BLACK );
     lowColor = colorManager().getColor( ETsColor.BLUE );
     hiColor = colorManager().getColor( ETsColor.RED );
+    whiteColor = colorManager().getColor( ETsColor.WHITE );
 
     Shell aShell = aParent.getShell();
     wnd = new Shell( aShell, SWT.BORDER | SWT.CLOSE );
@@ -122,6 +124,8 @@ class LegendWindow {
   }
 
   public void print( GC aGc ) {
+    aGc.setBackground( whiteColor );
+    aGc.fillRectangle( shell().getClientArea() );
     paint( aGc );
   }
 
