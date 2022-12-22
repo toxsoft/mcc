@@ -39,29 +39,7 @@ class LegendWindow {
     wnd.setLayout( layout );
     canvas = new Canvas( wnd, SWT.NONE );
     canvas.addPaintListener( aE -> {
-      int x = 24;
-      int y = 4;
-
-      Color oldColor = aE.gc.getForeground();
-      for( IPlotDef pd : plotDefs ) {
-        Point p = aE.gc.textExtent( pd.nmName() );
-        aE.gc.drawText( pd.nmName(), x, y, true );
-        // dima 04.11.22 ts4 conversion
-        // TsLineInfo lineInfo =
-        // IStdG2GraphicRendererOptions.GRAPHIC_LINE_INFO.getValue( pd.rendererParams().params() ).asValobj();
-        RGBA rgba = IStdG2GraphicRendererOptions.GRAPHIC_RGBA.getValue( pd.rendererParams().params() ).asValobj();
-        Color rgbColor = colorManager().getColor( rgba.rgb );
-
-        aE.gc.setForeground( colorManager().getColor( ETsColor.BLACK ) );
-        aE.gc.setLineWidth( 8 );
-        aE.gc.drawLine( 4, y + p.y / 2, 20, y + p.y / 2 );
-        aE.gc.setForeground( rgbColor );
-
-        aE.gc.setLineWidth( 6 );
-        aE.gc.drawLine( 5, y + p.y / 2, 19, y + p.y / 2 );
-        aE.gc.setForeground( oldColor );
-        y += p.y;
-      }
+      paint( aE.gc );
     } );
 
     TsPoint p = computeSize();
@@ -115,6 +93,36 @@ class LegendWindow {
 
   ITsColorManager colorManager() {
     return context.get( ITsColorManager.class );
+  }
+
+  void paint( GC aGc ) {
+    int x = 24;
+    int y = 4;
+
+    Color oldColor = aGc.getForeground();
+    for( IPlotDef pd : plotDefs ) {
+      Point p = aGc.textExtent( pd.nmName() );
+      aGc.drawText( pd.nmName(), x, y, true );
+      // dima 04.11.22 ts4 conversion
+      // TsLineInfo lineInfo =
+      // IStdG2GraphicRendererOptions.GRAPHIC_LINE_INFO.getValue( pd.rendererParams().params() ).asValobj();
+      RGBA rgba = IStdG2GraphicRendererOptions.GRAPHIC_RGBA.getValue( pd.rendererParams().params() ).asValobj();
+      Color rgbColor = colorManager().getColor( rgba.rgb );
+
+      aGc.setForeground( colorManager().getColor( ETsColor.BLACK ) );
+      aGc.setLineWidth( 8 );
+      aGc.drawLine( 4, y + p.y / 2, 20, y + p.y / 2 );
+      aGc.setForeground( rgbColor );
+
+      aGc.setLineWidth( 6 );
+      aGc.drawLine( 5, y + p.y / 2, 19, y + p.y / 2 );
+      aGc.setForeground( oldColor );
+      y += p.y;
+    }
+  }
+
+  public void print( GC aGc ) {
+    paint( aGc );
   }
 
 }

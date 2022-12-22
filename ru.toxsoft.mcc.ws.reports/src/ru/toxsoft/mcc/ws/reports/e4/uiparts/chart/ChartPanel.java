@@ -396,6 +396,16 @@ public class ChartPanel
         try {
           if( printer.startJob( "printChart" ) ) { //$NON-NLS-1$
             chart.print( printerGc );
+            if( legendWindow != null ) {
+              Point p = legendWindow.shell().getLocation();
+              p = toControl( p );
+              Transform tr = new Transform( printer );
+              printerGc.getTransform( tr );
+              tr.translate( p.x, p.y );
+              printerGc.setTransform( tr );
+              tr.dispose();
+              legendWindow.print( printerGc );
+            }
             printer.endPage();
           }
         }
