@@ -26,8 +26,8 @@ Require-Bundle: javax.annotation,
  org.toxsoft.uskat.dataquality.s5,
  org.toxsoft.uskat.alarms.lib,
  org.toxsoft.uskat.alarms.s5,
- org.toxsoft.uskat.ggprefs.lib;bundle-version="1.0.0",
- org.toxsoft.uskat.ggprefs.gui;bundle-version="1.0.0"
+ org.toxsoft.uskat.ggprefs.lib,
+ org.toxsoft.uskat.ggprefs.gui
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.mnemos
 Bundle-ActivationPolicy: lazy

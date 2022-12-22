@@ -1,49 +1,44 @@
 package ru.toxsoft.mcc.ws.reports.e4.uiparts.chart;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.jface.resource.*;
+import org.eclipse.swt.*;
+import org.eclipse.swt.custom.*;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.printing.*;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.eclipse.swt.widgets.*;
+import org.eclipse.ui.plugin.*;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.chart.impl.*;
-import org.toxsoft.core.tsgui.graphics.ETsOrientation;
-import org.toxsoft.core.tsgui.graphics.fonts.impl.FontInfo;
-import org.toxsoft.core.tsgui.graphics.lines.TsLineInfo;
-import org.toxsoft.core.tsgui.panels.TsPanel;
-import org.toxsoft.core.tsgui.utils.ITsVisualsProvider;
-import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tsgui.valed.controls.basic.ValedComboSelector;
-import org.toxsoft.core.tslib.av.temporal.ITemporalAtomicValue;
-import org.toxsoft.core.tslib.bricks.strid.IStridable;
-import org.toxsoft.core.tslib.bricks.strid.impl.Stridable;
-import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
-import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.IListEdit;
-import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
-import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
-import org.toxsoft.core.tslib.utils.Pair;
-import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.ISkCoreApi;
-import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.core.tsgui.graphics.*;
+import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
+import org.toxsoft.core.tsgui.graphics.lines.*;
+import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tsgui.utils.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tsgui.valed.controls.basic.*;
+import org.toxsoft.core.tslib.av.temporal.*;
+import org.toxsoft.core.tslib.bricks.geometry.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.*;
+import org.toxsoft.core.tslib.bricks.strid.impl.*;
+import org.toxsoft.core.tslib.bricks.time.*;
+import org.toxsoft.core.tslib.bricks.time.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.connection.*;
 
-import ru.toxsoft.mcc.ws.core.chart_utils.console.ConsoleWindow;
-import ru.toxsoft.mcc.ws.core.chart_utils.console.TimeAxisTuner;
-import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.AxisMarkupTuner;
-import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.MarkUpInfo;
-import ru.toxsoft.mcc.ws.core.templates.api.ISkGraphParam;
-import ru.toxsoft.mcc.ws.core.templates.api.ISkGraphTemplate;
-import ru.toxsoft.mcc.ws.core.templates.utils.ReportTemplateUtilities;
-import ru.toxsoft.mcc.ws.reports.Activator;
+import ru.toxsoft.mcc.ws.core.chart_utils.console.*;
+import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.utils.*;
+import ru.toxsoft.mcc.ws.reports.*;
 
 /**
  * Панель для отображения отчета в виде графиков.
@@ -397,15 +392,8 @@ public class ChartPanel
           return; // отказ от печати
         }
         Printer printer = new Printer( printerData );
-        GC printerGc = null;
+        GC printerGc = createPrintGc( printer, new TsPoint( 5, 5 ), new TsPoint( 5, 5 ) );
         try {
-          Rectangle r = printer.getClientArea();
-          printerGc = new GC( printer );
-          Transform tr = new Transform( printer );
-          tr.translate( r.x + 200, r.y + 200 );
-          tr.scale( 4, 4 );
-
-          printerGc.setTransform( tr );
           if( printer.startJob( "printChart" ) ) { //$NON-NLS-1$
             chart.print( printerGc );
             printer.endPage();
@@ -649,5 +637,41 @@ public class ChartPanel
    */
   public void refresh() {
     chart.refresh();
+  }
+
+  /**
+   * Возвращает подготовленный для печати графический контекст.
+   * <p>
+   *
+   * @param aPrinter Printer - принтер
+   * @param aLtMargins TsPoint - левый и верхний отступы в миллиметрах
+   * @param aRbMargins TsPoint - правый и нижний отступы в миллиметрах
+   * @return GC - подготовленный для печати графический контекст
+   */
+  private GC createPrintGc( Printer aPrinter, TsPoint aLtMargins, TsPoint aRbMargins ) {
+    GC gc = new GC( aPrinter );
+
+    Point printerDpi = aPrinter.getDPI();
+    double dpp = Math.min( printerDpi.x / 24.5, printerDpi.y / 24.5 );
+    int marginLeft = (int)(aLtMargins.x() * dpp);
+    int marginTop = (int)(aLtMargins.y() * dpp);
+    int marginRight = (int)(aRbMargins.x() * dpp);
+    int marginBottom = (int)(aRbMargins.y() * dpp);
+
+    Rectangle pr = aPrinter.getClientArea();
+    pr.width -= (marginLeft + marginRight);
+    pr.height -= (marginTop + marginBottom);
+
+    Point cs = chart.getControl().getSize();
+
+    float k = Math.min( (float)pr.width / cs.x, (float)pr.height / cs.y );
+
+    Transform tr = new Transform( aPrinter );
+    tr.translate( marginLeft, marginTop );
+    tr.scale( k, k );
+    gc.setTransform( tr );
+    tr.dispose();
+
+    return gc;
   }
 }
