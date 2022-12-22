@@ -7,14 +7,9 @@ import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.gui.panels.*;
 import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tslib.bricks.strid.more.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.base.gui.glib.*;
 import org.toxsoft.uskat.base.gui.km5.sgw.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.utils.*;
 
 /**
  * Панель для просмотра списка классов.
@@ -23,29 +18,9 @@ import org.toxsoft.uskat.core.utils.*;
  * @author vs
  */
 public class PanelSkClassesList
-    extends SkStdEventsProducerPanel<ISkClassInfo>
-    implements ISkConnected {
+    extends AbstractSkStdEventsProducerLazyPanel<ISkClassInfo> {
 
-  ISkConnectionListener connListener = ( aSkConn, aOldState ) -> {
-    switch( aSkConn.state() ) {
-      case ACTIVE:
-        onConnectionActivated();
-        break;
-      case CLOSED:
-        onConnectionClosed();
-        break;
-      case INACTIVE:
-        onConnectionDeactivated();
-        break;
-      default:
-        throw new TsNotAllEnumsUsedRtException();
-    }
-
-  };
-
-  ISkConnection skConn = null;
-
-  IM5CollectionPanel<ISkClassInfo> internalPanel = null;
+  IM5CollectionPanel<ISkClassInfo> panel = null;
 
   /**
    * Конструктор.
@@ -54,80 +29,34 @@ public class PanelSkClassesList
    * @param aContext ITsGuiContext - соответствующй контекст
    */
   public PanelSkClassesList( Composite aParent, ITsGuiContext aContext ) {
-    super( aParent, aContext );
-    setLayout( new FillLayout() );
-    skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
-    if( skConn != null && skConn.state() == ESkConnState.ACTIVE ) {
-      skConn.addConnectionListener( connListener );
-      internalPanel = createIntenalPanel();
-    }
+    super( aContext );
+  }
 
+  @Override
+  protected void doInitGui( Composite aParent ) {
+    aParent.setLayout( new FillLayout() );
+    IM5Model<ISkClassInfo> model = m5().getModel( ISgwM5Constants.MID_SGW_CLASS_INFO, ISkClassInfo.class );
+    IM5LifecycleManager<ISkClassInfo> lcm = model.findLifecycleManager( skConn() );
+    ITsGuiContext ctx = new TsGuiContext( tsContext() );
+    panel = model.panelCreator().createCollViewerPanel( ctx, lcm.itemsProvider() );
+    panel.createControl( getControl() );
+    panel.addTsSelectionListener( selectionChangeEventHelper );
+    panel.addTsDoubleClickListener( doubleClickEventHelper );
   }
 
   @Override
   public ISkClassInfo selectedItem() {
-    return internalPanel.selectedItem();
+    if( isPanelContent() ) {
+      return panel.selectedItem();
+    }
+    return null;
   }
 
   @Override
   public void setSelectedItem( ISkClassInfo aItem ) {
-    internalPanel.setSelectedItem( aItem );
-  }
-
-  // ------------------------------------------------------------------------------------
-  // ISkConnected
-  //
-
-  @Override
-  public ISkConnection skConn() {
-    return skConn;
-  }
-
-  // ------------------------------------------------------------------------------------
-  // API
-  //
-
-  void setConnectionId( IdChain aSkConnId ) {
-    if( skConn != null ) {
-      skConn.removeConnectionListener( connListener );
+    if( isPanelContent() ) {
+      panel.setSelectedItem( aItem );
     }
-    skConn = tsContext().get( ISkConnectionSupplier.class ).getConn( aSkConnId );
-    skConn.addConnectionListener( connListener );
-    onConnectionDeactivated();
-    onConnectionActivated();
-  }
-
-  // ------------------------------------------------------------------------------------
-  // Implementation
-  //
-
-  void onConnectionClosed() {
-    internalPanel.getControl().dispose();
-    internalPanel = null;
-  }
-
-  void onConnectionActivated() {
-    internalPanel = createIntenalPanel();
-  }
-
-  void onConnectionDeactivated() {
-    internalPanel.getControl().dispose();
-    internalPanel = null;
-  }
-
-  private IM5CollectionPanel<ISkClassInfo> createIntenalPanel() {
-    IM5Domain m5dom = skConn.scope().get( IM5Domain.class );
-
-    IM5Model<ISkClassInfo> model = m5dom.findModel( ISgwM5Constants.MID_SGW_CLASS_INFO );
-
-    IM5LifecycleManager<ISkClassInfo> lcm = model.findLifecycleManager( skConn );
-    ITsGuiContext ctx = new TsGuiContext( tsContext() );
-    IM5CollectionPanel<ISkClassInfo> panel = model.panelCreator().createCollViewerPanel( ctx, lcm.itemsProvider() );
-    panel.createControl( this );
-
-    panel.addTsSelectionListener( selectionChangeEventHelper );
-    panel.addTsDoubleClickListener( doubleClickEventHelper );
-    return panel;
   }
 
 }
