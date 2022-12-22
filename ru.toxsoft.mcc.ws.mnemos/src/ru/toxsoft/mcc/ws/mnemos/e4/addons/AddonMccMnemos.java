@@ -4,15 +4,12 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 
 import org.eclipse.e4.core.contexts.*;
 import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.bricks.quant.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.mws.bases.*;
 import org.toxsoft.core.tsgui.valed.impl.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.ctx.impl.*;
-import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
@@ -48,7 +45,7 @@ public class AddonMccMnemos
 
   @Override
   protected void initApp( IEclipseContext aAppContext ) {
-    // TODO Auto-generated method stub
+    // nop
   }
 
   @Override
@@ -65,8 +62,8 @@ public class AddonMccMnemos
     fr.registerFactory( ValedAvBooleanCheckAdv.FACTORY );
     fr.registerFactory( ValedIntegerTextCommand.FACTORY );
 
-    ISkConnectionSupplier connSupplier = new SkConnectionSupplier();
-    createConnection( connSupplier, aWinContext );
+    ISkConnectionSupplier connSupplier = aWinContext.get( ISkConnectionSupplier.class );
+    openConnection( connSupplier.defConn(), aWinContext );
     aWinContext.set( ISkConnectionSupplier.class, connSupplier );
 
     // регистрируем свои m5 модели TODO перенести в специальное место, см. KM5DataAliasesContributor
@@ -74,7 +71,7 @@ public class AddonMccMnemos
     m5.addModel( new SkAlarmM5Model() );
   }
 
-  private void createConnection( ISkConnectionSupplier aConnSupp, IEclipseContext aWinContext ) {
+  private void openConnection( ISkConnection aConn, IEclipseContext aWinContext ) {
     String login = "root"; //$NON-NLS-1$
     String password = "1"; //$NON-NLS-1$
     IStringList hostnames = new StringArrayList( "localhost" ); //$NON-NLS-1$
@@ -109,15 +106,9 @@ public class AddonMccMnemos
     SwtThreadSeparatorService.REF_DISPLAY.setRef( ctx, aWinContext.get( Display.class ) );
 
     try {
-      // SkUtils.OP_EXT_SERV_PROVIDER_CLASS.setValue( ctx.params(), initializator );
-      ITsGuiContext guiCtx = new TsGuiContext( aWinContext );
-      IdChain connIdc = new IdChain( "connection.default" ); //$NON-NLS-1$
-      ISkConnection conn = aConnSupp.createConnection( connIdc, guiCtx );
-      ISkConnection syncConn = S5SynchronizedConnection.createSynchronizedConnection( conn );
+      ISkConnection syncConn = S5SynchronizedConnection.createSynchronizedConnection( aConn );
       syncConn.open( ctx );
       LoggerUtils.defaultLogger().info( "Connection opened" ); //$NON-NLS-1$
-      // LoggerUtils.defaultLogger().info( "Connection opened, IDC= %s", connIdc.toString() );
-      aConnSupp.setDefaultConnection( connIdc );
     }
     catch( Exception ex ) {
       LoggerUtils.errorLogger().error( ex );
