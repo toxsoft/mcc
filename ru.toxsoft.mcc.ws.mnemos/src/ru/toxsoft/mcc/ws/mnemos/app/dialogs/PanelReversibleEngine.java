@@ -111,7 +111,7 @@ public class PanelReversibleEngine
     bkPanel.setLayout( new GridLayout( 2, true ) );
 
     createRtBooleanLabel( bkPanel, "rtdPwr", ICONID_RED_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
-    createRtBooleanLabel( bkPanel, "rtdPowerControl", ICONID_GRAY_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
+    createRtBooleanLabel( bkPanel, "rtdPowerControl", ICONID_RED_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
     createRtBooleanLabel( bkPanel, "rtdEnabled", ICONID_RED_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
     createRtBooleanLabel( bkPanel, "rtdImitation", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
 
@@ -195,11 +195,13 @@ public class PanelReversibleEngine
 
     MccPushCmdButton cmdButton = createPushCmdButton( comp, "cmdAwpOpenStart" ); //$NON-NLS-1$
     cmdButton.getControl().setImage( images[0] );
+    cmdButton.getControl().setToolTipText( "Открыть полностью" );
 
     Gwid cmdGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStart" ); //$NON-NLS-1$
     Gwid stopOpenGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpOpenStop" ); //$NON-NLS-1$
     leftBtn = new MccUpDownCmdButton( cmdGwid, stopOpenGwid, coreApi(), tsContext() );
     leftBtn.createControl( comp, SWT.PUSH ).setImage( images[1] );
+    leftBtn.getControl().setToolTipText( "Открыть" );
 
     btnStop = new Button( comp, SWT.PUSH );
     btnStop.setImage( images[2] );
@@ -222,9 +224,11 @@ public class PanelReversibleEngine
     Gwid stopCloseGwid = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdAwpCloseStop" ); //$NON-NLS-1$
     rightBtn = new MccUpDownCmdButton( cmdGwid, stopCloseGwid, coreApi(), tsContext() );
     rightBtn.createControl( comp, SWT.PUSH ).setImage( images[3] );
+    rightBtn.getControl().setToolTipText( "Закрыть" );
 
     cmdButton = createPushCmdButton( comp, "cmdAwpCloseStart" ); //$NON-NLS-1$
     cmdButton.getControl().setImage( images[4] );
+    cmdButton.getControl().setToolTipText( "Закрыть полностью" );
 
     comp.addDisposeListener( aE -> {
       for( int i = 0; i < images.length; i++ ) {
