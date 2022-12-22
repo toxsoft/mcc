@@ -2,7 +2,9 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
 import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.ISkResources.*;
 
+import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.ggprefs.lib.*;
@@ -61,6 +63,22 @@ public class PrefUtils {
       prefServ.defineSection( sd );
     }
     return prefServ.getSection( aSectionId );
+  }
+
+  /**
+   * Проверяет наличие описания опции в текущем списке
+   *
+   * @param aCurrOpDefs текущий список описания опций
+   * @param aOptDef описание добавляемой опции
+   * @return true опция уже определена
+   */
+  public static boolean hasOptionDef( IList<IDataDef> aCurrOpDefs, IDataDef aOptDef ) {
+    for( IDataDef currOptDef : aCurrOpDefs ) {
+      if( currOptDef.id().equals( aOptDef.id() ) ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**

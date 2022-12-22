@@ -10,7 +10,6 @@ import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.gui.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.coll.*;
@@ -53,7 +52,6 @@ public class CmdEditDataAliases {
     conn = connSup.defConn();
     ITsGuiContext ctx = new TsGuiContext( aAppContext );
 
-    // TODO в правильное место
     initMnemosPrefs();
 
     // подготовка и вызов диалога редактирования
@@ -66,7 +64,6 @@ public class CmdEditDataAliases {
 
     GuiDataAliasesPrefsEditLifecycleManager manager = new GuiDataAliasesPrefsEditLifecycleManager( model, prefSection );
     M5GuiUtils.askEdit( ctx, model, systemSkid, dialogInfo, manager );
-    restoreSystemSettings();
   }
 
   private void initMnemosPrefs() {
@@ -85,43 +82,11 @@ public class CmdEditDataAliases {
     IStridablesListEdit<IDataDef> newPrefDefs = new StridablesList<>();
     // перебираем все устанавливаемые опции и добавляем только новые
     for( IDataDef addingOptDef : MccSystemOptions.allOptions() ) {
-      if( !hasOptionDef( currOpDefs, addingOptDef ) ) {
+      if( !PrefUtils.hasOptionDef( currOpDefs, addingOptDef ) ) {
         newPrefDefs.add( addingOptDef );
       }
     }
     prefSection.bindOptions( systemGwid, newPrefDefs );
   }
 
-  /**
-   * Проверяет наличие описание опции в текущем списке
-   *
-   * @param aCurrOpDefs текущий список описания опций
-   * @param aOptDef описание добавляемой опции
-   * @return true опция уже определена
-   */
-  private static boolean hasOptionDef( IList<IDataDef> aCurrOpDefs, IDataDef aOptDef ) {
-    for( IDataDef currOptDef : aCurrOpDefs ) {
-      if( currOptDef.id().equals( aOptDef.id() ) ) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  // ------------------------------------------------------------------------------------
-  // Кусок реализации настроек для АРМа, здесь временно после отладки <br>
-  // TODO перенести в нужное место в АРМе
-  //
-
-  private void restoreSystemSettings() {
-    // FIXME перед использованием необходимо один раз вызывать initMnemosPrefs()
-
-    // получаем список псевдонимов
-    IOptionSet systemPrefs = prefSection.getOptions( systemSkid );
-    IDataNameAliasesList dnaList = MccSystemOptions.DATA_NAME_ALIASES.getValue( systemPrefs ).asValobj();
-    for( IDataNameAlias alias : dnaList.items() ) {
-      System.out.printf( " gwid: %s\n title: %s\n description: %s\n", alias.gwid(), alias.title(),
-          alias.description() );
-    }
-  }
 }
