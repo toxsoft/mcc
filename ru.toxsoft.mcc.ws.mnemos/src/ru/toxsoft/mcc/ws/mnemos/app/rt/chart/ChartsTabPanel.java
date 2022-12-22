@@ -187,27 +187,11 @@ public class ChartsTabPanel
     IStridablesListEdit<IDataDef> newPrefDefs = new StridablesList<>();
     // перебираем все устанавливаемые опции и добавляем только новые
     for( IDataDef addingOptDef : RtChartPanelOptions.allOptions() ) {
-      if( !hasOptionDef( currOpDefs, addingOptDef ) ) {
+      if( !PrefUtils.hasOptionDef( currOpDefs, addingOptDef ) ) {
         newPrefDefs.add( addingOptDef );
       }
     }
     prefSection.bindOptions( userGwid, newPrefDefs );
-  }
-
-  /**
-   * Проверяет наличие описание опции в текущем списке
-   *
-   * @param aCurrOpDefs текущий список описания опций
-   * @param aOptDef описание добавляемой опции
-   * @return true опция уже определена
-   */
-  private static boolean hasOptionDef( IList<IDataDef> aCurrOpDefs, IDataDef aOptDef ) {
-    for( IDataDef currOptDef : aCurrOpDefs ) {
-      if( currOptDef.id().equals( aOptDef.id() ) ) {
-        return true;
-      }
-    }
-    return false;
   }
 
   private IOptionSet getUserPrefs() {

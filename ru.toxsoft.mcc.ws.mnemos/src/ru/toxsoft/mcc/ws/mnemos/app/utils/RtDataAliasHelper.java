@@ -88,7 +88,7 @@ public class RtDataAliasHelper {
     IStridablesListEdit<IDataDef> newPrefDefs = new StridablesList<>();
     // перебираем все устанавливаемые опции и добавляем только новые
     for( IDataDef addingOptDef : MccSystemOptions.allOptions() ) {
-      if( !hasOptionDef( currOpDefs, addingOptDef ) ) {
+      if( !PrefUtils.hasOptionDef( currOpDefs, addingOptDef ) ) {
         newPrefDefs.add( addingOptDef );
       }
     }
@@ -96,22 +96,6 @@ public class RtDataAliasHelper {
 
     IOptionSet systemPrefs = prefSection.getOptions( systemSkid );
     aliasesList = MccSystemOptions.DATA_NAME_ALIASES.getValue( systemPrefs ).asValobj();
-  }
-
-  /**
-   * Проверяет наличие описание опции в текущем списке
-   *
-   * @param aCurrOpDefs текущий список описания опций
-   * @param aOptDef описание добавляемой опции
-   * @return true опция уже определена
-   */
-  private static boolean hasOptionDef( IList<IDataDef> aCurrOpDefs, IDataDef aOptDef ) {
-    for( IDataDef currOptDef : aCurrOpDefs ) {
-      if( currOptDef.id().equals( aOptDef.id() ) ) {
-        return true;
-      }
-    }
-    return false;
   }
 
 }

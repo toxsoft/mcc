@@ -109,7 +109,7 @@ public class RtGraphDataSet
 
   }
 
-  private void addCurrValue( IAtomicValue aValue ) {
+  private synchronized void addCurrValue( IAtomicValue aValue ) {
     long timestamp = System.currentTimeMillis();
     if( values.size() >= maxCount ) {
       values.removeByIndex( 0 );
@@ -136,7 +136,7 @@ public class RtGraphDataSet
   }
 
   @Override
-  public IList<ITemporalAtomicValue> getValues( ITimeInterval aInterval ) {
+  public synchronized IList<ITemporalAtomicValue> getValues( ITimeInterval aInterval ) {
     if( aInterval.equals( ITimeInterval.NULL ) || aInterval.equals( ITimeInterval.WHOLE ) ) {
       IListEdit<ITemporalAtomicValue> retVal = new ElemArrayList<>( values );
       return retVal;
