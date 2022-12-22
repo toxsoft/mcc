@@ -6,6 +6,7 @@ import org.eclipse.swt.custom.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
+import org.eclipse.swt.printing.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
@@ -143,6 +144,7 @@ public class ChartPanel
   Button btnLegend;
 
   Button btnConsole;
+  Button btnPrint;
 
   G2Chart        chart        = null;
   ETimeUnit      axisTimeUnit = null;
@@ -363,6 +365,34 @@ public class ChartPanel
             consoleWindow = null;
           } );
         }
+      }
+    } );
+
+    btnPrint = new Button( comp, SWT.PUSH );
+    btnPrint.setText( "Печать" );
+    imgDescr = AbstractUIPlugin.imageDescriptorFromPlugin( pluginId, "icons/is24x24/document-print.png" ); //$NON-NLS-1$
+    btnPrint.setImage( imgDescr.createImage() );
+    // явно удаляем ранее загруженную картинку
+    btnPrint.addDisposeListener( aE -> btnPrint.getImage().dispose() );
+
+    btnPrint.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent e ) {
+        PrintDialog dialog = new PrintDialog( getShell(), SWT.NULL );
+        PrinterData printerDefaults = new PrinterData();
+        printerDefaults.scope = PrinterData.PAGE_RANGE;
+        printerDefaults.orientation = PrinterData.LANDSCAPE;
+        dialog.setPrinterData( printerDefaults );
+
+        PrinterData printerData = dialog.open();
+
+        if( printerData == null ) {
+          return; // отказ от печати
+        }
+        Printer printer = new Printer( printerData );
+        GC printerGc = new GC( printer );
+        chart.print( printerGc );
       }
     } );
 
