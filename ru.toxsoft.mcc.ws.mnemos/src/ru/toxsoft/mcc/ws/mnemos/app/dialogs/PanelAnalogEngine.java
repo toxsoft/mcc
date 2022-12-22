@@ -86,7 +86,7 @@ public class PanelAnalogEngine
     skObject = aDlgContext.skObject();
     init();
 
-    cmdGwid = Gwid.createCmd( "mcc.AnalogEngine", "n2AI_DDZ", "cmdTaskDz" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    cmdGwid = Gwid.createCmd( "mcc.AnalogEngine", "n2AE_Dz", "cmdTaskDz" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     commandSender = new MccCommandSender( coreApi() );
     commandSender.eventer().addListener( aSource -> {
