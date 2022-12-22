@@ -6,8 +6,10 @@ import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 
@@ -26,7 +28,7 @@ public class PanelAnalogEngine
 
   private final ISkObject skObject;
 
-  MccCommandSender stopCmdSender;
+  MccCommandSender commandSender;
 
   boolean stopOpen  = false;
   boolean stopClose = false;
@@ -86,14 +88,14 @@ public class PanelAnalogEngine
 
     cmdGwid = Gwid.createCmd( "mcc.AnalogEngine", "n2AI_DDZ", "cmdTaskDz" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-    // stopCmdSender = new MccCommandSender( coreApi() );
-    // stopCmdSender.eventer().addListener( aSource -> {
-    // String errStr = stopCmdSender.errorString();
-    // if( errStr != null && !errStr.isBlank() ) {
-    // TsDialogUtils.error( getShell(), errStr );
-    // }
-    // } );
-    // dataProvider().addDataConsumer( new OpenCloseDataConsumer() );
+    commandSender = new MccCommandSender( coreApi() );
+    commandSender.eventer().addListener( aSource -> {
+      String errStr = commandSender.errorString();
+      if( errStr != null && !errStr.isBlank() ) {
+        TsDialogUtils.error( getShell(), errStr );
+      }
+    } );
+
     dataProvider().start();
   }
 
@@ -137,15 +139,39 @@ public class PanelAnalogEngine
 
       @Override
       public void widgetSelected( SelectionEvent aE ) {
-        // if( !commandSender.sendCommand( cmdGwid, AvUtils.avBool( true ) ) ) {
-        // TsDialogUtils.error( getShell(), commandSender.errorString() );
-        // return;
-        // }
+        Gwid gwid = Gwid.createRtdata( "mcc.AnalogEngine", "n2AE_Dz", "rtdTaskDz" );
+        IAtomicValue taskVal = MccRtUtils.readRtData( gwid, coreApi() );
+        gwid = Gwid.createRtdata( "mcc.AnalogEngine", "n2AE_Dz", "rtdStepControl" );
+        IAtomicValue stepVal = MccRtUtils.readRtData( gwid, coreApi() );
+        if( taskVal.isAssigned() && stepVal.isAssigned() ) {
+          double val = taskVal.asDouble() - stepVal.asDouble();
+          if( !commandSender.sendCommand( cmdGwid, AvUtils.avFloat( val ) ) ) {
+            TsDialogUtils.error( getShell(), commandSender.errorString() );
+            return;
+          }
+        }
       }
     } );
 
     btn = new Button( comp, SWT.PUSH );
     btn.setText( "+" );
+    btn.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        Gwid gwid = Gwid.createRtdata( "mcc.AnalogEngine", "n2AE_Dz", "rtdTaskDz" );
+        IAtomicValue taskVal = MccRtUtils.readRtData( gwid, coreApi() );
+        gwid = Gwid.createRtdata( "mcc.AnalogEngine", "n2AE_Dz", "rtdStepControl" );
+        IAtomicValue stepVal = MccRtUtils.readRtData( gwid, coreApi() );
+        if( taskVal.isAssigned() && stepVal.isAssigned() ) {
+          double val = taskVal.asDouble() + stepVal.asDouble();
+          if( !commandSender.sendCommand( cmdGwid, AvUtils.avFloat( val ) ) ) {
+            TsDialogUtils.error( getShell(), commandSender.errorString() );
+            return;
+          }
+        }
+      }
+    } );
 
     l = new CLabel( comp, SWT.CENTER );
     l.setText( "Шаг изменения:" );
