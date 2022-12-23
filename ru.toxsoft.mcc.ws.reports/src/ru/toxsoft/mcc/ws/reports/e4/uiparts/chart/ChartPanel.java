@@ -13,6 +13,7 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.chart.impl.*;
 import org.toxsoft.core.tsgui.graphics.*;
+import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
 import org.toxsoft.core.tsgui.graphics.lines.*;
 import org.toxsoft.core.tsgui.panels.*;
@@ -147,11 +148,11 @@ public class ChartPanel
   Button btnConsole;
   Button btnPrint;
 
-  G2Chart        chart        = null;
-  ETimeUnit      axisTimeUnit = null;
-  G2ChartConsole console      = null;
-
-  final ISkCoreApi serverApi;
+  G2Chart                  chart        = null;
+  ETimeUnit                axisTimeUnit = null;
+  G2ChartConsole           console      = null;
+  private ISkGraphTemplate template     = null;
+  final ISkCoreApi         serverApi;
 
   ValedComboSelector<ETimeUnit> timeUnitCombo;
 
@@ -396,7 +397,15 @@ public class ChartPanel
         try {
           if( printer.startJob( "printChart" ) ) { //$NON-NLS-1$
             chart.print( printerGc );
+            // напечатаем название шаблона
+            Point chartSize = chart.getControl().getSize();
+            Color oldColor = printerGc.getForeground();
+            printerGc.setForeground( colorManager().getColor( ETsColor.BLACK ) );
+            Point titleSize = printerGc.textExtent( template.title() );
+            printerGc.drawText( template.title(), chartSize.x / 2 - titleSize.x / 2, (int)(chartSize.y * 0.1), true );
+            printerGc.setForeground( oldColor );
             if( legendWindow != null ) {
+              // напечатаем еще название шаблона отчетов
               Point p = legendWindow.shell().getLocation();
               p = toControl( p );
               Transform tr = new Transform( printer );
@@ -451,10 +460,11 @@ public class ChartPanel
   public void setReportAnswer( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate ) {
 
     clear();
-    // TODO проверяем что есть смысл строить график
+    // проверяем что есть смысл строить график
     if( aAnswer.isEmpty() ) {
       return;
     }
+    template = aTemplate;
     // создаем компоненту график
     createChart( aAnswer, aTemplate );
     // наполняем ее данными отчета
