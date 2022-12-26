@@ -32,6 +32,8 @@ public class MccMainSwitchControl
   private final Color colorImitation;
   private final Color colorMagenta;
 
+  private final MccMainEngineControl mainEngine;
+
   /**
    * Конструктор.
    *
@@ -40,8 +42,11 @@ public class MccMainSwitchControl
    * @param aImageIds IStringList - список ИДов изображений
    * @param aTsContext ITsGuiContext - соотвествующий контекст
    */
-  public MccMainSwitchControl( MccSchemePanel aOwner, Gwid aObjGwid, IStringList aImageIds, ITsGuiContext aTsContext ) {
+  public MccMainSwitchControl( MccSchemePanel aOwner, MccMainEngineControl aMainEngine, Gwid aObjGwid,
+      IStringList aImageIds, ITsGuiContext aTsContext ) {
     super( aOwner, aObjGwid, aTsContext );
+
+    mainEngine = TsNullArgumentRtException.checkNull( aMainEngine );
 
     colorRed = colorManager().getColor( ETsColor.RED );
     colorImitation = colorManager().getColor( new RGB( 107, 195, 255 ) );
@@ -111,16 +116,20 @@ public class MccMainSwitchControl
     switch( state ) {
       case ON:
         setImageIndex( 0 );
+        mainEngine.setActiveImageIdx( 0 );
         break;
       case OFF:
         setImageIndex( 1 );
+        mainEngine.setActiveImageIdx( 1 );
         break;
       case UNKNOWN:
         setImageIndex( 1 );
+        mainEngine.setActiveImageIdx( 1 );
         setBkColor( colorMagenta );
         break;
       case FAULT:
         setImageIndex( 2 );
+        mainEngine.setActiveImageIdx( 2 );
         break;
       default:
         throw new TsNotAllEnumsUsedRtException();

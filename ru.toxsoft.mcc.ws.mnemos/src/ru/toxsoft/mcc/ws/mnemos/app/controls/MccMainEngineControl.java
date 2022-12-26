@@ -88,6 +88,14 @@ public class MccMainEngineControl
   }
 
   // ------------------------------------------------------------------------------------
+  // API
+  //
+
+  public void setActiveImageIdx( int aIdx ) {
+    setImageIndex( aIdx );
+  }
+
+  // ------------------------------------------------------------------------------------
   // Implementation
   //
 

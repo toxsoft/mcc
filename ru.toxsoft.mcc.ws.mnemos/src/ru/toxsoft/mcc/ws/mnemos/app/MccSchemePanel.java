@@ -188,7 +188,7 @@ public class MccSchemePanel
     MccMainEngineControl mainEngine = new MccMainEngineControl( this, gwid, imgIds, aContext );
     mainEngine.setLocation( 199, 126 );
     controls.add( mainEngine );
-    dataProvider.addDataConsumer( mainEngine );
+    // dataProvider.addDataConsumer( mainEngine );
 
     // Добавим гидрораспределитель
     gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Hydro" );
@@ -307,7 +307,7 @@ public class MccSchemePanel
     imgIds.add( "icons/main_switch_off.png" ); //$NON-NLS-1$
     imgIds.add( "icons/main_switch_fault.png" ); //$NON-NLS-1$
     gwid = Gwid.createObj( "mcc.MainSwitch", "n2MainSwitch" ); //$NON-NLS-1$ //$NON-NLS-2$
-    MccMainSwitchControl ms = new MccMainSwitchControl( this, gwid, imgIds, aContext );
+    MccMainSwitchControl ms = new MccMainSwitchControl( this, mainEngine, gwid, imgIds, aContext );
     ms.setLocation( 15, 160 );
     controls.add( ms );
     dataProvider.addDataConsumer( ms );
