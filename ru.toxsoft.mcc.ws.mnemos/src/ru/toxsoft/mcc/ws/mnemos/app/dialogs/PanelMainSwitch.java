@@ -17,6 +17,8 @@ import org.toxsoft.uskat.core.api.objserv.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.mnemos.app.utils.*;
 
 /**
  * Панель свойств высоковольтного выключателя.
@@ -33,6 +35,8 @@ public class PanelMainSwitch
 
   SingleDataConsumer switchOff;
 
+  RtDataAliasHelper aliasHelper;
+
   protected PanelMainSwitch( Shell aParent, MccDialogContext aDlgContext ) {
     super( aParent, aDlgContext );
     skObject = aDlgContext.skObject();
@@ -48,6 +52,8 @@ public class PanelMainSwitch
   }
 
   void init() {
+
+    aliasHelper = new RtDataAliasHelper( skConn() );
 
     GridLayout layout = createGridLayout( 1, false );
     setLayout( layout );
@@ -82,7 +88,8 @@ public class PanelMainSwitch
     createRtBooleanLabel( comp, "rtdMainSwitchAlarm", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
     createRtBooleanLabel( comp, "rtdEmergencyStop", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
     Gwid gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_AirInGED_Norm", "rtdCurrentValue" );
-    createRtBooleanLabel( comp, gwid, ICONID_RED_LAMP, ICONID_GREEN_LAMP );
+    createRtLabel( comp, gwid, ICONID_RED_LAMP, ICONID_GREEN_LAMP );
+    // createRtBooleanLabel( comp, gwid, ICONID_RED_LAMP, ICONID_GREEN_LAMP );
     createRtBooleanLabel( comp, "rtdAlarm", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 
     // Создадим кнопки управления
@@ -148,55 +155,6 @@ public class PanelMainSwitch
       }
     } );
 
-    // Composite bkPanel = new Composite( this, SWT.NONE );
-    // bkPanel.setLayout( createGridLayout( 2, true ) );
-    //
-    // createRtBooleanLabel( bkPanel, "rtdAuxOn", ICONID_GRAY_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
-    // createRtBooleanLabel( bkPanel, "rtdOn", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
-    //
-    // createRtBooleanLabel( bkPanel, "rtdPwr", ICONID_RED_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
-    // createRtBooleanLabel( bkPanel, "rtdEnabled", ICONID_RED_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
-    // createRtBooleanLabel( bkPanel, "rtdImitation", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
-    // createRtBooleanLabel( bkPanel, "rtdSwitchOnFailure", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
-    // createRtBooleanLabel( bkPanel, "rtdSwitchOffFailure", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
-    //
-    // Composite buttonBar = new Composite( this, SWT.NONE );
-    // buttonBar.setLayout( createGridLayout( 2, false ) );
-    //
-    // GridData gd = new GridData();
-    // gd.widthHint = 100;
-    //
-    // MccPushCmdButton btnStart = createPushCmdButton( buttonBar, "cmdAwpStart" ); //$NON-NLS-1$
-    // btnStart.getControl().setText( STR_START );
-    // btnStart.getControl().setLayoutData( gd );
-    //
-    // MccPushCmdButton btnStop = createPushCmdButton( buttonBar, "cmdAwpStop" ); //$NON-NLS-1$
-    // btnStop.getControl().setText( STR_STOP );
-    // btnStop.getControl().setLayoutData( gd );
-    //
-    // createOperatingTimeGroup( this, false );
-    //
-    // buttonBar = new Composite( this, SWT.NONE );
-    // buttonBar.setLayout( createGridLayout( 2, false ) );
-    //
-    // MccPushCmdButton btnConfirm = createPushCmdButton( buttonBar, "cmdConfirmation" ); //$NON-NLS-1$
-    // btnConfirm.getControl().setText( STR_CONFIRMATION );
-    // btnConfirm.getControl().setLayoutData( gd );
-    //
-    // Button btnSettins = new Button( buttonBar, SWT.PUSH );
-    // btnSettins.setText( STR_SETTINGS );
-    // btnSettins.setToolTipText( STR_INVOKE_IRR_ENGINE_DIALOG );
-    // btnSettins.setLayoutData( gd );
-    // btnSettins.addSelectionListener( new SelectionAdapter() {
-    //
-    // @Override
-    // public void widgetSelected( SelectionEvent e ) {
-    // Point pl = getParent().getLocation();
-    // Point ps = getParent().getSize();
-    // PanelIrreversibleEngineSettings.showDialog( pl.x + ps.x, pl.y, dialogContext() );
-    // }
-    // } );
-
   }
 
   /**
@@ -212,6 +170,20 @@ public class PanelMainSwitch
     PanelMainSwitch panel = new PanelMainSwitch( wnd.shell(), aContext );
     panel.layout();
     wnd.open();
+  }
+
+  // ------------------------------------------------------------------------------------
+  // Implementation
+  //
+
+  private MccRtBooleanLabel createRtLabel( Composite aParent, Gwid aGwid, String aFalseIconId, String aTrueIconId ) {
+    MccRtBooleanLabel rtLabel = createRtBooleanLabel( aParent, aGwid, aFalseIconId, aTrueIconId );
+    IDataNameAlias alias = aliasHelper.alias( aGwid );
+    if( alias != null ) {
+      rtLabel.setName( alias.title() );
+      rtLabel.setDescription( alias.description() );
+    }
+    return rtLabel;
   }
 
 }
