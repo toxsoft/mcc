@@ -10,7 +10,7 @@
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_Rlu-wHSKEe2iQ77ib3AL1A" featurename="children" parentElementId="org.toxsoft.mws.perspectivestack.main">
     <elements xsi:type="advanced:Perspective" xmi:id="_e6J-AHSREe2iQ77ib3AL1A" elementId="ru.toxsoft.mcc.ws.perps.journals" label="%Persp_MccJournals" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.journals/icons/is24x24/journals.png" tooltip="%Persp_MccJournals_D">
       <children xsi:type="basic:PartStack" xmi:id="_2AJpMHSREe2iQ77ib3AL1A" elementId="ru.toxsoft.mcc.ws.journals.partstack.0">
-        <children xsi:type="basic:Part" xmi:id="_2QXPcHSREe2iQ77ib3AL1A" elementId="ru.toxsoft.mcc.ws.journals.part.part_journalevents" contributionURI="bundleclass://ru.toxsoft.mcc.ws.journals/ru.toxsoft.mcc.ws.journals.e4.uiparts.UipartJournalsFoo" label="%Part_JournalEvents" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.journals/icons/is24x24/journals.png" tooltip="%Part_JournalEvents_D"/>
+        <children xsi:type="basic:Part" xmi:id="_2QXPcHSREe2iQ77ib3AL1A" elementId="ru.toxsoft.mcc.ws.journals.part.part_journalevents" contributionURI="bundleclass://ru.toxsoft.mcc.ws.journals/ru.toxsoft.mcc.ws.journals.e4.uiparts.UipartJournals" label="%Persp_MccJournals" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.journals/icons/is24x24/journals.png" tooltip="%Persp_MccJournals_D"/>
       </children>
     </elements>
   </fragments>
