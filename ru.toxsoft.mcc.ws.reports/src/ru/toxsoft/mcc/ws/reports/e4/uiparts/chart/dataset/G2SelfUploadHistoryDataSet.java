@@ -71,7 +71,7 @@ public class G2SelfUploadHistoryDataSet
 
   @Override
   public IList<ITemporalAtomicValue> getValues( ITimeInterval aInterval ) {
-    System.out.println( "getValues(" + aInterval.toString() );
+    // System.out.println( "getValues(" + aInterval.toString() );
     if( aInterval.equals( ITimeInterval.NULL ) || aInterval.equals( ITimeInterval.WHOLE ) ) {
       return new ElemArrayList<>( values );
     }
@@ -91,7 +91,7 @@ public class G2SelfUploadHistoryDataSet
 
   @Override
   public void prepare( ITimeInterval aInterval ) {
-    System.out.println( "prepare(" + aInterval.toString() );
+    // System.out.println( "prepare(" + aInterval.toString() );
 
     if( queriedInterval == null ) {
       queriedInterval = aInterval;
@@ -142,7 +142,7 @@ public class G2SelfUploadHistoryDataSet
    * @param aTimeInterval интервал запроса
    */
   private void queryData( ITimeInterval aTimeInterval ) {
-    System.out.println( "queryData(" + aTimeInterval.toString() );
+    // System.out.println( "queryData(" + aTimeInterval.toString() );
     // запросим историю параметра
     ISkQueryProcessedData processData = conn.coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
     IStringMap<IDtoQueryParam> queryParams = queryParams( param.gwid() );
