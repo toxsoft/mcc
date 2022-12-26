@@ -178,7 +178,7 @@ public class MccSchemePanel
 
     } );
 
-    Gwid gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Hydro" ); //$NON-NLS-1$ //$NON-NLS-2$
+    Gwid gwid = Gwid.createObj( "mcc.MainSwitch", "n2MainSwitch" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     IStringListEdit imgIds = new StringArrayList();
     imgIds.add( "icons/main_engine_on.png" ); //$NON-NLS-1$
@@ -191,6 +191,7 @@ public class MccSchemePanel
     dataProvider.addDataConsumer( mainEngine );
 
     // Добавим гидрораспределитель
+    gwid = Gwid.createObj( "mcc.IrreversibleEngine", "n2IE_Hydro" );
     imgIds.clear();
     imgIds.add( "icons/gidro-On.png" ); //$NON-NLS-1$
     imgIds.add( "icons/gidro-Off.png" ); //$NON-NLS-1$

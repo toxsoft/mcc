@@ -72,10 +72,10 @@ public class MccMainEngineControl
   @Override
   public IGwidList listNeededGwids() {
     GwidList gl = new GwidList();
-    gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdOn" ) ); //$NON-NLS-1$
-    gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdAlarm" ) ); //$NON-NLS-1$
-    gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdEnabled" ) ); //$NON-NLS-1$
-    gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdImitation" ) ); //$NON-NLS-1$
+    // gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdOn" ) ); //$NON-NLS-1$
+    // gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdAlarm" ) ); //$NON-NLS-1$
+    // gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdEnabled" ) ); //$NON-NLS-1$
+    // gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdImitation" ) ); //$NON-NLS-1$
     return gl;
   }
 
