@@ -1,6 +1,7 @@
 package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
 import static ru.toxsoft.mcc.ws.mnemos.Activator.*;
+import static ru.toxsoft.mcc.ws.mnemos.app.controls.IVjResources.*;
 
 import org.eclipse.swt.graphics.*;
 import org.eclipse.ui.plugin.*;
@@ -134,12 +135,12 @@ public class MccIrreversibleEngineControl
     if( val != null && val.isAssigned() && !val.asBool() ) {
       // setBkColor( colorDarkGray );
       setFgColor( colorRed );
-      tooltipStr.append( "/блокировка" );
+      tooltipStr.append( STR_BLOCKING );
     }
     val = values.getByKey( "rtdImitation" ); //$NON-NLS-1$
     if( val != null && val.isAssigned() && val.asBool() ) {
       setFgColor( colorImitation );
-      tooltipStr.append( "/имитация" );
+      tooltipStr.append( STR_IMITATION );
     }
     setTooltipText( tooltipStr.toString() );
     schemePanel().redraw( bounds.x, bounds.y, bounds.width, bounds.height, false );

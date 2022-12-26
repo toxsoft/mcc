@@ -11,6 +11,9 @@ interface IVjResources {
   String STR_ERR_VALUE_NOT_SET      = "Значение не установлено";         // Значение не установлено
   String STR_ERR_VALUES_COMBINATION = "Недопустимое сочетание сигналов"; // Недопустимое сочетание сигналов
 
+  String STR_BLOCKING  = "/блокировка";
+  String STR_IMITATION = "/имитация";
+
   /**
    * {@link MccRtTextEditor}
    */
