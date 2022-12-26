@@ -22,25 +22,24 @@ import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 
-import ru.toxsoft.mcc.ws.core.templates.utils.*;
-
 /**
  * Набор данных для графика. <br>
  * Самостоятельно подкачивает данные по мере необходимости.
  *
  * @author dima
  */
-public class G2SelfUploadHistoryDataSet
+public class G2SelfUploadHistoryDataSetNew
     extends Stridable
     implements IG2DataSet, IGenericChangeEventer {
 
   String QUERY_PARAM_ID = "query_param_id"; //$NON-NLS-1$
 
-  IListEdit<ITemporalAtomicValue>    values          = new ElemArrayList<>();
+  IListEdit<ITemporalAtomicValue>    values = new ElemArrayList<>();
   private final ISkConnection        conn;
   private final IDataSetParam        param;
   private final GenericChangeEventer eventer;
-  ITimeInterval                      queriedInterval = null;
+
+  private ISkQueryProcessedData processData = null;
 
   /**
    * Конструктор набора данных для графика
@@ -49,7 +48,7 @@ public class G2SelfUploadHistoryDataSet
    * @param aId id набора данных
    * @param aParam описание параметра данных
    */
-  public G2SelfUploadHistoryDataSet( ISkConnection aConnection, String aId, IDataSetParam aParam ) {
+  public G2SelfUploadHistoryDataSetNew( ISkConnection aConnection, String aId, IDataSetParam aParam ) {
     super( aId, TsLibUtils.EMPTY_STRING, TsLibUtils.EMPTY_STRING, true );
     conn = aConnection;
     param = aParam;
@@ -71,18 +70,9 @@ public class G2SelfUploadHistoryDataSet
 
   @Override
   public IList<ITemporalAtomicValue> getValues( ITimeInterval aInterval ) {
-    // System.out.println( "getValues(" + aInterval.toString() );
     if( aInterval.equals( ITimeInterval.NULL ) || aInterval.equals( ITimeInterval.WHOLE ) ) {
       return new ElemArrayList<>( values );
     }
-    // // вырезаем данные под запрошенный интервал
-    // ElemArrayList<ITemporalAtomicValue> retVal = new ElemArrayList<>();
-    // for( ITemporalAtomicValue val : values ) {
-    // if( TimeUtils.contains( aInterval, val.timestamp() ) ) {
-    // retVal.add( val );
-    // }
-    // }
-    // return retVal;
     // готовим данные
     prepare( aInterval );
 
@@ -91,24 +81,29 @@ public class G2SelfUploadHistoryDataSet
 
   @Override
   public void prepare( ITimeInterval aInterval ) {
-    // System.out.println( "prepare(" + aInterval.toString() );
-
-    if( queriedInterval == null ) {
-      queriedInterval = aInterval;
-      queryData( queriedInterval );
+    if( values.isEmpty() ) {
+      // данных нет, просто запрашиваем весь интервал
+      // System.out.println( "queryInterval(" + aInterval.toString() );
+      queryData( aInterval );
     }
     else {
-      // проверяем наличие данных и в случае необходимости подкачиваем
-      Pair<ITimeInterval, ITimeInterval> empty = TimeUtils.subtract( aInterval, queriedInterval );
-      if( empty.left() != null ) {
+      // данные есть, выясняем какие требуется подкачать и запрашиваем только их
+      Pair<ITimeInterval, ITimeInterval> missedIntervals = TimeUtils.subtract( aInterval, valuesInterval() );
+      if( missedIntervals.left() != null ) {
         // подкачаем данные слева
-        queryData( empty.left() );
+        // System.out.println( "queryFromLeft(" + missedIntervals.left().toString() );
+        queryData( missedIntervals.left() );
       }
-      if( empty.right() != null ) {
+      if( missedIntervals.right() != null ) {
         // подкачаем данные справа
-        queryData( empty.right() );
+        // System.out.println( "queryFromRight(" + missedIntervals.right().toString() );
+        queryData( missedIntervals.right() );
       }
     }
+  }
+
+  private ITimeInterval valuesInterval() {
+    return new TimeInterval( values.first().timestamp(), values.last().timestamp() );
   }
 
   @Override
@@ -133,7 +128,12 @@ public class G2SelfUploadHistoryDataSet
 
   @Override
   public void close() {
-    // nop
+    // отказываемся от запроса
+    if( processData != null ) {
+      processData.cancel();
+    }
+    // очищаем свои данные
+    values.clear();
   }
 
   /**
@@ -142,17 +142,20 @@ public class G2SelfUploadHistoryDataSet
    * @param aTimeInterval интервал запроса
    */
   private void queryData( ITimeInterval aTimeInterval ) {
-    // System.out.println( "queryData(" + aTimeInterval.toString() );
     // запросим историю параметра
-    ISkQueryProcessedData processData = conn.coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
+    processData = conn.coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
     IStringMap<IDtoQueryParam> queryParams = queryParams( param.gwid() );
     processData.prepare( queryParams );
 
     processData.genericChangeEventer().addListener( aSource -> {
       ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
       if( q.state() == ESkQueryState.READY ) {
-        IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
+        IList<ITimedList<?>> requestAnswer = createResult( processData, queryParams );
         ITimedList<?> historyData = requestAnswer.getOnly();
+        // боремся с бесконечным циклом запросов, когда сервис постоянно возвращает одно новое данное хотя оно НЕ новое
+        if( historyData.size() <= 1 ) {
+          return;
+        }
         for( Object value : historyData ) {
           if( value instanceof TemporalAtomicValue tav ) {
             values.add( tav );
@@ -162,20 +165,24 @@ public class G2SelfUploadHistoryDataSet
         IListReorderer<ITemporalAtomicValue> reorderer = new ListReorderer<>( values );
         reorderer.sort( ( aO1, aO2 ) -> (int)(aO1.timestamp() - aO2.timestamp()) );
         values = new ElemArrayList<>( reorderer.list() );
-        // обновляем данные об уже запрошеном интревале
-        updateQueriedIntrvl( aTimeInterval );
         // нотификация слушателя о появлении новых данных
         eventer.fireChangeEvent();
       }
     } );
     processData
-        .exec( new QueryInterval( EQueryIntervalType.OSOE, aTimeInterval.startTime(), aTimeInterval.endTime() ) );
+        .exec( new QueryInterval( EQueryIntervalType.CSCE, aTimeInterval.startTime(), aTimeInterval.endTime() ) );
 
   }
 
-  private void updateQueriedIntrvl( ITimeInterval aTimeInterval ) {
-    queriedInterval = new TimeInterval( Long.min( queriedInterval.startTime(), aTimeInterval.startTime() ),
-        Long.max( queriedInterval.endTime(), aTimeInterval.endTime() ) );
+  private static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
+      IStringMap<IDtoQueryParam> aQueryParams ) {
+
+    IListEdit<ITimedList<?>> result = new ElemArrayList<>();
+    for( String paramKey : aQueryParams.keys() ) {
+      ITimedList<?> data = aProcessData.getArgData( paramKey );
+      result.add( data );
+    }
+    return result;
   }
 
   private IStringMap<IDtoQueryParam> queryParams( Gwid aGwid ) {

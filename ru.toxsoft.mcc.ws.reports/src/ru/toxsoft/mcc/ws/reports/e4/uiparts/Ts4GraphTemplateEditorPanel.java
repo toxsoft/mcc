@@ -80,6 +80,8 @@ public class Ts4GraphTemplateEditorPanel
    */
   final ITsNodeKind<ISkUser> NK_USER_NODE = new TsNodeKind<>( "NodeUser", ISkUser.class, true, ICONID_USER ); //$NON-NLS-1$
 
+  protected ChartPanel chartPanel;
+
   static final String TMID_GROUP_BY_USER = "GroupByUser"; //$NON-NLS-1$
 
   /**
@@ -207,23 +209,41 @@ public class Ts4GraphTemplateEditorPanel
                   processData
                       .exec( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
 
-                  IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
+                  // переделываем на асинхронное получение данных
+                  // IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
+                  processData.genericChangeEventer().addListener( aSource -> {
+                    ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+                    if( q.state() == ESkQueryState.READY ) {
+                      IList<ITimedList<?>> requestAnswer = createResult( processData, queryParams );
+                      IList<IG2DataSet> graphData =
+                          createG2SelfUploDataSetList( selTemplate, requestAnswer, connSupp.defConn() );
+                      for( IG2DataSet ds : graphData ) {
+                        if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
+                          ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
+                        }
+                      }
+                      chartPanel.setReportAnswer( graphData, selTemplate );
+                      chartPanel.requestLayout();
+                    }
+                  } );
 
-                  // IList<IG2DataSet> graphData = ReportTemplateUtilities.createG2DataSetList( selTemplate, reportData
-                  // );
-                  IList<IG2DataSet> graphData =
-                      createG2SelfUploDataSetList( selTemplate, reportData, connSupp.defConn() );
+                  // переделываем на асинхронное получение данных
+                  // IList<IG2DataSet> graphData =
+                  // createG2SelfUploDataSetList( selTemplate, reportData, connSupp.defConn() );
+
                   // создаем новую закладку
                   CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
                   tabItem.setText( selTemplate.nmName() );
-                  ChartPanel chartPanel = new ChartPanel( tabFolder, tsContext() );
+                  chartPanel = new ChartPanel( tabFolder, tsContext() );
 
-                  for( IG2DataSet ds : graphData ) {
-                    if( ds instanceof G2SelfUploadHistoryDataSet ) {
-                      ((G2SelfUploadHistoryDataSet)ds).addListener( aSource -> chartPanel.refresh() );
-                    }
-                  }
-                  chartPanel.setReportAnswer( graphData, selTemplate );
+                  // переделываем на асинхронное получение данных
+                  // for( IG2DataSet ds : graphData ) {
+                  // if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
+                  // ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource -> chartPanel.refresh() );
+                  // }
+                  // }
+                  // chartPanel.setReportAnswer( graphData, selTemplate );
+
                   tabItem.setControl( chartPanel );
                   tabFolder.setSelection( tabItem );
                   // tabFolder.requestLayout();
@@ -260,6 +280,17 @@ public class Ts4GraphTemplateEditorPanel
 
   }
 
+  private static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
+      IStringMap<IDtoQueryParam> aQueryParams ) {
+
+    IListEdit<ITimedList<?>> result = new ElemArrayList<>();
+    for( String paramKey : aQueryParams.keys() ) {
+      ITimedList<?> data = aProcessData.getArgData( paramKey );
+      result.add( data );
+    }
+    return result;
+  }
+
   /**
    * По шаблону графика и результату запроса к сервису отчетов создает список наборов данных для графической компоненты
    *
@@ -277,24 +308,25 @@ public class Ts4GraphTemplateEditorPanel
       ISkGraphParam graphParam = graphParams.get( i );
       String gdsId = ReportTemplateUtilities.graphDataSetId( graphParam );
 
-      G2SelfUploadHistoryDataSet dataSet = new G2SelfUploadHistoryDataSet( aConnection, gdsId, new IDataSetParam() {
+      G2SelfUploadHistoryDataSetNew dataSet =
+          new G2SelfUploadHistoryDataSetNew( aConnection, gdsId, new IDataSetParam() {
 
-        @Override
-        public Gwid gwid() {
-          return graphParam.gwid();
-        }
+            @Override
+            public Gwid gwid() {
+              return graphParam.gwid();
+            }
 
-        @Override
-        public String aggrFuncId() {
-          return ReportTemplateUtilities.convertFunc( graphParam.aggrFunc() );
-        }
+            @Override
+            public String aggrFuncId() {
+              return ReportTemplateUtilities.convertFunc( graphParam.aggrFunc() );
+            }
 
-        @Override
-        public int aggrStep() {
-          return (int)aGraphTemplate.aggrStep().timeInMills();
-        }
+            @Override
+            public int aggrStep() {
+              return (int)aGraphTemplate.aggrStep().timeInMills();
+            }
 
-      } );
+          } );
       retVal.add( dataSet );
       // наполняем его данными
       ITimedList<?> timedList = aReportData.get( i );
