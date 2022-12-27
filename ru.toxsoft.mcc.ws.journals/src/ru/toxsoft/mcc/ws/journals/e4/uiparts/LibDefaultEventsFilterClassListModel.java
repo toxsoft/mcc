@@ -48,6 +48,7 @@ public class LibDefaultEventsFilterClassListModel
     IStridablesListEdit<ISkClassInfo> eventClasses = new StridablesList<>();
 
     ISkConnection connection = context.get( ISkConnectionSupplier.class ).defConn();
+
     for( ISkClassInfo classInfo : connection.coreApi().sysdescr().listClasses() ) {
       if( classInfo.events().list().size() > 0 ) {
         eventClasses.add( classInfo );
