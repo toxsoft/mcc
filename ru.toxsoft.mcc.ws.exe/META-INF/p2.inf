@@ -1,0 +1,14 @@
+# 1. Создание временного каталога для распаковки плагина
+# 2. Распаковка плагина
+# 3. Копирование необходимых файлов конфигурации
+# 4. Удаление старых плагинов
+# 5. Удаление временного каталога
+instructions.configure = \
+  org.eclipse.equinox.p2.touchpoint.natives.mkdir(path:${installFolder}/tmp);\
+  org.eclipse.equinox.p2.touchpoint.natives.unzip(source:${artifact.location},target:${installFolder}/tmp);\
+  org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/tmp/run/uskat-l10n,target:${installFolder}/uskat-l10n,overwrite:true);\
+  org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/tmp/run/log4j.xml,target:${installFolder}/log4j.xml,overwrite:true);\
+  org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/tmp/run/mcc.cfg,target:${installFolder}/mcc.cfg,overwrite:true);\
+  org.eclipse.equinox.p2.touchpoint.natives.copy(source:${installFolder}/tmp/docs,target:${installFolder}/docs,overwrite:true);\
+  org.eclipse.equinox.p2.touchpoint.natives.remove(path:${installFolder}/tmp);
+  

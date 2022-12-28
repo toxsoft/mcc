@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+    	<param name="Threshold" value="TRACE" />
+		<param name="File" value="logs/mcc.log" />
+		<param name="MaxFileSize" value="1000KB"/>
+		<param name="MaxBackupIndex" value="100"/>
+		<layout class="org.apache.log4j.PatternLayout">
+	  		<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+		</layout>
+	</appender>
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+    	<param name="Threshold" value="TRACE" />
+        <param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+        	<param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
+		</layout>
+	</appender> 	
+    <appender name="CONSOLE_ERR" class="org.apache.log4j.ConsoleAppender">
+    	<param name="Threshold" value="ERROR" />
+        <param name="Target" value="System.err" />
+		<layout class="org.apache.log4j.PatternLayout">
+        	<param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
+        </layout>
+    </appender>
+<!-- 	
+	<category name="ru.sitrol.mm.fgdp.ws.exe.Activator" additivity="true">
+		<priority value="ERROR" />
+	</category>		
+-->
+    <logger name="ru.sitrol.mm.fgdp.ws.exe.Activator" additivity="false">
+	    <level value="INFO" />
+	    <appender-ref ref="CONSOLE" />
+	    <appender-ref ref="CONSOLE_ERR" />
+    </logger>
+	
+    <logger name="logger_vs" additivity="true">
+            <level value="TRACE" />
+    </logger>		
+
+    <logger name="script" additivity="true">
+            <level value="TRACE" />
+    </logger>		
+
+    <category name="ru">
+            <priority value="TRACE" />
+    </category>
+
+    <category name="org.xnio">
+    	<priority value="ERROR" />
+    </category>
+
+    <category name="org.jboss">
+    	<priority value="ERROR" />
+    </category>
+
+    <category name="org.hornetq">
+    	<priority value="ERROR" />
+    </category>
+
+    <category name="io.netty">
+    	<priority value="ERROR" />
+    </category>
+
+    <category name="logger_vs">
+    	<priority value="TRACE" />
+    </category>
+
+    <root>
+    	<appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE_ERR" />  
+        <appender-ref ref="FILE" />
+    </root>
+</log4j:configuration>
