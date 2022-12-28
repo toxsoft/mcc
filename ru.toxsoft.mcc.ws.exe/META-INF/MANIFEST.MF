@@ -25,3 +25,5 @@ Require-Bundle: javax.annotation,
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.exe
 Bundle-ActivationPolicy: lazy
+Import-Package: org.toxsoft.uskat.onews.gui,
+ org.toxsoft.uskat.users.gui
