@@ -1,15 +1,16 @@
 package ru.toxsoft.mcc.ws.journals.e4.uiparts.engine;
 
+import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.JournalsLibUtils.*;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IMmResources.*;
 
 import org.eclipse.e4.core.contexts.*;
 import org.eclipse.swt.*;
-import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.utils.swt.*;
+import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tsgui.panels.toolbar.*;
 import org.toxsoft.core.tsgui.widgets.*;
 import org.toxsoft.core.tslib.bricks.events.change.*;
 import org.toxsoft.core.tslib.bricks.time.*;
@@ -56,6 +57,8 @@ public class JournalParamsPanel
   IConcerningEventsParams            selectedParams;
   DateTime                           sTime     = null;
   DateTime                           eTime     = null;
+  DateTime                           sDate     = null;
+  DateTime                           eDate     = null;
   /**
    * Текущее действие пользователя
    */
@@ -92,10 +95,11 @@ public class JournalParamsPanel
     // название панели
     Label l = new Label( backplane, SWT.CENTER );
     l.setText( STR_L_JPP_NAME );
-    sTime = new DateTime( backplane, SWT.BORDER | SWT.DATE | SWT.TIME | SWT.CALENDAR | SWT.DROP_DOWN );
-    if( DateTimePickerDecorator.isApplicable() ) {
-      new DateTimePickerDecorator( sTime );
-    }
+    sTime = new DateTime( backplane, SWT.BORDER | SWT.TIME );// | SWT.CALENDAR | SWT.DROP_DOWN );
+    sDate = new DateTime( backplane, SWT.BORDER | SWT.DATE | SWT.CALENDAR | SWT.DROP_DOWN );
+    // if( DateTimePickerDecorator.isApplicable() ) {
+    // new DateTimePickerDecorator( sTime );
+    // }
 
     // По умолчанию запрос за сутки
     // sTime.setTimeInMillis( System.currentTimeMillis() - 24 * 60 * 60 * 1000L );
@@ -103,32 +107,31 @@ public class JournalParamsPanel
     l = new Label( backplane, SWT.CENTER );
     l.setText( "  -  " ); //$NON-NLS-1$
 
-    eTime = new DateTime( backplane, SWT.BORDER | SWT.DATE | SWT.TIME | SWT.CALENDAR | SWT.DROP_DOWN );
-    if( DateTimePickerDecorator.isApplicable() ) {
-      new DateTimePickerDecorator( eTime );
-    }
-    // кнопка запуска запроса
-    Button runQuery = new Button( backplane, SWT.PUSH );
-    // runQuery.setImage( queryRunImage );
-    runQuery.setText( "Run" );
-    runQuery.addSelectionListener( new SelectionListenerAdapter() {
+    eTime = new DateTime( backplane, SWT.BORDER | SWT.TIME );
+    eDate = new DateTime( backplane, SWT.BORDER | SWT.DATE | SWT.CALENDAR | SWT.DROP_DOWN );
+    // if( DateTimePickerDecorator.isApplicable() ) {
+    // new DateTimePickerDecorator( eTime );
+    // }
 
-      @Override
-      public void widgetSelected( SelectionEvent aE ) {
+    // Заголовок
+    TsToolbar toolBar = new TsToolbar( context );
+    toolBar.setIconSize( EIconSize.IS_24X24 );
+
+    toolBar.addSeparator();
+    toolBar.addActionDef( ACDEF_REFRESH );
+    toolBar.addActionDef( ACDEF_FILTER );
+    toolBar.addSeparator();
+    toolBar.addActionDef( ACDEF_PRINT );
+
+    Control toolbarCtrl = toolBar.createControl( backplane );
+    // toolbarCtrl.setLayoutData( BorderLayout.CENTER );
+
+    toolBar.addListener( aActionId -> {
+      if( aActionId.equals( ACDEF_REFRESH.id() ) ) {
         currAction = ECurrentAction.QUERY_ALL;
         genericChangeListenersHolder.fireChangeEvent();
       }
-
-    } );
-
-    // кнопка фильтрованного запроса
-    Button b = new Button( backplane, SWT.PUSH );
-    // b.setImage( querySelectedImage );
-    b.setText( "Filter" );
-    b.addSelectionListener( new SelectionListenerAdapter() {
-
-      @Override
-      public void widgetSelected( SelectionEvent aE ) {
+      if( aActionId.equals( ACDEF_FILTER.id() ) ) {
         IConcerningEventsParams retVal =
             DialogConcerningEventsParams.edit( (ConcerningEventsParams)selectedParams, context );
         if( retVal != null ) {
@@ -137,26 +140,62 @@ public class JournalParamsPanel
           genericChangeListenersHolder.fireChangeEvent();
         }
       }
-
-    } );
-
-    // просто разделитель
-    l = new Label( backplane, SWT.CENTER );
-    l.setText( "  |  " ); //$NON-NLS-1$
-
-    // кнопка печати
-    Button printButton = new Button( backplane, SWT.PUSH );
-    // printButton.setImage( printImage );
-    printButton.setText( "Print" );
-    printButton.addSelectionListener( new SelectionListenerAdapter() {
-
-      @Override
-      public void widgetSelected( SelectionEvent aE ) {
+      if( aActionId.equals( ACDEF_PRINT.id() ) ) {
         currAction = ECurrentAction.PRINT;
         genericChangeListenersHolder.fireChangeEvent();
       }
-
     } );
+
+    // // кнопка запуска запроса
+    // Button runQuery = new Button( backplane, SWT.PUSH );
+    // // runQuery.setImage( queryRunImage );
+    // runQuery.setText( "Run" );
+    // runQuery.addSelectionListener( new SelectionListenerAdapter() {
+    //
+    // @Override
+    // public void widgetSelected( SelectionEvent aE ) {
+    // currAction = ECurrentAction.QUERY_ALL;
+    // genericChangeListenersHolder.fireChangeEvent();
+    // }
+    //
+    // } );
+    //
+    // // кнопка фильтрованного запроса
+    // Button b = new Button( backplane, SWT.PUSH );
+    // // b.setImage( querySelectedImage );
+    // b.setText( "Filter" );
+    // b.addSelectionListener( new SelectionListenerAdapter() {
+    //
+    // @Override
+    // public void widgetSelected( SelectionEvent aE ) {
+    // IConcerningEventsParams retVal =
+    // DialogConcerningEventsParams.edit( (ConcerningEventsParams)selectedParams, context );
+    // if( retVal != null ) {
+    // selectedParams = retVal;
+    // currAction = ECurrentAction.QUERY_SELECTED;
+    // genericChangeListenersHolder.fireChangeEvent();
+    // }
+    // }
+    //
+    // } );
+    //
+    // // просто разделитель
+    // l = new Label( backplane, SWT.CENTER );
+    // l.setText( " | " ); //$NON-NLS-1$
+    //
+    // // кнопка печати
+    // Button printButton = new Button( backplane, SWT.PUSH );
+    // // printButton.setImage( printImage );
+    // printButton.setText( "Print" );
+    // printButton.addSelectionListener( new SelectionListenerAdapter() {
+    //
+    // @Override
+    // public void widgetSelected( SelectionEvent aE ) {
+    // currAction = ECurrentAction.PRINT;
+    // genericChangeListenersHolder.fireChangeEvent();
+    // }
+    //
+    // } );
 
     // кнопка экспорта Excel
     // Button exportExcel = new Button( backplane, SWT.PUSH );
@@ -230,7 +269,7 @@ public class JournalParamsPanel
 
   @Override
   public ITimeInterval interval() {
-    return new TimeInterval( getTimeInMiles( sTime ), getTimeInMiles( eTime ) );
+    return new TimeInterval( getTimeInMiles( sTime, sDate ), getTimeInMiles( eTime, eDate ) );
   }
 
   @Override

@@ -2,10 +2,12 @@ package ru.toxsoft.mcc.ws.journals.e4.uiparts;
 
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.IMmFgdpLibCfgJournalsConstants.*;
 
+import java.lang.reflect.*;
 import java.util.*;
 
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
@@ -37,6 +39,17 @@ public class JournalsLibUtils {
     return cal.getTimeInMillis();
   }
 
+  public static long getTimeInMiles( DateTime aTimeControl, DateTime aDateControl ) {
+    Calendar cal = Calendar.getInstance();
+    cal.set( Calendar.YEAR, aDateControl.getYear() );
+    cal.set( Calendar.MONTH, aDateControl.getMonth() );
+    cal.set( Calendar.DAY_OF_MONTH, aDateControl.getDay() );
+    cal.set( Calendar.HOUR_OF_DAY, aTimeControl.getHours() );
+    cal.set( Calendar.MINUTE, aTimeControl.getMinutes() );
+    cal.set( Calendar.SECOND, aTimeControl.getSeconds() );
+    return cal.getTimeInMillis();
+  }
+
   /**
    * Загружает в указанный контекст модель объектов для редактора фильтра.
    *
@@ -51,44 +64,47 @@ public class JournalsLibUtils {
       return;
     }
 
-    // ITsModularWorkstationService mwService = aContext.get( ITsModularWorkstationService.class );
-    // IAtomicValue objectsModelJavaClassStr = aModelId.getValue( mwService.mwsContext().params() );
-
-    ILibSkObjectsTreeModel objectsTreeModel;
-    if( aContext.hasKey( FILTER_CLASSES_TREE_MODEL_LIB ) ) {
-      ILibClassInfoesTreeModel classListModel = (ILibClassInfoesTreeModel)aContext.get( FILTER_CLASSES_TREE_MODEL_LIB );
-      objectsTreeModel = new LibFilterPlaneObjectsTreeModel( classListModel );
-    }
-    else {
-      throw new TsItemNotFoundRtException( ERR_MSG_CANT_FIND_MODEL_IN_CONTEXT, FILTER_CLASSES_TREE_MODEL_LIB );
-    }
-
-    // try {
-    // Class<?> objectsTreeModelJavaClass = Class.forName( objectsModelJavaClassStr.asString() );
-    // try {
-    // Constructor<?> constructor = objectsTreeModelJavaClass.getConstructor( ILibClassInfoesTreeModel.class );
-    //
+    // ILibSkObjectsTreeModel objectsTreeModel;
     // if( aContext.hasKey( FILTER_CLASSES_TREE_MODEL_LIB ) ) {
-    // ILibClassInfoesTreeModel classListModel =
-    // (ILibClassInfoesTreeModel)aContext.get( FILTER_CLASSES_TREE_MODEL_LIB );
-    // objectsTreeModel = (ILibSkObjectsTreeModel)constructor.newInstance( classListModel );
+    // ILibClassInfoesTreeModel classListModel = (ILibClassInfoesTreeModel)aContext.get( FILTER_CLASSES_TREE_MODEL_LIB
+    // );
+    // objectsTreeModel = new LibFilterPlaneObjectsTreeModel( classListModel );
     // }
     // else {
     // throw new TsItemNotFoundRtException( ERR_MSG_CANT_FIND_MODEL_IN_CONTEXT, FILTER_CLASSES_TREE_MODEL_LIB );
     // }
-    //
-    // }
-    // catch( NoSuchMethodException e ) {
-    // objectsTreeModel = (ILibSkObjectsTreeModel)objectsTreeModelJavaClass.newInstance();
-    // }
-    //
-    // // TODO - нужен ли инит не понятно пока???
-    // // objectsTreeModel.init( aContext );
-    // }
-    // catch( Exception ex ) {
-    // ex.printStackTrace();
-    // throw new TsException( ex, ERR_MSG_CANT_LOAD_MODEL, aModelId.description() );
-    // }
+
+    // ITsModularWorkstationService mwService = aContext.get( ITsModularWorkstationService.class );
+    IAtomicValue objectsModelJavaClassStr = aModelId.getValue( aContext.params() );
+
+    ILibSkObjectsTreeModel objectsTreeModel;
+
+    try {
+      Class<?> objectsTreeModelJavaClass = Class.forName( objectsModelJavaClassStr.asString() );
+      try {
+        Constructor<?> constructor = objectsTreeModelJavaClass.getConstructor( ILibClassInfoesTreeModel.class );
+
+        if( aContext.hasKey( FILTER_CLASSES_TREE_MODEL_LIB ) ) {
+          ILibClassInfoesTreeModel classListModel =
+              (ILibClassInfoesTreeModel)aContext.get( FILTER_CLASSES_TREE_MODEL_LIB );
+          objectsTreeModel = (ILibSkObjectsTreeModel)constructor.newInstance( classListModel );
+        }
+        else {
+          throw new TsItemNotFoundRtException( ERR_MSG_CANT_FIND_MODEL_IN_CONTEXT, FILTER_CLASSES_TREE_MODEL_LIB );
+        }
+
+      }
+      catch( NoSuchMethodException e ) {
+        objectsTreeModel = (ILibSkObjectsTreeModel)objectsTreeModelJavaClass.newInstance();
+      }
+
+      // TODO - нужен ли инит не понятно пока???
+      // objectsTreeModel.init( aContext );
+    }
+    catch( Exception ex ) {
+      ex.printStackTrace();
+      throw new TsException( ex, ERR_MSG_CANT_LOAD_MODEL, aModelId.description() );
+    }
 
     aContext.put( FILTER_OBJECTS_TREE_MODEL_LIB, objectsTreeModel );
   }
@@ -108,18 +124,21 @@ public class JournalsLibUtils {
     }
 
     // ITsModularWorkstationService mwService = aContext.get( ITsModularWorkstationService.class );
-    // IAtomicValue classListModelJavaClassStr = aModelId.getValue( mwService.mwsContext().params() );
-    ILibClassInfoesTreeModel classListModel = new LibDefaultEventsFilterClassListModel();
-    classListModel.init( aContext );
-    // try {
-    // Class<?> classListModelJavaClass = Class.forName( classListModelJavaClassStr.asString() );
-    // classListModel = (ILibClassInfoesTreeModel)classListModelJavaClass.newInstance();
+
+    // ILibClassInfoesTreeModel classListModel = new LibDefaultEventsFilterClassListModel();
     // classListModel.init( aContext );
-    // }
-    // catch( InstantiationException | IllegalAccessException | ClassNotFoundException ex ) {
-    // ex.printStackTrace();
-    // throw new TsException( ex, ERR_MSG_CANT_LOAD_MODEL, aModelId.description() );
-    // }
+
+    IAtomicValue classListModelJavaClassStr = aModelId.getValue( aContext.params() );
+    ILibClassInfoesTreeModel classListModel;
+    try {
+      Class<?> classListModelJavaClass = Class.forName( classListModelJavaClassStr.asString() );
+      classListModel = (ILibClassInfoesTreeModel)classListModelJavaClass.newInstance();
+      classListModel.init( aContext );
+    }
+    catch( InstantiationException | IllegalAccessException | ClassNotFoundException ex ) {
+      ex.printStackTrace();
+      throw new TsException( ex, ERR_MSG_CANT_LOAD_MODEL, aModelId.description() );
+    }
 
     aContext.put( FILTER_CLASSES_TREE_MODEL_LIB, classListModel );
   }

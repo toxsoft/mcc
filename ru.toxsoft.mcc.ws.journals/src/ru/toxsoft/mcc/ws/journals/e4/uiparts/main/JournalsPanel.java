@@ -5,6 +5,7 @@ import static ru.toxsoft.mcc.ws.journals.e4.uiparts.main.IMmResources.*;
 import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
@@ -29,56 +30,53 @@ public class JournalsPanel
   public JournalsPanel( Composite aParent, ITsGuiContext aContext ) {
     super( aParent, aContext );
 
-    initFromContext();
     setLayout( new BorderLayout() );
 
     TabFolder paramsFolder = new TabFolder( this, SWT.NONE );
 
+    IM5Domain m5 = eclipseContext().get( IM5Domain.class );
+
     try {
-      createEventsTable( paramsFolder );
+      ITsGuiContext eventContext = new TsGuiContext( aContext );
+      ISkConnection connection = eventContext.get( ISkConnectionSupplier.class ).defConn();
+      if( !m5.models().hasKey( EventM5Model.MODEL_ID ) ) {
+
+        m5.addModel( new EventM5Model( connection, eventContext ) );
+      }
+      createEventsTable( paramsFolder, eventContext );
     }
     catch( TsException ex ) {
       ex.printStackTrace();
     }
 
-    // try {
-    // createCommandsTable( paramsFolder );
-    // }
-    // catch( TsException ex ) {
-    // ex.printStackTrace();
-    // }
-  }
-
-  private void initFromContext() {
-    IM5Domain m5 = eclipseContext().get( IM5Domain.class );
-
-    ISkConnection connection = tsContext().get( ISkConnectionSupplier.class ).defConn();
-
-    if( !m5.models().hasKey( EventM5Model.MODEL_ID ) ) {
-
-      m5.addModel( new EventM5Model( connection, tsContext() ) );
+    try {
+      ITsGuiContext cmdContext = new TsGuiContext( aContext );
+      ISkConnection connection = cmdContext.get( ISkConnectionSupplier.class ).defConn();
+      if( !m5.models().hasKey( CommandM5Model.MODEL_ID ) ) {
+        m5.addModel( new CommandM5Model( connection ) );
+      }
+      createCommandsTable( paramsFolder, cmdContext );
     }
-
-    if( !m5.models().hasKey( CommandM5Model.MODEL_ID ) ) {
-      m5.addModel( new CommandM5Model( connection ) );
+    catch( TsException ex ) {
+      ex.printStackTrace();
     }
   }
 
-  private void createEventsTable( TabFolder aParent )
+  private static void createEventsTable( TabFolder aParent, ITsGuiContext aContext )
       throws TsException {
 
     TabItem item = new TabItem( aParent, SWT.NONE );
     item.setText( EVENTS_STR );
 
-    item.setControl( new EventsJournalPanel( aParent, tsContext() ) );
+    item.setControl( new EventsJournalPanel( aParent, aContext ) );
   }
 
-  private void createCommandsTable( TabFolder aParent )
+  private static void createCommandsTable( TabFolder aParent, ITsGuiContext aContext )
       throws TsException {
 
     TabItem item = new TabItem( aParent, SWT.NONE );
     item.setText( CMDS_STR );
 
-    item.setControl( new CommandsJournalPanel( aParent, tsContext() ) );
+    item.setControl( new CommandsJournalPanel( aParent, aContext ) );
   }
 }
