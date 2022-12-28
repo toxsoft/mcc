@@ -34,3 +34,4 @@ Require-Bundle: javax.annotation,
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.reports
 Bundle-ActivationPolicy: lazy
+Import-Package: org.toxsoft.uskat.onews.lib
