@@ -35,4 +35,9 @@
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_70APoIDxEe27kpKaA6eWQA" featurename="children" parentElementId="org.toxsoft.mws.menu.main.view">
     <elements xsi:type="menu:HandledMenuItem" xmi:id="_6wz30IDyEe27kpKaA6eWQA" elementId="ru.toxsoft.mcc.ws.mnemos.handledmenuitem.0" command="_D6Yg4IDyEe27kpKaA6eWQA"/>
   </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_OTCq0IalEe2lAbOiWEvuzg" featurename="children" parentElementId="org.toxsoft.mws.toolbar.perspectives">
+    <elements xsi:type="menu:HandledToolItem" xmi:id="_UZH4QIalEe2lAbOiWEvuzg" elementId="ru.toxsoft.mcc.ws.mnemos.handledtoolitem.persp_mccmainscheme" label="%Persp_MccMainScheme" iconURI="platform:/plugin/ru.toxsoft.mcc.ws.mnemos/icons/is16x16/mnemoshema.png" tooltip="%Persp_MccMainScheme_D" type="Radio" command="_zBsM4FkaEe2ha568rOfS2w">
+      <parameters xmi:id="_zNp8cIalEe2lAbOiWEvuzg" elementId="ru.toxsoft.mcc.ws.mnemos.parameter.1" name="org.toxsoft.mws.cmd.switch_persp.arg.perspId" value="ru.toxsoft.mcc.ws.mnemos.perspective.mcc_main_scheme"/>
+    </elements>
+  </fragments>
 </fragment:ModelFragments>
