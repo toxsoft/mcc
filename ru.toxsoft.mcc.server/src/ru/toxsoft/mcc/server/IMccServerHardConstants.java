@@ -16,7 +16,7 @@ public interface IMccServerHardConstants
     extends IS5ServerHardConstants {
 
   /**
-   * Идентификатор сервера
+   * Идентификатор сервера.
    */
   String MCC_SERVER_ID = "mcc.server";
 
