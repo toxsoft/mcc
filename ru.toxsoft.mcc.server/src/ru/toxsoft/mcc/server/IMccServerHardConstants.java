@@ -21,7 +21,7 @@ public interface IMccServerHardConstants
   String MCC_SERVER_ID = "mcc.server";
 
   /**
-   * Имя сервера
+   * Имя сервера.
    */
   String MCC_SERVER_NAME = STR_N_MCC_SERVER_INFO;
 
