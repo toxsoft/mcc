@@ -12,7 +12,7 @@ import org.toxsoft.uskat.s5.server.startup.IS5InitialSysdescrSingleton;
 import org.toxsoft.uskat.s5.server.startup.S5InitialSysdescrSingleton;
 
 /**
- * Реализация синглтона инициализации бекенда
+ * Реализация синглтона инициализации бекенда.
  *
  * @author mvk
  */
