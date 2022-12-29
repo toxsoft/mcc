@@ -12,7 +12,7 @@ import org.toxsoft.uskat.s5.server.startup.S5InitialImplementSingleton;
 import ru.toxsoft.mcc.server.MccMainServer;
 
 /**
- * Реализация синглтона инициализации бекенда
+ * Реализация синглтона инициализации бекенда.
  *
  * @author mvk
  */
