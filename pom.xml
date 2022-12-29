@@ -7,22 +7,23 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tychoVersion>2.1.0</tychoVersion>
+    <tychoVersion>2.6.0</tychoVersion>
     <sonar.exclusions>**/src-gen/**</sonar.exclusions>
  
     <!-- Версия java -->
-    <java.version>11</java.version>
+    <java.version>17</java.version>
+    <java.environment>JavaSE-17</java.environment>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven.compiler.source>${java.version}</maven.compiler.source>
 
     <!-- Группа артефактов определения rcp и rap платформ -->    
-    <platform.groupId>ru.toxsoft</platform.groupId>
+    <platform.groupId>org.toxsoft</platform.groupId>
 
     <!-- Артефакт определения rcp-платформы -->    
-    <platform.rcp.artifactId>ru.toxsoft.releng.targetplatform.rcp</platform.rcp.artifactId>
+    <platform.rcp.artifactId>org.toxsoft.releng.targetplatform.rcp</platform.rcp.artifactId>
 
     <!-- Артефакт определения rap-платформы -->    
-    <platform.rap.artifactId>ru.toxsoft.releng.targetplatform.rap</platform.rap.artifactId>
+    <platform.rap.artifactId>org.toxsoft.releng.targetplatform.rap</platform.rap.artifactId>
 
     <!-- Версия платформы swt. Источник для примера windows: https://mvnrepository.com/artifact/org.eclipse.platform/org.eclipse.swt.win32.win32.x86_64 -->    
     <platform.swt.version>3.115.100</platform.swt.version>
@@ -102,63 +103,63 @@
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-compiler-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-maven-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
           <extensions>true</extensions>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-p2-repository-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-source-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho.extras</groupId>
           <artifactId>tycho-source-feature-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-p2-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-versions-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-p2-director-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>tycho-surefire-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho</groupId>
           <artifactId>target-platform-configuration</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho.extras</groupId>
           <artifactId>tycho-pack200a-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.tycho.extras</groupId>
           <artifactId>tycho-pack200b-plugin</artifactId>
-          <version>2.1.0</version>
+          <version>${tychoVersion}</version>
         </plugin>
         <plugin>
           <groupId>org.eclipse.cbi.maven.plugins</groupId>
@@ -174,13 +175,23 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-packaging-plugin</artifactId>
-        <version>2.1.0</version>
+        <version>${tychoVersion}</version>
         <configuration>
           <archive>
             <manifestEntries>
               <Built-Date>${maven.build.timestamp}</Built-Date>
             </manifestEntries>						
           </archive>
+        </configuration>
+      </plugin>
+      <!-- 2022-02-05 mvk suppress warnings -->
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-publisher-plugin</artifactId>
+        <version>${tychoVersion}</version>
+        <configuration>
+          <publishArtifacts>true</publishArtifacts>
+          <profiles>${java.environment}</profiles>
         </configuration>
       </plugin>
       <plugin>
@@ -199,14 +210,14 @@
           <useProjectSettings>true</useProjectSettings>
           <optimize>true</optimize>
           <showWarnings>false</showWarnings>
-
+          
+          <!-- 2021-01-12 mvk пример отключения кода
           <excludes>
-<!--
-             <exclude>ru/sitrol/mws/lib/core/olds/</exclude>
-             <exclude>ru/sitrol/lib/mnemos/m5/</exclude>
-             <exclude>ru/sitrol/mws/lib/refbooks/m5/</exclude>                
--->
+             <exclude>ru/uskat/mws/lib/core/olds/</exclude>
+             <exclude>ru/uskat/lib/mnemos/m5/</exclude>
+             <exclude>ru/uskat/mws/lib/refbooks/m5/</exclude>                
           </excludes>
+          -->
 
         </configuration>
       </plugin>
@@ -229,17 +240,11 @@
               <goal>plugin-source</goal>
             </goals>
           </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho.extras</groupId>
-        <artifactId>tycho-source-feature-plugin</artifactId>
-        <executions>
           <execution>
-            <id>source-feature</id>
+            <id>feature-source</id>
             <phase>package</phase>
             <goals>
-              <goal>source-feature</goal>
+              <goal>feature-source</goal>
             </goals>
             <configuration>
               <excludes>
@@ -322,6 +327,8 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>
         <configuration>
+          <!-- 2022-02-05 mvk. source: https://www.vogella.com/tutorials/EclipseTycho/article.html -->
+          <executionEnvironment>${java.environment}</executionEnvironment>
           <!-- 2021-01-09 mvk. source: https://www.eclipse.org/lists/tycho-user/msg03932.html -->
           <dependency-resolution>
             <optionalDependencies>ignore</optionalDependencies>
@@ -507,10 +514,17 @@
       </build>
       <modules>
         <!-- TODO rcp-библиотеки -->
-        <module>../ts3-targets/eclipse-releng/${platform.rcp.artifactId}</module>
-        <module>../ts3-targets/eclipse-releng/${platform.rap.artifactId}</module>
+        <module>../ts4-targets/eclipse-releng/${platform.rcp.artifactId}</module>
+        <module>../ts4-targets/eclipse-releng/${platform.rap.artifactId}</module>
      
         <module>ru.toxsoft.mcc.server</module>
+        <module>ru.toxsoft.mcc.ws.core</module>
+        <module>ru.toxsoft.mcc.ws.journals</module>
+        <module>ru.toxsoft.mcc.ws.mnemos</module>
+        <module>ru.toxsoft.mcc.ws.reports</module>
+        <module>ru.toxsoft.mcc.ws.exe</module>
+        <module>ru.toxsoft.mcc.ws.exe.product</module>
+
 
 <!--       	 
         <module>releng/ru.sitrol.releng.p2.rcp</module>
