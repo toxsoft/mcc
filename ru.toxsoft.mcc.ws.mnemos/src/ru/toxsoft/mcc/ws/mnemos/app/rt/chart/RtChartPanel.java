@@ -18,6 +18,7 @@ import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tsgui.valed.controls.basic.*;
+import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.temporal.*;
 import org.toxsoft.core.tslib.bricks.strid.*;
 import org.toxsoft.core.tslib.bricks.strid.impl.*;
@@ -72,6 +73,10 @@ public class RtChartPanel
 
   RtGraphDataSet      graphDataSet;
   private GraphicInfo graphInfo;
+  // наша Y шкала
+  private IYAxisDef yAxisDef;
+  // id набора данных
+  private String graphDataSetId;
 
   static class YAxisInfo {
 
@@ -184,8 +189,7 @@ public class RtChartPanel
           max = chartInfo.minMax().right().doubleValue();
         }
       }
-      IYAxisDef yAxisDef =
-          createYAxisDef( axisInfo.id(), min, max, aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
+      yAxisDef = createYAxisDef( axisInfo.id(), min, max, aGraphParam.displayFormat().format(), axisInfo.unitInfo() );
       aChart.yAxisDefs().add( yAxisDef );
     }
   }
@@ -212,7 +216,7 @@ public class RtChartPanel
     IList<ITemporalAtomicValue> values = aGraphDataSet.getValues( ITimeInterval.NULL );
     Pair<Double, Double> minMax = calcMinMax( values );
 
-    String graphDataSetId = ReportTemplateUtilities.graphDataSetId( aGraphParam );
+    graphDataSetId = ReportTemplateUtilities.graphDataSetId( aGraphParam );
 
     YAxisInfo axisInfo;
     if( axisInfoes.hasKey( aGraphParam.unitId() ) ) {
@@ -279,7 +283,7 @@ public class RtChartPanel
     tuner.setTimeUnit( axisTimeUnit );
     // TODO настройка шкалы времении - диапазон значений
     long startTime = aDataSet.getValues( ITimeInterval.NULL ).first().timestamp();
-    long endTime = startTime + 12 * axisTimeUnit.timeInMills();
+    long endTime = startTime + 10 * axisTimeUnit.timeInMills();
 
     tuner.setTimeInterval( new TimeInterval( startTime, endTime ), false );
     IXAxisDef xAxisDef = tuner.createAxisDef();
@@ -320,10 +324,16 @@ public class RtChartPanel
 
   }
 
+  /**
+   * Запустить таймер обновления
+   */
   public void start() {
     display.timerExec( refreshInterval, refreshTimer );
   }
 
+  /**
+   * Остановить таймер обновления
+   */
   public void stop() {
     timerStopped = true;
   }
@@ -332,6 +342,19 @@ public class RtChartPanel
     ITimeInterval ti = ((G2Chart)chart).xAxisModel().timeInterval();
     long time = System.currentTimeMillis();
     chart.console().locateX( time - (long)(ti.duration() * 0.8) );
+    // проверяем что мы не выскочили из зоны видимой части шкалы
+    IAtomicValue startYAxis = chart.console().getY1( yAxisDef.id() );
+    IAtomicValue endYAxis = chart.console().getY2( yAxisDef.id() );
+    IG2DataSet dataSet = chart.dataSets().getByKey( graphDataSetId );
+    Pair<ITemporalAtomicValue, ITemporalAtomicValue> lastPair = dataSet.locate( System.currentTimeMillis() );
+    if( lastPair.left().value().isAssigned() ) {
+      IAtomicValue lastValue = lastPair.left().value();
+      if( lastValue.asDouble() >= endYAxis.asDouble() || lastValue.asDouble() <= startYAxis.asDouble() ) {
+        // сдвигаем шкалу так чтобы новое значение стало посредине шкалы
+        double shiftY = lastValue.asDouble() <= startYAxis.asDouble() ? -50 : 50;
+        chart.console().shiftYAxis( graphDataSetId, shiftY );
+      }
+    }
     chart.refresh();
   }
 

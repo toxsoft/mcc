@@ -156,7 +156,7 @@ public class RtGraphDataSet
   }
 
   @Override
-  public Pair<ITemporalAtomicValue, ITemporalAtomicValue> locate( long aTimeStamp ) {
+  public synchronized Pair<ITemporalAtomicValue, ITemporalAtomicValue> locate( long aTimeStamp ) {
     ITemporalAtomicValue leftVal = ITemporalAtomicValue.NULL;
     ITemporalAtomicValue rightVal = ITemporalAtomicValue.NULL;
     for( ITemporalAtomicValue value : values ) {
