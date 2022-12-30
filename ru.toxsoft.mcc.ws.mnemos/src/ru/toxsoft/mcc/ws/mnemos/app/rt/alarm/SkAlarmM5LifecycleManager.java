@@ -15,6 +15,7 @@ import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.alarms.lib.*;
 import org.toxsoft.uskat.alarms.lib.filters.*;
@@ -33,6 +34,10 @@ public class SkAlarmM5LifecycleManager
   private static final IDataDef ALARM_QUIT_ID =
       org.toxsoft.core.tslib.av.impl.DataDef.create( "m5.alarm.is.quit", BOOLEAN, TSID_NAME, "Alarm is quit", //
           TSID_DEFAULT_VALUE, AV_FALSE );
+
+  public static final ITsCombiFilterParams EMPTY_FILTER =
+      SkAlarmFilterByHistory.makeFilterParams( EAvCompareOp.NE, AvUtils.AV_0, false, EAvCompareOp.GE,
+          AvUtils.avTimestamp( TimeUtils.MIN_TIMESTAMP ), EAvCompareOp.NE, AvUtils.avStr( TsLibUtils.EMPTY_STRING ) );
 
   private static final ITsCombiFilterParams FILTER1 = SkAlarmFilterByHistory.makeFilterParams( //
       // test ISkAlarm.history() size ('!=0'):
@@ -60,6 +65,10 @@ public class SkAlarmM5LifecycleManager
       // test ISkAlarmThreadHistoryItem.announceThreadId() ('not empty'):
       EAvCompareOp.EQ, AvUtils.avStr( ISkAlarmThreadHistoryItem.ALARM_THREAD_NULL ) );//
 
+  private ITsCombiFilterParams filter = EMPTY_FILTER;
+
+  private ITimeInterval interval = new TimeInterval( System.currentTimeMillis(), System.currentTimeMillis() );
+
   /**
    * Constructor.
    *
@@ -69,6 +78,22 @@ public class SkAlarmM5LifecycleManager
    */
   public SkAlarmM5LifecycleManager( IM5Model<ISkAlarm> aModel, ISkAlarmService aMaster ) {
     super( aModel, false, false, true, true, aMaster );
+  }
+
+  public synchronized ITimeInterval getInterval() {
+    return interval;
+  }
+
+  public synchronized void setInterval( ITimeInterval aInterval ) {
+    interval = aInterval;
+  }
+
+  public ITsCombiFilterParams getFilter() {
+    return filter;
+  }
+
+  public void setFilter( ITsCombiFilterParams aFilter ) {
+    filter = aFilter;
   }
 
   public void setQuitValue( ISkAlarm aAlarm, boolean aIsQuit ) {
@@ -94,7 +119,7 @@ public class SkAlarmM5LifecycleManager
   protected IList<ISkAlarm> doListEntities() {
     IListEdit<ISkAlarm> result = new ElemArrayList<>();
 
-    ITimedList<ISkAlarm> alarms1 = master().queryAlarms( ITimeInterval.WHOLE, FILTER1 );
+    ITimedList<ISkAlarm> alarms1 = master().queryAlarms( interval, filter );
     for( ISkAlarm alarm : alarms1 ) {
       result.add( alarm );
     }

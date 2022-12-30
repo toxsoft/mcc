@@ -14,6 +14,7 @@ import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.alarm.*;
 
 /**
  * Панель журналов (событий, команд и т.д.)
@@ -60,6 +61,18 @@ public class JournalsPanel
     catch( TsException ex ) {
       ex.printStackTrace();
     }
+
+    try {
+      ITsGuiContext alarmContext = new TsGuiContext( aContext );
+
+      if( !m5.models().hasKey( SkAlarmM5Model.MODEL_ID ) ) {
+        m5.addModel( new SkAlarmM5Model() );
+      }
+      createAlarmsTable( paramsFolder, alarmContext );
+    }
+    catch( TsException ex ) {
+      ex.printStackTrace();
+    }
   }
 
   private static void createEventsTable( TabFolder aParent, ITsGuiContext aContext )
@@ -78,5 +91,14 @@ public class JournalsPanel
     item.setText( CMDS_STR );
 
     item.setControl( new CommandsJournalPanel( aParent, aContext ) );
+  }
+
+  private static void createAlarmsTable( TabFolder aParent, ITsGuiContext aContext )
+      throws TsException {
+
+    TabItem item = new TabItem( aParent, SWT.NONE );
+    item.setText( "Тревоги" );
+
+    item.setControl( new AlarmsJournalPanel( aParent, aContext ) );
   }
 }

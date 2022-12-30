@@ -3,6 +3,7 @@ package ru.toxsoft.mcc.ws.journals.e4.uiparts.engine;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IMmResources.*;
 
 import java.lang.reflect.*;
+import java.util.*;
 
 import org.eclipse.core.runtime.*;
 import org.toxsoft.core.tslib.bricks.time.*;
@@ -106,13 +107,28 @@ public class CommandQueryEngine
     ISkCommandService cmdService = coreApi.cmdService();
 
     result = new SortedElemLinkedBundleList<>();
+
+    long intervalStart1 = interval.startTime();
+    long intervalEnd1 = interval.endTime();
+
+    System.out.println( "!!! Strart interval = " + new Date( intervalStart1 ) );
+    System.out.println( "!!! End interval = " + new Date( intervalEnd1 ) );
+
     // для каждого элемента из aParams.items() запросим службу IEventService
     for( int i = 0, count = params.items().size(); i < count; i++ ) {
       ConcerningEventsItem item = (ConcerningEventsItem)params.items().get( i );
       // собственно запрос
       // собственно запрос
       for( Gwid gwid : item.gwids( false, coreApi ) ) {
+        long intervalStart = interval.startTime();
+        long intervalEnd = interval.endTime();
         ITimedList<IDtoCompletedCommand> cmds = cmdService.queryObjCommands( interval, gwid );
+
+        if( cmds.size() > 0 ) {
+          System.out.println( "Strart interval = " + new Date( intervalStart ) );
+          System.out.println( "End interval = " + new Date( intervalEnd ) );
+          System.out.println( "Events = " + cmds.size() );
+        }
         result.addAll( cmds );
       }
 

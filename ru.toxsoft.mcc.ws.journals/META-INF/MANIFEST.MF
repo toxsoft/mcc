@@ -26,7 +26,9 @@ Require-Bundle: javax.annotation,
  org.toxsoft.uskat.dataquality.lib,
  org.toxsoft.uskat.dataquality.s5,
  org.toxsoft.core.jasperreports.gui;bundle-version="1.0.0",
- org.toxsoft.extlibs.jasperreports;bundle-version="1.0.0"
+ org.toxsoft.extlibs.jasperreports;bundle-version="1.0.0",
+ org.toxsoft.uskat.alarms.lib,
+ ru.toxsoft.mcc.ws.mnemos;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.journals
 Bundle-ActivationPolicy: lazy

@@ -3,6 +3,7 @@ package ru.toxsoft.mcc.ws.journals.e4.uiparts.engine;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IMmResources.*;
 
 import java.lang.reflect.*;
+import java.util.*;
 
 import org.eclipse.core.runtime.*;
 import org.toxsoft.core.tslib.bricks.time.*;
@@ -106,12 +107,22 @@ public class EventQueryEngine
     ISkEventService eventService = serverApi.eventService();
     // Делаем запрос на данные с обновлением индикатора прогресса
     result = new SortedElemLinkedBundleList<>();
+
     // для каждого элемента из aParams.items() запросим службу IEventService
     for( int i = 0, count = params.items().size(); i < count; i++ ) {
       ConcerningEventsItem item = (ConcerningEventsItem)params.items().get( i );
       // собственно запрос
       for( Gwid gwid : item.gwids( true, serverApi ) ) {
+        long intervalStart = interval.startTime();
+        long intervalEnd = interval.endTime();
+
         ITimedList<SkEvent> events = eventService.queryObjEvents( interval, gwid );
+        if( events.size() > 0 ) {
+          System.out.println( "Strart interval = " + new Date( intervalStart ) );
+          System.out.println( "End interval = " + new Date( intervalEnd ) );
+          System.out.println( "Events = " + events.size() );
+        }
+
         result.addAll( events );
       }
       aMonitor.worked( 1 );
