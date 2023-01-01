@@ -96,7 +96,15 @@ public class AlarmsJournalPanel
 
     alarmsPanel.createControl( this );
 
-    paramsPanel = new JournalParamsPanel( ctx );
+    paramsPanel = new JournalParamsPanel( ctx ) {
+
+      @Override
+      protected IConcerningEventsParams chooseFilterParams() {
+        TsDialogUtils.underDevelopment( getShell() );
+        return null;
+      }
+
+    };
     paramsPanel.addListener( this );
 
     paramsPanel.setAppContext( aContext.eclipseContext() );
@@ -155,12 +163,13 @@ public class AlarmsJournalPanel
     alarmsPanel.refresh();
   }
 
-  private static ITsCombiFilterParams formFilter( boolean aAllAlarmsInInterval ) {
+  private ITsCombiFilterParams formFilter( boolean aAllAlarmsInInterval ) {
 
     ITsCombiFilterParams allInInterval = SkAlarmM5LifecycleManager.EMPTY_FILTER;
 
     if( !aAllAlarmsInInterval ) {
       // сложный фильтр
+      //return paramsPanel.selectedParams().items().first();
     }
 
     return allInInterval;

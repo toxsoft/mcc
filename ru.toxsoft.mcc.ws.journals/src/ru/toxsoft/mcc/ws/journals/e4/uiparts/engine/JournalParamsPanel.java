@@ -132,8 +132,7 @@ public class JournalParamsPanel
         genericChangeListenersHolder.fireChangeEvent();
       }
       if( aActionId.equals( ACDEF_FILTER.id() ) ) {
-        IConcerningEventsParams retVal =
-            DialogConcerningEventsParams.edit( (ConcerningEventsParams)selectedParams, context );
+        IConcerningEventsParams retVal = chooseFilterParams();
         if( retVal != null ) {
           selectedParams = retVal;
           currAction = ECurrentAction.QUERY_SELECTED;
@@ -351,6 +350,17 @@ public class JournalParamsPanel
   @Override
   public void resetPendingEvents() {
     genericChangeListenersHolder.resetPendingEvents();
+  }
+
+  /**
+   * It lets user choose filter params (for example by dialog).
+   *
+   * @return IConcerningEventsParams - filter params (may be null)
+   */
+  protected IConcerningEventsParams chooseFilterParams() {
+    IConcerningEventsParams retVal =
+        DialogConcerningEventsParams.edit( (ConcerningEventsParams)selectedParams, context );
+    return retVal;
   }
 
 }
