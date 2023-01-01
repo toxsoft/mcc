@@ -38,6 +38,11 @@ public class SkAlarmM5Model
   public static final String MODEL_ID = "sk.Alarm"; //$NON-NLS-1$
 
   /**
+   * Print Model id
+   */
+  public static final String PRINT_MODEL_ID = MODEL_ID + ".print"; //$NON-NLS-1$
+
+  /**
    * Author of alarm
    */
   public static final String FID_AUTHOR = "author"; //$NON-NLS-1$
@@ -114,9 +119,11 @@ public class SkAlarmM5Model
 
   /**
    * Constructor
+   *
+   * @param aForPrint - attribute signs the model for prints (if true).
    */
-  public SkAlarmM5Model() {
-    super( MODEL_ID, ISkAlarm.class );
+  public SkAlarmM5Model( boolean aForPrint ) {
+    super( aForPrint ? PRINT_MODEL_ID : MODEL_ID, ISkAlarm.class );
     setNameAndDescription( STR_N_ALARM, STR_D_ALARM );
 
     // add fields

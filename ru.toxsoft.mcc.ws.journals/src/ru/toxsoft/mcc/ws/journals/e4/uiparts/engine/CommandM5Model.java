@@ -36,6 +36,11 @@ public class CommandM5Model
   public static final String MODEL_ID = "ts.sk.journal.ISkCommand"; //$NON-NLS-1$
 
   /**
+   * Model for print.
+   */
+  public static final String PRINT_MODEL_ID = MODEL_ID + ".print"; //$NON-NLS-1$
+
+  /**
    * Идентификатор поля {@link #VIS_NAME}.
    */
   public static final String FID_VIS_NAME = "VisName"; //$NON-NLS-1$
@@ -146,9 +151,10 @@ public class CommandM5Model
    * Конструктор.
    *
    * @param aConn - соединение с сервером.
+   * @param aForPrint - attribute signs the model for prints (if true).
    */
-  public CommandM5Model( ISkConnection aConn ) {
-    super( MODEL_ID, IDtoCompletedCommand.class );
+  public CommandM5Model( ISkConnection aConn, boolean aForPrint ) {
+    super( aForPrint ? PRINT_MODEL_ID : MODEL_ID, IDtoCompletedCommand.class );
     conn = aConn;
     setNameAndDescription( CMDS_LIST_TABLE_NAME, CMDS_LIST_TABLE_DESCR );
     IListEdit<IM5FieldDef<IDtoCompletedCommand, ?>> fDefs = new ElemArrayList<>();

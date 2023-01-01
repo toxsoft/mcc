@@ -54,7 +54,7 @@ public class JournalsPanel
       ITsGuiContext cmdContext = new TsGuiContext( aContext );
       ISkConnection connection = cmdContext.get( ISkConnectionSupplier.class ).defConn();
       if( !m5.models().hasKey( CommandM5Model.MODEL_ID ) ) {
-        m5.addModel( new CommandM5Model( connection ) );
+        m5.addModel( new CommandM5Model( connection, false ) );
       }
       createCommandsTable( paramsFolder, cmdContext );
     }
@@ -66,7 +66,7 @@ public class JournalsPanel
       ITsGuiContext alarmContext = new TsGuiContext( aContext );
 
       if( !m5.models().hasKey( SkAlarmM5Model.MODEL_ID ) ) {
-        m5.addModel( new SkAlarmM5Model() );
+        m5.addModel( new SkAlarmM5Model( false ) );
       }
       createAlarmsTable( paramsFolder, alarmContext );
     }

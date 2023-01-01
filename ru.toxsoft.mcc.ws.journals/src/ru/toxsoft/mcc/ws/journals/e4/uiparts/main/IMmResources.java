@@ -10,9 +10,11 @@ interface IMmResources {
   /**
    * {@link EventsJournalPanel},
    */
-  String PRINT_EVENT_LIST_TITLE_FORMAT = Messages.PRINT_EVENT_LIST_TITLE_FORMAT;
-  String AUTHOR_STR                    = Messages.AUTHOR_STR;
-  String DATE_STR                      = Messages.DATE_STR;
+  String PRINT_EVENT_LIST_TITLE_FORMAT   = Messages.PRINT_EVENT_LIST_TITLE_FORMAT;
+  String PRINT_COMMAND_LIST_TITLE_FORMAT = Messages.PRINT_COMMAND_LIST_TITLE_FORMAT;
+  String PRINT_ALARM_LIST_TITLE_FORMAT   = Messages.PRINT_ALARM_LIST_TITLE_FORMAT;
+  String AUTHOR_STR                      = Messages.AUTHOR_STR;
+  String DATE_STR                        = Messages.DATE_STR;
 
   /**
    * {@link JournalsPanel},

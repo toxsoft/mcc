@@ -12,6 +12,9 @@ public class Messages
   public static String        DATE_STR;
   public static String        EVENTS_STR;
   public static String        PRINT_EVENT_LIST_TITLE_FORMAT;
+  public static String        PRINT_COMMAND_LIST_TITLE_FORMAT;
+  public static String        PRINT_ALARM_LIST_TITLE_FORMAT;
+
   static {
     // initialize resource bundle
     NLS.initializeMessages( BUNDLE_NAME, Messages.class );

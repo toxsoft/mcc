@@ -68,7 +68,7 @@ public class AddonMccMnemos
 
     // регистрируем свои m5 модели TODO перенести в специальное место, см. KM5DataAliasesContributor
     IM5Domain m5 = aWinContext.get( IM5Domain.class );
-    m5.addModel( new SkAlarmM5Model() );
+    m5.addModel( new SkAlarmM5Model( false ) );
   }
 
   private void openConnection( ISkConnection aConn, IEclipseContext aWinContext ) {

@@ -1,16 +1,23 @@
 package ru.toxsoft.mcc.ws.journals.e4.uiparts.main;
 
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.IMmFgdpLibCfgJournalsConstants.*;
+import static ru.toxsoft.mcc.ws.journals.e4.uiparts.main.IMmResources.*;
+
+import java.text.*;
+import java.util.*;
 
 import org.eclipse.jface.dialogs.*;
 import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.jasperreports.gui.main.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.gui.panels.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.bricks.events.change.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
@@ -21,11 +28,16 @@ import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.api.sysdescr.dto.*;
+import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.s5.utils.*;
 
 import ru.toxsoft.mcc.ws.journals.e4.uiparts.*;
 import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.*;
 import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IJournalParamsPanel.*;
+
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.type.*;
 
 /**
  * Панель просмотра журнала команд
@@ -35,6 +47,13 @@ import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IJournalParamsPanel.*;
 public class CommandsJournalPanel
     extends TsPanel
     implements IGenericChangeListener {
+
+  /**
+   * формат для отображения метки времени
+   */
+  private static final String timestampFormatString = "dd.MM.yy HH:mm:ss"; //$NON-NLS-1$
+
+  private static final DateFormat timestampFormat = new SimpleDateFormat( timestampFormatString );
 
   IM5CollectionPanel<IDtoCompletedCommand> panel = null;
 
@@ -105,6 +124,9 @@ public class CommandsJournalPanel
     if( journalPanel.currentAction() == ECurrentAction.QUERY_SELECTED ) {
       querySelectedEvents();
     }
+    if( journalPanel.currentAction() == ECurrentAction.PRINT ) {
+      printCommands();
+    }
   }
 
   private void queryAllEvents() {
@@ -174,5 +196,47 @@ public class CommandsJournalPanel
     ILibClassInfoesTreeModel<IDtoCmdInfo> classModel =
         (ILibClassInfoesTreeModel<IDtoCmdInfo>)tsContext().get( FILTER_CLASSES_TREE_MODEL_LIB );
     return classModel.getRootClasses();
+  }
+
+  private void printCommands() {
+    try {
+      ISkConnectionSupplier connectionSup = eclipseContext().get( ISkConnectionSupplier.class );
+      ISkConnection connection = connectionSup.defConn();
+      CommandM5Model printCommandsModel = new CommandM5Model( connection, true );
+
+      m5().initTemporaryModel( printCommandsModel );
+
+      ITsGuiContext printContext = new TsGuiContext( tsContext() );
+
+      long startTime = paramsPanel.interval().startTime();
+      long endTime = paramsPanel.interval().endTime();
+
+      String title = String.format( PRINT_COMMAND_LIST_TITLE_FORMAT, timestampFormat.format( new Date( startTime ) ),
+          timestampFormat.format( new Date( endTime ) ) );
+
+      IJasperReportConstants.REPORT_TITLE_M5_ID.setValue( printContext.params(), AvUtils.avStr( title ) );
+
+      // выясняем текущего пользователя
+
+      ISkUser user = S5ConnectionUtils.getConnectedUser( connection.coreApi() );
+      String userName = user.nmName().trim().length() > 0 ? user.nmName() : user.login();
+
+      IJasperReportConstants.LEFT_BOTTOM_STR_M5_ID.setValue( printContext.params(),
+          AvUtils.avStr( AUTHOR_STR + userName ) );
+      IJasperReportConstants.RIGHT_BOTTOM_STR_M5_ID.setValue( printContext.params(),
+          AvUtils.avStr( DATE_STR + timestampFormat.format( new Date() ) ) );
+
+      printContext.params().setStr( IJasperReportConstants.REPORT_DATA_HORIZONTAL_TEXT_ALIGN_ID,
+          HorizontalTextAlignEnum.LEFT.getName() );
+
+      final JasperPrint jasperPrint =
+          ReportGenerator.generateJasperPrint( printContext, printCommandsModel, commandProvider );
+      JasperReportDialog.showPrint( printContext, jasperPrint );
+    }
+    catch( Exception ex ) {
+      LoggerUtils.errorLogger().error( ex );
+      TsDialogUtils.error( getShell(), ex );
+    }
+
   }
 }

@@ -1,8 +1,13 @@
 package ru.toxsoft.mcc.ws.journals.e4.uiparts.main;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
+import static ru.toxsoft.mcc.ws.journals.e4.uiparts.main.IMmResources.*;
+
+import java.text.*;
+import java.util.*;
 
 import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.jasperreports.gui.main.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.dialogs.*;
@@ -21,11 +26,16 @@ import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.uskat.alarms.lib.*;
 import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.s5.utils.*;
 
 import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.*;
 import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IJournalParamsPanel.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.alarm.*;
+
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.type.*;
 
 /**
  * Панель просмотра журнала тревог
@@ -35,6 +45,13 @@ import ru.toxsoft.mcc.ws.mnemos.app.rt.alarm.*;
 public class AlarmsJournalPanel
     extends TsPanel
     implements IGenericChangeListener {
+
+  /**
+   * формат для отображения метки времени
+   */
+  private static final String timestampFormatString = "dd.MM.yy HH:mm:ss"; //$NON-NLS-1$
+
+  private static final DateFormat timestampFormat = new SimpleDateFormat( timestampFormatString );
 
   IM5CollectionPanel<ISkAlarm> alarmsPanel = null;
 
@@ -115,6 +132,9 @@ public class AlarmsJournalPanel
     if( journalPanel.currentAction() == ECurrentAction.QUERY_SELECTED ) {
       queryAlarms( false );
     }
+    if( journalPanel.currentAction() == ECurrentAction.PRINT ) {
+      printAlarms();
+    }
   }
 
   private void queryAlarms( boolean aAllAlarmsInInterval ) {
@@ -144,6 +164,48 @@ public class AlarmsJournalPanel
     }
 
     return allInInterval;
+  }
+
+  private void printAlarms() {
+    try {
+      ISkConnectionSupplier connectionSup = eclipseContext().get( ISkConnectionSupplier.class );
+      ISkConnection connection = connectionSup.defConn();
+      SkAlarmM5Model printAlarmsModel = new SkAlarmM5Model( true );
+
+      m5().initTemporaryModel( printAlarmsModel );
+
+      ITsGuiContext printContext = new TsGuiContext( tsContext() );
+
+      long startTime = paramsPanel.interval().startTime();
+      long endTime = paramsPanel.interval().endTime();
+
+      String title = String.format( PRINT_ALARM_LIST_TITLE_FORMAT, timestampFormat.format( new Date( startTime ) ),
+          timestampFormat.format( new Date( endTime ) ) );
+
+      IJasperReportConstants.REPORT_TITLE_M5_ID.setValue( printContext.params(), AvUtils.avStr( title ) );
+
+      // выясняем текущего пользователя
+
+      ISkUser user = S5ConnectionUtils.getConnectedUser( connection.coreApi() );
+      String userName = user.nmName().trim().length() > 0 ? user.nmName() : user.login();
+
+      IJasperReportConstants.LEFT_BOTTOM_STR_M5_ID.setValue( printContext.params(),
+          AvUtils.avStr( AUTHOR_STR + userName ) );
+      IJasperReportConstants.RIGHT_BOTTOM_STR_M5_ID.setValue( printContext.params(),
+          AvUtils.avStr( DATE_STR + timestampFormat.format( new Date() ) ) );
+
+      printContext.params().setStr( IJasperReportConstants.REPORT_DATA_HORIZONTAL_TEXT_ALIGN_ID,
+          HorizontalTextAlignEnum.LEFT.getName() );
+
+      final JasperPrint jasperPrint =
+          ReportGenerator.generateJasperPrint( printContext, printAlarmsModel, alarmsLifecycleManager.itemsProvider() );
+      JasperReportDialog.showPrint( printContext, jasperPrint );
+    }
+    catch( Exception ex ) {
+      LoggerUtils.errorLogger().error( ex );
+      TsDialogUtils.error( getShell(), ex );
+    }
+
   }
 
 }
