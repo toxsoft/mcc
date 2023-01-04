@@ -56,6 +56,8 @@ public class KM5TemplateContributor
     return CONRTIBUTED_MODEL_IDS;
   }
 
+  // jsut for one more rebuild...
+
   // GOGA 2023-01-04
   // не нужно отрабатывать изменения в Sysdescr, поскольку классы CONRTIBUTED_MODEL_IDS не меняются на ходу
   // @Override
