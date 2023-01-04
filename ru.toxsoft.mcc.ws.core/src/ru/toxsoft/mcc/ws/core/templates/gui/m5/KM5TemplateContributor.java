@@ -1,8 +1,6 @@
 package ru.toxsoft.mcc.ws.core.templates.gui.m5;
 
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tslib.coll.helpers.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
@@ -58,46 +56,51 @@ public class KM5TemplateContributor
     return CONRTIBUTED_MODEL_IDS;
   }
 
-  @Override
-  protected boolean papiUpdateModel( ECrudOp aOp, String aClassId ) {
-    switch( aOp ) {
-      case CREATE:
-      case EDIT: {
-        if( isMine( aClassId ) ) {
-          m5().replaceModel( mineModel( aClassId ) );
-        }
-        break;
-      }
-      case REMOVE: {
-        m5().removeModel( aClassId );
-        break;
-      }
-      case LIST:
-        throw new TsInternalErrorRtException();
-      default:
-        throw new TsNotAllEnumsUsedRtException();
-    }
-    return true;
-  }
-
-  private M5Model<?> mineModel( String aClassId ) {
-    M5Model<?> retVal = new SkReportTemplateM5Model( skConn() );
-    switch( aClassId ) {
-      case ISkReportTemplate.CLASS_ID: {
-        break;
-      }
-      case ISkGraphTemplate.CLASS_ID: {
-        retVal = new SkGraphTemplateM5Model( skConn() );
-        break;
-      }
-      default:
-        throw new TsNotAllEnumsUsedRtException( aClassId );
-    }
-    return retVal;
-  }
-
-  private boolean isMine( String aClassId ) {
-    return myModels.hasElem( aClassId );
-  }
+  // GOGA 2023-01-04
+  // не нужно отрабатывать изменения в Sysdescr, поскольку классы CONRTIBUTED_MODEL_IDS не меняются на ходу
+  // @Override
+  // protected void papiUpdateModel( ECrudOp aOp, String aClassId ) {
+  // switch( aOp ) {
+  // case CREATE:
+  // case EDIT: {
+  // if( isMine( aClassId ) ) {
+  // m5().replaceModel( mineModel( aClassId ) );
+  // }
+  // break;
+  // }
+  // case REMOVE: {
+  // m5().removeModel( aClassId );
+  // break;
+  // }
+  // case LIST: {
+  //
+  // // FIXME what to do here?
+  //
+  // break;
+  // }
+  // default:
+  // throw new TsNotAllEnumsUsedRtException();
+  // }
+  // }
+  //
+  // private M5Model<?> mineModel( String aClassId ) {
+  // M5Model<?> retVal = new SkReportTemplateM5Model( skConn() );
+  // switch( aClassId ) {
+  // case ISkReportTemplate.CLASS_ID: {
+  // break;
+  // }
+  // case ISkGraphTemplate.CLASS_ID: {
+  // retVal = new SkGraphTemplateM5Model( skConn() );
+  // break;
+  // }
+  // default:
+  // throw new TsNotAllEnumsUsedRtException( aClassId );
+  // }
+  // return retVal;
+  // }
+  //
+  // private boolean isMine( String aClassId ) {
+  // return myModels.hasElem( aClassId );
+  // }
 
 }
