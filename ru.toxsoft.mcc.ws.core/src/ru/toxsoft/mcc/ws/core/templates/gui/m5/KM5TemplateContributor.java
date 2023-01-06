@@ -1,11 +1,13 @@
 package ru.toxsoft.mcc.ws.core.templates.gui.m5;
 
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.km5.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.tsgui.m5.IM5Domain;
+import org.toxsoft.core.tslib.coll.primtypes.IStringList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringListEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.base.gui.km5.IKM5ContributorCreator;
+import org.toxsoft.uskat.base.gui.km5.KM5AbstractContributor;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 
@@ -56,7 +58,7 @@ public class KM5TemplateContributor
     return CONRTIBUTED_MODEL_IDS;
   }
 
-  // jsut for one more rebuild...
+  // jsut for one more rebuild....
 
   // GOGA 2023-01-04
   // не нужно отрабатывать изменения в Sysdescr, поскольку классы CONRTIBUTED_MODEL_IDS не меняются на ходу
