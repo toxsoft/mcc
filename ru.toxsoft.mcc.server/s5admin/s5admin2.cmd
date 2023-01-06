@@ -1,7 +1,7 @@
 @echo off
 
 :: set JAVA_HOME=C:\Program Files\Java\jdk-11.0.10
-set JAVA_HOME=C:\Program Files\Java\jdk-17.0.4.1
+set JAVA_HOME=C:\Program Files\Java\jdk-17.0.2
 
 :: Настройка окружения запуска
 set ADMIN_CLASSPATH=^
