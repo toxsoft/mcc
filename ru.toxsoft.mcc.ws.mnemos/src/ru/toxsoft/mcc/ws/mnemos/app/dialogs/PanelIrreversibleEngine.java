@@ -50,6 +50,7 @@ public class PanelIrreversibleEngine
     createRtBooleanLabel( bkPanel, "rtdImitation", ICONID_GRAY_LAMP, ICONID_YELLOW_LAMP ); //$NON-NLS-1$
     createRtBooleanLabel( bkPanel, "rtdSwitchOnFailure", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
     createRtBooleanLabel( bkPanel, "rtdSwitchOffFailure", ICONID_GRAY_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
+    createRtBooleanLabel( bkPanel, "rtdReady", ICONID_YELLOW_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
 
     Composite buttonBar = new Composite( this, SWT.NONE );
     buttonBar.setLayout( createGridLayout( 2, false ) );
