@@ -141,7 +141,7 @@ public class MccIrreversibleEngineControl
       tooltipStr.append( STR_BLOCKING );
     }
     val = values.getByKey( "rtdReady" ); //$NON-NLS-1$
-    if( val != null && val.isAssigned() && val.asBool() ) {
+    if( val != null && val.isAssigned() && !val.asBool() ) {
       setFgColor( colorYellow );
       tooltipStr.append( STR_NO_CONTROL );
     }
