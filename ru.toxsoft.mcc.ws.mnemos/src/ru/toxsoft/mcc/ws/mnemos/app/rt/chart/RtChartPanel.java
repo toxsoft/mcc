@@ -1,43 +1,47 @@
 package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
-import org.eclipse.jface.resource.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.*;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.RGBA;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.plugin.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.chart.impl.*;
-import org.toxsoft.core.tsgui.graphics.*;
-import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
-import org.toxsoft.core.tsgui.graphics.lines.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.utils.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tsgui.valed.controls.basic.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.temporal.*;
-import org.toxsoft.core.tslib.bricks.strid.*;
-import org.toxsoft.core.tslib.bricks.strid.impl.*;
-import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.tsgui.graphics.ETsOrientation;
+import org.toxsoft.core.tsgui.graphics.fonts.impl.FontInfo;
+import org.toxsoft.core.tsgui.graphics.lines.TsLineInfo;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.utils.ITsVisualsProvider;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tsgui.valed.controls.basic.ValedComboSelector;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.temporal.ITemporalAtomicValue;
+import org.toxsoft.core.tslib.bricks.strid.IStridable;
+import org.toxsoft.core.tslib.bricks.strid.impl.Stridable;
+import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
+import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.utils.Pair;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
 import ru.toxsoft.mcc.ws.core.chart_utils.*;
-import ru.toxsoft.mcc.ws.core.chart_utils.console.*;
-import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.*;
-import ru.toxsoft.mcc.ws.core.templates.api.*;
-import ru.toxsoft.mcc.ws.core.templates.utils.*;
-import ru.toxsoft.mcc.ws.mnemos.*;
+import ru.toxsoft.mcc.ws.core.chart_utils.console.ConsoleWindow;
+import ru.toxsoft.mcc.ws.core.chart_utils.console.TimeAxisTuner;
+import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.AxisMarkupTuner;
+import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.MarkUpInfo;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkGraphParam;
+import ru.toxsoft.mcc.ws.core.templates.utils.ReportTemplateUtilities;
+import ru.toxsoft.mcc.ws.mnemos.Activator;
 
 /**
  * Компонента, отображающая график одного параметра в реальном времени. <br>
@@ -347,7 +351,8 @@ public class RtChartPanel
     IAtomicValue endYAxis = chart.console().getY2( yAxisDef.id() );
     IG2DataSet dataSet = chart.dataSets().getByKey( graphDataSetId );
     Pair<ITemporalAtomicValue, ITemporalAtomicValue> lastPair = dataSet.locate( System.currentTimeMillis() );
-    if( lastPair.left().value().isAssigned() && lastPair.right().value().isAssigned() ) {
+    if( !lastPair.left().equals( ITemporalAtomicValue.NULL )
+        && !lastPair.right().equals( ITemporalAtomicValue.NULL ) ) {
       IAtomicValue lastValue = lastPair.left().value();
       if( lastValue.asDouble() >= endYAxis.asDouble() || lastValue.asDouble() <= startYAxis.asDouble() ) {
         // сдвигаем шкалу так чтобы новое значение стало посредине шкалы
