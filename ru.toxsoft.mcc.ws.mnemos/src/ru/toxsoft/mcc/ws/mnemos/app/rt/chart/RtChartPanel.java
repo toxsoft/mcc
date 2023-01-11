@@ -347,7 +347,7 @@ public class RtChartPanel
     IAtomicValue endYAxis = chart.console().getY2( yAxisDef.id() );
     IG2DataSet dataSet = chart.dataSets().getByKey( graphDataSetId );
     Pair<ITemporalAtomicValue, ITemporalAtomicValue> lastPair = dataSet.locate( System.currentTimeMillis() );
-    if( lastPair.left().value().isAssigned() ) {
+    if( lastPair.left().value().isAssigned() && lastPair.right().value().isAssigned() ) {
       IAtomicValue lastValue = lastPair.left().value();
       if( lastValue.asDouble() >= endYAxis.asDouble() || lastValue.asDouble() <= startYAxis.asDouble() ) {
         // сдвигаем шкалу так чтобы новое значение стало посредине шкалы
