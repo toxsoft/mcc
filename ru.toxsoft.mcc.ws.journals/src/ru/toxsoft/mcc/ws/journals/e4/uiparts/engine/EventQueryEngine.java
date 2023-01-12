@@ -2,18 +2,22 @@ package ru.toxsoft.mcc.ws.journals.e4.uiparts.engine;
 
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IMmResources.*;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 
-import org.eclipse.core.runtime.*;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.evserv.*;
-import org.toxsoft.uskat.s5.legacy.*;
+import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
+import org.toxsoft.core.tslib.bricks.time.impl.TimeUtils;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListBasicEdit;
+import org.toxsoft.core.tslib.coll.impl.SortedElemLinkedBundleList;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.api.evserv.ISkEventService;
+import org.toxsoft.uskat.core.api.evserv.SkEvent;
 
 /**
  * Реализация движка {@link IQueryEngine} для событий.
@@ -83,10 +87,18 @@ public class EventQueryEngine
         // Dima, 21.02.20 переходим на SkApi
         // ITimedList<SkEvent> events = es.queryEvents( qi, item.objIds(), item.classId(), item.eventIds() );
 
-        for( Gwid gwid : item.gwids( true, serverApi ) ) {
-          ITimedList<SkEvent> events = eventService.queryObjEvents( qi, gwid );
-          result.addAll( events );
-        }
+        // TODO: mvkd
+        // for( Gwid gwid : item.gwids( true, serverApi ) ) {
+        // ITimedList<SkEvent> events = eventService.queryObjEvents( qi, gwid );
+        // result.addAll( events );
+        // }
+        qi = new QueryInterval( EQueryIntervalType.CSCE, TimeUtils.readTimestamp( "2022-12-06_09" ),
+            TimeUtils.readTimestamp( "2022-12-06_10" ) );
+        Gwid gwid = Gwid.createEvent( "mcc.IrreversibleEngine", "n2IE_Hydro", "" );
+
+        ITimedList<SkEvent> events = eventService.queryObjEvents( qi, gwid );
+        result.addAll( events );
+
       }
       return result;
     }
