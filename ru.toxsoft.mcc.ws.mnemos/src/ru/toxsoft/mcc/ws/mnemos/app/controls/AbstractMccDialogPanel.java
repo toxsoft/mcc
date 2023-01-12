@@ -393,18 +393,18 @@ public abstract class AbstractMccDialogPanel
           if( TsDialogUtils.askYesNoCancel( getShell(), STR_CLEAR_OPERATING_TIME ) == ETsDialogCode.YES ) {
             ISkObject skObject = dialogContext().skObject();
             boolean r;
-            Gwid cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeterMs" ); //$NON-NLS-1$
-            r = cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) );
+            Gwid cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeter" ); //$NON-NLS-1$
+            r = cmdSender.sendCommand( cmdg, AvUtils.avInt( 0 ) );
             if( !r ) {
               TsDialogUtils.error( getShell(), cmdSender.errorString() );
             }
             cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdHourMeterMin" ); //$NON-NLS-1$
-            r = cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) );
+            r = cmdSender.sendCommand( cmdg, AvUtils.avInt( 0 ) );
             if( !r ) {
               TsDialogUtils.error( getShell(), cmdSender.errorString() );
             }
             cmdg = Gwid.createCmd( skObject.classId(), skObject.strid(), "cmdStartCount" ); //$NON-NLS-1$
-            r = cmdSender.sendCommand( cmdg, AvUtils.avBool( true ) );
+            r = cmdSender.sendCommand( cmdg, AvUtils.avInt( 0 ) );
             if( !r ) {
               TsDialogUtils.error( getShell(), cmdSender.errorString() );
             }

@@ -31,6 +31,7 @@ public class MccIrreversibleEngineControl
 
   // private final Color colorDarkGray;
   private final Color colorRed;
+  private final Color colorYellow;
   private final Color colorImitation;
   private final Color colorMagenta;
 
@@ -48,6 +49,7 @@ public class MccIrreversibleEngineControl
 
     // colorDarkGray = colorManager().getColor( ETsColor.DARK_GRAY );
     colorRed = colorManager().getColor( ETsColor.RED );
+    colorYellow = colorManager().getColor( ETsColor.YELLOW );
     colorImitation = colorManager().getColor( new RGB( 107, 195, 255 ) );
     colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
 
@@ -89,6 +91,7 @@ public class MccIrreversibleEngineControl
     gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdOn" ) ); //$NON-NLS-1$
     gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdAlarm" ) ); //$NON-NLS-1$
     gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdEnabled" ) ); //$NON-NLS-1$
+    gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdReady" ) ); //$NON-NLS-1$
     gl.add( Gwid.createRtdata( skObject().classId(), skObject().strid(), "rtdImitation" ) ); //$NON-NLS-1$
     return gl;
   }
@@ -136,6 +139,11 @@ public class MccIrreversibleEngineControl
       // setBkColor( colorDarkGray );
       setFgColor( colorRed );
       tooltipStr.append( STR_BLOCKING );
+    }
+    val = values.getByKey( "rtdReady" ); //$NON-NLS-1$
+    if( val != null && val.isAssigned() && !val.asBool() ) {
+      setFgColor( colorYellow );
+      tooltipStr.append( STR_NO_CONTROL );
     }
     val = values.getByKey( "rtdImitation" ); //$NON-NLS-1$
     if( val != null && val.isAssigned() && val.asBool() ) {
