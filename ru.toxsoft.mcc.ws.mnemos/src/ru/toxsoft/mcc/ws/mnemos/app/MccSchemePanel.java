@@ -78,6 +78,39 @@ public class MccSchemePanel
       }
     } );
 
+    mm.add( new Action( "Уставки автозапуска" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.CtrlSystem", "n2CtrlSystem" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelAutoStart.showDialog( ctx );
+      }
+    } );
+
+    mm.add( new Action( "Вентиляция" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.CtrlSystem", "n2CtrlSystem" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelVentilation.showDialog( ctx );
+      }
+    } );
+
+    mm.add( new Action( "Маслофильтр" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.CtrlSystem", "n2CtrlSystem" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelOilFilter.showDialog( ctx );
+      }
+    } );
+
     Menu contextMenu = mm.createContextMenu( this );
     contextMenu.setLocation( aEvent.x, aEvent.y );
     contextMenu.setVisible( true );

@@ -125,7 +125,7 @@ public class PanelSkObjectsList
 
     if( skConn != null && skConn.state() == ESkConnState.ACTIVE ) {
       skConn.addConnectionListener( connListener );
-      internalPanel = createIntenalPanel();
+      internalPanel = createInternalPanel();
     }
   }
 
@@ -177,7 +177,7 @@ public class PanelSkObjectsList
   }
 
   void onConnectionActivated() {
-    internalPanel = createIntenalPanel();
+    internalPanel = createInternalPanel();
     lcm.setSkConnection( skConn );
   }
 
@@ -187,7 +187,7 @@ public class PanelSkObjectsList
     lcm.setSkConnection( null );
   }
 
-  private IM5CollectionPanel<ISkObject> createIntenalPanel() {
+  private IM5CollectionPanel<ISkObject> createInternalPanel() {
     IM5Domain m5dom = skConn.scope().get( IM5Domain.class );
     IM5Model<ISkObject> model = m5dom.findModel( ISgwM5Constants.MID_SGW_SK_OBJECT );
 
