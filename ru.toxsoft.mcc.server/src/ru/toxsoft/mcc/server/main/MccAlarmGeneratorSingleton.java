@@ -86,7 +86,7 @@ public class MccAlarmGeneratorSingleton
       Skid objId = objIds.get( index );
       addAlarm( "IrreversibleEngineSwitchOnFailure",   HIGH, STR_N_IRREVERSIBLE_ENGINE_SWITCH_ON_FAILURE,      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "IrreversibleEngineSwitchOffFailure",  HIGH, STR_N_IRREVERSIBLE_ENGINE_SWITCH_OFF_FAILURE,       objId,  "rtdSwitchOffFailure",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "IrreversibleEnginePwr",  HIGH, "Нет питания",       objId, STR_N_IRREVERSIBLE_ENGINE_PWR,      value -> equals( value, AV_FALSE  ) );
+      addAlarm( "IrreversibleEnginePwr",  HIGH, STR_N_IRREVERSIBLE_ENGINE_PWR,       objId, "rtdPwr",      value -> equals( value, AV_FALSE  ) );
 
     }
     // @formatter:on
