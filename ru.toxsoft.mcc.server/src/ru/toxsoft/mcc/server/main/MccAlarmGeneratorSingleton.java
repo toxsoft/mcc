@@ -62,20 +62,11 @@ public class MccAlarmGeneratorSingleton
     objIds = objectService.listSkids( "mcc.AnalogInput", true );
     for( int index = 0, n = objIds.size(); index < n; index++ ) {
       Skid objId = objIds.get( index );
-      addAlarm( "AnalogInputAlarm",   HIGH,   "Авария",                                   objId,  "rtdAlarm",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputWarn",    NORMAL, "Предупреждение",                           objId,  "rtdWarn",      value -> equals( value, AV_TRUE  ) );
-      // dima 13.01.23 новые алармы
-      addAlarm( "AnalogInputAlarmMinGeneration",    HIGH, "Авария",                       objId,  "rtdAlarmMinGeneration",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputAlarmMinIndication",    HIGH, "Авария",                       objId,  "rtdAlarmMinIndication",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputWarningMinGeneration",    NORMAL, "Предупреждение",           objId,  "rtdWarningMinGeneration",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputWarningMinIndication",    NORMAL, "Предупреждение",           objId,  "rtdWarningMinIndication",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputWarningMaxGeneration",    NORMAL, "Предупреждение",           objId,  "rtdWarningMaxGeneration",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputWarningMaxIndication",    NORMAL, "Предупреждение",           objId,  "rtdWarningMaxIndication",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputAlarmMaxGeneration",    HIGH, "Авария",                       objId,  "rtdAlarmMaxGeneration",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputAlarmMaxIndication",    HIGH, "Авария",                       objId,  "rtdAlarmMaxIndication",      value -> equals( value, AV_TRUE  ) );
-
-      addAlarm( "AnalogInputCalibrationWarning",    NORMAL, "Предупреждение",           objId,  "rtCalibrationWarning",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "AnalogInputCalibrationError",    HIGH, "Авария",                       objId,  "rtdCalibrationError",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "AnalogInputAlarmMinIndication",    HIGH, STR_N_ANALOG_INPUT_ALARM_MIN_INDICATION,          objId,  "rtdAlarmMinIndication",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "AnalogInputWarningMinIndication",  NORMAL, STR_N_ANALOG_INPUT_WARNING_MIN_INDICATION,      objId,  "rtdWarningMinIndication",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "AnalogInputWarningMaxIndication",  NORMAL, STR_N_ANALOG_INPUT_WARNING_MAX_INDICATION,      objId,  "rtdWarningMaxIndication",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "AnalogInputAlarmMaxIndication",    HIGH, STR_N_ANALOG_INPUT_ALARM_MAX_INDICATION,          objId,  "rtdAlarmMaxIndication",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "AnalogInputCalibrationError",      NORMAL, STR_N_ANALOG_INPUT_CALIBRATION_ERROR,           objId,  "rtdCalibrationError",      value -> equals( value, AV_TRUE  ) );
 
 
       // dima 13.01.23 этого нет в данном классе, оставлено как пример работы с битовыми полями
@@ -93,11 +84,11 @@ public class MccAlarmGeneratorSingleton
     objIds = objectService.listSkids( "mcc.IrreversibleEngine", true );
     for( int index = 0, n = objIds.size(); index < n; index++ ) {
       Skid objId = objIds.get( index );
-      addAlarm( "IrreversibleEngineSwitchOnFailure",   HIGH, "Не включился",      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "IrreversibleEngineSwitchOffFailure",  HIGH, "Не отключился",       objId,  "rtdSwitchOffFailure",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "IrreversibleEngineSwitchOnFailure",   HIGH, STR_N_IRREVERSIBLE_ENGINE_SWITCH_ON_FAILURE,      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "IrreversibleEngineSwitchOffFailure",  HIGH, STR_N_IRREVERSIBLE_ENGINE_SWITCH_OFF_FAILURE,       objId,  "rtdSwitchOffFailure",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "IrreversibleEnginePwr",  HIGH, "Нет питания",       objId, STR_N_IRREVERSIBLE_ENGINE_PWR,      value -> equals( value, AV_FALSE  ) );
 
     }
-
     // @formatter:on
 
     // =============================================================================================================
@@ -108,12 +99,14 @@ public class MccAlarmGeneratorSingleton
     objIds = objectService.listSkids( "mcc.MainSwitch", true );
     for( int index = 0, n = objIds.size(); index < n; index++ ) {
       Skid objId = objIds.get( index );
-      addAlarm( "MainSwitchEmergencyStop",   NORMAL, "Кнопка STOP",      objId,  "rtdEmergencyStop",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "MainSwitchAlarm",           HIGH, "Авария из ячейки",      objId,  "rtdMainSwitchAlarm",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "MainSwitchSwitchOnFailure",   HIGH, "Не включился",      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "MainSwitchSwitchOffFailure",  HIGH, "Не отключился",      objId,  "rtdSwitchOffFailure",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "MainSwitchEmergencyStop",   NORMAL, STR_N_MAIN_SWITCH_EMERGENCY_STOP,      objId,  "rtdEmergencyStop",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "MainSwitchAlarm",           HIGH, STR_N_MAIN_SWITCH_ALARM,      objId,  "rtdMainSwitchAlarm",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "MainSwitchSwitchOnFailure",   HIGH, STR_N_MAIN_SWITCH_SWITCH_ON_FAILURE,      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "MainSwitchSwitchOffFailure",  HIGH, STR_N_MAIN_SWITCH_SWITCH_OFF_FAILURE,      objId,  "rtdSwitchOffFailure",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "MainSwitchPowerControl",  HIGH, STR_N_MAIN_SWITCH_POWER_CONTROL,      objId,  "rtdPowerControl",     value -> equals( value, AV_FALSE  ) );
 
     }
+
     // @formatter:on
 
     // =============================================================================================================
@@ -124,13 +117,14 @@ public class MccAlarmGeneratorSingleton
     objIds = objectService.listSkids( "mcc.ReversibleEngine", true );
     for( int index = 0, n = objIds.size(); index < n; index++ ) {
       Skid objId = objIds.get( index );
-      addAlarm( "ReversibleEngineOpenFailure",   HIGH, "Не открылось",      objId,  "rtdOpenFailure",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "ReversibleEngineCloseFailure",  HIGH, "Не закрылось",       objId,  "rtdCloseFailure",      value -> equals( value, AV_TRUE  ) );
-
-      addAlarm( "ReversibleEngineOpenOnFailure",   HIGH, "Не вкл. на открытие",      objId,  "rtdOpenOnFailure",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "ReversibleEngineOpenOffFailure",  HIGH, "Не откл. на открытие",       objId,  "rtdOpenOffFailure",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "ReversibleEngineCloseOnFailure",   HIGH, "Не вкл. на закрытие",      objId,  "rtdCloseOnFailure",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "ReversibleEngineCloseOffFailure",  HIGH, "Не откл. на закрытие",       objId,  "rtdCloseOffFailure",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEngineOpenFailure",   HIGH, STR_N_REVERSIBLE_ENGINE_OPEN_FAILURE,      objId,  "rtdOpenFailure",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEngineCloseFailure",  HIGH, STR_N_REVERSIBLE_ENGINE_CLOSE_FAILURE,       objId,  "rtdCloseFailure",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEngineOpenOnFailure",   HIGH, STR_N_REVERSIBLE_ENGINE_OPEN_ON_FAILURE,      objId,  "rtdOpenOnFailure",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEngineOpenOffFailure",  HIGH, STR_N_REVERSIBLE_ENGINE_OPEN_OFF_FAILURE,       objId,  "rtdOpenOffFailure",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEngineCloseOnFailure",   HIGH, STR_N_REVERSIBLE_ENGINE_CLOSE_ON_FAILURE,      objId,  "rtdCloseOnFailure",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEngineCloseOffFailure",  HIGH, STR_N_REVERSIBLE_ENGINE_CLOSE_OFF_FAILURE,       objId,  "rtdCloseOffFailure",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEnginePowerControl",  HIGH, STR_N_REVERSIBLE_ENGINE_POWER_CONTROL,      objId,  "rtdPowerControl",     value -> equals( value, AV_FALSE  ) );
+      addAlarm( "ReversibleEnginePwr",  HIGH, STR_N_REVERSIBLE_ENGINE_PWR,       objId,  "rtdPwr",      value -> equals( value, AV_FALSE  ) );
     }
 
     // @formatter:on
@@ -143,28 +137,9 @@ public class MccAlarmGeneratorSingleton
     objIds = objectService.listSkids( "mcc.CtrlSystem", true );
     for( int index = 0, n = objIds.size(); index < n; index++ ) {
       Skid objId = objIds.get( index );
-      addAlarm( "CtrlSystemOilFilterAlarm",  NORMAL, "Признак грязного маслофильтра",      objId,  "rtdOilFilterAlarm",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "CtrlSystemEmergencyStop",   HIGH, "Останов Аварийный",      objId,  "rtdEmergencyStop",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "CtrlSystemIrrEngineAlarm",   HIGH, "Есть авария двигателя",      objId,  "rtdIrrEngineAlarm",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "CtrlSystemRevEngineAlarm",   HIGH, "Есть авария задвижки",      objId,  "rtdRevEngineAlarm",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "CtrlSystemIrrEngineBlock",   HIGH, "Есть блокировка двигателя",      objId,  "rtdIrrEngineBlock",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "CtrlSystemRevEngineBlock",   HIGH, "Есть блокировка задвижки",      objId,  "rtdRevEngineBlock",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "CtrlSystemWaterAlarm",   HIGH, "Авария по давлению воды",      objId,  "rtdWaterAlarm",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "CtrlSystemLoOil",   HIGH, "Низкий уровень масла",      objId,  "rtdLoOil",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "CtrlSystemOilFilterAlarm",  NORMAL, STR_N_CTRL_SYSTEM_OIL_FILTER_ALARM,      objId,  "rtdOilFilterAlarm",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "CtrlSystemEmergencyStop",   NORMAL, STR_N_CTRL_SYSTEM_EMERGENCY_STOP,      objId,  "rtdEmergencyStop",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "CtrlSystemLoOil",   NORMAL, STR_N_CTRL_SYSTEM_LO_OIL,      objId,  "rtdLoOil",     value -> equals( value, AV_TRUE  ) );
     }
-
-    // @formatter:on
-
-    // =============================================================================================================
-    // Класс Аналоговый привод
-    //
-    // @formatter:off
-
-    objIds = objectService.listSkids( "mcc.AnalogEngine", true );
-    for( int index = 0, n = objIds.size(); index < n; index++ ) {
-      Skid objId = objIds.get( index );
-      addAlarm( "AnalogEngineAlarm",   HIGH, "Авария",      objId,  "rtdAlarm",     value -> equals( value, AV_TRUE  ) );
-    }
-
   }
 }
