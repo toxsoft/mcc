@@ -8,7 +8,6 @@ import java.util.Date;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
-import org.toxsoft.core.tslib.bricks.time.impl.TimeUtils;
 import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.IListBasicEdit;
 import org.toxsoft.core.tslib.coll.impl.SortedElemLinkedBundleList;
@@ -87,18 +86,10 @@ public class EventQueryEngine
         // Dima, 21.02.20 переходим на SkApi
         // ITimedList<SkEvent> events = es.queryEvents( qi, item.objIds(), item.classId(), item.eventIds() );
 
-        // TODO: mvkd
-        // for( Gwid gwid : item.gwids( true, serverApi ) ) {
-        // ITimedList<SkEvent> events = eventService.queryObjEvents( qi, gwid );
-        // result.addAll( events );
-        // }
-        qi = new QueryInterval( EQueryIntervalType.CSCE, TimeUtils.readTimestamp( "2022-12-06_09" ),
-            TimeUtils.readTimestamp( "2022-12-06_10" ) );
-        Gwid gwid = Gwid.createEvent( "mcc.IrreversibleEngine", "n2IE_Hydro", "" );
-
-        ITimedList<SkEvent> events = eventService.queryObjEvents( qi, gwid );
-        result.addAll( events );
-
+        for( Gwid gwid : item.gwids( true, serverApi ) ) {
+          ITimedList<SkEvent> events = eventService.queryObjEvents( qi, gwid );
+          result.addAll( events );
+        }
       }
       return result;
     }
