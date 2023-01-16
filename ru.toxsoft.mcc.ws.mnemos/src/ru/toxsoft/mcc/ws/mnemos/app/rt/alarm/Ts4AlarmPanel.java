@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.actions.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.bricks.tstree.impl.*;
 import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.m5.*;
@@ -89,11 +90,12 @@ public class Ts4AlarmPanel
     IMultiPaneComponentConstants.OPDEF_DETAILS_PANE_PLACE.setValue( ctx.params(),
         avValobj( EBorderLayoutPlacement.SOUTH ) );
     IMultiPaneComponentConstants.OPDEF_IS_SUPPORTS_CHECKS.setValue( ctx.params(), AvUtils.AV_TRUE );
-    // IMultiPaneComponentConstants.OPDEF_IS_ACTIONS_CRUD.setValue( ctx.params(), AvUtils.AV_TRUE );
-    // добавляем в панель фильтр
-    IMultiPaneComponentConstants.OPDEF_IS_FILTER_PANE.setValue( ctx.params(), AvUtils.AV_TRUE );
+    IMultiPaneComponentConstants.OPDEF_IS_ACTIONS_CRUD.setValue( ctx.params(), AvUtils.AV_FALSE );
+    // прячем фильтр
+    IMultiPaneComponentConstants.OPDEF_IS_FILTER_PANE.setValue( ctx.params(), AvUtils.AV_FALSE );
 
     // SashForm sf = new SashForm( aParent, SWT.HORIZONTAL );
+    TsTreeViewer.OPDEF_IS_HEADER_SHOWN.setValue( ctx.params(), AvUtils.AV_FALSE );
     MultiPaneComponentModown<ISkAlarm> componentModown =
         new MultiPaneComponentModown<>( ctx, model, lm.itemsProvider(), lm ) {
 
@@ -102,8 +104,8 @@ public class Ts4AlarmPanel
               IListEdit<ITsActionDef> aActs ) {
             aActs.add( ACDEF_SEPARATOR );
             aActs.add( ACDEF_QUIT_ALARM );
-            aActs.add( ACDEF_SEPARATOR );
-            aActs.add( ACDEF_GENERATE_TEST_ALARM );
+            // aActs.add( ACDEF_SEPARATOR );
+            // aActs.add( ACDEF_GENERATE_TEST_ALARM );
 
             ITsToolbar toolbar =
 
