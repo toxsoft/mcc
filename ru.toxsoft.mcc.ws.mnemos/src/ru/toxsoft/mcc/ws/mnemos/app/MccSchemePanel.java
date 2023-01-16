@@ -78,6 +78,39 @@ public class MccSchemePanel
       }
     } );
 
+    mm.add( new Action( "Уставки автозапуска" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.CtrlSystem", "n2CtrlSystem" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelAutoStart.showDialog( ctx );
+      }
+    } );
+
+    mm.add( new Action( "Вентиляция" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.CtrlSystem", "n2CtrlSystem" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelVentilation.showDialog( ctx );
+      }
+    } );
+
+    mm.add( new Action( "Маслофильтр" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.CtrlSystem", "n2CtrlSystem" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelOilFilter.showDialog( ctx );
+      }
+    } );
+
     Menu contextMenu = mm.createContextMenu( this );
     contextMenu.setLocation( aEvent.x, aEvent.y );
     contextMenu.setVisible( true );
@@ -148,21 +181,14 @@ public class MccSchemePanel
       System.out.println( obj.nmName() + ": " + obj.strid() ); //$NON-NLS-1$
     }
 
-    // rtPanel = new RtValedsPanel( this, aContext );
-    // rtPanel.setLayout( null );
-
     ImageDescriptor imd;
     imd = AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, "icons/mcc-main.png" ); //$NON-NLS-1$
     imgScheme = imd.createImage();
 
-    // rtPanel.addPaintListener( aEvent -> {
-    // aEvent.gc.drawImage( imgScheme, 0, 0 );
-    // for( AbstractMccSchemeControl control : controls ) {
-    // control.paint( aEvent.gc );
-    // }
-    // } );
-
     addPaintListener( aEvent -> {
+
+      // paintBaloon( aEvent.gc );
+
       aEvent.gc.drawImage( imgScheme, 0, 0 );
       for( AbstractMccSchemeControl control : controls ) {
         control.paint( aEvent.gc );
@@ -415,4 +441,9 @@ public class MccSchemePanel
     return dataProvider;
   }
 
+  void paintBaloon( GC aGc ) {
+    MccBaloon mccB = new MccBaloon( 300, 300, 120, 120, 16, 8 );
+    mccB.paint( aGc );
+    mccB.dispose();
+  }
 }

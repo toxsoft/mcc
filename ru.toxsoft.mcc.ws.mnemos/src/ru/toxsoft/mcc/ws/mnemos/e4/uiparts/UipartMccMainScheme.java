@@ -2,6 +2,7 @@ package ru.toxsoft.mcc.ws.mnemos.e4.uiparts;
 
 import java.awt.*;
 
+import org.eclipse.swt.*;
 import org.eclipse.swt.widgets.Composite;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
@@ -44,16 +45,17 @@ public class UipartMccMainScheme
 
     aParent.setLayout( new BorderLayout() );
 
-    // Composite schemeComp = new Composite( aParent, SWT.NONE );
-    // schemeComp.setLayoutData( BorderLayout.CENTER );
-    //
+    Composite leftComp = new Composite( aParent, SWT.NONE );
+    leftComp.setLayout( new BorderLayout() );
+    leftComp.setLayoutData( BorderLayout.CENTER );
+
     // ImageDescriptor imd;
     // imd = AbstractUIPlugin.imageDescriptorFromPlugin( Activator.PLUGIN_ID, "icons/mcc-main.png" );
     // Image imgScheme = imd.createImage();
     //
     // schemeComp.addPaintListener( aEvent -> aEvent.gc.drawImage( imgScheme, 0, 0 ) );
 
-    MccSchemePanel schemeComp = new MccSchemePanel( aParent, tsContext() );
+    MccSchemePanel schemeComp = new MccSchemePanel( leftComp, tsContext() );
     schemeComp.addAI( 145, 122, "n2AI_TP9" ); //$NON-NLS-1$
     schemeComp.addAI( 373, 119, "n2AI_TP8" ); //$NON-NLS-1$
     schemeComp.addAI( 464, 120, "n2AI_TP7" ); //$NON-NLS-1$
@@ -97,6 +99,10 @@ public class UipartMccMainScheme
     schemeComp.addAI( 115, 378, "n2AI_T3" ); //$NON-NLS-1$
 
     schemeComp.addAI( 258, 268, "n2AI_IS" ); //$NON-NLS-1$
+
+    MccAlarmsPanelHolder alarmsHolder = new MccAlarmsPanelHolder( leftComp, skConn(), tsContext() );
+    alarmsHolder.setLayoutData( BorderLayout.SOUTH );
+    alarmsHolder.setData( AWTLayout.KEY_PREFERRED_SIZE, new Dimension( -1, 100 ) );
 
     MccSchemeRightPanel rightComp = new MccSchemeRightPanel( aParent, tsContext() );
     rightComp.setLayoutData( BorderLayout.EAST );

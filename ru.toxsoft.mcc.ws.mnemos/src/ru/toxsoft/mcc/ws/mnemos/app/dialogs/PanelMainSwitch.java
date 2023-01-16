@@ -87,8 +87,10 @@ public class PanelMainSwitch
     comp = createGroup( this, "Блокировка пуска", 2, true );
     createRtBooleanLabel( comp, "rtdMainSwitchAlarm", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
     createRtBooleanLabel( comp, "rtdEmergencyStop", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
-    Gwid gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_AirInGED_Norm", "rtdCurrentValue" );
-    createRtLabel( comp, gwid, ICONID_RED_LAMP, ICONID_GREEN_LAMP );
+    // Gwid gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_AirInGED_Norm", "rtdCurrentValue" );
+    Gwid gwid = Gwid.createRtdata( "mcc.CtrlSystem", "n2CtrlSystem", "rtdBlowCmplt" );
+    createRtLabel( comp, gwid, ICONID_GRAY_LAMP, ICONID_GREEN_LAMP );
+    // createRtLabel( comp, gwid, ICONID_RED_LAMP, ICONID_GREEN_LAMP );
     // createRtBooleanLabel( comp, gwid, ICONID_RED_LAMP, ICONID_GREEN_LAMP );
     createRtBooleanLabel( comp, "rtdAlarm", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
 

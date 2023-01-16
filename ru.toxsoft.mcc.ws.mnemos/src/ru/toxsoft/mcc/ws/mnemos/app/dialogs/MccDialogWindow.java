@@ -21,8 +21,10 @@ public class MccDialogWindow {
     for( Shell child : shells ) {
       System.out.println( "shell: " + child.getText() );
       if( aCaption.equals( child.getText() ) ) {
-        child.setFocus();
-        return;
+        child.dispose();
+        break;
+        // child.setFocus();
+        // return;
       }
     }
 
