@@ -70,7 +70,11 @@ public class Ts4AlarmPanel
     super( aParent, aCtx );
 
     skConn = aSkConn;
-    this.setLayout( new BorderLayout() );
+    BorderLayout bl = new BorderLayout();
+    bl.setHgap( 0 );
+    bl.setVgap( 0 );
+    aParent.setLayout( bl );
+    this.setLayout( bl );
 
     if( !skConn.coreApi().services().hasKey( ISkAlarmService.SERVICE_ID ) ) {
       return;
@@ -158,7 +162,7 @@ public class Ts4AlarmPanel
     // dima 17.01.23 под Win ширина колонки маленькая, уширим
     IM5Column<ISkAlarm> messageColumn =
         componentModown.tree().columnManager().columns().findByKey( SkAlarmM5Model.FID_MESSAGE );
-    messageColumn.setWidth( 300 );
+    messageColumn.setWidth( 600 );
 
     alarmService.eventer().addListener( new ISkAlarmServiceListener() {
 
