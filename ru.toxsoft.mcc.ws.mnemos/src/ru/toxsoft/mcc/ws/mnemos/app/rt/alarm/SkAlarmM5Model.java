@@ -5,6 +5,7 @@ import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 
+import java.text.*;
 import java.util.*;
 
 import org.toxsoft.core.tsgui.m5.model.impl.*;
@@ -22,6 +23,12 @@ import org.toxsoft.uskat.core.connection.*;
  */
 public class SkAlarmM5Model
     extends M5Model<ISkAlarm> {
+
+  /**
+   * формат для отображения метки времени
+   */
+  private static final String     timestampFormatString = "dd.MM.yy HH:mm:ss";                          //$NON-NLS-1$
+  private static final DateFormat timestampFormat       = new SimpleDateFormat( timestampFormatString );
 
   private static final String STR_N_PARAM_AUTHOR = "Автор";
   private static final String STR_D_PARAM_AUTHOR = "Автор тревоги";
@@ -120,7 +127,7 @@ public class SkAlarmM5Model
     }
 
     protected IAtomicValue doGetFieldValue( ISkAlarm aEntity ) {
-      return avStr( new Date( aEntity.timestamp() ).toString() );
+      return avStr( timestampFormat.format( new Date( aEntity.timestamp() ) ) );
     }
 
   };
