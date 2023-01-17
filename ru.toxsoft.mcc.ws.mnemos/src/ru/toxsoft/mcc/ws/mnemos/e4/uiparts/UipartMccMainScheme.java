@@ -44,14 +44,14 @@ public class UipartMccMainScheme
   protected void init( final Composite aParent ) {
 
     BorderLayout bl = new BorderLayout();
-    bl.setHgap( 0 );
+    bl.setHgap( 2 );
     bl.setVgap( 0 );
     aParent.setLayout( bl );
 
     Composite leftComp = new Composite( aParent, SWT.NONE );
     bl = new BorderLayout();
     bl.setHgap( 0 );
-    bl.setVgap( 0 );
+    bl.setVgap( 2 );
     leftComp.setLayout( bl );
     leftComp.setLayoutData( BorderLayout.CENTER );
 
