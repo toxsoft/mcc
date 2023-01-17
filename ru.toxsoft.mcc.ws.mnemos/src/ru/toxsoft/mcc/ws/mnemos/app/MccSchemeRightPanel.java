@@ -21,8 +21,6 @@ public class MccSchemeRightPanel
 
   private final MccGraphicsHolderPanel graphicsHolder;
 
-  // private final MccAlarmsPanelHolder alarmsHolder;
-
   IRtDataProvider dataProvider;
 
   /**
@@ -34,6 +32,8 @@ public class MccSchemeRightPanel
   public MccSchemeRightPanel( Composite aParent, ITsGuiContext aContext ) {
     super( aParent, aContext );
     GridLayout gl = new GridLayout( 1, false );
+    gl.marginWidth = 0;
+    gl.marginHeight = 0;
     setLayout( gl );
 
     ISkConnection skConn = aContext.get( ISkConnectionSupplier.class ).defConn();
