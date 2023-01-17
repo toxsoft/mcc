@@ -11,6 +11,9 @@ import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.valed.controls.av.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.uskat.alarms.lib.*;
+import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.uskat.core.connection.*;
 
 /**
  * M5-model of {@link ISkAlarm}.
@@ -72,7 +75,12 @@ public class SkAlarmM5Model
     }
 
     protected IAtomicValue doGetFieldValue( ISkAlarm aEntity ) {
-      return avStr( aEntity.authorId().strid() );
+      // dima 17.01.23
+      // return avStr( aEntity.authorId().strid() );
+      ISkConnectionSupplier connSup = tsContext().get( ISkConnectionSupplier.class );
+      ISkConnection conn = connSup.defConn();
+      ISkObject author = conn.coreApi().objService().find( aEntity.authorId() );
+      return avStr( author.nmName() );
     }
 
   };
@@ -125,7 +133,6 @@ public class SkAlarmM5Model
   public SkAlarmM5Model( boolean aForPrint ) {
     super( aForPrint ? PRINT_MODEL_ID : MODEL_ID, ISkAlarm.class );
     setNameAndDescription( STR_N_ALARM, STR_D_ALARM );
-
     // add fields
     addFieldDefs( TIME, AUTHOR, MESSAGE );
   }
