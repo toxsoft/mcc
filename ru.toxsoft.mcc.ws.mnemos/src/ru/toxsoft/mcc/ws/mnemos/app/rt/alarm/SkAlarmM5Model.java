@@ -5,16 +5,19 @@ import static org.toxsoft.core.tsgui.valed.api.IValedControlConstants.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 
-import java.text.*;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.valed.controls.av.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.uskat.alarms.lib.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.tsgui.m5.model.impl.M5AttributeFieldDef;
+import org.toxsoft.core.tsgui.m5.model.impl.M5Model;
+import org.toxsoft.core.tsgui.valed.controls.av.ValedAvStringText;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.uskat.alarms.lib.ISkAlarm;
+import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
 /**
  * M5-model of {@link ISkAlarm}.
@@ -27,7 +30,7 @@ public class SkAlarmM5Model
   /**
    * формат для отображения метки времени
    */
-  private static final String     timestampFormatString = "dd.MM.yy HH:mm:ss";                          //$NON-NLS-1$
+  private static final String     timestampFormatString = "dd.MM.yy HH:mm:ss.SSS ";                     //$NON-NLS-1$
   private static final DateFormat timestampFormat       = new SimpleDateFormat( timestampFormatString );
 
   private static final String STR_N_PARAM_AUTHOR = "Автор";
