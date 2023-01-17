@@ -9,6 +9,7 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.plugin.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.graphics.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tsgui.graphics.cursors.*;
 import org.toxsoft.core.tsgui.graphics.fonts.*;
@@ -442,7 +443,7 @@ public class MccSchemePanel
   }
 
   void paintBaloon( GC aGc ) {
-    MccBaloon mccB = new MccBaloon( 300, 300, 120, 120, 16, 8 );
+    MccBaloon mccB = new MccBaloon( 100, 50, 300, 250, 120, 120, 32, 16, ETsFulcrum.BOTTOM_CENTER );
     mccB.paint( aGc );
     mccB.dispose();
   }

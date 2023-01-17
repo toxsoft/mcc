@@ -36,6 +36,8 @@ public class MccAlarmsPanelHolder
     // Макс - здесь должна быть твоя инициализация
 
     GridLayout gl = new GridLayout( 1, false );
+    gl.marginHeight = 0;
+    gl.marginWidth = 0;
     setLayout( gl );
     GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
     Ts4AlarmPanel alarmsPanel = new Ts4AlarmPanel( this, aSkConn, aContext );

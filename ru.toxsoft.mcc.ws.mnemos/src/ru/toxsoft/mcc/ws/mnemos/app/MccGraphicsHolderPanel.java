@@ -34,6 +34,8 @@ public class MccGraphicsHolderPanel
     skConnection = aSkConn;
 
     GridLayout gl = new GridLayout( 1, false );
+    gl.marginWidth = 0;
+    gl.marginHeight = 0;
     setLayout( gl );
 
     GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );

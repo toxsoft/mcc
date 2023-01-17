@@ -43,10 +43,16 @@ public class UipartMccMainScheme
   // protected void doInit( Composite aParent ) {
   protected void init( final Composite aParent ) {
 
-    aParent.setLayout( new BorderLayout() );
+    BorderLayout bl = new BorderLayout();
+    bl.setHgap( 0 );
+    bl.setVgap( 0 );
+    aParent.setLayout( bl );
 
     Composite leftComp = new Composite( aParent, SWT.NONE );
-    leftComp.setLayout( new BorderLayout() );
+    bl = new BorderLayout();
+    bl.setHgap( 0 );
+    bl.setVgap( 0 );
+    leftComp.setLayout( bl );
     leftComp.setLayoutData( BorderLayout.CENTER );
 
     // ImageDescriptor imd;
@@ -102,11 +108,11 @@ public class UipartMccMainScheme
 
     MccAlarmsPanelHolder alarmsHolder = new MccAlarmsPanelHolder( leftComp, skConn(), tsContext() );
     alarmsHolder.setLayoutData( BorderLayout.SOUTH );
-    alarmsHolder.setData( AWTLayout.KEY_PREFERRED_SIZE, new Dimension( -1, 100 ) );
+    alarmsHolder.setData( AWTLayout.KEY_PREFERRED_SIZE, new Dimension( -1, 105 ) );
 
     MccSchemeRightPanel rightComp = new MccSchemeRightPanel( aParent, tsContext() );
     rightComp.setLayoutData( BorderLayout.EAST );
-    rightComp.setData( AWTLayout.KEY_PREFERRED_SIZE, new Dimension( 440, -1 ) );
+    rightComp.setData( AWTLayout.KEY_PREFERRED_SIZE, new Dimension( 444, -1 ) );
 
     schemeComp.rtStart();
     rightComp.rtStart();
