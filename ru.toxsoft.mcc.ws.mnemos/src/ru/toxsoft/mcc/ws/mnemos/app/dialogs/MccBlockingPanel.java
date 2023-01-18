@@ -36,6 +36,7 @@ public class MccBlockingPanel
   public MccBlockingPanel( Shell aParent, MccDialogContext aDialogContext ) {
     super( aParent, aDialogContext );
     init();
+    dataProvider().start();
   }
 
   void init() {

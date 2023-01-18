@@ -337,6 +337,15 @@ public class MccSchemePanel
     MccMainSwitchControl ms = new MccMainSwitchControl( this, mainEngine, gwid, imgIds, aContext );
     ms.setLocation( 15, 160 );
     controls.add( ms );
+
+    MccRd1Baloon rd1Baloon = new MccRd1Baloon( this, aContext, null );
+    controls.add( rd1Baloon );
+    dataProvider.addDataConsumer( rd1Baloon );
+
+    MccPurgeBaloon purgeBaloon = new MccPurgeBaloon( this, aContext, null );
+    controls.add( purgeBaloon );
+    dataProvider.addDataConsumer( purgeBaloon );
+
     dataProvider.addDataConsumer( ms );
 
     addDisposeListener( aE -> {
@@ -443,7 +452,7 @@ public class MccSchemePanel
   }
 
   void paintBaloon( GC aGc ) {
-    MccBaloon mccB = new MccBaloon( 100, 50, 300, 250, 120, 120, 32, 16, ETsFulcrum.BOTTOM_CENTER );
+    MccBaloon mccB = new MccBaloon( 100, 150, 200, 90, 40, 40, 32, 16, ETsFulcrum.LEFT_CENTER, tsContext() );
     mccB.paint( aGc );
     mccB.dispose();
   }
