@@ -48,11 +48,11 @@ public class MccPurgeBaloon
     magenta1 = colorManager().getColor( new RGB( 255, 0, 220 ) );
     magenta2 = colorManager().getColor( new RGB( 180, 0, 220 ) );
 
-    white1 = colorManager().getColor( new RGB( 128, 128, 128 ) );
-    white2 = colorManager().getColor( new RGB( 255, 255, 255 ) );
+    white1 = colorManager().getColor( new RGB( 255, 255, 255 ) );
+    white2 = colorManager().getColor( new RGB( 200, 200, 200 ) );
 
-    green1 = colorManager().getColor( new RGB( 0, 128, 0 ) );
-    green2 = colorManager().getColor( new RGB( 0, 255, 0 ) );
+    green1 = colorManager().getColor( new RGB( 0, 255, 0 ) );
+    green2 = colorManager().getColor( new RGB( 0, 200, 0 ) );
 
     noDataColors = new Pair<>( magenta1, magenta2 );
     falseColors = new Pair<>( white1, white2 );
