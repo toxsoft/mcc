@@ -59,8 +59,8 @@ public class MccOilFilterBaloon
     falseColors = new Pair<>( green1, green2 );
     trueColors = new Pair<>( red1, red2 );
 
-    baloon = new MccBaloon( 516, 550, 80, 36, 16, 16, 15, 7, ETsFulcrum.LEFT_CENTER, aTsContext );
-    mrLabel.setTextPlacementArea( new Rectangle( 516, 550, 80, 36 ) );
+    baloon = new MccBaloon( 514, 550, 80, 36, 16, 16, 15, 7, ETsFulcrum.LEFT_CENTER, aTsContext );
+    mrLabel.setTextPlacementArea( new Rectangle( 514, 550, 80, 36 ) );
     baloon.setShadowDepth( 4 );
   }
 
