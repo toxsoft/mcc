@@ -43,7 +43,7 @@ public class MccOilFilterBaloon
   public MccOilFilterBaloon( MccSchemePanel aOwner, ITsGuiContext aTsContext, IdChain aConnId ) {
     super( aOwner, dataGwid, aTsContext, aConnId );
     mrLabel = new MccMultiRowLabel( aTsContext );
-    mrLabel.setRowGap( -8 );
+    mrLabel.setRowGap( -6 );
     mrLabel.setText( new StringArrayList( "МФ", "в норме" ) );
 
     magenta1 = colorManager().getColor( new RGB( 255, 0, 220 ) );

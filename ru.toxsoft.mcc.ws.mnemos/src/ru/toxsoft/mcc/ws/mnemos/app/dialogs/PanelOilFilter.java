@@ -26,7 +26,7 @@ public class PanelOilFilter
     GridData gd = new GridData();
     gd.widthHint = 80;
 
-    MccRtBooleanLabel rtl = createRtBooleanLabel( this, "rtdOilFilterAlarm", ICONID_GRAY_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
+    MccRtBooleanLabel rtl = createRtBooleanLabel( this, "rtdOilFilterAlarm", ICONID_GREEN_LAMP, ICONID_RED_LAMP ); //$NON-NLS-1$
     rtl.getControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
 
     MccRtTextEditor textEditor;
