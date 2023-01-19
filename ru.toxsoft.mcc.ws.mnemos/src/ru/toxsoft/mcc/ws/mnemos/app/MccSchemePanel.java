@@ -337,6 +337,7 @@ public class MccSchemePanel
     MccMainSwitchControl ms = new MccMainSwitchControl( this, mainEngine, gwid, imgIds, aContext );
     ms.setLocation( 15, 160 );
     controls.add( ms );
+    dataProvider.addDataConsumer( ms );
 
     MccRd1Baloon rd1Baloon = new MccRd1Baloon( this, aContext, null );
     controls.add( rd1Baloon );
@@ -346,7 +347,9 @@ public class MccSchemePanel
     controls.add( purgeBaloon );
     dataProvider.addDataConsumer( purgeBaloon );
 
-    dataProvider.addDataConsumer( ms );
+    MccOilFilterBaloon ofBaloon = new MccOilFilterBaloon( this, aContext, null );
+    controls.add( ofBaloon );
+    dataProvider.addDataConsumer( ofBaloon );
 
     addDisposeListener( aE -> {
       dataProvider.dispose();

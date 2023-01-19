@@ -26,6 +26,9 @@ public class PanelOilFilter
     GridData gd = new GridData();
     gd.widthHint = 80;
 
+    MccRtBooleanLabel rtl = createRtBooleanLabel( this, "rtdOilFilterAlarm", ICONID_GRAY_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
+    rtl.getControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
+
     MccRtTextEditor textEditor;
 
     CLabel l = new CLabel( this, SWT.CENTER );
@@ -33,7 +36,11 @@ public class PanelOilFilter
     textEditor = createRtTextEditor( "rtdOilPressDiff2On", "cmdOilPressDiff2On" );
     textEditor.createControl( this ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
-    createRtBooleanLabel( this, "rtdOilFilterAlarm", ICONID_GRAY_LAMP, ICONID_GREEN_LAMP ); //$NON-NLS-1$
+    l = new CLabel( this, SWT.CENTER );
+    l.setText( dataInfo( "rtdOilPressDiff2Off" ).nmName() );
+    textEditor = createRtTextEditor( "rtdOilPressDiff2Off", "cmdOilPressDiff2Off" );
+    textEditor.createControl( this ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
+
   }
 
   /**

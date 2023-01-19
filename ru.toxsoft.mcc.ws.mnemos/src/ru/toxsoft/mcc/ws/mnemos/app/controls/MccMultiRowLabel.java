@@ -112,7 +112,6 @@ public class MccMultiRowLabel
       int dy = viewRect.y + (viewRect.height - r.height) / 2;
       int y = 0;
       int x = 0;
-      gap = 0;
       for( String str : strings.keys() ) {
         Point p = gc.textExtent( str );
         x = dx + (r.width - p.x) / 2;

@@ -37,6 +37,8 @@ public abstract class AbstractMccSchemeControl
 
   private String tooltipText = null;
 
+  private final Gwid gwid;
+
   /**
    * Конструктор для наследников, созданных на основе SWT контролей.
    *
@@ -47,6 +49,7 @@ public abstract class AbstractMccSchemeControl
   protected AbstractMccSchemeControl( Gwid aObjGwid, ITsGuiContext aTsContext, IdChain aConnId ) {
     TsNullArgumentRtException.checkNulls( aObjGwid, aTsContext );
     TsIllegalArgumentRtException.checkTrue( aObjGwid.isAbstract() );
+    gwid = aObjGwid;
     schemePanel = null;
     tsContext = aTsContext;
     if( aConnId == null ) {
@@ -70,6 +73,7 @@ public abstract class AbstractMccSchemeControl
       IdChain aConnId ) {
     TsNullArgumentRtException.checkNulls( aOwner, aObjGwid, aTsContext );
     TsIllegalArgumentRtException.checkTrue( aObjGwid.isAbstract() );
+    gwid = aObjGwid;
     schemePanel = aOwner;
     tsContext = aTsContext;
     if( aConnId == null ) {
@@ -115,7 +119,11 @@ public abstract class AbstractMccSchemeControl
 
   @Override
   public String id() {
-    return skObject.id();
+    StringBuilder id = new StringBuilder().append( skObject.id() );
+    if( gwid.propId() != null ) {
+      id.append( "." ).append( gwid.propId() ); //$NON-NLS-1$
+    }
+    return id.toString();
   }
 
   @Override
