@@ -32,13 +32,13 @@ public class PanelOilFilter
     MccRtTextEditor textEditor;
 
     CLabel l = new CLabel( this, SWT.CENTER );
-    l.setText( dataInfo( "rtdOilPressDiff2On" ).nmName() );
-    textEditor = createRtTextEditor( "rtdOilPressDiff2On", "cmdOilPressDiff2On" );
+    l.setText( dataInfo( "rtdOilPressDiff2On" ).nmName() ); //$NON-NLS-1$
+    textEditor = createRtTextEditor( "rtdOilPressDiff2On", "cmdOilPressDiff2On" ); //$NON-NLS-1$ //$NON-NLS-2$
     textEditor.createControl( this ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
     l = new CLabel( this, SWT.CENTER );
-    l.setText( dataInfo( "rtdOilPressDiff2Off" ).nmName() );
-    textEditor = createRtTextEditor( "rtdOilPressDiff2Off", "cmdOilPressDiff2Off" );
+    l.setText( dataInfo( "rtdOilPressDiff2Off" ).nmName() ); //$NON-NLS-1$
+    textEditor = createRtTextEditor( "rtdOilPressDiff2Off", "cmdOilPressDiff2Off" ); //$NON-NLS-1$ //$NON-NLS-2$
     textEditor.createControl( this ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
   }

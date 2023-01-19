@@ -282,7 +282,24 @@ public class MccRtTextEditor
     InputDialog dlg = new InputDialog( getShell(), STR_DLG_T_EDIT_VALUE, STR_DLG_M_VALUE, strValue, null );
     if( dlg.open() == IDialogConstants.OK_ID ) {
       if( valueType == EAtomicType.FLOATING ) {
-        return AvUtils.avFloat( Double.parseDouble( dlg.getValue() ) );
+        String valStr = dlg.getValue();
+        double dVal = 0;
+        try {
+          dVal = Double.parseDouble( valStr );
+        }
+        catch( NumberFormatException e ) {
+          int idx = valStr.indexOf( ',' );
+          if( idx != -1 ) {
+            valStr = valStr.replace( ',', '.' );
+            dVal = Double.parseDouble( valStr );
+          }
+          else {
+            idx = valStr.indexOf( '.' );
+            valStr = valStr.replace( '.', ',' );
+            dVal = Double.parseDouble( valStr );
+          }
+        }
+        return AvUtils.avFloat( dVal );
       }
       if( valueType == EAtomicType.INTEGER ) {
         return AvUtils.avInt( Long.parseLong( dlg.getValue() ) );
