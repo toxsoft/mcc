@@ -112,6 +112,17 @@ public class MccSchemePanel
       }
     } );
 
+    mm.add( new Action( "Маслобак" ) {
+
+      @Override
+      public void run() {
+        // TsDialogUtils.info( getShell(), "To be done" );
+        ISkObject skObj = coreApi().objService().get( new Skid( "mcc.DigInput", "n2DI_L1_LOil" ) );
+        MccDialogContext ctx = new MccDialogContext( tsContext(), skObj );
+        PanelOilTank.showDialog( ctx );
+      }
+    } );
+
     Menu contextMenu = mm.createContextMenu( this );
     contextMenu.setLocation( aEvent.x, aEvent.y );
     contextMenu.setVisible( true );
@@ -350,6 +361,10 @@ public class MccSchemePanel
     MccOilFilterBaloon ofBaloon = new MccOilFilterBaloon( this, aContext, null );
     controls.add( ofBaloon );
     dataProvider.addDataConsumer( ofBaloon );
+
+    MccOilTankBaloon otBaloon = new MccOilTankBaloon( this, aContext, null );
+    controls.add( otBaloon );
+    dataProvider.addDataConsumer( otBaloon );
 
     addDisposeListener( aE -> {
       dataProvider.dispose();
