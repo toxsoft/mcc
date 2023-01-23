@@ -35,6 +35,7 @@ import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.connection.*;
 
+import ru.toxsoft.mcc.ws.core.chart_utils.*;
 import ru.toxsoft.mcc.ws.core.chart_utils.console.*;
 import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.*;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
@@ -647,6 +648,8 @@ public class ChartPanel
       plotTuner.setLineInfo( TsLineInfo.ofWidth( lineWidth ) );
       plotTuner.setRGBA( new RGBA( plotColor.red, plotColor.green, plotColor.blue, 255 ) );
       plotTuner.setDisplayFormat( displayFormat );
+      ISkGraphParam graphParam = aTemplate.listParams().get( idx );
+      plotTuner.setSetPointsList( graphParam.setPoints() );
       IPlotDef plotDef = graphInfo.createPlotDef( plotTuner );
       chart.plotDefs().add( plotDef );
       idx++;

@@ -36,6 +36,8 @@ interface ISkResources {
   String STR_D_PARAM_UNIT_NAME      = "Единица измерения параметра";
   String STR_N_IS_LADDER            = "ступеньками";
   String STR_D_IS_LADDER            = "Рисовать график в ступеньками";
+  String STR_N_SET_POINTS           = "линии уставок";
+  String STR_D_SET_POINTS           = "Значения для линий уставок";
 
   /**
    * {@link SkReportTemplateM5Model}

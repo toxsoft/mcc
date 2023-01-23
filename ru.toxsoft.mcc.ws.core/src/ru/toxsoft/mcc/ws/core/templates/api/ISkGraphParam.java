@@ -1,6 +1,7 @@
 package ru.toxsoft.mcc.ws.core.templates.api;
 
 import org.toxsoft.core.tsgui.graphics.colors.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
 
 /**
  * Interface to specify one parameter for template of graph report. <br>
@@ -38,4 +39,8 @@ public interface ISkGraphParam
    */
   boolean isLadder();
 
+  /**
+   * @return list of set point values
+   */
+  IStringList setPoints();
 }
