@@ -9,9 +9,11 @@ import static ru.toxsoft.mcc.ws.core.templates.gui.m5.ISkResources.*;
 
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
+import org.toxsoft.core.tsgui.m5.gui.mpc.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.m5.std.models.misc.*;
+import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.av.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
@@ -285,6 +287,10 @@ public class SkGraphParamM5Model
         protected void doInit() {
           setNameAndDescription( STR_N_SET_POINTS, STR_D_SET_POINTS );
           setFlags( M5FF_DETAIL );
+          // панель высотой в 5 строк
+          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 5 ); //
+          // строка поиска не нужна
+          params().setBool( IMultiPaneComponentConstants.OPDEF_IS_FILTER_PANE, false );
         }
 
         protected IStringList doGetFieldValue( ISkGraphParam aEntity ) {
