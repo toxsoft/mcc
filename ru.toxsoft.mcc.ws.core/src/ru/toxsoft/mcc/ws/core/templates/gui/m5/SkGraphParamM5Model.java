@@ -288,12 +288,14 @@ public class SkGraphParamM5Model
         protected void doInit() {
           setNameAndDescription( STR_N_SET_POINTS, STR_D_SET_POINTS );
           setFlags( M5FF_DETAIL );
-          // панель высотой в 5 строк
+          // панель высотой в 4 строки
           params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 4 ); //
           // строка поиска не нужна
           params().setBool( IMultiPaneComponentConstants.OPDEF_IS_FILTER_PANE, false );
           // прячем заголовок таблицы
           params().setBool( TsTreeViewer.OPDEF_IS_HEADER_SHOWN, false );
+          // прячем тулбар
+          // params().setBool( IMultiPaneComponentConstants.OPDEF_IS_TOOLBAR, false );
         }
 
         protected IStringList doGetFieldValue( ISkGraphParam aEntity ) {
