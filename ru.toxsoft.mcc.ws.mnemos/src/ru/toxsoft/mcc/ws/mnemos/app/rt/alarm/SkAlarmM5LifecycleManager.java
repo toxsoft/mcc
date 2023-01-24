@@ -4,25 +4,22 @@ import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 
-import org.toxsoft.core.tsgui.m5.IM5Model;
-import org.toxsoft.core.tsgui.m5.model.impl.M5LifecycleManager;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.av.math.EAvCompareOp;
-import org.toxsoft.core.tslib.av.metainfo.IDataDef;
-import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
-import org.toxsoft.core.tslib.bricks.filter.ITsCombiFilterParams;
-import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
-import org.toxsoft.core.tslib.bricks.time.ITimedList;
-import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
-import org.toxsoft.core.tslib.bricks.time.impl.TimeUtils;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.IListEdit;
-import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.core.tslib.utils.TsLibUtils;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.model.impl.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.math.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.filter.*;
+import org.toxsoft.core.tslib.bricks.time.*;
+import org.toxsoft.core.tslib.bricks.time.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.alarms.lib.*;
-import org.toxsoft.uskat.alarms.lib.filters.SkAlarmFilterByHistory;
-import org.toxsoft.uskat.alarms.lib.impl.SkAlarmThreadHistoryItem;
+import org.toxsoft.uskat.alarms.lib.filters.*;
+import org.toxsoft.uskat.alarms.lib.impl.*;
 
 /**
  * Lifecycle manager for {@link SkAlarmM5Model}.
@@ -124,7 +121,8 @@ public class SkAlarmM5LifecycleManager
 
     ITimedList<ISkAlarm> alarms1 = master().queryAlarms( interval, filter );
     for( ISkAlarm alarm : alarms1 ) {
-      result.add( alarm );
+      // dima 24.01.23 добавляем в начало списка
+      result.insert( 0, alarm );
     }
 
     // ITimedList<ISkAlarm> alarms2 = master().queryAlarms( ITimeInterval.WHOLE, FILTER2 );
