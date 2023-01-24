@@ -6,7 +6,9 @@ import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tslib.bricks.keeper.*;
 import org.toxsoft.core.tslib.bricks.keeper.AbstractEntityKeeper.*;
+import org.toxsoft.core.tslib.bricks.keeper.std.*;
 import org.toxsoft.core.tslib.bricks.strio.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
@@ -64,6 +66,8 @@ public final class SkGraphParam
           aSw.writeChar( CHAR_ITEM_SEPARATOR );
           // рисовать 'лесенкой'
           aSw.writeBoolean( aEntity.isLadder() );
+          aSw.writeChar( CHAR_ITEM_SEPARATOR );
+          StringListKeeper.KEEPER.write( aSw, aEntity.setPoints() );
         }
 
         @Override
@@ -87,16 +91,19 @@ public final class SkGraphParam
           int lineWidth = aSr.readInt();
           aSr.ensureChar( CHAR_ITEM_SEPARATOR );
           boolean isLadder = aSr.readBoolean();
+          aSr.ensureChar( CHAR_ITEM_SEPARATOR );
+          IStringList setPoints = StringListKeeper.KEEPER.read( aSr );
           return new SkGraphParam( gwid, title, descr, unitId, unitName, aggrFunc, dispFormat, color, lineWidth,
-              isLadder );
+              isLadder, setPoints );
         }
       };
 
-  protected final String   unitId;
-  protected final String   unitName;
-  protected final ETsColor color;
-  protected final int      lineWidth;
-  protected final boolean  isLadder;
+  protected final String      unitId;
+  protected final String      unitName;
+  protected final ETsColor    color;
+  protected final int         lineWidth;
+  protected final boolean     isLadder;
+  protected final IStringList setPoints;
 
   /**
    * Constructor.
@@ -111,15 +118,18 @@ public final class SkGraphParam
    * @param aColor {@link ETsColor} line color
    * @param aLineWidth line width
    * @param aIsLadder draw as ladder
+   * @param aSetPoints set points
    */
   public SkGraphParam( Gwid aGwid, String aTitle, String aDescr, String aUnitId, String aUnitName,
-      EAggregationFunc aAggrFunc, EDisplayFormat aDispFormat, ETsColor aColor, int aLineWidth, boolean aIsLadder ) {
+      EAggregationFunc aAggrFunc, EDisplayFormat aDispFormat, ETsColor aColor, int aLineWidth, boolean aIsLadder,
+      IStringList aSetPoints ) {
     super( aGwid, aTitle, aDescr, aAggrFunc, aDispFormat );
     unitId = aUnitId;
     unitName = aUnitName;
     color = aColor;
     lineWidth = aLineWidth;
     isLadder = aIsLadder;
+    setPoints = aSetPoints;
   }
 
   // ------------------------------------------------------------------------------------
@@ -149,6 +159,11 @@ public final class SkGraphParam
   @Override
   public boolean isLadder() {
     return isLadder;
+  }
+
+  @Override
+  public IStringList setPoints() {
+    return setPoints;
   }
 
 }

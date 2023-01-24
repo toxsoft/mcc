@@ -8,6 +8,7 @@ import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.helpers.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.connection.*;
 
@@ -61,8 +62,10 @@ class SkGraphParamM5LifecycleManager
     ETsColor color = aValues.getAsAv( SkGraphParamM5Model.FID_COLOR ).asValobj();
     int lineWidth = aValues.getAsAv( SkGraphParamM5Model.FID_LINE_WIDTH ).asInt();
     boolean isLadder = aValues.getAsAv( SkGraphParamM5Model.FID_IS_LADDER ).asBool();
+    IList<String> setPoints = aValues.getAs( SkGraphParamM5Model.FID_SET_POINTS, IList.class );
 
-    return new SkGraphParam( gwid, title, descr, unitId, unitName, func, format, color, lineWidth, isLadder );
+    return new SkGraphParam( gwid, title, descr, unitId, unitName, func, format, color, lineWidth, isLadder,
+        new StringArrayList( setPoints ) );
   }
 
   /**
