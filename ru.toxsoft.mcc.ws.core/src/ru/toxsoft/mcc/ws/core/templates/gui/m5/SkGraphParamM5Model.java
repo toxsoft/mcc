@@ -7,6 +7,7 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.gui.m5.ISkResources.*;
 
+import org.toxsoft.core.tsgui.bricks.tstree.impl.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tsgui.m5.gui.mpc.*;
@@ -288,9 +289,11 @@ public class SkGraphParamM5Model
           setNameAndDescription( STR_N_SET_POINTS, STR_D_SET_POINTS );
           setFlags( M5FF_DETAIL );
           // панель высотой в 5 строк
-          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 5 ); //
+          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 4 ); //
           // строка поиска не нужна
           params().setBool( IMultiPaneComponentConstants.OPDEF_IS_FILTER_PANE, false );
+          // прячем заголовок таблицы
+          params().setBool( TsTreeViewer.OPDEF_IS_HEADER_SHOWN, false );
         }
 
         protected IStringList doGetFieldValue( ISkGraphParam aEntity ) {
