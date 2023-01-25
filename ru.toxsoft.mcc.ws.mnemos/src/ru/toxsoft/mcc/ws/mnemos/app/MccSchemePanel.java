@@ -346,7 +346,7 @@ public class MccSchemePanel
     imgIds.add( "icons/main_switch_fault.png" ); //$NON-NLS-1$
     gwid = Gwid.createObj( "mcc.MainSwitch", "n2MainSwitch" ); //$NON-NLS-1$ //$NON-NLS-2$
     MccMainSwitchControl ms = new MccMainSwitchControl( this, mainEngine, gwid, imgIds, aContext );
-    ms.setLocation( 15, 160 );
+    ms.setLocation( 28, 135 );
     controls.add( ms );
     dataProvider.addDataConsumer( ms );
 

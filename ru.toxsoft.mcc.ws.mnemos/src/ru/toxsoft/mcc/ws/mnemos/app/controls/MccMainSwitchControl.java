@@ -149,7 +149,8 @@ public class MccMainSwitchControl
       tooltipStr.append( "/имитация" );
     }
     setTooltipText( tooltipStr.toString() );
-    schemePanel().redraw( bounds.x, bounds.y, bounds.width, bounds.height, false );
+    // schemePanel().redraw( bounds.x, bounds.y, bounds.width, bounds.height, false );
+    schemePanel().redraw();
   }
 
   EIrreversibleEngineState calcState( IStringMap<IAtomicValue> aValuesMap ) {
