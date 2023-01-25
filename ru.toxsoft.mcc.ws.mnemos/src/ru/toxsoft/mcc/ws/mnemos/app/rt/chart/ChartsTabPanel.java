@@ -123,6 +123,7 @@ public class ChartsTabPanel
     // инициализируем настройки панели
     initPanelPrefs();
     // восстанавливаем внешний вид панели
+    // saveUserSettings();
     restoreUserSettings();
   }
 

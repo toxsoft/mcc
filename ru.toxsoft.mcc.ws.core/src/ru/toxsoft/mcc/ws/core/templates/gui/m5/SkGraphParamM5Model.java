@@ -7,13 +7,18 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.gui.m5.ISkResources.*;
 
+import org.toxsoft.core.tsgui.bricks.tstree.impl.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.graphics.colors.*;
+import org.toxsoft.core.tsgui.m5.gui.mpc.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
+import org.toxsoft.core.tsgui.m5.std.models.misc.*;
+import org.toxsoft.core.tsgui.valed.api.*;
 import org.toxsoft.core.tsgui.valed.controls.av.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -73,6 +78,11 @@ public class SkGraphParamM5Model
    * id field of flag "draw ladder"
    */
   public static final String FID_IS_LADDER    = "isLadder";      //$NON-NLS-1$
+
+  /**
+   * id field of list set points
+   */
+  public static final String FID_SET_POINTS = "setPoints"; //$NON-NLS-1$
 
   /**
    * Attribute {@link ISkGraphParam#gwid() } Green world ID
@@ -267,12 +277,41 @@ public class SkGraphParamM5Model
   };
 
   /**
+   * Attribute {@link ISkGraphParam#setPoints() } description of parameter
+   */
+  public M5MultiModownFieldDef<ISkGraphParam, String> SET_POINTS =
+      new M5MultiModownFieldDef<>( FID_SET_POINTS, StringM5Model.MODEL_ID ) //
+
+      {
+
+        @Override
+        protected void doInit() {
+          setNameAndDescription( STR_N_SET_POINTS, STR_D_SET_POINTS );
+          setFlags( M5FF_DETAIL );
+          // панель высотой в 4 строки
+          params().setInt( IValedControlConstants.OPDEF_VERTICAL_SPAN, 4 ); //
+          // строка поиска не нужна
+          params().setBool( IMultiPaneComponentConstants.OPDEF_IS_FILTER_PANE, false );
+          // прячем заголовок таблицы
+          params().setBool( TsTreeViewer.OPDEF_IS_HEADER_SHOWN, false );
+          // прячем тулбар
+          // params().setBool( IMultiPaneComponentConstants.OPDEF_IS_TOOLBAR, false );
+        }
+
+        protected IStringList doGetFieldValue( ISkGraphParam aEntity ) {
+          return aEntity.setPoints();
+        }
+
+      };
+
+  /**
    * Constructor
    */
   public SkGraphParamM5Model() {
     super( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
 
-    addFieldDefs( GWID, TITLE, DESCR, UNIT_ID, UNIT_NAME, AGGR_FUNC, DISPL_FORMAT, COLOR, LINE_WIDTH, IS_LADDER );
+    addFieldDefs( GWID, TITLE, DESCR, UNIT_ID, UNIT_NAME, AGGR_FUNC, DISPL_FORMAT, COLOR, LINE_WIDTH, IS_LADDER,
+        SET_POINTS );
 
   }
 

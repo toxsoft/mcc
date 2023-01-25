@@ -12,6 +12,8 @@ import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 
 /**
  * Настройщик графика.
@@ -26,10 +28,12 @@ import org.toxsoft.core.tslib.bricks.strid.*;
  */
 public class PlotDefTuner {
 
-  TsLineInfo                  lineInfo      = null;
-  EGraphicRenderingKind       renderingKind = null;
-  RGBA                        rgba          = null;
-  EDisplayFormat              displayFormat = null;
+  TsLineInfo            lineInfo      = null;
+  EGraphicRenderingKind renderingKind = null;
+  RGBA                  rgba          = null;
+  EDisplayFormat        displayFormat = null;
+  IStringList           setPoints     = new StringArrayList();
+
   private final ITsGuiContext context;
 
   /**
@@ -55,6 +59,8 @@ public class PlotDefTuner {
     if( displayFormat != null ) {
       IStdG2GraphicRendererOptions.VALUES_DISPLAY_FORMAT.setValue( opSet, AvUtils.avValobj( displayFormat ) );
     }
+
+    IStdG2GraphicRendererOptions.СHART_SET_POINTS.setValue( opSet, AvUtils.avValobj( setPoints ) );
 
     IG2Params g2p = G2ChartUtils.createParams( IStdG2GraphicRendererOptions.CONSUMER_NAME, opSet, context );
     return new PlotDef( aNameable, aAxisId, aDataSetId, aCanvasId, g2p );
@@ -95,4 +101,14 @@ public class PlotDefTuner {
   public void setRenderingKind( EGraphicRenderingKind aRenderingKind ) {
     renderingKind = aRenderingKind;
   }
+
+  /**
+   * Установить набор линий уставки
+   *
+   * @param aSetPoints набор линий уставки
+   */
+  public void setSetPointsList( IStringList aSetPoints ) {
+    setPoints = aSetPoints;
+  }
+
 }
