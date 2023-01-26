@@ -1,8 +1,0 @@
-cd dev.classes
-
-createClass -classId  mcc.Turbocharger  -parentId S5Object -name "Нагнетатель" 
-
-addLink -id content     -maxCount 0 -classIds "S5Object"     -name "Связь сущностями составляющими нагнетатель"
-
-saveChanges
-
