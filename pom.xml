@@ -517,19 +517,10 @@
         <module>../ts4-targets/eclipse-releng/${platform.rcp.artifactId}</module>
         <module>../ts4-targets/eclipse-releng/${platform.rap.artifactId}</module>
      
-        <module>ru.toxsoft.mcc.server</module>
-        <module>ru.toxsoft.mcc.ws.core</module>
-        <module>ru.toxsoft.mcc.ws.journals</module>
-        <module>ru.toxsoft.mcc.ws.mnemos</module>
-        <module>ru.toxsoft.mcc.ws.reports</module>
-        <module>ru.toxsoft.mcc.ws.exe</module>
         <module>ru.toxsoft.mcc.ws.exe.product</module>
 
-
-<!--       	 
-        <module>releng/ru.sitrol.releng.p2.rcp</module>
-        <module>releng/ru.sitrol.releng.ant.rcp</module>
--->
+        <module>zz-releng/ru.toxsoft.mcc.releng.p2.rcp</module>
+        <module>zz-releng/ru.toxsoft.mcc.releng.ant.rcp</module>
       </modules>
     </profile>
     <profile>
@@ -571,20 +562,25 @@
       <modules>
         <!-- TODO rap-библиотеки -->
 
-        <!--
-        <module>releng/ru.sitrol.releng.p2.rap</module>
-        <module>releng/ru.sitrol.releng.ant.rap</module>
-        -->
+        <module>zz-releng/ru.toxsoft.mcc.releng.p2.rap</module>
+        <module>zz-releng/ru.toxsoft.mcc.releng.ant.rap</module>
       </modules>
     </profile>
   </profiles>
 
   <modules>
     <!-- TODO общие библиотеки -->
-<!--
-    <module>releng/ru.sitrol.releng.p2</module>
-    <module>releng/ru.sitrol.releng.ant</module> 
--->
+    <module>org.toxsoft.uskat.alarms.lib</module>
+    <module>org.toxsoft.uskat.alarms.s5</module>
+    <module>ru.toxsoft.mcc.server</module>
+    <module>ru.toxsoft.mcc.ws.core</module>
+    <module>ru.toxsoft.mcc.ws.journals</module>
+    <module>ru.toxsoft.mcc.ws.mnemos</module>
+    <module>ru.toxsoft.mcc.ws.reports</module>
+    <module>ru.toxsoft.mcc.ws.exe</module>
+    <module>zz-releng/ru.toxsoft.mcc.releng.p2</module>
+    <module>zz-releng/ru.toxsoft.mcc.releng.ant</module> 
+
   </modules>
 
   <distributionManagement>

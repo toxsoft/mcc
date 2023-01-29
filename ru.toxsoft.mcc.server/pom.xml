@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ru.toxsoft.mcc.server</artifactId>
     <packaging>eclipse-plugin</packaging>
-
+<!-- 2023-01-24 mvk
   <build>
     <plugins>
       <plugin>
@@ -17,7 +17,7 @@
         <executions>
           <execution>
             <id>task0</id>
-            <!-- a lifecycle phase: https://maven.apache.org/ref/3.6.3/maven-core/lifecycles.html -->
+            // a lifecycle phase: https://maven.apache.org/ref/3.6.3/maven-core/lifecycles.html 
             <phase>compile</phase>
             <configuration>
               <target>
@@ -41,4 +41,5 @@
       </plugin>
     </plugins>
   </build>
+-->
 </project>

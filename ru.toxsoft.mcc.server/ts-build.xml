@@ -4,18 +4,24 @@
 <project name="ru.toxsoft.mcc.server" default="deploy">
   <loadproperties srcFile="ts-build-commons.properties"/>
   <basename file="${basedir}" property="project.name"/>
+  <!-- каталог для размещения собираемой библиотеки сервера -->
+  <property name="lib.dir" value="../zz-targets/lib"/>
+  <!-- имя собираемой библиотеки сервера  -->
   <property name="lib.jar" value="${project.name}-lib.jar"/>
+  <!-- каталог для размещения собираемой библиотеки сервера (main plugins) -->
+  <property name="main.plugins.dir" value="../zz-targets/main"/>
   <!-- каталог для размещения собранной библиотеки размещаемой в wildfly -->
-  <property name="deploy.dir" value="deploy-to-main"/>
-  <!-- имя библиотеки для deploy = IS5ImplementConstants.PROJECT_MODULE_ID -->
+  <!-- <property name="deploy.dir" value="dist/deploy-to-main"/> -->
+  <property name="deploy.dir" value="../zz-targets/deploy"/>
+  <!-- имя собираемой библиотеки сервера для deploy -->
   <property name="deploy.jar" value="skat-backend-deploy.jar"/>
 
   <target name="clean" description="Удаляет собранные файлы">
-    <delete file="dist/${deploy.dir}/${lib.jar}" />
-    <delete file="dist/${deploy.dir}/${deploy.jar}" />
+    <delete file="${lib.dir}/${lib.jar}" />
+    <delete file="${deploy.dir}/${deploy.jar}" />
     <delete>
       <fileset dir="dist/META_INF" includes="*.MF" />
-      <fileset dir="dist/plugins" includes="*" />
+      <fileset dir="${main.plugins.dir}/plugins" includes="${project.name}*" />
     </delete>
 <!--
     <eclipse.refreshLocal resource="${project.name}" depth="infinite" />
@@ -36,7 +42,7 @@
   </manifest>
 
   <target name="build_jar">
-    <jar destfile="dist/${lib.jar}" manifest="dist/META_INF/MANIFEST.MF">
+    <jar destfile="${lib.dir}/${lib.jar}" manifest="dist/META_INF/MANIFEST.MF">
       <metainf dir="dist/META_INF" />
         <fileset dir="bin">
           <!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
@@ -54,7 +60,7 @@
   </target>
 
   <target name="build_plugin" depends="build_jar">
-    <pde.exportPlugins destination="dist"
+    <pde.exportPlugins destination="${main.plugins.dir}"
                        exportSource="true"
                        exportSourceBundle="false"
                        exportType="directory"
@@ -68,31 +74,40 @@
   </target>
 
   <target name="build_deploy" description="Сборка *-deploy.jar" >
-      <jar destfile="dist/${deploy.dir}/${deploy.jar}" manifest="dist/META_INF/MANIFEST.MF">
+      <jar destfile="${deploy.dir}/${deploy.jar}" manifest="dist/META_INF/MANIFEST.MF">
         <metainf dir="dist/META_INF" />
+
+        <!--
         <fileset dir="bin">
-            <!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+            // <exclude name="ru/sitrol/tm/server/local/**"/> 
         </fileset>
+        -->
+        <!--
         <fileset dir="src">
-        	<!-- <include name="ru/**/*.properties" /> -->
+           // <include name="ru/**/*.properties" /> 
         </fileset>
+        -->
+        <!--
         <fileset dir="src">
-        	<!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+              <exclude name="ru/sitrol/tm/server/local/**"/> 
         </fileset>
+        -->
+
         <zipfileset src="../../ts4-targets/ts4-target-core/lib/org.toxsoft.core.tslib-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-core/lib/org.toxsoft.core.pas-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-core/lib/org.toxsoft.core.log4j-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.core-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.dataquality.lib-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.dataquality.s5-lib.jar" />
-        <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.alarms.lib-lib.jar" />
-        <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.alarms.s5-lib.jar" />
         <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.s5-lib.jar">
            <exclude name="**/META-INF/*" />
         </zipfileset>
         <zipfileset src="../../ts4-targets/ts4-target-uskat/lib/org.toxsoft.uskat.s5.histdata10-lib.jar">
            <exclude name="**/META-INF/*" />
         </zipfileset>
+        <zipfileset src="${lib.dir}/org.toxsoft.uskat.alarms.lib-lib.jar" />
+        <zipfileset src="${lib.dir}/org.toxsoft.uskat.alarms.s5-lib.jar" />
+        <zipfileset src="${lib.dir}/${lib.jar}" />
       </jar>
 <!--
       <eclipse.refreshLocal resource="${project_dir}/dist" depth="infinite" />
@@ -100,21 +115,21 @@
   </target>
   
   <target name="deploy" description="Формирование и размещение *-deploy-jar в wildfly" depends="build_deploy">
-    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/deployments" file="dist/${deploy.dir}/${deploy.jar}" overwrite="true" />
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/deployments" file="${deploy.dir}/${deploy.jar}" overwrite="true" />
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/configuration">
         <fileset file="dist/files_to_os/${wildfly-standalone-node01.file}"/>
         <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>
         <fileset file="${wildfly-home.dir}/standalone/configuration/*.properties"/>
     </copy>    
 
-    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node02.dir}/deployments" file="dist/${deploy.dir}/${deploy.jar}" overwrite="true" />
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node02.dir}/deployments" file="${deploy.dir}/${deploy.jar}" overwrite="true" />
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node02.dir}/configuration">
         <fileset file="dist/files_to_os/${wildfly-standalone-node02.file}"/>
         <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>
         <fileset file="${wildfly-home.dir}/standalone/configuration/*.properties"/>
     </copy>    
   
-    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node03.dir}/deployments" file="dist/${deploy.dir}/${deploy.jar}" overwrite="true" />
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node03.dir}/deployments" file="${deploy.dir}/${deploy.jar}" overwrite="true" />
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node03.dir}/configuration">
         <fileset file="dist/files_to_os/${wildfly-standalone-node03.file}"/>
         <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>

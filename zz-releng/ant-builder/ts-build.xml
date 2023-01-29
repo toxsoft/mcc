@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- uskat библиотеки и плагины -->
+<project name="zz-targets MAIN" default="build">
+
+  <!-- директория расположения общих сборочных скриптов -->
+  <property name="ts-scripts-dir" location="../../../ts4-targets/ts4-definitions/scripts" />
+
+  <!-- загрузка общих параметров -->
+  <loadproperties srcFile="${ts-scripts-dir}/ts-build-commons.properties" />
+
+  <!-- перед вызовом общих скриптов сборки следует задать директории назначения библиотек и плагинов -->
+  <property name="ts-dest-dir-libs" location="../${ts.target-local-lib}" />
+  <property name="ts-dest-dir-plugins" location="../${ts.target-local-main}" />
+
+  <!-- ЦЕЛЬ: lib.jar библиотек -->
+  <!-- TODO: -->
+  <target name="build-lib-jar" depends="clean" description="Сборка общих плагинов">
+    <ant dir="../../org.toxsoft.uskat.alarms.lib" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../org.toxsoft.uskat.alarms.s5" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../ru.toxsoft.mcc.server" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../ru.toxsoft.mcc.ws.core" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../ru.toxsoft.mcc.ws.journals" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../ru.toxsoft.mcc.ws.mnemos" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../ru.toxsoft.mcc.ws.reports" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../ru.toxsoft.mcc.ws.exe" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+
+  </target>
+
+  <!-- ЦЕЛЬ: сборка plugin-ов -->
+  <target name="build" depends="build-lib-jar" description="Сборка общих плагинов">
+    <!-- сборка plugin-ов -->
+    <!-- TODO: -->
+    <pde.exportPlugins destination="${ts-dest-dir-plugins}"
+                       exportSource="true"
+                       exportSourceBundle="false"
+                       exportType="directory"
+                       plugins="org.toxsoft.uskat.alarms.lib,
+                                org.toxsoft.uskat.alarms.s5,
+				ru.toxsoft.mcc.server,
+                                ru.toxsoft.mcc.ws.core,
+                                ru.toxsoft.mcc.ws.journals,
+                                ru.toxsoft.mcc.ws.mnemos,
+                                ru.toxsoft.mcc.ws.reports,
+                                ru.toxsoft.mcc.ws.exe"
+                       useworkspacecompiledclasses="true"
+                       useJARFormat="true" />
+  </target>
+
+  <!-- ЦЕЛЬ: очистка -->
+  <target name="clean" description="Удаление старых версии">
+    <delete>
+      <fileset dir="${ts-dest-dir-libs}" includes="ru.toxsoft.mcc.*" />
+      <fileset dir="${ts-dest-dir-libs}" includes="org.toxsoft.uskat.alarms.*" />
+      <fileset dir="${ts-dest-dir-plugins}/plugins" includes="ru.toxsoft.mcc.*" />   
+      <fileset dir="${ts-dest-dir-plugins}/plugins" includes="org.toxsoft.uskat.alarms.*" />   
+    </delete>
+  </target>
+
+</project>

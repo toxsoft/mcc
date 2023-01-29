@@ -33,7 +33,7 @@
    <launcher name="mcc">
       <linux icon="/ru.toxsoft.mcc.ws.core/icons/app-icon-128.xpm"/>
       <win useIco="true">
-         <ico path="/ru.toxsoft.mcc.ws.core/icons/tsicon.ico"/>
+         <ico path="/ru.toxsoft.mcc.ws.core/icons/tsicon2.ico"/>
          <bmp/>
       </win>
    </launcher>
