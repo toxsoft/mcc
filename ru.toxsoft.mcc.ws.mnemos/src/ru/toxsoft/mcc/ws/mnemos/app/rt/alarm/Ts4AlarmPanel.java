@@ -58,6 +58,7 @@ public class Ts4AlarmPanel
   IM5CollectionPanel<ISkAlarm> alarmPanel;
 
   private final ISkConnection skConn;
+  private SoundPlayer         player;
 
   /**
    * Конструктор.
@@ -79,6 +80,8 @@ public class Ts4AlarmPanel
     if( !skConn.coreApi().services().hasKey( ISkAlarmService.SERVICE_ID ) ) {
       return;
     }
+
+    player = new SoundPlayer( "sound/train.wav" ); //$NON-NLS-1$
 
     ISkAlarmService alarmService = (ISkAlarmService)skConn.coreApi().services().getByKey( ISkAlarmService.SERVICE_ID );
 
@@ -138,7 +141,9 @@ public class Ts4AlarmPanel
                 for( ISkAlarm alarm : selAlarms ) {
                   lifecycleManager().remove( alarm );
                 }
-
+                if( tree().items().size() == 0 ) {
+                  player.stop();
+                }
                 refresh();
                 break;
               }
@@ -175,7 +180,10 @@ public class Ts4AlarmPanel
         // ((SkAlarmM5LifecycleManager)componentModown.lifecycleManager()).setQuitValue( aSkAlarm, false );
 
         Display display = aCtx.get( Display.class );
-        display.asyncExec( () -> componentModown.refresh() );
+        display.asyncExec( () -> {
+          componentModown.refresh();
+          player.start();
+        } );
         // }
       }
     } );
