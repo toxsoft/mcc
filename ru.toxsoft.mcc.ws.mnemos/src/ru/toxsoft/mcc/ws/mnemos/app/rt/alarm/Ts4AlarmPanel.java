@@ -6,32 +6,36 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 
 import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.actions.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
-import org.toxsoft.core.tsgui.bricks.tstree.impl.*;
-import org.toxsoft.core.tsgui.dialogs.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
-import org.toxsoft.core.tsgui.m5.gui.viewers.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tsgui.bricks.actions.ITsActionDef;
+import org.toxsoft.core.tsgui.bricks.actions.TsActionDef;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.toxsoft.core.tsgui.bricks.tstree.impl.TsTreeViewer;
+import org.toxsoft.core.tsgui.dialogs.ETsDialogCode;
+import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.m5.IM5Model;
+import org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants;
+import org.toxsoft.core.tsgui.m5.gui.mpc.impl.MultiPaneComponentModown;
+import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
+import org.toxsoft.core.tsgui.m5.gui.panels.impl.M5CollectionPanelMpcModownWrapper;
+import org.toxsoft.core.tsgui.m5.gui.viewers.IM5Column;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.panels.toolbar.ITsToolbar;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tsgui.utils.layout.EBorderLayoutPlacement;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
 import org.toxsoft.uskat.alarms.lib.*;
-import org.toxsoft.uskat.alarms.lib.impl.*;
-import org.toxsoft.uskat.alarms.s5.supports.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.s5.utils.*;
+import org.toxsoft.uskat.alarms.lib.impl.SkAlarmFlacon;
+import org.toxsoft.uskat.alarms.s5.supports.S5AlarmDefEntity;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
 /**
  * Панель отображения и квитирования списка Алармов
@@ -163,6 +167,10 @@ public class Ts4AlarmPanel
     alarmPanel = new M5CollectionPanelMpcModownWrapper<>( componentModown, false );
 
     Control c = alarmPanel.createControl( this );
+    // dima 30.01.23 начинаем звонить, если есть хоть один аларм
+    if( !lm.doListEntities().isEmpty() ) {
+      player.start();
+    }
 
     // dima 17.01.23 под Win ширина колонки маленькая, уширим
     IM5Column<ISkAlarm> messageColumn =
