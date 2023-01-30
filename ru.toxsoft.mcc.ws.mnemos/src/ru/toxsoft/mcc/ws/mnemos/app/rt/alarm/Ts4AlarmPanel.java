@@ -141,10 +141,10 @@ public class Ts4AlarmPanel
                 for( ISkAlarm alarm : selAlarms ) {
                   lifecycleManager().remove( alarm );
                 }
+                refresh();
                 if( tree().items().size() == 0 ) {
                   player.stop();
                 }
-                refresh();
                 break;
               }
               case ACTID_GENERATE_TEST_ALARM: {
