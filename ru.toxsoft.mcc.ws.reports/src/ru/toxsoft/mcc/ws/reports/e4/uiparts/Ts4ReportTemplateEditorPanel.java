@@ -15,13 +15,16 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.bricks.tsnodes.*;
 import org.toxsoft.core.tsgui.bricks.tstree.tmm.*;
+import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.*;
 import org.toxsoft.core.tsgui.m5.gui.mpc.*;
 import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
 import org.toxsoft.core.tsgui.m5.gui.panels.*;
 import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
 import org.toxsoft.core.tsgui.m5.model.*;
+import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.panels.toolbar.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
@@ -73,6 +76,8 @@ public class Ts4ReportTemplateEditorPanel
     protected ITsToolbar doCreateToolbar( ITsGuiContext aContext, String aName, EIconSize aIconSize,
         IListEdit<ITsActionDef> aActs ) {
       aActs.add( ACDEF_SEPARATOR );
+      aActs.add( ACDEF_COPY_TEMPLATE );
+      aActs.add( ACDEF_SEPARATOR );
       aActs.add( ACDEF_FORM_REPORT );
 
       ITsToolbar toolbar =
@@ -87,54 +92,80 @@ public class Ts4ReportTemplateEditorPanel
       return toolbar;
     }
 
-    @SuppressWarnings( "nls" )
     @Override
     protected void doProcessAction( String aActionId ) {
       ISkReportTemplate selTemplate = selectedItem();
 
       switch( aActionId ) {
-        case ACTID_FORM_REPORT: {
-          // запросим у пользователя интервал времени
-          TimeInterval retVal =
-              IntervalSelectionDialogPanel.getParams( tsContext().get( Shell.class ), initValues, tsContext() );
-          if( retVal != null ) {
-
-            IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( selTemplate );
-            ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
-
-            ISkQueryProcessedData processData =
-                connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
-
-            processData.prepare( queryParams );
-            processData.exec( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
-
-            IM5Model<IStringMap<IAtomicValue>> resultModel =
-                ReportTemplateUtilities.createM5ModelForTemplate( selTemplate );
-
-            // IList<ITimedList<?>> reportData = ReportTemplateUtiles.createTestResult( queryParams );
-            IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
-
-            // mvk
-            LoggerUtils.defaultLogger().info( "==== result query: ===" );
-            for( String paramId : processData.listArgs().keys() ) {
-              LoggerUtils.defaultLogger().info( "  pararm = %s, count = %d", paramId,
-                  Integer.valueOf( processData.getArgData( paramId ).size() ) );
-            }
-            LoggerUtils.defaultLogger().info( "======================" );
-
-            IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
-                ReportTemplateUtilities.createM5ItemProviderForTemplate( selTemplate, reportData );
-
-            if( reportV == null ) {
-              reportV = new JasperReportViewer( rightBoard, tsContext() );
-            }
-
-            reportV.setJasperReportPrint( tsContext(), resultModel, resultProvider );
-          }
+        case ACTID_COPY_TEMPLATE:
+          copyTemplate( selTemplate );
           break;
-        }
+        case ACTID_FORM_REPORT:
+          formReport( selTemplate );
+          break;
+
         default:
           throw new TsNotAllEnumsUsedRtException( aActionId );
+      }
+    }
+
+    private void copyTemplate( ISkReportTemplate aSelTemplate ) {
+      ISkConnectionSupplier connSup = tsContext().get( ISkConnectionSupplier.class );
+      ISkConnection conn = connSup.defConn();
+
+      IM5Domain m5 = conn.scope().get( IM5Domain.class );
+      IM5Model<ISkReportTemplate> model = m5.getModel( ISkReportTemplate.CLASS_ID, ISkReportTemplate.class );
+      IM5Bunch<ISkReportTemplate> originalBunch = model.valuesOf( aSelTemplate );
+      IM5BunchEdit<ISkReportTemplate> copyBunch = new M5BunchEdit<>( model );
+      for( IM5FieldDef<ISkReportTemplate, ?> fd : originalBunch.model().fieldDefs() ) {
+        copyBunch.set( fd.id(), originalBunch.get( fd ) );
+      }
+      ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
+      ISkReportTemplate copyTemplate =
+          M5GuiUtils.askCreate( tsContext(), model, copyBunch, cdi, model.getLifecycleManager( null ) );
+      if( copyTemplate != null ) {
+        // создали копию, обновим список
+        refresh();
+      }
+    }
+
+    private void formReport( ISkReportTemplate aSelTemplate ) {
+      // запросим у пользователя интервал времени
+      TimeInterval retVal =
+          IntervalSelectionDialogPanel.getParams( tsContext().get( Shell.class ), initValues, tsContext() );
+      if( retVal != null ) {
+
+        IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
+        ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
+
+        ISkQueryProcessedData processData =
+            connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
+
+        processData.prepare( queryParams );
+        processData.exec( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
+
+        IM5Model<IStringMap<IAtomicValue>> resultModel =
+            ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
+
+        // IList<ITimedList<?>> reportData = ReportTemplateUtiles.createTestResult( queryParams );
+        IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
+
+        // mvk
+        LoggerUtils.defaultLogger().info( "==== result query: ===" );
+        for( String paramId : processData.listArgs().keys() ) {
+          LoggerUtils.defaultLogger().info( "  pararm = %s, count = %d", paramId,
+              Integer.valueOf( processData.getArgData( paramId ).size() ) );
+        }
+        LoggerUtils.defaultLogger().info( "======================" );
+
+        IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
+            ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
+
+        if( reportV == null ) {
+          reportV = new JasperReportViewer( rightBoard, tsContext() );
+        }
+
+        reportV.setJasperReportPrint( tsContext(), resultModel, resultProvider );
       }
     }
 
@@ -144,6 +175,11 @@ public class Ts4ReportTemplateEditorPanel
 
   final static TsActionDef ACDEF_FORM_REPORT =
       TsActionDef.ofPush2( ACTID_FORM_REPORT, STR_N_GENERATE_REPORT, STR_D_GENERATE_REPORT, ICONID_RUN );
+
+  final static String ACTID_COPY_TEMPLATE = SK_ID + ".users.gui.CopyTemplate"; //$NON-NLS-1$
+
+  final static TsActionDef ACDEF_COPY_TEMPLATE = TsActionDef.ofPush2( ACTID_COPY_TEMPLATE, STR_N_COPY_TEMPLATE,
+      STR_D_COPY_TEMPLATE, ITsStdIconIds.ICONID_EDIT_COPY );
 
   static TimeInterval initValues =
       new TimeInterval( System.currentTimeMillis() - 24L * 60L * 60L * 1000L, System.currentTimeMillis() );
@@ -162,6 +198,11 @@ public class Ts4ReportTemplateEditorPanel
    * узел пользователя
    */
   final ITsNodeKind<ISkUser> NK_USER_NODE = new TsNodeKind<>( "NodeUser", ISkUser.class, true, ICONID_USER ); //$NON-NLS-1$
+
+  /**
+   * панель отображения дерева шаблонов
+   */
+  private ReportTemplatePaneComponentModown componentModown;
 
   static final String TMIID_GROUP_BY_USER = "GroupByUser"; //$NON-NLS-1$
 
@@ -247,8 +288,7 @@ public class Ts4ReportTemplateEditorPanel
     SashForm sf = new SashForm( aParent, SWT.HORIZONTAL );
     // dima 03.11.22 вынес в отдельный класс
 
-    ReportTemplatePaneComponentModown componentModown =
-        new ReportTemplatePaneComponentModown( ctx, model, lm.itemsProvider(), lm );
+    componentModown = new ReportTemplatePaneComponentModown( ctx, model, lm.itemsProvider(), lm );
 
     // дерево пользователи -> их шаблоны
     User2ReportTemplatesTreeMaker treeMaker =

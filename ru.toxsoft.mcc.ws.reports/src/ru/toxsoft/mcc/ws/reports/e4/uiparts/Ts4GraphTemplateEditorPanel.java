@@ -17,13 +17,16 @@ import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.bricks.tsnodes.*;
 import org.toxsoft.core.tsgui.bricks.tstree.tmm.*;
 import org.toxsoft.core.tsgui.chart.api.*;
+import org.toxsoft.core.tsgui.dialogs.datarec.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.*;
 import org.toxsoft.core.tsgui.m5.gui.mpc.*;
 import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
 import org.toxsoft.core.tsgui.m5.gui.panels.*;
 import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
 import org.toxsoft.core.tsgui.m5.model.*;
+import org.toxsoft.core.tsgui.m5.model.impl.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.panels.toolbar.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
@@ -171,6 +174,8 @@ public class Ts4GraphTemplateEditorPanel
           protected ITsToolbar doCreateToolbar( @SuppressWarnings( "hiding" ) ITsGuiContext aContext, String aName,
               EIconSize aIconSize, IListEdit<ITsActionDef> aActs ) {
             aActs.add( ACDEF_SEPARATOR );
+            aActs.add( Ts4ReportTemplateEditorPanel.ACDEF_COPY_TEMPLATE );
+            aActs.add( ACDEF_SEPARATOR );
             aActs.add( ACDEF_FORM_GRAPH );
 
             ITsToolbar toolbar =
@@ -190,68 +195,89 @@ public class Ts4GraphTemplateEditorPanel
             ISkGraphTemplate selTemplate = selectedItem();
 
             switch( aActionId ) {
-              case ACTID_FORM_GRAPH: {
-                // запросим у пользователя интервал времени
-                TimeInterval retVal =
-                    IntervalSelectionDialogPanel.getParams( aContext.get( Shell.class ), initValues, aContext );
-                if( retVal != null ) {
-                  // запомним выбранный интервал
-                  initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
-                  // формируем запрос к одноименному сервису
-                  IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( selTemplate );
-                  ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
-
-                  ISkQueryProcessedData processData =
-                      connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
-
-                  processData.prepare( queryParams );
-
-                  processData
-                      .exec( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
-
-                  // переделываем на асинхронное получение данных
-                  // IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
-                  processData.genericChangeEventer().addListener( aSource -> {
-                    ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-                    if( q.state() == ESkQueryState.READY ) {
-                      IList<ITimedList<?>> requestAnswer = createResult( processData, queryParams );
-                      IList<IG2DataSet> graphData =
-                          createG2SelfUploDataSetList( selTemplate, requestAnswer, connSupp.defConn() );
-                      for( IG2DataSet ds : graphData ) {
-                        if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
-                          ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
-                        }
-                      }
-                      chartPanel.setReportAnswer( graphData, selTemplate );
-                      chartPanel.requestLayout();
-                    }
-                  } );
-
-                  // переделываем на асинхронное получение данных
-                  // IList<IG2DataSet> graphData =
-                  // createG2SelfUploDataSetList( selTemplate, reportData, connSupp.defConn() );
-
-                  // создаем новую закладку
-                  CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
-                  tabItem.setText( selTemplate.nmName() );
-                  chartPanel = new ChartPanel( tabFolder, tsContext() );
-
-                  // переделываем на асинхронное получение данных
-                  // for( IG2DataSet ds : graphData ) {
-                  // if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
-                  // ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource -> chartPanel.refresh() );
-                  // }
-                  // }
-                  // chartPanel.setReportAnswer( graphData, selTemplate );
-
-                  tabItem.setControl( chartPanel );
-                  tabFolder.setSelection( tabItem );
-                  // tabFolder.requestLayout();
-                }
+              case Ts4ReportTemplateEditorPanel.ACTID_COPY_TEMPLATE:
+                copyTemplate( selTemplate );
                 break;
-              }
+
+              case ACTID_FORM_GRAPH:
+                formGraph( aContext, selTemplate );
+                break;
               default:
                 throw new TsNotAllEnumsUsedRtException( aActionId );
+            }
+          }
+
+          private void copyTemplate( ISkGraphTemplate aSelTemplate ) {
+            IM5Bunch<ISkGraphTemplate> originalBunch = model.valuesOf( aSelTemplate );
+            IM5BunchEdit<ISkGraphTemplate> copyBunch = new M5BunchEdit<>( model );
+            for( IM5FieldDef<ISkGraphTemplate, ?> fd : originalBunch.model().fieldDefs() ) {
+              copyBunch.set( fd.id(), originalBunch.get( fd ) );
+            }
+            ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
+            ISkGraphTemplate copyTemplate =
+                M5GuiUtils.askCreate( tsContext(), model, copyBunch, cdi, model.getLifecycleManager( null ) );
+            if( copyTemplate != null ) {
+              // создали копию, обновим список
+              refresh();
+            }
+          }
+
+          private void formGraph( ITsGuiContext aContext, ISkGraphTemplate selTemplate ) {
+            // запросим у пользователя интервал времени
+            TimeInterval retVal =
+                IntervalSelectionDialogPanel.getParams( aContext.get( Shell.class ), initValues, aContext );
+            if( retVal != null ) {
+              // запомним выбранный интервал
+              initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
+              // формируем запрос к одноименному сервису
+              IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( selTemplate );
+              ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
+
+              ISkQueryProcessedData processData =
+                  connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
+
+              processData.prepare( queryParams );
+
+              processData.exec( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
+
+              // переделываем на асинхронное получение данных
+              // IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
+              processData.genericChangeEventer().addListener( aSource -> {
+                ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+                if( q.state() == ESkQueryState.READY ) {
+                  IList<ITimedList<?>> requestAnswer = createResult( processData, queryParams );
+                  IList<IG2DataSet> graphData =
+                      createG2SelfUploDataSetList( selTemplate, requestAnswer, connSupp.defConn() );
+                  for( IG2DataSet ds : graphData ) {
+                    if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
+                      ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
+                    }
+                  }
+                  chartPanel.setReportAnswer( graphData, selTemplate );
+                  chartPanel.requestLayout();
+                }
+              } );
+
+              // переделываем на асинхронное получение данных
+              // IList<IG2DataSet> graphData =
+              // createG2SelfUploDataSetList( selTemplate, reportData, connSupp.defConn() );
+
+              // создаем новую закладку
+              CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
+              tabItem.setText( selTemplate.nmName() );
+              chartPanel = new ChartPanel( tabFolder, tsContext() );
+
+              // переделываем на асинхронное получение данных
+              // for( IG2DataSet ds : graphData ) {
+              // if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
+              // ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource -> chartPanel.refresh() );
+              // }
+              // }
+              // chartPanel.setReportAnswer( graphData, selTemplate );
+
+              tabItem.setControl( chartPanel );
+              tabFolder.setSelection( tabItem );
+              // tabFolder.requestLayout();
             }
           }
         };
