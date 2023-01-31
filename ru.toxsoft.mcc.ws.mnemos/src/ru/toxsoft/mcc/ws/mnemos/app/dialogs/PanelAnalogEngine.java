@@ -132,56 +132,59 @@ public class PanelAnalogEngine
     textEditor = createRtTextEditor( pidObj, "rtdTask", "cmdTask" );
     textEditor.createControl( pidGroup ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
 
-    Composite buttonBar = new Composite( pidGroup, SWT.NONE );
-    GridLayout gl = new GridLayout( 4, false );
-    gl.marginHeight = 0;
-    gl.verticalSpacing = 0;
-    gl.marginTop = 6;
-    gl.marginBottom = 6;
-    gl.marginLeft = 0;
-    buttonBar.setLayout( gl );
-    buttonBar.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
+    MccCheckCmdButton checkCmd = createCheckCmdButton( pidGroup, pidObj, "cmdEnable", "rtdEnable", true );
+    checkCmd.getControl().setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
 
-    l = new CLabel( buttonBar, SWT.CENTER );
-    l.setText( "Управление:  " );
-
-    Button btnArm = new Button( buttonBar, SWT.PUSH );
-    btnArm.setText( "АРМ" );
-    gd = new GridData();
-    gd.widthHint = 80;
-    btnArm.setLayoutData( gd );
-    btnArm.addSelectionListener( new SelectionAdapter() {
-
-      @Override
-      public void widgetSelected( SelectionEvent aE ) {
-        // if( btnArm.getSelection() ) {
-        Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetApwCtrl" ); //$NON-NLS-1$
-        if( !commandSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
-          // internalUpdate();
-          TsDialogUtils.error( getShell(), commandSender.errorString() );
-        }
-        // }
-      }
-    } );
-
-    Button btnAuto = new Button( buttonBar, SWT.PUSH );
-    btnAuto.setText( "Автомат" );
-    gd = new GridData();
-    gd.widthHint = 80;
-    btnAuto.setLayoutData( gd );
-    btnAuto.addSelectionListener( new SelectionAdapter() {
-
-      @Override
-      public void widgetSelected( SelectionEvent aE ) {
-        // if( btnAuto.getSelection() ) {
-        Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetAutoCtrl" ); //$NON-NLS-1$
-        if( !commandSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
-          // internalUpdate();
-          TsDialogUtils.error( getShell(), commandSender.errorString() );
-        }
-        // }
-      }
-    } );
+    // Composite buttonBar = new Composite( pidGroup, SWT.NONE );
+    // GridLayout gl = new GridLayout( 4, false );
+    // gl.marginHeight = 0;
+    // gl.verticalSpacing = 0;
+    // gl.marginTop = 6;
+    // gl.marginBottom = 6;
+    // gl.marginLeft = 0;
+    // buttonBar.setLayout( gl );
+    // buttonBar.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
+    //
+    // l = new CLabel( buttonBar, SWT.CENTER );
+    // l.setText( "Управление: " );
+    //
+    // Button btnArm = new Button( buttonBar, SWT.PUSH );
+    // btnArm.setText( "АРМ" );
+    // gd = new GridData();
+    // gd.widthHint = 80;
+    // btnArm.setLayoutData( gd );
+    // btnArm.addSelectionListener( new SelectionAdapter() {
+    //
+    // @Override
+    // public void widgetSelected( SelectionEvent aE ) {
+    // // if( btnArm.getSelection() ) {
+    // Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetApwCtrl" ); //$NON-NLS-1$
+    // if( !commandSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+    // // internalUpdate();
+    // TsDialogUtils.error( getShell(), commandSender.errorString() );
+    // }
+    // // }
+    // }
+    // } );
+    //
+    // Button btnAuto = new Button( buttonBar, SWT.PUSH );
+    // btnAuto.setText( "Автомат" );
+    // gd = new GridData();
+    // gd.widthHint = 80;
+    // btnAuto.setLayoutData( gd );
+    // btnAuto.addSelectionListener( new SelectionAdapter() {
+    //
+    // @Override
+    // public void widgetSelected( SelectionEvent aE ) {
+    // // if( btnAuto.getSelection() ) {
+    // Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetAutoCtrl" ); //$NON-NLS-1$
+    // if( !commandSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+    // // internalUpdate();
+    // TsDialogUtils.error( getShell(), commandSender.errorString() );
+    // }
+    // // }
+    // }
+    // } );
 
   }
 
