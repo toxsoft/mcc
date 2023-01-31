@@ -14,7 +14,6 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
 import ru.toxsoft.mcc.ws.mnemos.app.utils.*;
 
 /**
@@ -26,6 +25,15 @@ import ru.toxsoft.mcc.ws.mnemos.app.utils.*;
 public class PanelAnalogEngine
     extends AbstractMccDialogPanel {
 
+  /**
+   * ИД класса система управления
+   */
+  public static String CLSID_CTRL_SYSTEM = "mcc.CtrlSystem"; //$NON-NLS-1$
+  /**
+   * ИД объекта класса система управления
+   */
+  public static String OBJID_CTRL_SYSTEM = "n2CtrlSystem";   //$NON-NLS-1$
+
   private final ISkObject skObject;
 
   MccCommandSender commandSender;
@@ -34,47 +42,6 @@ public class PanelAnalogEngine
   boolean stopClose = false;
 
   Button btnStop;
-
-  class OpenCloseDataConsumer
-      implements IRtDataConsumer {
-
-    @Override
-    public String id() {
-      return "openCloser"; //$NON-NLS-1$
-    }
-
-    @Override
-    public IGwidList listNeededGwids() {
-      GwidList gl = new GwidList();
-      gl.add( Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdAwpOpenStart" ) ); //$NON-NLS-1$
-      gl.add( Gwid.createRtdata( skObject.classId(), skObject.strid(), "rtdAwpCloseStart" ) ); //$NON-NLS-1$
-      return gl;
-    }
-
-    @Override
-    public void setValues( Gwid[] aGwids, IAtomicValue[] aValues, int aCount ) {
-      for( int i = 0; i < aCount; i++ ) {
-        if( aGwids[i].propId().equals( "rtdAwpOpenStart" ) ) { //$NON-NLS-1$
-          stopOpen = false;
-          if( aValues[i].isAssigned() ) {
-            stopOpen = aValues[i].asBool();
-          }
-        }
-        if( aGwids[i].propId().equals( "rtdAwpCloseStart" ) ) { //$NON-NLS-1$
-          stopClose = false;
-          if( aValues[i].isAssigned() ) {
-            stopClose = aValues[i].asBool();
-          }
-        }
-      }
-      if( !stopOpen && !stopClose ) {
-        btnStop.setEnabled( false );
-      }
-      else {
-        btnStop.setEnabled( true );
-      }
-    }
-  }
 
   /**
    * ИД команды задания для дроссельной заслонки
@@ -119,6 +86,91 @@ public class PanelAnalogEngine
     dataProvider().addDataConsumer( aiControl );
 
     createControlPanel( this );
+
+    Group pidGroup = createGroup( this, "Регулятор", 3, false );
+    // new Group( this, SWT.NONE );
+    // pidGroup.setText( "Регулятор" );
+    // pidGroup.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, false ) );
+    // pidGroup.setLayout( createGridLayout( 3, false ) );
+
+    Gwid pidGwid = Gwid.createRtdata( "mcc.AnalogReg", "n2AnalogReg_DZ", "rtdCurrentValue" );
+    ISkObject pidObj = coreApi().objService().find( pidGwid.skid() );
+
+    CLabel l = new CLabel( pidGroup, SWT.CENTER );
+    String name = dataInfo( pidGwid ).nmName() + ":  ";
+    l.setText( name );
+
+    MccRtLabel rtl = createRtLabel( pidGroup, SWT.BORDER, pidGwid, tsContext() );
+    gd = new GridData( SWT.LEFT, SWT.CENTER, false, false );
+    gd.widthHint = 130;
+    rtl.getControl().setLayoutData( gd );
+
+    l = new CLabel( pidGroup, SWT.CENTER );
+    String strUnit = dialogContext().skObject().attrs().getStr( "atrMeasureValue" );
+    if( strUnit.isBlank() ) {
+      strUnit = "ед.изм.";
+    }
+    l.setText( strUnit );
+
+    MccRtTextEditor textEditor;
+
+    l = new CLabel( pidGroup, SWT.CENTER );
+    name = dataInfo( Gwid.createRtdata( "mcc.AnalogReg", "n2AnalogReg_DZ", "rtdTask" ) ).nmName() + ":  ";
+    l.setText( name );
+    textEditor = createRtTextEditor( pidObj, "rtdTask", "cmdTask" );
+    textEditor.createControl( pidGroup ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
+
+    Composite buttonBar = new Composite( pidGroup, SWT.NONE );
+    GridLayout gl = new GridLayout( 4, false );
+    gl.marginHeight = 0;
+    gl.verticalSpacing = 0;
+    gl.marginTop = 6;
+    gl.marginBottom = 6;
+    gl.marginLeft = 0;
+    buttonBar.setLayout( gl );
+    buttonBar.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 3, 1 ) );
+
+    l = new CLabel( buttonBar, SWT.CENTER );
+    l.setText( "Управление:  " );
+
+    Button btnArm = new Button( buttonBar, SWT.PUSH );
+    btnArm.setText( "АРМ" );
+    gd = new GridData();
+    gd.widthHint = 80;
+    btnArm.setLayoutData( gd );
+    btnArm.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        // if( btnArm.getSelection() ) {
+        Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetApwCtrl" ); //$NON-NLS-1$
+        if( !commandSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+          // internalUpdate();
+          TsDialogUtils.error( getShell(), commandSender.errorString() );
+        }
+        // }
+      }
+    } );
+
+    Button btnAuto = new Button( buttonBar, SWT.PUSH );
+    btnAuto.setText( "Автомат" );
+    gd = new GridData();
+    gd.widthHint = 80;
+    btnAuto.setLayoutData( gd );
+    btnAuto.addSelectionListener( new SelectionAdapter() {
+
+      @Override
+      public void widgetSelected( SelectionEvent aE ) {
+        // if( btnAuto.getSelection() ) {
+        Gwid cmdg = Gwid.createCmd( CLSID_CTRL_SYSTEM, OBJID_CTRL_SYSTEM, "cmdSetAutoCtrl" ); //$NON-NLS-1$
+        if( !commandSender.sendCommand( cmdg, AvUtils.avBool( true ) ) ) {
+          // internalUpdate();
+          TsDialogUtils.error( getShell(), commandSender.errorString() );
+        }
+        // }
+      }
+    } );
+
   }
 
   void createControlPanel( Composite aParent ) {

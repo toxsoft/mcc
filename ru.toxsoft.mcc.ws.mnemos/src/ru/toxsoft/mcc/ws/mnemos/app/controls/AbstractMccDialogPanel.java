@@ -117,6 +117,23 @@ public abstract class AbstractMccDialogPanel
   }
 
   /**
+   * Создает однострочный текст, отображающий значение РВ-данного, на основе {@link CLabel}.<br>
+   *
+   * @param aParent Composite - родительская компонента
+   * @param aStyle int - swt стиль контроля
+   * @param aDataGwid Gwid - ИД данного
+   * @param aTsContext ITsGuiContext - соответствующий контекст
+   * @return MccRtLabel - однострочный текст, отображающий значение РВ-данного
+   */
+  public MccRtLabel createRtLabel( Composite aParent, int aStyle, Gwid aDataGwid, ITsGuiContext aTsContext ) {
+    ISkObject obj = coreApi().objService().find( aDataGwid.skid() );
+    MccRtLabel rtl = new MccRtLabel( obj, aDataGwid.propId(), aTsContext, null );
+    dataProvider.addDataConsumer( rtl );
+    rtl.createControl( aParent, aStyle );
+    return rtl;
+  }
+
+  /**
    * Создает checkbox для посылки команды.<b>
    *
    * @param aParent Composite - родительская компонента
@@ -316,6 +333,21 @@ public abstract class AbstractMccDialogPanel
    */
   public MccRtTextEditor createRtTextEditor( String aDataId, String aCmdId ) {
     MccRtTextEditor rtEditor = new MccRtTextEditor( dialogContext().skObject(), aDataId, aCmdId, tsContext() );
+    dataProvider.addDataConsumer( rtEditor );
+    return rtEditor;
+  }
+
+  /**
+   * Создает редактор значения в виде текста. При для изменения значения посылает соответствующую команду.
+   * <p>
+   *
+   * @param aSkObj ISkObject - серверный объект
+   * @param aDataId String - ИД данного
+   * @param aCmdId String - ИД команды
+   * @return MccRtTextEditor - редактор значения в виде текста
+   */
+  public MccRtTextEditor createRtTextEditor( ISkObject aSkObj, String aDataId, String aCmdId ) {
+    MccRtTextEditor rtEditor = new MccRtTextEditor( aSkObj, aDataId, aCmdId, tsContext() );
     dataProvider.addDataConsumer( rtEditor );
     return rtEditor;
   }

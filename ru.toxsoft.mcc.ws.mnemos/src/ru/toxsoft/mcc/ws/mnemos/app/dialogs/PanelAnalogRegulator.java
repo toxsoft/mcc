@@ -5,7 +5,6 @@ import org.eclipse.swt.custom.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
 
@@ -20,15 +19,15 @@ public class PanelAnalogRegulator
 
   void init() {
 
-    for( IDtoRtdataInfo dataInfo : dialogContext().skObject().classInfo().rtdata().list() ) {
-      System.out.println( dataInfo.id() + " " + dataInfo.nmName() );
-    }
-
-    System.out.println( "-----------------------------------------------------" );
-
-    for( IDtoCmdInfo cmdInfo : dialogContext().skObject().classInfo().cmds().list() ) {
-      System.out.println( cmdInfo.id() + " " + cmdInfo.nmName() );
-    }
+    // for( IDtoRtdataInfo dataInfo : dialogContext().skObject().classInfo().rtdata().list() ) {
+    // System.out.println( dataInfo.id() + " " + dataInfo.nmName() );
+    // }
+    //
+    // System.out.println( "-----------------------------------------------------" );
+    //
+    // for( IDtoCmdInfo cmdInfo : dialogContext().skObject().classInfo().cmds().list() ) {
+    // System.out.println( cmdInfo.id() + " " + cmdInfo.nmName() );
+    // }
 
     GridLayout gl = createGridLayout( 3, false );
     setLayout( gl );
