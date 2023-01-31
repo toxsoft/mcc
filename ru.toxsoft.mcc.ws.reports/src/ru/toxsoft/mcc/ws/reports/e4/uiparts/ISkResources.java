@@ -31,4 +31,6 @@ interface ISkResources {
    */
   String STR_N_GENERATE_REPORT = "Сформировать отчёт";
   String STR_D_GENERATE_REPORT = "Загрузка данных из БД и формирование отчёта";
+  String STR_N_COPY_TEMPLATE   = "Копия шаблона";
+  String STR_D_COPY_TEMPLATE   = "Сделать копию шаблона";
 }

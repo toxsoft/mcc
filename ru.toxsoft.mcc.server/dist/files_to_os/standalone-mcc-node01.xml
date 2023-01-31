@@ -172,6 +172,11 @@
             <logger category="S5SequenceValidator">
                 <level name="INFO"/>
             </logger>
+            
+            <logger category="org.toxsoft.uskat.s5.server.backend.supports.queries.impl.S5BackendQueriesSingleton">
+                <level name="ERROR"/>
+            </logger>
+            
             <root-logger>
                 <level name="ALL"/>
                 <handlers>
