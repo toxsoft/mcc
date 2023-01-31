@@ -7,7 +7,6 @@ import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.dialogs.*;
-import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
@@ -75,15 +74,28 @@ public class PanelAnalogEngine
     modeComp.getControl().setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
 
     Gwid gwid = Gwid.createRtdata( "mcc.AnalogInput", "n2AI_DDZ", MccAnalogInputControl.DI_CURRENT_VALUE );
-    MccAnalogInputControl aiControl = new MccAnalogInputControl( gwid, tsContext(), null );
-    Control ctrl = aiControl.createControl( this, SWT.BORDER );
-    FontInfo fi = new FontInfo( "Arial", 24, true, false ); //$NON-NLS-1$
-    ctrl.setFont( fontManager().getFont( fi ) );
+    // MccAnalogInputControl aiControl = new MccAnalogInputControl( gwid, tsContext(), null );
+    // Control ctrl = aiControl.createControl( this, SWT.BORDER );
+    // FontInfo fi = new FontInfo( "Arial", 24, true, false ); //$NON-NLS-1$
+    // ctrl.setFont( fontManager().getFont( fi ) );
     GridData gd = new GridData( SWT.CENTER, SWT.FILL, false, true, 1, 2 );
     gd.widthHint = 130;
     gd.minimumWidth = 130;
-    ctrl.setLayoutData( gd );
-    dataProvider().addDataConsumer( aiControl );
+    // ctrl.setLayoutData( gd );
+    // dataProvider().addDataConsumer( aiControl );
+
+    Composite c = new Composite( this, SWT.NONE );
+    c.setLayout( createGridLayout( 2, false ) );
+    c.setLayoutData( new GridData( SWT.FILL, SWT.TOP, true, false ) );
+
+    CLabel l = new CLabel( c, SWT.CENTER );
+    String name = dataName( gwid ) + ":  ";
+    l.setText( name );
+
+    MccRtLabel rtlDz = createRtLabel( c, SWT.BORDER, gwid, tsContext() );
+    gd = new GridData( SWT.LEFT, SWT.CENTER, false, false );
+    gd.widthHint = 130;
+    rtlDz.getControl().setLayoutData( gd );
 
     createControlPanel( this );
 
@@ -96,8 +108,8 @@ public class PanelAnalogEngine
     Gwid pidGwid = Gwid.createRtdata( "mcc.AnalogReg", "n2AnalogReg_DZ", "rtdCurrentValue" );
     ISkObject pidObj = coreApi().objService().find( pidGwid.skid() );
 
-    CLabel l = new CLabel( pidGroup, SWT.CENTER );
-    String name = dataInfo( pidGwid ).nmName() + ":  ";
+    l = new CLabel( pidGroup, SWT.CENTER );
+    name = dataName( pidGwid ) + ":  ";
     l.setText( name );
 
     MccRtLabel rtl = createRtLabel( pidGroup, SWT.BORDER, pidGwid, tsContext() );
@@ -115,7 +127,7 @@ public class PanelAnalogEngine
     MccRtTextEditor textEditor;
 
     l = new CLabel( pidGroup, SWT.CENTER );
-    name = dataInfo( Gwid.createRtdata( "mcc.AnalogReg", "n2AnalogReg_DZ", "rtdTask" ) ).nmName() + ":  ";
+    name = dataName( Gwid.createRtdata( "mcc.AnalogReg", "n2AnalogReg_DZ", "rtdTask" ) ) + ":  ";
     l.setText( name );
     textEditor = createRtTextEditor( pidObj, "rtdTask", "cmdTask" );
     textEditor.createControl( pidGroup ).setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );

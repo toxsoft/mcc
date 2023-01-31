@@ -28,6 +28,8 @@ import org.toxsoft.uskat.core.utils.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.mnemos.app.utils.*;
 import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 
 /**
@@ -47,6 +49,8 @@ public abstract class AbstractMccDialogPanel
   private final MccDialogContext dlgContext;
 
   MccCommandSender cmdSender;
+
+  private final RtDataAliasHelper aliasHelper;
 
   /**
    * Конструктор.<br>
@@ -69,6 +73,8 @@ public abstract class AbstractMccDialogPanel
         TsDialogUtils.error( getShell(), errStr );
       }
     } );
+
+    aliasHelper = new RtDataAliasHelper( skConn() );
   }
 
   // ------------------------------------------------------------------------------------
@@ -473,6 +479,19 @@ public abstract class AbstractMccDialogPanel
     // rtPanel.defineRtData( aDataGwid, valed );
 
     return valed;
+  }
+
+  protected String dataName( Gwid aGwid ) {
+    IDataNameAlias alias = aliasHelper.alias( aGwid );
+    if( alias != null ) {
+      return alias.title();
+    }
+    return dataInfo( aGwid ).nmName();
+  }
+
+  protected String dataName( String aDataId ) {
+    ISkObject skObj = dlgContext.skObject();
+    return dataName( Gwid.createRtdata( skObj.classId(), skObj.id(), aDataId ) );
   }
 
   protected IDtoRtdataInfo dataInfo( Gwid aDataGwid ) {
