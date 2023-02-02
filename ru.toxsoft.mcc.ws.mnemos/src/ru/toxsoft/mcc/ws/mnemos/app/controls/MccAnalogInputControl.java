@@ -233,7 +233,7 @@ public class MccAnalogInputControl
       case FLOATING:
         int digitsCount = skObj.attrs().getInt( "atrDecimalPoint" ); //$NON-NLS-1$
         if( digitsCount <= 0 ) {
-          digitsCount = 1;
+          digitsCount = 0;
         }
         return "%." + digitsCount + "f"; //$NON-NLS-1$ //$NON-NLS-2$
       case INTEGER:
