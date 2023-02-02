@@ -82,7 +82,7 @@ public class ChartsTabPanel
     toolbar = new TsToolbar( tsContext() );
     toolbar.setNameLabelText( RTCHARTS_TOOLBAR_TITLE );
     toolbar.addActionDefs( //
-        ACDEF_ADD, ACDEF_SEPARATOR, ACDEF_EDIT //
+        ACDEF_ADD, ACDEF_SEPARATOR, ACDEF_EDIT, ACDEF_SEPARATOR, ACDEF_REMOVE //
     );
     toolbar.createControl( this );
     toolbar.getControl().setLayoutData( BorderLayout.NORTH );
@@ -90,6 +90,16 @@ public class ChartsTabPanel
       if( aActionId.equals( ACDEF_ADD.id() ) ) {
         ISkGraphParam newRtGraph = doAddItem();
         addRtChart( newRtGraph );
+      }
+      if( aActionId.equals( ACDEF_REMOVE.id() ) ) {
+        // получаем текущий график
+        CTabItem selTab = tabFolder.getSelection();
+        ISkGraphParam selelectedGraphParam = (ISkGraphParam)selTab.getData();
+        rtCharts.remove( selelectedGraphParam );
+        // гасим RtChart
+        RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
+        chartPanel.dispose();
+        selTab.dispose();
       }
       if( aActionId.equals( ACDEF_EDIT.id() ) ) {
         // получаем текущий график
@@ -123,7 +133,6 @@ public class ChartsTabPanel
     // инициализируем настройки панели
     initPanelPrefs();
     // восстанавливаем внешний вид панели
-    // saveUserSettings();
     restoreUserSettings();
   }
 
@@ -145,7 +154,7 @@ public class ChartsTabPanel
 
   private void addRtChartToTabPanel( ISkGraphParam aRtGraph ) {
     // создаем новую закладку
-    CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
+    CTabItem tabItem = new CTabItem( tabFolder, SWT.NONE );
     // закладке дадим имя параметра
     tabItem.setText( aRtGraph.title() );
     RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), aRtGraph, conn );
