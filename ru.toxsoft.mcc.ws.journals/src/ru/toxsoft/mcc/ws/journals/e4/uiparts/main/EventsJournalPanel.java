@@ -3,43 +3,48 @@ package ru.toxsoft.mcc.ws.journals.e4.uiparts.main;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.IMmFgdpLibCfgJournalsConstants.*;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.main.IMmResources.*;
 
-import java.text.*;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import org.eclipse.jface.dialogs.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.swt.widgets.Composite;
 import org.toxsoft.core.jasperreports.gui.main.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
-import org.toxsoft.core.tsgui.dialogs.*;
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.bricks.events.change.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.api.evserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.s5.utils.*;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
+import org.toxsoft.core.tsgui.m5.IM5Domain;
+import org.toxsoft.core.tsgui.m5.IM5Model;
+import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
+import org.toxsoft.core.tsgui.m5.model.impl.M5DefaultItemsProvider;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.bricks.events.change.IGenericChangeListener;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringListEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
+import org.toxsoft.core.tslib.utils.errors.TsException;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
+import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
+import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.api.evserv.SkEvent;
+import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
+import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoEventInfo;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
-import ru.toxsoft.mcc.ws.journals.e4.uiparts.*;
-import ru.toxsoft.mcc.ws.journals.e4.uiparts.devel.*;
+import ru.toxsoft.mcc.ws.journals.e4.uiparts.JournalsLibUtils;
+import ru.toxsoft.mcc.ws.journals.e4.uiparts.devel.DefaultMwsModJournalEventFormattersRegistry;
+import ru.toxsoft.mcc.ws.journals.e4.uiparts.devel.IMwsModJournalEventFormattersRegistry;
 import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.*;
-import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IJournalParamsPanel.*;
+import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IJournalParamsPanel.ECurrentAction;
 
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.type.*;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
 
 /**
  * Панель журнала событий.
@@ -260,7 +265,19 @@ public class EventsJournalPanel
   private void queryAllEvents() {
     try {
       queryEngine.setQueryParams( paramsPanel.interval(), allEventsParams() );
-      new ProgressMonitorDialog( getShell() ).run( true, true, queryEngine );
+
+      // 2023-01-20 mvk
+      ProgressMonitorDialog pd = new ProgressMonitorDialog( getShell() ) {
+
+        @Override
+        protected void cancelPressed() {
+          super.cancelPressed();
+          queryEngine.cancelQuery();
+        }
+
+      };
+      pd.run( true, true, queryEngine );
+
       eventProvider.items().clear();
       eventProvider.items().addAll( queryEngine.getResult() );
       panel.refresh();
@@ -287,7 +304,20 @@ public class EventsJournalPanel
         selEvents.addItem( item );
       }
       queryEngine.setQueryParams( paramsPanel.interval(), selEvents );
-      new ProgressMonitorDialog( getShell() ).run( true, true, queryEngine );
+
+      // 2023-01-20 mvk
+      ProgressMonitorDialog pd = new ProgressMonitorDialog( getShell() ) {
+
+        @Override
+        protected void cancelPressed() {
+          super.cancelPressed();
+          // 2023-01-20 mvk
+          queryEngine.cancelQuery();
+        }
+
+      };
+      pd.run( true, true, queryEngine );
+
       eventProvider.items().clear();
       eventProvider.items().addAll( queryEngine.getResult() );
       panel.refresh();
