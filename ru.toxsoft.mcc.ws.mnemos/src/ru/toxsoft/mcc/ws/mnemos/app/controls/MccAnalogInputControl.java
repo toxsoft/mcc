@@ -13,6 +13,7 @@ import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.uskat.core.api.objserv.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
 
@@ -82,6 +83,8 @@ public class MccAnalogInputControl
   // private static Color colorWhite;
   private static Color colorMagenta;
 
+  private final ISkObject skObj;
+
   /**
    * Конструктор.
    *
@@ -93,6 +96,8 @@ public class MccAnalogInputControl
     super( aObjGwid, aTsContext, aConnId );
     TsNullArgumentRtException.checkNulls( aObjGwid, aTsContext );
     TsIllegalArgumentRtException.checkTrue( aObjGwid.isAbstract() );
+
+    skObj = coreApi().objService().find( aObjGwid.skid() );
 
     // colorWhite = colorManager().getColor( ETsColor.WHITE );
     colorMagenta = colorManager().getColor( ETsColor.MAGENTA );
@@ -226,7 +231,11 @@ public class MccAnalogInputControl
       case BOOLEAN:
         return "%b"; //$NON-NLS-1$
       case FLOATING:
-        return "%.2f"; //$NON-NLS-1$
+        int digitsCount = skObj.attrs().getInt( "atrDecimalPoint" ); //$NON-NLS-1$
+        if( digitsCount <= 0 ) {
+          digitsCount = 1;
+        }
+        return "%." + digitsCount + "f"; //$NON-NLS-1$ //$NON-NLS-2$
       case INTEGER:
         return "%d"; //$NON-NLS-1$
       case NONE:

@@ -1,7 +1,6 @@
 package ru.toxsoft.mcc.ws.mnemos.app.utils;
 
 import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.rtdserv.*;
@@ -23,7 +22,7 @@ public class MccRtUtils {
    */
   public static IAtomicValue readRtData( Gwid aGwid, ISkCoreApi aCoreApi ) {
     ISkRtdataService rtServ = aCoreApi.rtdService();
-    IMap<Gwid, ISkReadCurrDataChannel> channels = rtServ.createReadCurrDataChannels( new GwidList( aGwid ) );
+    // IMap<Gwid, ISkReadCurrDataChannel> channels = rtServ.createReadCurrDataChannels( new GwidList( aGwid ) );
     ISkReadCurrDataChannel rtdChannel = rtServ.createReadCurrDataChannels( new GwidList( aGwid ) ).values().first();
     return rtdChannel.getValue();
   }
