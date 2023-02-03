@@ -49,11 +49,11 @@ import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 
+import ru.toxsoft.mcc.ws.core.chart_utils.*;
+import ru.toxsoft.mcc.ws.core.chart_utils.dataset.*;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.core.templates.gui.m5.*;
 import ru.toxsoft.mcc.ws.core.templates.utils.*;
-import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.*;
-import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.dataset.*;
 
 /**
  * Панель редактора шаблонов графиков ts4.<br>

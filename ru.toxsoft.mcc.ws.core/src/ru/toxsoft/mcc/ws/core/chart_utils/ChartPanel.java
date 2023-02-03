@@ -413,7 +413,7 @@ public class ChartPanel
               tr.translate( p.x, p.y );
               printerGc.setTransform( tr );
               tr.dispose();
-              // legendWindow.print( printerGc );
+              legendWindow.print( printerGc );
             }
             printer.endPage();
           }

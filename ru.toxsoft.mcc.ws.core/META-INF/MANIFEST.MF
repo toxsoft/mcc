@@ -27,6 +27,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: ru.toxsoft.mcc.ws.core,
  ru.toxsoft.mcc.ws.core.chart_utils,
  ru.toxsoft.mcc.ws.core.chart_utils.console,
+ ru.toxsoft.mcc.ws.core.chart_utils.dataset,
  ru.toxsoft.mcc.ws.core.chart_utils.tools.aux_types,
  ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup,
  ru.toxsoft.mcc.ws.core.e4.addons,
