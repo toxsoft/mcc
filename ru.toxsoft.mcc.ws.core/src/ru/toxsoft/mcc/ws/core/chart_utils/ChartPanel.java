@@ -513,8 +513,11 @@ public class ChartPanel
     tuner.setTimeUnit( axisTimeUnit );
     // диапазон данных
     IG2DataSet dataSet = aAnswer.first();
-    // TODO настройка шкалы времении - диапазон значений
-    long startTime = dataSet.getValues( ITimeInterval.NULL ).first().timestamp();
+    // настройка шкалы времении - диапазон значений
+    long startTime = System.currentTimeMillis() - 12 * axisTimeUnit.timeInMills();
+    if( !dataSet.getValues( ITimeInterval.NULL ).isEmpty() ) {
+      startTime = dataSet.getValues( ITimeInterval.NULL ).first().timestamp();
+    }
     long endTime = startTime + 12 * axisTimeUnit.timeInMills();
 
     tuner.setTimeInterval( new TimeInterval( startTime, endTime ), false );

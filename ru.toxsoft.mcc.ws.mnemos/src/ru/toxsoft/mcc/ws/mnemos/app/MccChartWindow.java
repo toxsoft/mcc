@@ -53,7 +53,7 @@ public class MccChartWindow {
     ChartPanel chartPanel = ReportTemplateUtilities.popupChart( aTsContext, backPanel, aRtGwid, aTitle, aDescription );
     chartPanel.setLayoutData( BorderLayout.CENTER );
     wnd.pack();
-    wnd.setSize( 800, 400 );
+    wnd.setSize( 900, 500 );
     wnd.setLocation( aX, aY );
   }
 

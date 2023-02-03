@@ -38,7 +38,6 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.users.*;
@@ -148,24 +147,40 @@ public class Ts4ReportTemplateEditorPanel
             ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
 
         // IList<ITimedList<?>> reportData = ReportTemplateUtiles.createTestResult( queryParams );
-        IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
+        // IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
+        // асинхронное получение данных
+        processData.genericChangeEventer().addListener( aSource -> {
+          ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+          if( q.state() == ESkQueryState.READY ) {
+            IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
+
+            IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
+                ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
+
+            if( reportV == null ) {
+              reportV = new JasperReportViewer( rightBoard, tsContext() );
+            }
+
+            reportV.setJasperReportPrint( tsContext(), resultModel, resultProvider );
+          }
+        } );
 
         // mvk
-        LoggerUtils.defaultLogger().info( "==== result query: ===" );
-        for( String paramId : processData.listArgs().keys() ) {
-          LoggerUtils.defaultLogger().info( "  pararm = %s, count = %d", paramId,
-              Integer.valueOf( processData.getArgData( paramId ).size() ) );
-        }
-        LoggerUtils.defaultLogger().info( "======================" );
-
-        IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
-            ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
-
-        if( reportV == null ) {
-          reportV = new JasperReportViewer( rightBoard, tsContext() );
-        }
-
-        reportV.setJasperReportPrint( tsContext(), resultModel, resultProvider );
+        // LoggerUtils.defaultLogger().info( "==== result query: ===" );
+        // for( String paramId : processData.listArgs().keys() ) {
+        // LoggerUtils.defaultLogger().info( " pararm = %s, count = %d", paramId,
+        // Integer.valueOf( processData.getArgData( paramId ).size() ) );
+        // }
+        // LoggerUtils.defaultLogger().info( "======================" );
+        //
+        // IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
+        // ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
+        //
+        // if( reportV == null ) {
+        // reportV = new JasperReportViewer( rightBoard, tsContext() );
+        // }
+        //
+        // reportV.setJasperReportPrint( tsContext(), resultModel, resultProvider );
       }
     }
 
