@@ -180,7 +180,7 @@ public class Ts4ReportTemplateEditorPanel
 
   final static TsActionDef ACDEF_COPY_TEMPLATE = TsActionDef.ofPush2( ACTID_COPY_TEMPLATE, STR_N_COPY_TEMPLATE,
       STR_D_COPY_TEMPLATE, ITsStdIconIds.ICONID_EDIT_COPY );
-
+  // по умолчанию берем данные за последние сутки
   static TimeInterval initValues =
       new TimeInterval( System.currentTimeMillis() - 24L * 60L * 60L * 1000L, System.currentTimeMillis() );
 
