@@ -51,8 +51,8 @@ import ru.toxsoft.mcc.ws.core.templates.api.*;
 public class ReportTemplateUtilities {
 
   // по умолчанию берем данные за последние 6 час
-  static TimeInterval initValues = new TimeInterval( System.currentTimeMillis() - 30 * 60L * 60L * 1000L,
-      System.currentTimeMillis() - 24 * 60L * 60L * 1000L );
+  static TimeInterval initValues =
+      new TimeInterval( System.currentTimeMillis() - 6 * 60L * 60L * 1000L, System.currentTimeMillis() );
 
   private static boolean IS_SAME_TIME_IN_EACH_COLUMN = true;
 
@@ -503,26 +503,6 @@ public class ReportTemplateUtilities {
     return STR_TIME_COLUMN_VALUE_DEFAULT;
   }
 
-  // public static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
-  // IStringMap<IDtoQueryParam> aQueryParams ) {
-  // IListEdit<ITimedList<?>> result = new ElemArrayList<>();
-  //
-  // for( String paramKey : aQueryParams.keys() ) {
-  // while( !aProcessData.isArgDataReady( paramKey ) ) {
-  // try {
-  // Display.getCurrent().readAndDispatch();
-  // Thread.sleep( 10L );
-  // }
-  // catch( InterruptedException ex ) {
-  //
-  // }
-  // }
-  // ITimedList<?> data = aProcessData.getArgData( paramKey );
-  // result.add( data );
-  // }
-  // return result;
-  // }
-
   /**
    * Формирует набор данных из ответа сервера
    *
@@ -594,7 +574,7 @@ public class ReportTemplateUtilities {
             ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> popupChart.refresh() );
           }
         }
-        popupChart.setReportAnswer( graphData, selTemplate );
+        popupChart.setReportAnswer( graphData, selTemplate, false );
         popupChart.requestLayout();
       }
     } );

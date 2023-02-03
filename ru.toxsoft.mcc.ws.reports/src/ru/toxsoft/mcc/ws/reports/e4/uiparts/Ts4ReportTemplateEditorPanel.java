@@ -133,6 +133,8 @@ public class Ts4ReportTemplateEditorPanel
       TimeInterval retVal =
           IntervalSelectionDialogPanel.getParams( tsContext().get( Shell.class ), initValues, tsContext() );
       if( retVal != null ) {
+        // запомним выбранный интервал
+        initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
 
         IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
         ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
@@ -195,9 +197,9 @@ public class Ts4ReportTemplateEditorPanel
 
   final static TsActionDef ACDEF_COPY_TEMPLATE = TsActionDef.ofPush2( ACTID_COPY_TEMPLATE, STR_N_COPY_TEMPLATE,
       STR_D_COPY_TEMPLATE, ITsStdIconIds.ICONID_EDIT_COPY );
-  // по умолчанию берем данные за последние сутки
+  // по умолчанию берем данные за последний час
   static TimeInterval initValues =
-      new TimeInterval( System.currentTimeMillis() - 24L * 60L * 60L * 1000L, System.currentTimeMillis() );
+      new TimeInterval( System.currentTimeMillis() - 60L * 60L * 1000L, System.currentTimeMillis() );
 
   final ISkConnection                   conn;
   IM5CollectionPanel<ISkReportTemplate> reportTemplatesPanel;

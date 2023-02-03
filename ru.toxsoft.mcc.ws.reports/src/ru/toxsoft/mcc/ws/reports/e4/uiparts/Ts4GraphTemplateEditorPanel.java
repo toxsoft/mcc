@@ -255,7 +255,7 @@ public class Ts4GraphTemplateEditorPanel
                       ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
                     }
                   }
-                  chartPanel.setReportAnswer( graphData, selTemplate );
+                  chartPanel.setReportAnswer( graphData, selTemplate, true );
                   chartPanel.requestLayout();
                 }
               } );
@@ -294,17 +294,6 @@ public class Ts4GraphTemplateEditorPanel
     sf.setWeights( 300, 500 );
 
   }
-
-  // private static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
-  // IStringMap<IDtoQueryParam> aQueryParams ) {
-  //
-  // IListEdit<ITimedList<?>> result = new ElemArrayList<>();
-  // for( String paramKey : aQueryParams.keys() ) {
-  // ITimedList<?> data = aProcessData.getArgData( paramKey );
-  // result.add( data );
-  // }
-  // return result;
-  // }
 
   /**
    * По шаблону графика и результату запроса к сервису отчетов создает список наборов данных для графической компоненты

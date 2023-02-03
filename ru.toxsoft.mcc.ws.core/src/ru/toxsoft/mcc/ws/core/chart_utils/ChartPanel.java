@@ -456,8 +456,9 @@ public class ChartPanel
    *
    * @param aAnswer - набор данных для отображения
    * @param aTemplate - шаблон описания графика
+   * @param aFromBegin - флаг отображение с начала диапазона или с конца диапазона
    */
-  public void setReportAnswer( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate ) {
+  public void setReportAnswer( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate, boolean aFromBegin ) {
 
     clear();
     // проверяем что есть смысл строить график
@@ -466,7 +467,7 @@ public class ChartPanel
     }
     template = aTemplate;
     // создаем компоненту график
-    createChart( aAnswer, aTemplate );
+    createChart( aAnswer, aTemplate, aFromBegin );
     // наполняем ее данными отчета
     Composite chartComp = chart.createControl( this );
     fillChartData( aAnswer, aTemplate );
@@ -504,7 +505,7 @@ public class ChartPanel
     }
   }
 
-  private void createChart( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate ) {
+  private void createChart( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate, boolean aFromBegin ) {
 
     TimeAxisTuner tuner = new TimeAxisTuner( tsContext() );
     // настройка шкалы времении
@@ -514,17 +515,38 @@ public class ChartPanel
     // диапазон данных
     IG2DataSet dataSet = aAnswer.first();
     // настройка шкалы времении - диапазон значений
-    long startTime = System.currentTimeMillis() - 12 * axisTimeUnit.timeInMills();
-    if( !dataSet.getValues( ITimeInterval.NULL ).isEmpty() ) {
-      startTime = dataSet.getValues( ITimeInterval.NULL ).first().timestamp();
-    }
-    long endTime = startTime + 12 * axisTimeUnit.timeInMills();
-
-    tuner.setTimeInterval( new TimeInterval( startTime, endTime ), false );
+    TimeInterval visTimeInterval = visualTimeInterval( aFromBegin, dataSet, aTemplate );
+    tuner.setTimeInterval( visTimeInterval, false );
+    // long startTime = System.currentTimeMillis() - 12 * axisTimeUnit.timeInMills();
+    // if( !dataSet.getValues( ITimeInterval.NULL ).isEmpty() ) {
+    // startTime = dataSet.getValues( ITimeInterval.NULL ).last().timestamp();
+    // }
+    // long endTime = startTime + 12 * axisTimeUnit.timeInMills();
+    //
+    // tuner.setTimeInterval( new TimeInterval( startTime, endTime ), false );
     IXAxisDef xAxisDef = tuner.createAxisDef();
     chart = (G2Chart)G2ChartUtils.createChart( tsContext() );
 
     chart.setXAxisDef( xAxisDef );
+  }
+
+  private static TimeInterval visualTimeInterval( boolean aFromBegin, IG2DataSet aDataSet,
+      ISkGraphTemplate aTemplate ) {
+    ETimeUnit axisTimeUnit = getAxisTimeUnit( aTemplate );
+    // настройка шкалы времении - диапазон значений
+    long startTime = System.currentTimeMillis() - 12 * axisTimeUnit.timeInMills();
+    long endTime = System.currentTimeMillis();
+    if( !aDataSet.getValues( ITimeInterval.NULL ).isEmpty() ) {
+      if( aFromBegin ) {
+        startTime = aDataSet.getValues( ITimeInterval.NULL ).first().timestamp();
+        endTime = startTime + 12 * axisTimeUnit.timeInMills();
+      }
+      else {
+        endTime = aDataSet.getValues( ITimeInterval.NULL ).last().timestamp();
+        startTime = startTime - 12 * axisTimeUnit.timeInMills();
+      }
+    }
+    return new TimeInterval( startTime, endTime );
 
   }
 
