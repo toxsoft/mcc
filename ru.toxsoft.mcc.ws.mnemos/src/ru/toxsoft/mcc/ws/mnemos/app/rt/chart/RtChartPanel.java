@@ -136,6 +136,26 @@ public class RtChartPanel
     addDisposeListener( aEvent -> onDispose() );
   }
 
+  /**
+   * Панель для отображения одного графика реального времени
+   *
+   * @param aParent родительская панель
+   * @param aContext контекст приложения
+   * @param aGraphTemplate описания шаблона графика
+   * @param aConnection соединение с сервером
+   */
+  public RtChartPanel( Composite aParent, ITsGuiContext aContext, ISkGraphTemplate aGraphTemplate,
+      ISkConnection aConnection ) {
+    super( aParent, aContext );
+    setLayout( new BorderLayout() );
+
+    ISkCoreApi serverApi = aConnection.coreApi();
+    createToolBar();
+
+    // graphDataSet = new RtGraphDataSet( aGraphParam, serverApi, this );
+    addDisposeListener( aEvent -> onDispose() );
+  }
+
   void onDispose() {
     graphDataSet.close();
   }

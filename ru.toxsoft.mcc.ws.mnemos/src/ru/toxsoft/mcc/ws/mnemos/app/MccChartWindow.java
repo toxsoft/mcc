@@ -49,7 +49,7 @@ public class MccChartWindow {
     backPanel.setLayout( new BorderLayout() );
     // for debug
     // s5.Node[mcc.server]$rtdata(s5.node.statistic.LoadAverage.min)
-    // aRtGwid = Gwid.createRtdata( "s5.Node", "mcc.server", "s5.node.statistic.LoadAverage.min" );
+    aRtGwid = Gwid.createRtdata( aRtGwid.classId(), aRtGwid.strid(), "rtdCurrentValue" );
     ChartPanel chartPanel = ReportTemplateUtilities.popupChart( aTsContext, backPanel, aRtGwid, aTitle, aDescription );
     chartPanel.setLayoutData( BorderLayout.CENTER );
     wnd.pack();
