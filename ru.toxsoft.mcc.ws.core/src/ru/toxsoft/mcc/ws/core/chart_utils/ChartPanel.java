@@ -468,8 +468,8 @@ public class ChartPanel
     template = aTemplate;
     // создаем компоненту график
     createChart( aAnswer, aTemplate, aFromBegin );
-    // наполняем ее данными отчета
     Composite chartComp = chart.createControl( this );
+    // наполняем ее данными отчета
     fillChartData( aAnswer, aTemplate );
     createYAxises( chart );
     createPlots( aTemplate );
@@ -506,7 +506,6 @@ public class ChartPanel
   }
 
   private void createChart( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate, boolean aFromBegin ) {
-
     TimeAxisTuner tuner = new TimeAxisTuner( tsContext() );
     // настройка шкалы времении
     axisTimeUnit = getAxisTimeUnit( aTemplate );
@@ -517,16 +516,8 @@ public class ChartPanel
     // настройка шкалы времении - диапазон значений
     TimeInterval visTimeInterval = visualTimeInterval( aFromBegin, dataSet, aTemplate );
     tuner.setTimeInterval( visTimeInterval, false );
-    // long startTime = System.currentTimeMillis() - 12 * axisTimeUnit.timeInMills();
-    // if( !dataSet.getValues( ITimeInterval.NULL ).isEmpty() ) {
-    // startTime = dataSet.getValues( ITimeInterval.NULL ).last().timestamp();
-    // }
-    // long endTime = startTime + 12 * axisTimeUnit.timeInMills();
-    //
-    // tuner.setTimeInterval( new TimeInterval( startTime, endTime ), false );
     IXAxisDef xAxisDef = tuner.createAxisDef();
     chart = (G2Chart)G2ChartUtils.createChart( tsContext() );
-
     chart.setXAxisDef( xAxisDef );
   }
 
