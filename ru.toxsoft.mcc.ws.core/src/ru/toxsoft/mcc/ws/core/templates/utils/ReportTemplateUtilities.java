@@ -584,7 +584,15 @@ public class ReportTemplateUtilities {
     return popupChart;
   }
 
-  private static ISkGraphTemplate createTemplate( Gwid aParamGwid, String aTitle, String aDescription ) {
+  /**
+   * Создаеет пустой шаблон графика
+   *
+   * @param aParamGwid {@Gwid }
+   * @param aTitle название
+   * @param aDescription описание
+   * @return пустой шаблон
+   */
+  public static ISkGraphTemplate createTemplate( Gwid aParamGwid, String aTitle, String aDescription ) {
     ISkGraphTemplate retVal = new ISkGraphTemplate() {
 
       /**

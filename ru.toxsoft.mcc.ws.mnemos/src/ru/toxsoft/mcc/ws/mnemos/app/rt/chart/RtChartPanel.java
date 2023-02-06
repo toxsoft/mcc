@@ -128,26 +128,6 @@ public class RtChartPanel
    *
    * @param aParent родительская панель
    * @param aContext контекст приложения
-   * @param aGraphParam описания параметра для отображения
-   * @param aConnection соединение с сервером
-   */
-  // public RtChartPanel( Composite aParent, ITsGuiContext aContext, ISkGraphParam aGraphParam,
-  // ISkConnection aConnection ) {
-
-  // super( aParent, aContext );
-  // setLayout( new BorderLayout() );
-  //
-  // ISkCoreApi serverApi = aConnection.coreApi();
-  // createToolBar();
-  // graphDataSetList.add( new RtGraphDataSet( aGraphParam, serverApi, this ) );
-  // addDisposeListener( aEvent -> onDispose() );
-  // }
-
-  /**
-   * Панель для отображения одного графика реального времени
-   *
-   * @param aParent родительская панель
-   * @param aContext контекст приложения
    * @param aGraphTemplate описания шаблона графика
    * @param aConnection соединение с сервером
    */

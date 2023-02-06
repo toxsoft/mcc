@@ -1,15 +1,17 @@
 package ru.toxsoft.mcc.ws.mnemos.app;
 
 import org.eclipse.swt.*;
+import org.eclipse.swt.custom.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.uskat.base.gui.conn.*;
 
 import ru.toxsoft.mcc.ws.core.chart_utils.*;
+import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.core.templates.utils.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.*;
 
 /**
  * Окно для отображения графика.
@@ -45,13 +47,18 @@ public class MccChartWindow {
     } );
 
     wnd.setLayout( new FillLayout() );
-    TsPanel backPanel = new TsPanel( wnd, aTsContext );
-    backPanel.setLayout( new BorderLayout() );
+    SashForm sf = new SashForm( wnd, SWT.HORIZONTAL );
+    // left part
+    // TsPanel backPanel = new TsPanel( wnd, aTsContext );
+    // backPanel.setLayout( new BorderLayout() );
     // for debug
     // s5.Node[mcc.server]$rtdata(s5.node.statistic.LoadAverage.min)
+    // aRtGwid = Gwid.createRtdata( "s5.Node", "mcc.server", "s5.node.statistic.LoadAverage.min" );
     aRtGwid = Gwid.createRtdata( aRtGwid.classId(), aRtGwid.strid(), "rtdCurrentValue" );
-    ChartPanel chartPanel = ReportTemplateUtilities.popupChart( aTsContext, backPanel, aRtGwid, aTitle, aDescription );
-    chartPanel.setLayoutData( BorderLayout.CENTER );
+    ChartPanel chartPanel = ReportTemplateUtilities.popupChart( aTsContext, sf, aRtGwid, aTitle, aDescription );
+    // chartPanel.setLayoutData( BorderLayout.CENTER );
+    RtChartPanel rtChartPanel = popupRtChart( aTsContext, sf, aRtGwid, aTitle, aDescription );
+    // rtChartPanel.setLayoutData( BorderLayout.SOUTH );
     wnd.pack();
     wnd.setSize( 1000, 500 );
     wnd.setLocation( aX, aY );
@@ -60,4 +67,25 @@ public class MccChartWindow {
   public void show() {
     wnd.open();
   }
+
+  /**
+   * Создает RTChart панель для графика одного параметра
+   *
+   * @param aContext контекст
+   * @param aParent родительский компонент
+   * @param aParamGwid параметр отображаемый на графике
+   * @param aTitle название параметра
+   * @param aDescription описание параметра
+   * @return панель для графика
+   */
+  public static RtChartPanel popupRtChart( ITsGuiContext aContext, Composite aParent, Gwid aParamGwid, String aTitle,
+      String aDescription ) {
+    ISkGraphTemplate selTemplate = ReportTemplateUtilities.createTemplate( aParamGwid, aTitle, aDescription );
+    ISkConnectionSupplier connSupp = aContext.get( ISkConnectionSupplier.class );
+
+    // создаем новую панель
+    RtChartPanel popupRtChart = new RtChartPanel( aParent, aContext, selTemplate, connSupp.defConn() );
+    return popupRtChart;
+  }
+
 }
