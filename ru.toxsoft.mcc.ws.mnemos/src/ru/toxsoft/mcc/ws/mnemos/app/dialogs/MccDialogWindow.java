@@ -41,7 +41,8 @@ public class MccDialogWindow {
     wnd.pack();
     Rectangle dr = wnd.getDisplay().getClientArea();
     Point wSize = wnd.getSize();
-    wnd.setLocation( (dr.width - wSize.x) / 2, (dr.height - wSize.y) / 2 );
+    // wnd.setLocation( (dr.width - wSize.x) / 2, (dr.height - wSize.y) / 2 );
+    wnd.setLocation( dr.width / 2 + wSize.x / 2, (dr.height - wSize.y) / 2 );
   }
 
   public Shell shell() {
