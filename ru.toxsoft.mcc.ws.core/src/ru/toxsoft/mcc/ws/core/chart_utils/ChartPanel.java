@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.e4.uiparts.chart;
+package ru.toxsoft.mcc.ws.core.chart_utils;
 
 import org.eclipse.jface.resource.*;
 import org.eclipse.swt.*;
@@ -35,12 +35,11 @@ import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.connection.*;
 
-import ru.toxsoft.mcc.ws.core.chart_utils.*;
+import ru.toxsoft.mcc.ws.core.*;
 import ru.toxsoft.mcc.ws.core.chart_utils.console.*;
 import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.*;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.core.templates.utils.*;
-import ru.toxsoft.mcc.ws.reports.*;
 
 /**
  * Панель для отображения отчета в виде графиков.
@@ -180,7 +179,6 @@ public class ChartPanel
 
   void createToolBar() {
 
-    // ToolBarManager tbManager = new ToolBarManager( SWT.FLAT );
     String pluginId = Activator.PLUGIN_ID;
     ImageDescriptor imgDescr;
 
@@ -458,8 +456,9 @@ public class ChartPanel
    *
    * @param aAnswer - набор данных для отображения
    * @param aTemplate - шаблон описания графика
+   * @param aFromBegin - флаг отображение с начала диапазона или с конца диапазона
    */
-  public void setReportAnswer( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate ) {
+  public void setReportAnswer( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate, boolean aFromBegin ) {
 
     clear();
     // проверяем что есть смысл строить график
@@ -468,9 +467,9 @@ public class ChartPanel
     }
     template = aTemplate;
     // создаем компоненту график
-    createChart( aAnswer, aTemplate );
-    // наполняем ее данными отчета
+    createChart( aAnswer, aTemplate, aFromBegin );
     Composite chartComp = chart.createControl( this );
+    // наполняем ее данными отчета
     fillChartData( aAnswer, aTemplate );
     createYAxises( chart );
     createPlots( aTemplate );
@@ -506,8 +505,7 @@ public class ChartPanel
     }
   }
 
-  private void createChart( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate ) {
-
+  private void createChart( IList<IG2DataSet> aAnswer, ISkGraphTemplate aTemplate, boolean aFromBegin ) {
     TimeAxisTuner tuner = new TimeAxisTuner( tsContext() );
     // настройка шкалы времении
     axisTimeUnit = getAxisTimeUnit( aTemplate );
@@ -515,15 +513,31 @@ public class ChartPanel
     tuner.setTimeUnit( axisTimeUnit );
     // диапазон данных
     IG2DataSet dataSet = aAnswer.first();
-    // TODO настройка шкалы времении - диапазон значений
-    long startTime = dataSet.getValues( ITimeInterval.NULL ).first().timestamp();
-    long endTime = startTime + 12 * axisTimeUnit.timeInMills();
-
-    tuner.setTimeInterval( new TimeInterval( startTime, endTime ), false );
+    // настройка шкалы времении - диапазон значений
+    TimeInterval visTimeInterval = visualTimeInterval( aFromBegin, dataSet, aTemplate );
+    tuner.setTimeInterval( visTimeInterval, false );
     IXAxisDef xAxisDef = tuner.createAxisDef();
     chart = (G2Chart)G2ChartUtils.createChart( tsContext() );
-
     chart.setXAxisDef( xAxisDef );
+  }
+
+  private static TimeInterval visualTimeInterval( boolean aFromBegin, IG2DataSet aDataSet,
+      ISkGraphTemplate aTemplate ) {
+    ETimeUnit axisTimeUnit = getAxisTimeUnit( aTemplate );
+    // настройка шкалы времении - диапазон значений
+    long startTime = System.currentTimeMillis() - 12 * axisTimeUnit.timeInMills();
+    long endTime = System.currentTimeMillis();
+    if( !aDataSet.getValues( ITimeInterval.NULL ).isEmpty() ) {
+      if( aFromBegin ) {
+        startTime = aDataSet.getValues( ITimeInterval.NULL ).first().timestamp();
+        endTime = startTime + 12 * axisTimeUnit.timeInMills();
+      }
+      else {
+        endTime = aDataSet.getValues( ITimeInterval.NULL ).last().timestamp();
+        startTime = startTime - 12 * axisTimeUnit.timeInMills();
+      }
+    }
+    return new TimeInterval( startTime, endTime );
 
   }
 

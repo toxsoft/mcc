@@ -8,8 +8,10 @@ import java.text.*;
 import java.util.*;
 
 import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.chart.impl.*;
+import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
@@ -26,10 +28,18 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
+import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 
+import ru.toxsoft.mcc.ws.core.chart_utils.*;
+import ru.toxsoft.mcc.ws.core.chart_utils.dataset.*;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
@@ -40,6 +50,10 @@ import ru.toxsoft.mcc.ws.core.templates.api.*;
  */
 public class ReportTemplateUtilities {
 
+  // по умолчанию берем данные за последние 6 час
+  static TimeInterval initValues =
+      new TimeInterval( System.currentTimeMillis() - 6 * 60L * 60L * 1000L, System.currentTimeMillis() );
+
   private static boolean IS_SAME_TIME_IN_EACH_COLUMN = true;
 
   private static final String STR_TIME_COLUMN_VALUE_DEFAULT = "-";
@@ -49,6 +63,8 @@ public class ReportTemplateUtilities {
   private static final String FMT_N_TIME_COLUMN = "Время: %s";
 
   private static final String STR_N_TIME_COLUMN = "Время";
+
+  protected static ChartPanel popupChart;
 
   /**
    * Формат идентификатора параметра запроса данных.
@@ -487,20 +503,18 @@ public class ReportTemplateUtilities {
     return STR_TIME_COLUMN_VALUE_DEFAULT;
   }
 
+  /**
+   * Формирует набор данных из ответа сервера
+   *
+   * @param aProcessData ответ сервера
+   * @param aQueryParams параметры запроса
+   * @return набор данных
+   */
   public static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
       IStringMap<IDtoQueryParam> aQueryParams ) {
+
     IListEdit<ITimedList<?>> result = new ElemArrayList<>();
-
     for( String paramKey : aQueryParams.keys() ) {
-      while( !aProcessData.isArgDataReady( paramKey ) ) {
-        try {
-          Display.getCurrent().readAndDispatch();
-          Thread.sleep( 10L );
-        }
-        catch( InterruptedException ex ) {
-
-        }
-      }
       ITimedList<?> data = aProcessData.getArgData( paramKey );
       result.add( data );
     }
@@ -524,4 +538,278 @@ public class ReportTemplateUtilities {
     }
     return result;
   }
+
+  /**
+   * Создает Chart панель для графика одного параметра
+   *
+   * @param aContext контекст
+   * @param aParent родительский компонент
+   * @param aParamGwid параметр отображаемый на графике
+   * @param aTitle название параметра
+   * @param aDescription описание параметра
+   * @return панель для графика
+   */
+  public static ChartPanel popupChart( ITsGuiContext aContext, Composite aParent, Gwid aParamGwid, String aTitle,
+      String aDescription ) {
+    ISkGraphTemplate selTemplate = createTemplate( aParamGwid, aTitle, aDescription );
+    // формируем запрос к одноименному сервису
+    IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( selTemplate );
+    ISkConnectionSupplier connSupp = aContext.get( ISkConnectionSupplier.class );
+
+    ISkQueryProcessedData processData =
+        connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
+
+    processData.prepare( queryParams );
+
+    processData.exec( new QueryInterval( EQueryIntervalType.OSOE, initValues.startTime(), initValues.endTime() ) );
+
+    // асинхронное получение данных
+    processData.genericChangeEventer().addListener( aSource -> {
+      ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+      if( q.state() == ESkQueryState.READY ) {
+        IList<ITimedList<?>> requestAnswer = createResult( processData, queryParams );
+        IList<IG2DataSet> graphData = createG2SelfUploDataSetList( selTemplate, requestAnswer, connSupp.defConn() );
+        for( IG2DataSet ds : graphData ) {
+          if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
+            ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> popupChart.refresh() );
+          }
+        }
+        popupChart.setReportAnswer( graphData, selTemplate, false );
+        popupChart.requestLayout();
+      }
+    } );
+
+    // создаем новую панель
+    popupChart = new ChartPanel( aParent, aContext );
+    return popupChart;
+  }
+
+  /**
+   * Создаеет пустой шаблон графика
+   *
+   * @param aParamGwid {@Gwid }
+   * @param aTitle название
+   * @param aDescription описание
+   * @return пустой шаблон
+   */
+  public static ISkGraphTemplate createTemplate( Gwid aParamGwid, String aTitle, String aDescription ) {
+    ISkGraphTemplate retVal = new ISkGraphTemplate() {
+
+      /**
+       * @return { @link ETimeUnit} - time step of aggregation
+       */
+      @Override
+      public ETimeUnit aggrStep() {
+        return ETimeUnit.MIN01;
+      }
+
+      @Override
+      public String nmName() {
+        return aTitle;
+      }
+
+      @Override
+      public String description() {
+        return aDescription;
+      }
+
+      @Override
+      public String strid() {
+        return Skid.NONE.strid();
+      }
+
+      @Override
+      public Skid skid() {
+        return Skid.NONE;
+      }
+
+      @Override
+      public IMappedSkids rivets() {
+        return null;
+      }
+
+      @Override
+      public String readableName() {
+        return aTitle;
+      }
+
+      @Override
+      public String id() {
+        return Skid.NONE.strid();
+      }
+
+      @Override
+      public Skid getSingleLinkSkid( String aLinkId ) {
+        return Skid.NONE;
+      }
+
+      @Override
+      public <T extends ISkObject> T getSingleLinkObj( String aLinkId ) {
+        return null;
+      }
+
+      @Override
+      public ISkidList getRivetRevSkids( String aClassId, String aRivetId ) {
+        return ISkidList.EMPTY;
+      }
+
+      @Override
+      public <T extends ISkObject> IList<T> getRivetRevObjs( String aClassId, String aRivetId ) {
+        return IList.EMPTY;
+      }
+
+      @Override
+      public ISkidList getLinkSkids( String aLinkId ) {
+        return null;
+      }
+
+      @Override
+      public ISkidList getLinkRevSkids( String aClassId, String aLinkId ) {
+        return ISkidList.EMPTY;
+      }
+
+      @Override
+      public <T extends ISkObject> IList<T> getLinkRevObjs( String aClassId, String aLinkId ) {
+        return IList.EMPTY;
+      }
+
+      @Override
+      public <T extends ISkObject> IList<T> getLinkObjs( String aLinkId ) {
+        return IList.EMPTY;
+      }
+
+      @Override
+      public String getClob( String aClobId, String aDefaultValue ) {
+        return null;
+      }
+
+      @Override
+      public ISkCoreApi coreApi() {
+        return null;
+      }
+
+      @Override
+      public String classId() {
+        return Skid.NONE.classId();
+      }
+
+      @Override
+      public IOptionSet attrs() {
+        return IOptionSet.NULL;
+      }
+
+      @Override
+      public IList<ISkGraphParam> listParams() {
+        return new ElemArrayList<>( new ISkGraphParam() {
+
+          @Override
+          public Gwid gwid() {
+            return aParamGwid;
+          }
+
+          @Override
+          public String title() {
+            return aTitle;
+          }
+
+          @Override
+          public String description() {
+            return aDescription;
+          }
+
+          @Override
+          public EAggregationFunc aggrFunc() {
+            return EAggregationFunc.AVERAGE;
+          }
+
+          @Override
+          public EDisplayFormat displayFormat() {
+            return EDisplayFormat.TWO_DIGIT;
+          }
+
+          @Override
+          public ETsColor color() {
+            return ETsColor.BLACK;
+          }
+
+          @Override
+          public int lineWidth() {
+            return 2;
+          }
+
+          @Override
+          public String unitId() {
+            return "Y";
+          }
+
+          @Override
+          public String unitName() {
+            return "";
+          }
+
+          @Override
+          public boolean isLadder() {
+            return false;
+          }
+
+          @Override
+          public IStringList setPoints() {
+            return IStringList.EMPTY;
+          }
+
+        } );
+      }
+
+      @Override
+      public ISkUser author() {
+        return null;
+      }
+    };
+    return retVal;
+  }
+
+  /**
+   * По шаблону графика и результату запроса к сервису отчетов создает список наборов данных для графической компоненты
+   *
+   * @param aGraphTemplate {@link ISkGraphTemplate} - шаблон графика
+   * @param aReportData - результат запроса к сервису отчетов
+   * @param aConnection - соединение с сервером
+   * @return - список наборов данных для графика
+   */
+  public static IList<IG2DataSet> createG2SelfUploDataSetList( ISkGraphTemplate aGraphTemplate,
+      IList<ITimedList<?>> aReportData, ISkConnection aConnection ) {
+    IListEdit<IG2DataSet> retVal = new ElemArrayList<>();
+    IList<ISkGraphParam> graphParams = aGraphTemplate.listParams();
+    // создаем нужные наборы данных
+    for( int i = 0; i < graphParams.size(); i++ ) {
+      ISkGraphParam graphParam = graphParams.get( i );
+      String gdsId = ReportTemplateUtilities.graphDataSetId( graphParam );
+
+      G2SelfUploadHistoryDataSetNew dataSet =
+          new G2SelfUploadHistoryDataSetNew( aConnection, gdsId, new IDataSetParam() {
+
+            @Override
+            public Gwid gwid() {
+              return graphParam.gwid();
+            }
+
+            @Override
+            public String aggrFuncId() {
+              return ReportTemplateUtilities.convertFunc( graphParam.aggrFunc() );
+            }
+
+            @Override
+            public int aggrStep() {
+              return (int)aGraphTemplate.aggrStep().timeInMills();
+            }
+
+          } );
+      retVal.add( dataSet );
+      // наполняем его данными
+      ITimedList<?> timedList = aReportData.get( i );
+      dataSet.setValues( ReportTemplateUtilities.convertList2List( timedList ) );
+    }
+    return retVal;
+  }
+
 }

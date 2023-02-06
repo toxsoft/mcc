@@ -41,6 +41,8 @@ public class MccSchemePanel
     extends TsPanel
     implements ISkConnected {
 
+  boolean menuSupressed = false;
+
   MouseMoveListener mouseMoveListener = aE -> {
     for( AbstractMccSchemeControl control : this.controls ) {
       if( control.contains( aE.x, aE.y ) ) {
@@ -54,6 +56,10 @@ public class MccSchemePanel
   };
 
   MenuDetectListener menuListener = aEvent -> {
+    if( menuSupressed ) {
+      menuSupressed = false;
+      return;
+    }
     // Point p = toControl( aEvent.x, aEvent.y );
     MenuManager mm = new MenuManager();
 
@@ -142,6 +148,15 @@ public class MccSchemePanel
         for( AbstractMccSchemeControl control : MccSchemePanel.this.controls ) {
           if( control.contains( aE.x, aE.y ) ) {
             control.showSettingDialog();
+            return;
+          }
+        }
+      }
+      if( aE.button == 3 ) {
+        for( AbstractMccSchemeControl control : MccSchemePanel.this.controls ) {
+          if( control.contains( aE.x, aE.y ) ) {
+            menuSupressed = true;
+            showChartWindow( control, aE.x, aE.y );
             return;
           }
         }
@@ -426,8 +441,16 @@ public class MccSchemePanel
 
       @Override
       public void mouseDown( MouseEvent aE ) {
-        aiControl.showSettingDialog();
+
+        if( aE.button == 1 ) {
+          aiControl.showSettingDialog();
+        }
+
+        if( aE.button == 3 ) {
+          showChartWindow( aiControl, aX, aY );
+        }
       }
+
     } );
 
     dataProvider.addDataConsumer( aiControl );
@@ -474,4 +497,14 @@ public class MccSchemePanel
     mccB.paint( aGc );
     mccB.dispose();
   }
+
+  void showChartWindow( AbstractMccSchemeControl aControl, int aX, int aY ) {
+    Point p = toDisplay( aX, aY );
+    Gwid rtGwid = aControl.rtDataGwid();
+    ITsGuiContext tsContext = aControl.tsContext();
+    String description = aControl.description();
+    MccChartWindow wnd = new MccChartWindow( getShell(), p.x, p.y, rtGwid, tsContext, aControl.nmName(), description );
+    wnd.show();
+  }
+
 }

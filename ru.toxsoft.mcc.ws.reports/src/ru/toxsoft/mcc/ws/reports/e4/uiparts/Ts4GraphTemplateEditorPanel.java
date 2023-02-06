@@ -45,11 +45,11 @@ import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 
+import ru.toxsoft.mcc.ws.core.chart_utils.*;
+import ru.toxsoft.mcc.ws.core.chart_utils.dataset.*;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.core.templates.gui.m5.*;
 import ru.toxsoft.mcc.ws.core.templates.utils.*;
-import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.*;
-import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.dataset.*;
 
 /**
  * Панель редактора шаблонов графиков ts4.<br>
@@ -68,8 +68,10 @@ public class Ts4GraphTemplateEditorPanel
   IM5CollectionPanel<ISkGraphTemplate> graphTemplatesPanel;
 
   private CTabFolder tabFolder;
-  TimeInterval       initValues =
-      new TimeInterval( System.currentTimeMillis() - 24L * 60L * 60L * 1000L, System.currentTimeMillis() );
+
+  // по умолчанию берем данные за последние 6 час
+  static TimeInterval initValues =
+      new TimeInterval( System.currentTimeMillis() - 6L * 60L * 60L * 1000L, System.currentTimeMillis() );
 
   SimpleDateFormat                    sdf              = new SimpleDateFormat( "dd.MM.YY HH:mm:ss" ); //$NON-NLS-1$
   /**
@@ -83,7 +85,8 @@ public class Ts4GraphTemplateEditorPanel
    */
   final ITsNodeKind<ISkUser> NK_USER_NODE = new TsNodeKind<>( "NodeUser", ISkUser.class, true, ICONID_USER ); //$NON-NLS-1$
 
-  protected ChartPanel chartPanel;
+  protected ChartPanel        chartPanel;
+  protected static ChartPanel popupChart;
 
   static final String TMID_GROUP_BY_USER = "GroupByUser"; //$NON-NLS-1$
 
@@ -240,12 +243,11 @@ public class Ts4GraphTemplateEditorPanel
 
               processData.exec( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
 
-              // переделываем на асинхронное получение данных
-              // IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
+              // асинхронное получение данных
               processData.genericChangeEventer().addListener( aSource -> {
                 ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
                 if( q.state() == ESkQueryState.READY ) {
-                  IList<ITimedList<?>> requestAnswer = createResult( processData, queryParams );
+                  IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
                   IList<IG2DataSet> graphData =
                       createG2SelfUploDataSetList( selTemplate, requestAnswer, connSupp.defConn() );
                   for( IG2DataSet ds : graphData ) {
@@ -253,31 +255,18 @@ public class Ts4GraphTemplateEditorPanel
                       ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
                     }
                   }
-                  chartPanel.setReportAnswer( graphData, selTemplate );
+                  chartPanel.setReportAnswer( graphData, selTemplate, true );
                   chartPanel.requestLayout();
                 }
               } );
-
-              // переделываем на асинхронное получение данных
-              // IList<IG2DataSet> graphData =
-              // createG2SelfUploDataSetList( selTemplate, reportData, connSupp.defConn() );
 
               // создаем новую закладку
               CTabItem tabItem = new CTabItem( tabFolder, SWT.CLOSE );
               tabItem.setText( selTemplate.nmName() );
               chartPanel = new ChartPanel( tabFolder, tsContext() );
 
-              // переделываем на асинхронное получение данных
-              // for( IG2DataSet ds : graphData ) {
-              // if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
-              // ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource -> chartPanel.refresh() );
-              // }
-              // }
-              // chartPanel.setReportAnswer( graphData, selTemplate );
-
               tabItem.setControl( chartPanel );
               tabFolder.setSelection( tabItem );
-              // tabFolder.requestLayout();
             }
           }
         };
@@ -304,17 +293,6 @@ public class Ts4GraphTemplateEditorPanel
 
     sf.setWeights( 300, 500 );
 
-  }
-
-  private static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
-      IStringMap<IDtoQueryParam> aQueryParams ) {
-
-    IListEdit<ITimedList<?>> result = new ElemArrayList<>();
-    for( String paramKey : aQueryParams.keys() ) {
-      ITimedList<?> data = aProcessData.getArgData( paramKey );
-      result.add( data );
-    }
-    return result;
   }
 
   /**

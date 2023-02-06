@@ -19,6 +19,7 @@ import org.toxsoft.core.tsgui.utils.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
 import org.toxsoft.core.tsgui.valed.controls.basic.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.temporal.*;
 import org.toxsoft.core.tslib.bricks.strid.*;
 import org.toxsoft.core.tslib.bricks.strid.impl.*;
@@ -29,7 +30,9 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.uskat.base.gui.conn.*;
 import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.mcc.ws.core.chart_utils.*;
@@ -49,10 +52,14 @@ import ru.toxsoft.mcc.ws.mnemos.*;
 public class RtChartPanel
     extends TsPanel {
 
-  int      refreshInterval = 1000;
+  int refreshInterval = 1000;
+  // по умолчанию берем данные за последние 10 минут
+  static TimeInterval initValues =
+      new TimeInterval( System.currentTimeMillis() - 10L * 60L * 1000L, System.currentTimeMillis() );
+
   Runnable refreshTimer;
   Display  display;
-  boolean  timerStopped    = false;
+  boolean  timerStopped = false;
   IG2Chart chart;
 
   Button btnPageLeft;
@@ -71,8 +78,8 @@ public class RtChartPanel
   G2ChartConsole console       = null;
   ConsoleWindow  consoleWindow = null;
 
-  RtGraphDataSet      graphDataSet;
-  private GraphicInfo graphInfo;
+  IListEdit<RtGraphDataSet> graphDataSetList = new ElemArrayList<>();
+  private GraphicInfo       graphInfo;
   // наша Y шкала
   private IYAxisDef yAxisDef;
   // id набора данных
@@ -121,34 +128,61 @@ public class RtChartPanel
    *
    * @param aParent родительская панель
    * @param aContext контекст приложения
-   * @param aGraphParam описания параметра для отображения
+   * @param aGraphTemplate описания шаблона графика
    * @param aConnection соединение с сервером
    */
-  public RtChartPanel( Composite aParent, ITsGuiContext aContext, ISkGraphParam aGraphParam,
+  public RtChartPanel( Composite aParent, ITsGuiContext aContext, ISkGraphTemplate aGraphTemplate,
       ISkConnection aConnection ) {
     super( aParent, aContext );
     setLayout( new BorderLayout() );
 
     ISkCoreApi serverApi = aConnection.coreApi();
     createToolBar();
+    // формируем запрос к одноименному сервису
+    IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aGraphTemplate );
+    ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
 
-    graphDataSet = new RtGraphDataSet( aGraphParam, serverApi, this );
+    ISkQueryProcessedData processData =
+        connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
+
+    processData.prepare( queryParams );
+
+    processData.exec( new QueryInterval( EQueryIntervalType.OSOE, initValues.startTime(), initValues.endTime() ) );
+
+    // асинхронное получение данных
+    processData.genericChangeEventer().addListener( aSource -> {
+      ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+      if( q.state() == ESkQueryState.READY ) {
+        int i = 0;
+        IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
+        for( ISkGraphParam graphParam : aGraphTemplate.listParams() ) {
+          graphDataSetList.add( new RtGraphDataSet( graphParam, serverApi, requestAnswer.get( i++ ) ) );
+        }
+        init();
+        start();
+      }
+    } );
+
     addDisposeListener( aEvent -> onDispose() );
   }
 
   void onDispose() {
-    graphDataSet.close();
+    for( RtGraphDataSet graphDataSet : graphDataSetList ) {
+      graphDataSet.close();
+    }
   }
 
-  void init( ISkGraphParam aGraphParam ) {
+  void init() {
     // создаем компоненту график
-    createChart( graphDataSet, aGraphParam );
+    createChart();
     // наполняем ее данными отчета
     Composite chartComp = chart.createControl( this );
-    fillChartData( graphDataSet, aGraphParam );
-
-    createYAxis( chart, aGraphParam );
-    createPlot( aGraphParam );
+    for( int i = 0; i < graphDataSetList.size(); i++ ) {
+      RtGraphDataSet rtGraphDataSet = graphDataSetList.get( i );
+      fillChartData( rtGraphDataSet, rtGraphDataSet.getGraphParam() );
+      createYAxis( chart, rtGraphDataSet.getGraphParam() );
+      createPlot( graphDataSetList.get( i ).getGraphParam() );
+    }
     chartComp.setLayoutData( BorderLayout.CENTER );
     console = new G2ChartConsole( (G2Chart)chart );
 
@@ -275,15 +309,16 @@ public class RtChartPanel
     return new Pair<>( Double.valueOf( 0 ), Double.valueOf( 10 ) );
   }
 
-  private void createChart( IG2DataSet aDataSet, ISkGraphParam aGraphParam ) {
+  private void createChart() {
 
     TimeAxisTuner tuner = new TimeAxisTuner( tsContext() );
     // настройка шкалы времении
-    axisTimeUnit = getAxisTimeUnit( aGraphParam );
+    axisTimeUnit = ETimeUnit.MIN01;
     timeUnitCombo.setSelectedItem( axisTimeUnit );
     tuner.setTimeUnit( axisTimeUnit );
-    // TODO настройка шкалы времении - диапазон значений
-    long startTime = aDataSet.getValues( ITimeInterval.NULL ).first().timestamp();
+    // настройка шкалы времении
+    // шкала 10 минут, текущее время на отметке 80%
+    long startTime = System.currentTimeMillis() - 8 * axisTimeUnit.timeInMills();
     long endTime = startTime + 10 * axisTimeUnit.timeInMills();
 
     tuner.setTimeInterval( new TimeInterval( startTime, endTime ), false );
@@ -291,38 +326,6 @@ public class RtChartPanel
     chart = G2ChartUtils.createChart( tsContext() );
 
     chart.setXAxisDef( xAxisDef );
-  }
-
-  private static ETimeUnit getAxisTimeUnit( ISkGraphParam aGraphParam ) {
-    ETimeUnit retVal = ETimeUnit.MIN01;
-    // TODO
-    // ETimeUnit aggrStep = aGraphParam.aggrStep();
-    // retVal = switch( aggrStep ) {
-    // case DAY -> ETimeUnit.WEEK;
-    // case HOUR01 -> ETimeUnit.HOUR04;
-    // case HOUR02 -> ETimeUnit.HOUR08;
-    // case HOUR04 -> ETimeUnit.HOUR12;
-    // case HOUR08 -> ETimeUnit.HOUR12;
-    // case HOUR12 -> ETimeUnit.DAY;
-    // case MIN01 -> ETimeUnit.MIN10;
-    // case MIN05 -> ETimeUnit.MIN15;
-    // case MIN10 -> ETimeUnit.HOUR01;
-    // case MIN15 -> ETimeUnit.HOUR01;
-    // case MIN20 -> ETimeUnit.HOUR01;
-    // case MIN30 -> ETimeUnit.HOUR02;
-    // case SEC01 -> ETimeUnit.SEC10;
-    // case SEC02 -> ETimeUnit.SEC20;
-    // case SEC03 -> ETimeUnit.SEC30;
-    // case SEC05 -> ETimeUnit.MIN01;
-    // case SEC10 -> ETimeUnit.MIN01;
-    // case SEC15 -> ETimeUnit.MIN01;
-    // case SEC20 -> ETimeUnit.MIN01;
-    // case SEC30 -> ETimeUnit.MIN05;
-    // case WEEK -> ETimeUnit.HOUR12;
-    // case YEAR -> ETimeUnit.WEEK;
-    // };
-    return retVal;
-
   }
 
   /**

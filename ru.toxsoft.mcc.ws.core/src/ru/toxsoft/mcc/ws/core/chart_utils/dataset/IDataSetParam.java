@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.dataset;
+package ru.toxsoft.mcc.ws.core.chart_utils.dataset;
 
 import org.toxsoft.core.tslib.gw.gwid.*;
 
