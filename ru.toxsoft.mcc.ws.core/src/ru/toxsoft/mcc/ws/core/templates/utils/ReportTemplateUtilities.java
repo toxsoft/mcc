@@ -39,6 +39,7 @@ import org.toxsoft.uskat.core.connection.*;
 import org.toxsoft.uskat.core.impl.dto.*;
 
 import ru.toxsoft.mcc.ws.core.chart_utils.*;
+import ru.toxsoft.mcc.ws.core.chart_utils.dataset.*;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
@@ -51,7 +52,7 @@ public class ReportTemplateUtilities {
 
   // по умолчанию берем данные за последние 6 час
   static TimeInterval initValues =
-      new TimeInterval( System.currentTimeMillis() - 6L * 60L * 60L * 1000L, System.currentTimeMillis() );
+      new TimeInterval( System.currentTimeMillis() - 6 * 60L * 60L * 1000L, System.currentTimeMillis() );
 
   private static boolean IS_SAME_TIME_IN_EACH_COLUMN = true;
 
@@ -502,20 +503,18 @@ public class ReportTemplateUtilities {
     return STR_TIME_COLUMN_VALUE_DEFAULT;
   }
 
+  /**
+   * Формирует набор данных из ответа сервера
+   *
+   * @param aProcessData ответ сервера
+   * @param aQueryParams параметры запроса
+   * @return набор данных
+   */
   public static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
       IStringMap<IDtoQueryParam> aQueryParams ) {
+
     IListEdit<ITimedList<?>> result = new ElemArrayList<>();
-
     for( String paramKey : aQueryParams.keys() ) {
-      while( !aProcessData.isArgDataReady( paramKey ) ) {
-        try {
-          Display.getCurrent().readAndDispatch();
-          Thread.sleep( 10L );
-        }
-        catch( InterruptedException ex ) {
-
-        }
-      }
       ITimedList<?> data = aProcessData.getArgData( paramKey );
       result.add( data );
     }
@@ -575,7 +574,7 @@ public class ReportTemplateUtilities {
             ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> popupChart.refresh() );
           }
         }
-        popupChart.setReportAnswer( graphData, selTemplate );
+        popupChart.setReportAnswer( graphData, selTemplate, false );
         popupChart.requestLayout();
       }
     } );
@@ -585,7 +584,15 @@ public class ReportTemplateUtilities {
     return popupChart;
   }
 
-  private static ISkGraphTemplate createTemplate( Gwid aParamGwid, String aTitle, String aDescription ) {
+  /**
+   * Создаеет пустой шаблон графика
+   *
+   * @param aParamGwid {@Gwid }
+   * @param aTitle название
+   * @param aDescription описание
+   * @return пустой шаблон
+   */
+  public static ISkGraphTemplate createTemplate( Gwid aParamGwid, String aTitle, String aDescription ) {
     ISkGraphTemplate retVal = new ISkGraphTemplate() {
 
       /**

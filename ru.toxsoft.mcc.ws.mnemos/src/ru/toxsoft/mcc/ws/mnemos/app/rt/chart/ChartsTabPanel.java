@@ -21,7 +21,6 @@ import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
@@ -33,7 +32,6 @@ import org.toxsoft.uskat.ggprefs.lib.impl.*;
 import org.toxsoft.uskat.s5.utils.*;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
-import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
 
 /**
  * Панель отображения графиков реального времени.<br>
@@ -54,9 +52,9 @@ public class ChartsTabPanel
 
   private final ISkConnection conn;
 
-  private final Skid       userSkid;
-  private final Gwid       userGwid;
-  IListEdit<ISkGraphParam> rtCharts = new ElemArrayList<>();
+  private final Skid userSkid;
+  private final Gwid userGwid;
+  SkidList           rtChartSkids = new SkidList();
 
   /**
    * Конструктор панели.
@@ -88,14 +86,14 @@ public class ChartsTabPanel
     toolbar.getControl().setLayoutData( BorderLayout.NORTH );
     toolbar.addListener( aActionId -> {
       if( aActionId.equals( ACDEF_ADD.id() ) ) {
-        ISkGraphParam newRtGraph = doAddItem();
-        addRtChart( newRtGraph );
+        ISkGraphTemplate newRtGraphTemplate = doAddTemplate();
+        addRtChartTemplate( newRtGraphTemplate );
       }
       if( aActionId.equals( ACDEF_REMOVE.id() ) ) {
         // получаем текущий график
         CTabItem selTab = tabFolder.getSelection();
-        ISkGraphParam selelectedGraphParam = (ISkGraphParam)selTab.getData();
-        rtCharts.remove( selelectedGraphParam );
+        ISkGraphTemplate selGraphTemplate = (ISkGraphTemplate)selTab.getData();
+        rtChartSkids.remove( selGraphTemplate.skid() );
         // гасим RtChart
         RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
         chartPanel.dispose();
@@ -104,15 +102,15 @@ public class ChartsTabPanel
       if( aActionId.equals( ACDEF_EDIT.id() ) ) {
         // получаем текущий график
         CTabItem selTab = tabFolder.getSelection();
-        ISkGraphParam selelectedGraphParam = (ISkGraphParam)selTab.getData();
-        ISkGraphParam newRtGraph = doEditItem( selelectedGraphParam );
-        if( newRtGraph != null ) {
-          rtCharts.remove( selelectedGraphParam );
+        ISkGraphTemplate selGraphTemplate = (ISkGraphTemplate)selTab.getData();
+        ISkGraphTemplate newRtGraphTemplate = doEditTemplate( selGraphTemplate );
+        if( newRtGraphTemplate != null ) {
+          rtChartSkids.remove( selGraphTemplate.skid() );
           // гасим RtChart
           RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
           chartPanel.dispose();
           selTab.dispose();
-          addRtChart( newRtGraph );
+          addRtChartTemplate( newRtGraphTemplate );
         }
       }
     } );
@@ -125,8 +123,8 @@ public class ChartsTabPanel
       @Override
       public void close( CTabFolderEvent event ) {
         // удаляем описание RtChart из настроек
-        ISkGraphParam graphParam = (ISkGraphParam)event.item.getData();
-        rtCharts.remove( graphParam );
+        ISkGraphTemplate graphTemplate = (ISkGraphTemplate)event.item.getData();
+        rtChartSkids.remove( graphTemplate.skid() );
         saveUserSettings();
       }
     } );
@@ -136,47 +134,45 @@ public class ChartsTabPanel
     restoreUserSettings();
   }
 
-  private ISkGraphParam doEditItem( ISkGraphParam aSelelectedGraphParam ) {
+  private ISkGraphTemplate doEditTemplate( ISkGraphTemplate aSelGraphTemplate ) {
     IM5Domain m5 = conn.scope().get( IM5Domain.class );
-    IM5Model<ISkGraphParam> model =
-        m5.getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
+    IM5Model<ISkGraphTemplate> model = m5.getModel( ISkGraphTemplate.CLASS_ID, ISkGraphTemplate.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
-    return M5GuiUtils.askEdit( tsContext(), model, aSelelectedGraphParam, cdi, model.getLifecycleManager( null ) );
+    return M5GuiUtils.askEdit( tsContext(), model, aSelGraphTemplate, cdi, model.getLifecycleManager( null ) );
   }
 
-  private void addRtChart( ISkGraphParam aRtGraph ) {
-    if( aRtGraph != null ) {
-      addRtChartToTabPanel( aRtGraph );
-      rtCharts.add( aRtGraph );
+  private void addRtChartTemplate( ISkGraphTemplate aRtGraphTemplate ) {
+    if( aRtGraphTemplate != null ) {
+      addRtChartTemplateToTabPanel( aRtGraphTemplate );
+      rtChartSkids.add( aRtGraphTemplate.skid() );
       saveUserSettings();
     }
   }
 
-  private void addRtChartToTabPanel( ISkGraphParam aRtGraph ) {
+  private void addRtChartTemplateToTabPanel( ISkGraphTemplate aRtGraphTemplate ) {
     // создаем новую закладку
     CTabItem tabItem = new CTabItem( tabFolder, SWT.NONE );
     // закладке дадим имя параметра
-    tabItem.setText( aRtGraph.title() );
-    RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), aRtGraph, conn );
+    tabItem.setText( aRtGraphTemplate.nmName() );
+    RtChartPanel chartPanel = new RtChartPanel( tabFolder, tsContext(), aRtGraphTemplate, conn );
     tabItem.setControl( chartPanel );
     tabFolder.setSelection( tabItem );
-    tabItem.setData( aRtGraph );
+    tabItem.setData( aRtGraphTemplate );
   }
 
   private void restoreUserSettings() {
     // получаем список графиков и создаем для каждого свой RtChart
     IOptionSet userPrefs = getUserPrefs();
-    ISkGraphParamsList rtChartsList = RtChartPanelOptions.RTCHARTS.getValue( userPrefs ).asValobj();
-    rtCharts.addAll( rtChartsList.items() );
-    for( ISkGraphParam rtChart : rtCharts ) {
-      addRtChartToTabPanel( rtChart );
+    rtChartSkids = RtChartPanelOptions.RTCHART_SKIDS.getValue( userPrefs ).asValobj();
+    for( Skid rtChartTemplateSkid : rtChartSkids ) {
+      ISkGraphTemplate graphTemplate = conn.coreApi().objService().get( rtChartTemplateSkid );
+      addRtChartTemplateToTabPanel( graphTemplate );
     }
   }
 
   private void saveUserSettings() {
     IOptionSetEdit userPrefs = new OptionSet( getUserPrefs() );
-    ISkGraphParamsList rtChartsList = new SkGraphParamsList( rtCharts );
-    RtChartPanelOptions.RTCHARTS.setValue( userPrefs, AvUtils.avValobj( rtChartsList ) );
+    RtChartPanelOptions.RTCHART_SKIDS.setValue( userPrefs, AvUtils.avValobj( rtChartSkids ) );
     prefSection.setOptions( userSkid, userPrefs );
   }
 
@@ -208,12 +204,11 @@ public class ChartsTabPanel
     return prefSection.getOptions( userSkid );
   }
 
-  protected ISkGraphParam doAddItem() {
+  protected ISkGraphTemplate doAddTemplate() {
     IM5Domain m5 = conn.scope().get( IM5Domain.class );
-    IM5Model<ISkGraphParam> model =
-        m5.getModel( ISkTemplateEditorServiceHardConstants.GRAPH_PARAM_MODEL_ID, ISkGraphParam.class );
+    IM5Model<ISkGraphTemplate> model = m5.getModel( ISkGraphTemplate.CLASS_ID, ISkGraphTemplate.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
-    IM5BunchEdit<ISkGraphParam> initVals = new M5BunchEdit<>( model );
+    IM5BunchEdit<ISkGraphTemplate> initVals = new M5BunchEdit<>( model );
     return M5GuiUtils.askCreate( tsContext(), model, initVals, cdi, model.getLifecycleManager( null ) );
   }
 

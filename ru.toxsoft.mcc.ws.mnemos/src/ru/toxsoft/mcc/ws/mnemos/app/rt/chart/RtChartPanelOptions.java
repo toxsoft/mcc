@@ -13,8 +13,7 @@ import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
-
-import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
+import org.toxsoft.core.tslib.gw.skid.*;
 
 /**
  * Параметры настроек панели "RtCharts".
@@ -55,12 +54,11 @@ public class RtChartPanelOptions {
   /**
    * Список отображаемых графиков <br>
    */
-  public static final IDataDef RTCHARTS = DataDef.create( createId( "rtCharts" ), EAtomicType.VALOBJ, // //$NON-NLS-1$
+  public static final IDataDef RTCHART_SKIDS = DataDef.create( createId( "rtChartSkids" ), EAtomicType.VALOBJ, // //$NON-NLS-1$
       TSID_DESCRIPTION, STR_D_RTCHARTS, //
       TSID_NAME, STR_N_RTCHARTS, //
-      // EValedControlParam.EDITOR_FACTORY_NAME, ValedAvListLookupEditor.FACTORY_NAME, //
-      TSID_KEEPER_ID, SkGraphParamsList.KEEPER_ID, //
-      TSID_DEFAULT_VALUE, avValobj( new SkGraphParamsList() ), //
+      TSID_KEEPER_ID, SkidListKeeper.KEEPER_ID, //
+      TSID_DEFAULT_VALUE, avValobj( new SkidList() ), //
       OPID_TREE_PATH1, RTCHARTS_PANEL_GROUP_PATH );
 
   /**
@@ -70,7 +68,7 @@ public class RtChartPanelOptions {
    */
   public static IStridablesList<IDataDef> allOptions() {
     IStridablesListEdit<IDataDef> options = new StridablesList<>();
-    options.add( RTCHARTS );
+    options.add( RTCHART_SKIDS );
     return options;
   }
 
@@ -81,7 +79,7 @@ public class RtChartPanelOptions {
    */
   public static IOptionSet defaultOptions() {
     IOptionSetEdit opSet = new OptionSet();
-    opSet.setValue( RTCHARTS, RTCHARTS.defaultValue() );
+    opSet.setValue( RTCHART_SKIDS, RTCHART_SKIDS.defaultValue() );
 
     return opSet;
   }

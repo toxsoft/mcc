@@ -7,9 +7,7 @@ Bundle-Activator: ru.toxsoft.mcc.ws.reports.Activator
 Bundle-Vendor: toxsoft.ru
 Export-Package: ru.toxsoft.mcc.ws.reports,
  ru.toxsoft.mcc.ws.reports.e4.addons,
- ru.toxsoft.mcc.ws.reports.e4.uiparts,
- ru.toxsoft.mcc.ws.reports.e4.uiparts.chart,
- ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.dataset
+ ru.toxsoft.mcc.ws.reports.e4.uiparts
 Require-Bundle: javax.annotation,
  javax.inject,
  org.eclipse.core.runtime,

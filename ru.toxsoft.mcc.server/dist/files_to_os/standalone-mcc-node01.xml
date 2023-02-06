@@ -174,7 +174,7 @@
             </logger>
             
             <logger category="org.toxsoft.uskat.s5.server.backend.supports.queries.impl.S5BackendQueriesSingleton">
-                <level name="ERROR"/>
+                <level name="INFO"/>
             </logger>
             
             <root-logger>

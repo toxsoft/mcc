@@ -18,7 +18,6 @@ import org.toxsoft.core.tsgui.bricks.tsnodes.*;
 import org.toxsoft.core.tsgui.bricks.tstree.tmm.*;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
-import org.toxsoft.core.tsgui.graphics.colors.*;
 import org.toxsoft.core.tsgui.graphics.icons.*;
 import org.toxsoft.core.tsgui.m5.*;
 import org.toxsoft.core.tsgui.m5.gui.*;
@@ -40,20 +39,17 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
-import org.toxsoft.uskat.core.api.objserv.*;
 import org.toxsoft.uskat.core.api.users.*;
 import org.toxsoft.uskat.core.connection.*;
 
+import ru.toxsoft.mcc.ws.core.chart_utils.*;
+import ru.toxsoft.mcc.ws.core.chart_utils.dataset.*;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 import ru.toxsoft.mcc.ws.core.templates.gui.m5.*;
 import ru.toxsoft.mcc.ws.core.templates.utils.*;
-import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.*;
-import ru.toxsoft.mcc.ws.reports.e4.uiparts.chart.dataset.*;
 
 /**
  * Панель редактора шаблонов графиков ts4.<br>
@@ -251,7 +247,7 @@ public class Ts4GraphTemplateEditorPanel
               processData.genericChangeEventer().addListener( aSource -> {
                 ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
                 if( q.state() == ESkQueryState.READY ) {
-                  IList<ITimedList<?>> requestAnswer = createResult( processData, queryParams );
+                  IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
                   IList<IG2DataSet> graphData =
                       createG2SelfUploDataSetList( selTemplate, requestAnswer, connSupp.defConn() );
                   for( IG2DataSet ds : graphData ) {
@@ -259,7 +255,7 @@ public class Ts4GraphTemplateEditorPanel
                       ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> chartPanel.refresh() );
                     }
                   }
-                  chartPanel.setReportAnswer( graphData, selTemplate );
+                  chartPanel.setReportAnswer( graphData, selTemplate, true );
                   chartPanel.requestLayout();
                 }
               } );
@@ -297,238 +293,6 @@ public class Ts4GraphTemplateEditorPanel
 
     sf.setWeights( 300, 500 );
 
-  }
-
-  private static IList<ITimedList<?>> createResult( ISkQueryProcessedData aProcessData,
-      IStringMap<IDtoQueryParam> aQueryParams ) {
-
-    IListEdit<ITimedList<?>> result = new ElemArrayList<>();
-    for( String paramKey : aQueryParams.keys() ) {
-      ITimedList<?> data = aProcessData.getArgData( paramKey );
-      result.add( data );
-    }
-    return result;
-  }
-
-  /**
-   * Создает Chart панель для графика одного параметра
-   *
-   * @param aContext контекст
-   * @param aParent родительский компонент
-   * @param aParamGwid параметр отображаемый на графике
-   * @param aTitle название параметра
-   * @param aDescription описание параметра
-   * @return панель для графика
-   */
-  public static ChartPanel popupChart( ITsGuiContext aContext, Composite aParent, Gwid aParamGwid, String aTitle,
-      String aDescription ) {
-    ISkGraphTemplate selTemplate = createTemplate( aParamGwid, aTitle, aDescription );
-    // формируем запрос к одноименному сервису
-    IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( selTemplate );
-    ISkConnectionSupplier connSupp = aContext.get( ISkConnectionSupplier.class );
-
-    ISkQueryProcessedData processData =
-        connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
-
-    processData.prepare( queryParams );
-
-    processData.exec( new QueryInterval( EQueryIntervalType.OSOE, initValues.startTime(), initValues.endTime() ) );
-
-    // асинхронное получение данных
-    processData.genericChangeEventer().addListener( aSource -> {
-      ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-      if( q.state() == ESkQueryState.READY ) {
-        IList<ITimedList<?>> requestAnswer = createResult( processData, queryParams );
-        IList<IG2DataSet> graphData = createG2SelfUploDataSetList( selTemplate, requestAnswer, connSupp.defConn() );
-        for( IG2DataSet ds : graphData ) {
-          if( ds instanceof G2SelfUploadHistoryDataSetNew ) {
-            ((G2SelfUploadHistoryDataSetNew)ds).addListener( aSource1 -> popupChart.refresh() );
-          }
-        }
-        popupChart.setReportAnswer( graphData, selTemplate );
-        popupChart.requestLayout();
-      }
-    } );
-
-    // создаем новую панель
-    popupChart = new ChartPanel( aParent, aContext );
-    return popupChart;
-  }
-
-  private static ISkGraphTemplate createTemplate( Gwid aParamGwid, String aTitle, String aDescription ) {
-    ISkGraphTemplate retVal = new ISkGraphTemplate() {
-
-      /**
-       * @return { @link ETimeUnit} - time step of aggregation
-       */
-      @Override
-      public ETimeUnit aggrStep() {
-        return ETimeUnit.MIN01;
-      }
-
-      @Override
-      public String nmName() {
-        return aTitle;
-      }
-
-      @Override
-      public String description() {
-        return aDescription;
-      }
-
-      @Override
-      public String strid() {
-        return Skid.NONE.strid();
-      }
-
-      @Override
-      public Skid skid() {
-        return Skid.NONE;
-      }
-
-      @Override
-      public IMappedSkids rivets() {
-        return null;
-      }
-
-      @Override
-      public String readableName() {
-        return aTitle;
-      }
-
-      @Override
-      public String id() {
-        return Skid.NONE.strid();
-      }
-
-      @Override
-      public Skid getSingleLinkSkid( String aLinkId ) {
-        return Skid.NONE;
-      }
-
-      @Override
-      public <T extends ISkObject> T getSingleLinkObj( String aLinkId ) {
-        return null;
-      }
-
-      @Override
-      public ISkidList getRivetRevSkids( String aClassId, String aRivetId ) {
-        return ISkidList.EMPTY;
-      }
-
-      @Override
-      public <T extends ISkObject> IList<T> getRivetRevObjs( String aClassId, String aRivetId ) {
-        return IList.EMPTY;
-      }
-
-      @Override
-      public ISkidList getLinkSkids( String aLinkId ) {
-        return null;
-      }
-
-      @Override
-      public ISkidList getLinkRevSkids( String aClassId, String aLinkId ) {
-        return ISkidList.EMPTY;
-      }
-
-      @Override
-      public <T extends ISkObject> IList<T> getLinkRevObjs( String aClassId, String aLinkId ) {
-        return IList.EMPTY;
-      }
-
-      @Override
-      public <T extends ISkObject> IList<T> getLinkObjs( String aLinkId ) {
-        return IList.EMPTY;
-      }
-
-      @Override
-      public String getClob( String aClobId, String aDefaultValue ) {
-        return null;
-      }
-
-      @Override
-      public ISkCoreApi coreApi() {
-        return null;
-      }
-
-      @Override
-      public String classId() {
-        return Skid.NONE.classId();
-      }
-
-      @Override
-      public IOptionSet attrs() {
-        return IOptionSet.NULL;
-      }
-
-      @Override
-      public IList<ISkGraphParam> listParams() {
-        return new ElemArrayList<>( new ISkGraphParam() {
-
-          @Override
-          public Gwid gwid() {
-            return aParamGwid;
-          }
-
-          @Override
-          public String title() {
-            return aTitle;
-          }
-
-          @Override
-          public String description() {
-            return aDescription;
-          }
-
-          @Override
-          public EAggregationFunc aggrFunc() {
-            return EAggregationFunc.AVERAGE;
-          }
-
-          @Override
-          public EDisplayFormat displayFormat() {
-            return EDisplayFormat.TWO_DIGIT;
-          }
-
-          @Override
-          public ETsColor color() {
-            return ETsColor.BLACK;
-          }
-
-          @Override
-          public int lineWidth() {
-            return 2;
-          }
-
-          @Override
-          public String unitId() {
-            return "Y";
-          }
-
-          @Override
-          public String unitName() {
-            return "";
-          }
-
-          @Override
-          public boolean isLadder() {
-            return false;
-          }
-
-          @Override
-          public IStringList setPoints() {
-            return IStringList.EMPTY;
-          }
-
-        } );
-      }
-
-      @Override
-      public ISkUser author() {
-        return null;
-      }
-    };
-    return retVal;
   }
 
   /**

@@ -20,6 +20,7 @@ class LegendWindow {
   Color normColor;
   Color lowColor;
   Color hiColor;
+  Color whiteColor;
 
   final IStridablesList<IPlotDef> plotDefs;
 
@@ -32,6 +33,7 @@ class LegendWindow {
     normColor = colorManager().getColor( ETsColor.BLACK );
     lowColor = colorManager().getColor( ETsColor.BLUE );
     hiColor = colorManager().getColor( ETsColor.RED );
+    whiteColor = colorManager().getColor( ETsColor.WHITE );
 
     Shell aShell = aParent.getShell();
     wnd = new Shell( aShell, SWT.BORDER | SWT.CLOSE );
@@ -115,6 +117,38 @@ class LegendWindow {
 
   ITsColorManager colorManager() {
     return context.get( ITsColorManager.class );
+  }
+
+  void paint( GC aGc ) {
+    int x = 24;
+    int y = 4;
+
+    Color oldColor = aGc.getForeground();
+    for( IPlotDef pd : plotDefs ) {
+      Point p = aGc.textExtent( pd.nmName() );
+      aGc.drawText( pd.nmName(), x, y, true );
+      // dima 04.11.22 ts4 conversion
+      // TsLineInfo lineInfo =
+      // IStdG2GraphicRendererOptions.GRAPHIC_LINE_INFO.getValue( pd.rendererParams().params() ).asValobj();
+      RGBA rgba = IStdG2GraphicRendererOptions.GRAPHIC_RGBA.getValue( pd.rendererParams().params() ).asValobj();
+      Color rgbColor = colorManager().getColor( rgba.rgb );
+
+      aGc.setForeground( colorManager().getColor( ETsColor.BLACK ) );
+      aGc.setLineWidth( 8 );
+      aGc.drawLine( 4, y + p.y / 2, 20, y + p.y / 2 );
+      aGc.setForeground( rgbColor );
+
+      aGc.setLineWidth( 6 );
+      aGc.drawLine( 5, y + p.y / 2, 19, y + p.y / 2 );
+      aGc.setForeground( oldColor );
+      y += p.y;
+    }
+  }
+
+  public void print( GC aGc ) {
+    aGc.setBackground( whiteColor );
+    aGc.fillRectangle( shell().getClientArea() );
+    paint( aGc );
   }
 
 }

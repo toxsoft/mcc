@@ -1,4 +1,4 @@
-package ru.toxsoft.mcc.ws.core.chart_utils;
+package ru.toxsoft.mcc.ws.core.chart_utils.dataset;
 
 import static org.toxsoft.uskat.core.api.hqserv.ISkHistoryQueryServiceConstants.*;
 
