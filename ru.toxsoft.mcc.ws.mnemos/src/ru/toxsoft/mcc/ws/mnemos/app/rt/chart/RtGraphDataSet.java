@@ -12,7 +12,6 @@ import org.toxsoft.core.tslib.av.temporal.*;
 import org.toxsoft.core.tslib.bricks.filter.*;
 import org.toxsoft.core.tslib.bricks.strid.impl.*;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
@@ -42,10 +41,18 @@ public class RtGraphDataSet
 
   String QUERY_PARAM_ID = "rt_graph_query_param_id"; //$NON-NLS-1$
 
-  private final IListEdit<ITemporalAtomicValue> values;
+  private final IListEdit<ITemporalAtomicValue> values   = new ElemArrayList<>();
   private final ISkReadCurrDataChannel          rtDataChannel;
   int                                           maxCount = 600 + 2;
   private final Timer                           timer    = new Timer();
+  private final ISkGraphParam                   graphParam;
+
+  /**
+   * @return graphParam
+   */
+  public ISkGraphParam getGraphParam() {
+    return graphParam;
+  }
 
   // ------------------------------------------------------------------------------------
   // Реализация интерфейса IG2DataSet
@@ -55,57 +62,74 @@ public class RtGraphDataSet
    *
    * @param aGraphParam описание rt data
    * @param aServerApi доступ к серверу
-   * @param aRtChartPanel панель графика
+   * @param aHistoryData исторические данные этого параметра
    */
 
-  public RtGraphDataSet( ISkGraphParam aGraphParam, ISkCoreApi aServerApi, RtChartPanel aRtChartPanel ) {
+  public RtGraphDataSet( ISkGraphParam aGraphParam, ISkCoreApi aServerApi, ITimedList<?> aHistoryData ) {
     super( ReportTemplateUtilities.graphDataSetId( aGraphParam ) );
     // получим название и описание параметра
     ISkObject myselfObj = aServerApi.objService().find( aGraphParam.gwid().skid() );
     setName( myselfObj.nmName() );
     setDescription( myselfObj.description() );
+    graphParam = aGraphParam;
 
     // запросим историю параметра за последние 10 минут
-    ISkQueryProcessedData processData = aServerApi.hqService().createProcessedQuery( IOptionSet.NULL );
-    IStringMap<IDtoQueryParam> queryParams = queryParams( aGraphParam.gwid() );
-    processData.prepare( queryParams );
-    TimeInterval queryInterval =
-        new TimeInterval( System.currentTimeMillis() - 10 * 60 * 1000, System.currentTimeMillis() );
+    // ISkQueryProcessedData processData = aServerApi.hqService().createProcessedQuery( IOptionSet.NULL );
+    // IStringMap<IDtoQueryParam> queryParams = queryParams( aGraphParam.gwid() );
+    // processData.prepare( queryParams );
+    // TimeInterval queryInterval =
+    // new TimeInterval( System.currentTimeMillis() - 10 * 60 * 1000, System.currentTimeMillis() );
+    //
+    // values = new ElemArrayList<>();
+    //
+    // processData.genericChangeEventer().addListener( aSource -> {
+    // ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
+    // if( q.state() == ESkQueryState.READY ) {
+    // IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
+    // ITimedList<?> historyData = requestAnswer.getOnly();
+    // for( Object value : historyData ) {
+    // if( value instanceof TemporalAtomicValue tav ) {
+    // values.add( tav );
+    // }
+    // }
+    // // только после поучения данных запускаем таймер
+    // aRtChartPanel.init();
+    // aRtChartPanel.start();
+    // TimerTask repeatedTask = new TimerTask() {
+    //
+    // @Override
+    // public void run() {
+    // // обновим текущее значение
+    // addCurrValue( rtDataChannel.getValue() );
+    // }
+    // };
+    // timer.scheduleAtFixedRate( repeatedTask, 1000L, 1000L );
+    // }
+    // } );
+    //
+    // processData
+    // .exec( new QueryInterval( EQueryIntervalType.OSOE, queryInterval.startTime(), queryInterval.endTime() ) );
 
-    values = new ElemArrayList<>();
-
-    processData.genericChangeEventer().addListener( aSource -> {
-      ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
-      if( q.state() == ESkQueryState.READY ) {
-        IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
-        ITimedList<?> historyData = requestAnswer.getOnly();
-        for( Object value : historyData ) {
-          if( value instanceof TemporalAtomicValue tav ) {
-            values.add( tav );
-          }
-        }
-        // только после поучения данных запускаем таймер
-        aRtChartPanel.init( aGraphParam );
-        aRtChartPanel.start();
-        TimerTask repeatedTask = new TimerTask() {
-
-          @Override
-          public void run() {
-            // обновим текущее значение
-            addCurrValue( rtDataChannel.getValue() );
-          }
-        };
-        timer.scheduleAtFixedRate( repeatedTask, 1000L, 1000L );
+    for( Object value : aHistoryData ) {
+      if( value instanceof TemporalAtomicValue tav ) {
+        values.add( tav );
       }
-    } );
-
-    processData
-        .exec( new QueryInterval( EQueryIntervalType.OSOE, queryInterval.startTime(), queryInterval.endTime() ) );
+    }
 
     // создаем канал текущих данных
     IMap<Gwid, ISkReadCurrDataChannel> channelMap =
         aServerApi.rtdService().createReadCurrDataChannels( new GwidList( aGraphParam.gwid() ) );
     rtDataChannel = channelMap.getByKey( aGraphParam.gwid() );
+    // запускаем таймер
+    TimerTask repeatedTask = new TimerTask() {
+
+      @Override
+      public void run() {
+        // обновим текущее значение
+        addCurrValue( rtDataChannel.getValue() );
+      }
+    };
+    timer.scheduleAtFixedRate( repeatedTask, 1000L, 1000L );
 
   }
 
