@@ -4,42 +4,50 @@ import static org.toxsoft.core.tsgui.m5.IM5Constants.*;
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.uskat.core.api.hqserv.ISkHistoryQueryServiceConstants.*;
 
-import java.text.*;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tsgui.chart.api.*;
-import org.toxsoft.core.tsgui.chart.impl.*;
-import org.toxsoft.core.tsgui.graphics.colors.*;
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.model.*;
+import org.toxsoft.core.tsgui.chart.impl.G2HistoryDataSet;
+import org.toxsoft.core.tsgui.graphics.colors.ETsColor;
+import org.toxsoft.core.tsgui.m5.IM5FieldDef;
+import org.toxsoft.core.tsgui.m5.IM5Model;
+import org.toxsoft.core.tsgui.m5.model.IM5ItemsProvider;
 import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.av.temporal.*;
-import org.toxsoft.core.tslib.bricks.filter.*;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.av.temporal.ITemporalAtomicValue;
+import org.toxsoft.core.tslib.av.temporal.TemporalAtomicValue;
+import org.toxsoft.core.tslib.bricks.filter.ITsCombiFilterParams;
 import org.toxsoft.core.tslib.bricks.time.*;
 import org.toxsoft.core.tslib.bricks.time.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
 import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
 import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.*;
+import org.toxsoft.core.tslib.utils.TsLibUtils;
+import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.hqserv.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.impl.dto.*;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.impl.dto.DtoQueryParam;
 
-import ru.toxsoft.mcc.ws.core.chart_utils.*;
-import ru.toxsoft.mcc.ws.core.chart_utils.dataset.*;
+import ru.toxsoft.mcc.ws.core.chart_utils.ChartPanel;
+import ru.toxsoft.mcc.ws.core.chart_utils.dataset.G2SelfUploadHistoryDataSetNew;
+import ru.toxsoft.mcc.ws.core.chart_utils.dataset.IDataSetParam;
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 
 /**
@@ -560,8 +568,10 @@ public class ReportTemplateUtilities {
         connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
 
     processData.prepare( queryParams );
-
-    processData.exec( new QueryInterval( EQueryIntervalType.OSOE, initValues.startTime(), initValues.endTime() ) );
+    TimeInterval popupChartIntvl =
+        new TimeInterval( System.currentTimeMillis() - 6 * 60L * 60L * 1000L, System.currentTimeMillis() );
+    processData
+        .exec( new QueryInterval( EQueryIntervalType.OSOE, popupChartIntvl.startTime(), popupChartIntvl.endTime() ) );
 
     // асинхронное получение данных
     processData.genericChangeEventer().addListener( aSource -> {
