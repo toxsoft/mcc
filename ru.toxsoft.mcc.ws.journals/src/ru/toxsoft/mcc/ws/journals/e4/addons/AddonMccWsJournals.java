@@ -548,11 +548,11 @@ public class AddonMccWsJournals
         return ERROR_FORMING_MESSAGE_STR;
       }
 
-      String oldVal = parvals.getStr( EVPARAM_OLD_VAL );
-      String newVal = parvals.getStr( EVPARAM_NEW_VAL );
+      IAtomicValue oldVal = parvals.getValue( EVPARAM_OLD_VAL );
+      IAtomicValue newVal = parvals.getValue( EVPARAM_NEW_VAL );
 
-      return String.format( VIS_NAME_FORMAT, evInfo.nmName() ) + STR_DELIMETER + STR_OLD_VALUE + oldVal + STR_DELIMETER
-          + STR_NEW_VALUE + newVal;
+      return String.format( VIS_NAME_FORMAT, evInfo.nmName() ) + STR_DELIMETER + STR_OLD_VALUE + oldVal.asString()
+          + STR_DELIMETER + STR_NEW_VALUE + newVal.asString();
     }
 
   }
