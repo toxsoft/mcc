@@ -182,7 +182,7 @@ public class CommandQueryEngine
       GwidList gwids = new GwidList();
       for( int i = 0, count = aParams.items().size(); i < count; i++ ) {
         ConcerningEventsItem item = (ConcerningEventsItem)aParams.items().get( i );
-        gwids.addAll( item.gwids( true, aCoreApi ) );
+        gwids.addAll( item.gwids( false, aCoreApi ) );
       }
       query.prepare( gwids );
       synchronized (query) {
