@@ -7,11 +7,12 @@ import static ru.toxsoft.mcc.server.main.IMccResources.*;
 
 import javax.ejb.*;
 
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.uskat.alarms.lib.*;
-import org.toxsoft.uskat.alarms.s5.generator.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.core.tslib.gw.skid.ISkidList;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.uskat.alarms.lib.ISkAlarmService;
+import org.toxsoft.uskat.alarms.s5.generator.S5AbstractAlarmGeneratorSingleton;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.api.objserv.ISkObjectService;
 
 /**
  * Абстрактная реализация синглтона генератора алармов службы {@link ISkAlarmService}.
@@ -45,9 +46,12 @@ public class MccAlarmGeneratorSingleton
   // ------------------------------------------------------------------------------------
   // S5AbstractAlarmGeneratorSingleton
   //
-  @SuppressWarnings( "nls" )
   @Override
   protected void doAddAlarmDefs( ISkCoreApi aCoreApi ) {
+  }
+
+  @SuppressWarnings( "nls" )
+  protected void doAddAlarmDefsOld( ISkCoreApi aCoreApi ) {
     // Служба объектов
     ISkObjectService objectService = aCoreApi.objService();
     // Добавление алармов для генерации
