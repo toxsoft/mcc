@@ -47,6 +47,11 @@
             <priority value="TRACE" />
     </category>
 
+    <category name="net.sf.jasperreports">
+    	<priority value="ERROR" />
+    </category>
+      
+
     <category name="org.xnio">
     	<priority value="ERROR" />
     </category>

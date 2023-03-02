@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSetKeeper;
 import org.toxsoft.core.tslib.bricks.strid.impl.StridUtils;
 import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
 import org.toxsoft.uskat.alarms.lib.EAlarmPriority;
@@ -48,6 +50,17 @@ public class S5AlarmDefEntity
   private String description;
 
   /**
+   * Значения всех расширенных атрибутов.
+   */
+  @Lob
+  @Column( //
+      nullable = false,
+      insertable = true,
+      updatable = true,
+      unique = false )
+  private String paramsString;
+
+  /**
    * приоритет обработки аларма
    */
   @Column( nullable = false )
@@ -67,30 +80,40 @@ public class S5AlarmDefEntity
   }
 
   /**
+   * Lazy
+   */
+  private transient IOptionSet params;
+
+  /**
    * Конструктор
    *
    * @param aId String идентификатор аларма
    * @param aMessage String текстовое сообщение для аларма
+   * @param aParams {@link IOptionSet} параметры аларма
+   * @throws TsNullArgumentRtException любой аргумент = null
    */
-  public S5AlarmDefEntity( String aId, String aMessage ) {
-    TsNullArgumentRtException.checkNulls( aId, aMessage );
+  public S5AlarmDefEntity( String aId, String aMessage, IOptionSet aParams ) {
+    TsNullArgumentRtException.checkNulls( aId, aParams, aMessage, aParams );
     id = StridUtils.checkValidIdPath( aId );
     setPriority( EAlarmPriority.NORMAL );
     setName( EMPTY_STRING );
     setDescription( EMPTY_STRING );
+    setParams( aParams );
     setMessage( aMessage );
   }
 
   /**
    * Конструктор по aAlarmDef
    *
-   * @param aSkAlarmDef оригинальный аларм
+   * @param aSkAlarmDef исходный аларм
+   * @throws TsNullArgumentRtException аргумент = null
    */
   public S5AlarmDefEntity( ISkAlarmDef aSkAlarmDef ) {
     id = StridUtils.checkValidIdPath( aSkAlarmDef.id() );
     setPriority( aSkAlarmDef.priority() );
     setName( aSkAlarmDef.nmName() );
     setDescription( aSkAlarmDef.description() );
+    setParams( aSkAlarmDef.params() );
     setMessage( aSkAlarmDef.message() );
   }
 
@@ -131,6 +154,23 @@ public class S5AlarmDefEntity
   }
 
   /**
+   * Установить значение всех параметров аларма
+   *
+   * @param aParams {@link IOptionSet} карта параметров и их значений
+   * @throws TsNullArgumentRtException аргумент = null
+   */
+  public void setParams( IOptionSet aParams ) {
+    TsNullArgumentRtException.checkNull( aParams );
+    try {
+      paramsString = OptionSetKeeper.KEEPER.ent2str( aParams );
+    }
+    catch( Throwable e ) {
+      throw e;
+    }
+    params = null;
+  }
+
+  /**
    * Установить сообщение аларма
    *
    * @param aMessage String сообщение аларма
@@ -144,6 +184,28 @@ public class S5AlarmDefEntity
   // ------------------------------------------------------------------------------------
   // Реализация интерфейса ISkAlarmDef
   //
+  @Override
+  public String id() {
+    return id;
+  }
+
+  @Override
+  public String nmName() {
+    return nmName;
+  }
+
+  @Override
+  public String description() {
+    return description;
+  }
+
+  @Override
+  public IOptionSet params() {
+    if( params == null ) {
+      params = OptionSetKeeper.KEEPER.str2ent( paramsString );
+    }
+    return params;
+  }
 
   @Override
   public EAlarmPriority priority() {
@@ -153,21 +215,6 @@ public class S5AlarmDefEntity
   @Override
   public String message() {
     return message;
-  }
-
-  @Override
-  public String nmName() {
-    return nmName;
-  }
-
-  @Override
-  public String id() {
-    return id;
-  }
-
-  @Override
-  public String description() {
-    return description;
   }
 
   // ------------------------------------------------------------------------------------

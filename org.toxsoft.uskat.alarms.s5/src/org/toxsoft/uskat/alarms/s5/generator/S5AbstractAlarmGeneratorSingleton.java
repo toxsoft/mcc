@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import javax.ejb.EJB;
 
 import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
 import org.toxsoft.core.tslib.gw.skid.Skid;
 import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
 import org.toxsoft.uskat.alarms.lib.EAlarmPriority;
@@ -252,7 +253,7 @@ public abstract class S5AbstractAlarmGeneratorSingleton
    */
   protected final void addAlarm( String aAlarmId, String aMessage, Skid aObjId, String aDataId,
       IS5AlarmAtomicValuePredicate aValuePredicate ) {
-    addAlarm( aAlarmId, NORMAL, aMessage, aObjId, aDataId, aValuePredicate );
+    addAlarm( aAlarmId, NORMAL, aMessage, aObjId, aDataId, aValuePredicate, IOptionSet.NULL );
   }
 
   /**
@@ -268,9 +269,27 @@ public abstract class S5AbstractAlarmGeneratorSingleton
    */
   protected final void addAlarm( String aAlarmId, EAlarmPriority aAlarmPriority, String aMessage, Skid aObjId, String aDataId,
       IS5AlarmAtomicValuePredicate aValuePredicate ) {
+    addAlarm( aAlarmId, aAlarmPriority, aMessage, aObjId, aDataId, aValuePredicate, IOptionSet.NULL );
+  }
+
+
+  /**
+   * Добавление аларма в генератор алармов
+   *
+   * @param aAlarmId String идентификатор аларма
+   * @param aAlarmPriority {@link EAlarmPriority} приоритет аларма
+   * @param aMessage String сообщения для аларма
+   * @param aObjId {@link Skid} идентификатор объекта для чтения текущего данного. Он же автор аларма
+   * @param aDataId String идентификатор данного формирующего аларм
+   * @param aValuePredicate {@link IS5AlarmAtomicValuePredicate} условие на значения для формирования аларма
+   * @param aParams {@link IOptionSet} параметры тревог
+   * @throws TsNullArgumentRtException любой аргумент = null
+   */
+  protected final void addAlarm( String aAlarmId, EAlarmPriority aAlarmPriority, String aMessage, Skid aObjId, String aDataId,
+      IS5AlarmAtomicValuePredicate aValuePredicate, IOptionSet aParams ) {
     TsNullArgumentRtException.checkNulls( aAlarmId, aAlarmPriority, aMessage, aObjId, aDataId, aValuePredicate );
     Skid athorObjId = aObjId;
-    S5AlarmDefEntity alarmDef = new S5AlarmDefEntity( aAlarmId, aMessage );
+    S5AlarmDefEntity alarmDef = new S5AlarmDefEntity( aAlarmId, aMessage, aParams );
     alarmDef.setPriority( aAlarmPriority );
     // Условие текущего данного: значение текущего данного должно быть присвоено
     S5AlarmCurrDataPredicate currDataPredicate1 =

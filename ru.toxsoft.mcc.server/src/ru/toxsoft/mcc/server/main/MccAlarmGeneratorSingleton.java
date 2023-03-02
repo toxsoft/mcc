@@ -1,15 +1,26 @@
 package ru.toxsoft.mcc.server.main;
 
+import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
+import static org.toxsoft.core.tslib.av.impl.DataDef.*;
+import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.uskat.alarms.lib.EAlarmPriority.*;
 import static org.toxsoft.uskat.s5.server.IS5ImplementConstants.*;
 import static ru.toxsoft.mcc.server.main.IMccResources.*;
 
 import javax.ejb.*;
 
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSetUtils;
+import org.toxsoft.core.tslib.gw.gwid.EGwidKind;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
 import org.toxsoft.core.tslib.gw.skid.ISkidList;
 import org.toxsoft.core.tslib.gw.skid.Skid;
-import org.toxsoft.uskat.alarms.lib.ISkAlarmService;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.alarms.lib.*;
+import org.toxsoft.uskat.alarms.s5.generator.IS5AlarmAtomicValuePredicate;
 import org.toxsoft.uskat.alarms.s5.generator.S5AbstractAlarmGeneratorSingleton;
 import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.objserv.ISkObjectService;
@@ -35,6 +46,16 @@ public class MccAlarmGeneratorSingleton
    * Имя синглетона в контейнере сервера для организации зависимостей (@DependsOn)
    */
   public static final String ALARM_GENERATOR_ID = "MccAlarmGeneratorSingleton"; //$NON-NLS-1$
+
+  /**
+   * Параметр: {@link ISkAlarmDef#params()}: команда используемая для квитирования аларма
+   * <p>
+   * Тип: {@link Gwid} ({@link EAtomicType#VALOBJ})
+   */
+  public static final IDataDef OP_ACKNOWLEDGMENT_CMD = create( "mcc.AcknowledgmentCmd", VALOBJ, //$NON-NLS-1$
+      TSID_NAME, STR_N_ACKNOWLEDGMENT_CMD, //
+      TSID_DESCRIPTION, STR_D_ACKNOWLEDGMENT_CMD, //
+      TSID_IS_MANDATORY, AV_FALSE );
 
   /**
    * Конструктор.
@@ -146,4 +167,33 @@ public class MccAlarmGeneratorSingleton
       addAlarm( "CtrlSystemLoOil",   NORMAL, STR_N_CTRL_SYSTEM_LO_OIL,      objId,  "rtdLoOil",     value -> equals( value, AV_TRUE  ) );
     }
   }
+
+  /**
+   * Добавление аларма в генератор алармов
+   *
+   * @param aAlarmId String идентификатор аларма
+   * @param aAlarmPriority {@link EAlarmPriority} приоритет аларма
+   * @param aMessage String сообщения для аларма
+   * @param aObjId {@link Skid} идентификатор объекта для чтения текущего данного. Он же автор аларма
+   * @param aDataId String идентификатор данного формирующего аларм
+   * @param aValuePredicate {@link IS5AlarmAtomicValuePredicate} условие на значения для формирования аларма
+   * @param aAcknowledgmentCmd {@link Gwid} команда квитирования
+   * @throws TsNullArgumentRtException любой аргумент = null
+   * @throws TsIllegalArgumentRtException в качестве {@link Gwid} указана не команда.
+   * @throws TsIllegalArgumentRtException должна быть определена абстрактная команда (без объекта).
+   * @throws TsIllegalArgumentRtException недопускается использовать multi-команду
+   */
+  @SuppressWarnings( "unused" )
+  private void addAlarm( String aAlarmId, EAlarmPriority aAlarmPriority, String aMessage, Skid aObjId, String aDataId,
+      IS5AlarmAtomicValuePredicate aValuePredicate, Gwid aAcknowledgmentCmd ) {
+    TsNullArgumentRtException.checkNulls( aAlarmId, aAlarmPriority, aMessage, aObjId, aDataId, aValuePredicate,
+        aAcknowledgmentCmd );
+    TsIllegalArgumentRtException.checkFalse( aAcknowledgmentCmd.kind() == EGwidKind.GW_CMD );
+    TsIllegalArgumentRtException.checkFalse( aAcknowledgmentCmd.isAbstract() );
+    TsIllegalArgumentRtException.checkTrue( aAcknowledgmentCmd.isMulti() );
+    addAlarm( aAlarmId, aAlarmPriority, aMessage, aObjId, aDataId, aValuePredicate, OptionSetUtils.createOpSet( //
+        OP_ACKNOWLEDGMENT_CMD, avValobj( aAcknowledgmentCmd ) //
+    ) );
+  }
+
 }

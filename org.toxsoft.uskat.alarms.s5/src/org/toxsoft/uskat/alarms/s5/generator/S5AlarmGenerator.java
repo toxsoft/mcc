@@ -5,7 +5,6 @@ import static org.toxsoft.uskat.alarms.s5.generator.IS5Resources.*;
 
 import java.util.function.Predicate;
 
-import org.toxsoft.core.tslib.av.IAtomicValue;
 import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
 import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesListEdit;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.StridablesList;
@@ -18,7 +17,6 @@ import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
 import org.toxsoft.core.tslib.utils.logs.ILogger;
 import org.toxsoft.uskat.alarms.lib.*;
 import org.toxsoft.uskat.alarms.lib.flacon.ISkAlarmFlacon;
-import org.toxsoft.uskat.alarms.s5.supports.S5AlarmDefEntity;
 
 /**
  * Генератор алармов
@@ -96,22 +94,23 @@ class S5AlarmGenerator
     profiles.add( new S5AlarmProfile( this, aSkAlarmDef, aAuthorId, aPredicate ) );
   }
 
-  @Override
-  public void addAlarm( String aAlarmId, EAlarmPriority aAlarmPriority, String aMessage, Skid aObjId, String aDataId,
-      IS5AlarmAtomicValuePredicate aValuePredicate ) {
-    TsNullArgumentRtException.checkNulls( aValuePredicate, aAlarmId, aAlarmPriority, aMessage, aObjId );
-    S5AlarmDefEntity alarmDef = new S5AlarmDefEntity( aAlarmId, aMessage );
-    alarmDef.setPriority( aAlarmPriority );
-    // Условие текущего данного: значение текущего данного должно быть присвоено
-    S5AlarmCurrDataPredicate currDataPredicate1 =
-        new S5AlarmCurrDataPredicate( aObjId, aDataId, IAtomicValue::isAssigned );
-    // Условие текущего данного: условие на значение
-    S5AlarmCurrDataPredicate currDataPredicate2 = new S5AlarmCurrDataPredicate( aObjId, aDataId, aValuePredicate );
-    // AND условий
-    Predicate<IS5AlarmProfile> currDataPredicate = currDataPredicate1.and( currDataPredicate2 );
-    // Добавление аларма
-    addAlarm( aObjId, alarmDef, currDataPredicate );
-  }
+  // 2023-02-28 mvk---
+  // @Override
+  // public void addAlarm( String aAlarmId, EAlarmPriority aAlarmPriority, String aMessage, Skid aObjId, String aDataId,
+  // IS5AlarmAtomicValuePredicate aValuePredicate ) {
+  // TsNullArgumentRtException.checkNulls( aValuePredicate, aAlarmId, aAlarmPriority, aMessage, aObjId );
+  // S5AlarmDefEntity alarmDef = new S5AlarmDefEntity( aAlarmId, aMessage );
+  // alarmDef.setPriority( aAlarmPriority );
+  // // Условие текущего данного: значение текущего данного должно быть присвоено
+  // S5AlarmCurrDataPredicate currDataPredicate1 =
+  // new S5AlarmCurrDataPredicate( aObjId, aDataId, IAtomicValue::isAssigned );
+  // // Условие текущего данного: условие на значение
+  // S5AlarmCurrDataPredicate currDataPredicate2 = new S5AlarmCurrDataPredicate( aObjId, aDataId, aValuePredicate );
+  // // AND условий
+  // Predicate<IS5AlarmProfile> currDataPredicate = currDataPredicate1.and( currDataPredicate2 );
+  // // Добавление аларма
+  // addAlarm( aObjId, alarmDef, currDataPredicate );
+  // }
 
   // ------------------------------------------------------------------------------------
   // Методы пакета

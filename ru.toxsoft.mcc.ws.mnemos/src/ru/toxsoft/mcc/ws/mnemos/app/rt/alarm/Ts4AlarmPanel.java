@@ -25,6 +25,7 @@ import org.toxsoft.core.tsgui.panels.toolbar.ITsToolbar;
 import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
 import org.toxsoft.core.tsgui.utils.layout.EBorderLayoutPlacement;
 import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
 import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
 import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
 import org.toxsoft.core.tslib.coll.IList;
@@ -90,7 +91,7 @@ public class Ts4AlarmPanel
     ISkAlarmService alarmService = (ISkAlarmService)skConn.coreApi().services().getByKey( ISkAlarmService.SERVICE_ID );
 
     if( alarmService.findAlarmDef( TEST_ALARM_ID ) == null ) {
-      alarmService.registerAlarmDef( new S5AlarmDefEntity( TEST_ALARM_ID, TEST_ALARM_NAME ) );
+      alarmService.registerAlarmDef( new S5AlarmDefEntity( TEST_ALARM_ID, TEST_ALARM_NAME, IOptionSet.NULL ) );
     }
 
     IM5Model<ISkAlarm> model = m5().getModel( SkAlarmM5Model.MODEL_ID, ISkAlarm.class );

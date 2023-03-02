@@ -1,6 +1,6 @@
 package org.toxsoft.uskat.alarms.lib;
 
-import org.toxsoft.core.tslib.bricks.strid.IStridable;
+import org.toxsoft.core.tslib.bricks.strid.IStridableParameterized;
 
 /**
  * Описание тревоги.
@@ -8,7 +8,7 @@ import org.toxsoft.core.tslib.bricks.strid.IStridable;
  * @author goga, dima
  */
 public interface ISkAlarmDef
-    extends IStridable {
+    extends IStridableParameterized {
 
   /**
    * Возвращает приоритет (важность) тревоги.

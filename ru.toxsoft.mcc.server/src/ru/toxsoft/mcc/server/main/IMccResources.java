@@ -37,4 +37,6 @@ interface IMccResources {
   String STR_N_CTRL_SYSTEM_EMERGENCY_STOP   = "Режим Аварийного останова";
   String STR_N_CTRL_SYSTEM_LO_OIL           = "Низкий уровень масла";
 
+  String STR_N_ACKNOWLEDGMENT_CMD = "Квитирование";
+  String STR_D_ACKNOWLEDGMENT_CMD = "Команда используемая для квитирования аларма";
 }
