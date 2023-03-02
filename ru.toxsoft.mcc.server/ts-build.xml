@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ru.sitrol.mm.fgdp.server -->
-<project name="ru.toxsoft.mcc.server" default="deploy">
+<project name="ru.toxsoft.mcc.server" default="4_deploy">
   <loadproperties srcFile="ts-build-commons.properties"/>
   <basename file="${basedir}" property="project.name"/>
   <!-- каталог для размещения собираемой библиотеки сервера -->
@@ -16,18 +16,6 @@
   <!-- имя собираемой библиотеки сервера для deploy -->
   <property name="deploy.jar" value="skat-backend-deploy.jar"/>
 
-  <target name="clean">
-    <delete file="${lib.dir}/${lib.jar}" />
-    <delete file="${deploy.dir}/${deploy.jar}" />
-    <delete>
-      <fileset dir="dist/META_INF" includes="*.MF" />
-      <fileset dir="${main.plugins.dir}/plugins" includes="${project.name}*" />
-    </delete>
-<!--
-    <eclipse.refreshLocal resource="${project.name}" depth="infinite" />
--->
-  </target>
-
   <tstamp>
     <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
   </tstamp>
@@ -41,7 +29,19 @@
     <attribute name="Built-Date" value="${TODAY}" />
   </manifest>
 
-  <target name="build_jar">
+  <target name="1_clean">
+    <delete file="${lib.dir}/${lib.jar}" />
+    <delete file="${deploy.dir}/${deploy.jar}" />
+    <delete>
+      <fileset dir="dist/META_INF" includes="*.MF" />
+      <fileset dir="${main.plugins.dir}/plugins" includes="${project.name}*" />
+    </delete>
+<!--
+    <eclipse.refreshLocal resource="${project.name}" depth="infinite" />
+-->
+  </target>
+
+  <target name="2_build">
     <jar destfile="${lib.dir}/${lib.jar}" manifest="dist/META_INF/MANIFEST.MF">
       <metainf dir="dist/META_INF" />
         <fileset dir="bin">
@@ -57,9 +57,6 @@
 <!--
     <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
 -->
-  </target>
-
-  <target name="build_plugin" depends="build_jar">
     <pde.exportPlugins destination="${main.plugins.dir}"
                        exportSource="true"
                        exportSourceBundle="false"
@@ -70,10 +67,7 @@
                        useJARFormat="true" />
   </target>
 
-  <target name="build" depends="build_plugin">
-  </target>
-
-  <target name="build_deploy">
+  <target name="3_build_deploy">
       <jar destfile="${deploy.dir}/${deploy.jar}" manifest="dist/META_INF/MANIFEST.MF">
         <metainf dir="dist/META_INF" />
 
@@ -114,7 +108,7 @@
 -->
   </target>
   
-  <target name="deploy" description="Формирование и размещение *-deploy-jar в wildfly">
+  <target name="4_deploy" description="Формирование и размещение *-deploy-jar в wildfly">
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/deployments" file="${deploy.dir}/${deploy.jar}" overwrite="true" />
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/configuration">
         <fileset file="dist/files_to_os/${wildfly-standalone-node01.file}"/>
