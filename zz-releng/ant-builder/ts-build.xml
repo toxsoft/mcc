@@ -25,6 +25,10 @@
     <ant dir="../../ru.toxsoft.mcc.ws.reports" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../ru.toxsoft.mcc.ws.exe" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
 
+    <ant dir="../../ru.toxsoft.mcc.server" antfile="ts-build.xml" target="3_build_deploy" />
+<!--
+    <ant dir="../../ru.toxsoft.mcc.server" antfile="ts-build.xml" target="3_build_deploy" inheritAll="false" inheritRefs="false" useNativeBasedir="true" /> 
+-->
   </target>
 
   <!-- ЦЕЛЬ: сборка plugin-ов -->
