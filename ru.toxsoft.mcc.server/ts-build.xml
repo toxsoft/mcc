@@ -114,7 +114,7 @@
 -->
   </target>
   
-  <target name="deploy" description="Формирование и размещение *-deploy-jar в wildfly" depends="build_deploy">
+  <target name="deploy" description="Формирование и размещение *-deploy-jar в wildfly">
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/deployments" file="${deploy.dir}/${deploy.jar}" overwrite="true" />
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/configuration">
         <fileset file="dist/files_to_os/${wildfly-standalone-node01.file}"/>
