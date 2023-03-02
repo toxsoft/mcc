@@ -16,7 +16,7 @@
   <!-- имя собираемой библиотеки сервера для deploy -->
   <property name="deploy.jar" value="skat-backend-deploy.jar"/>
 
-  <target name="clean" description="Удаляет собранные файлы">
+  <target name="clean">
     <delete file="${lib.dir}/${lib.jar}" />
     <delete file="${deploy.dir}/${deploy.jar}" />
     <delete>
@@ -70,10 +70,10 @@
                        useJARFormat="true" />
   </target>
 
-  <target name="build" depends="build_plugin" description="Пересборка чего???">
+  <target name="build" depends="build_plugin">
   </target>
 
-  <target name="build_deploy" description="Сборка *-deploy.jar" >
+  <target name="build_deploy">
       <jar destfile="${deploy.dir}/${deploy.jar}" manifest="dist/META_INF/MANIFEST.MF">
         <metainf dir="dist/META_INF" />
 
