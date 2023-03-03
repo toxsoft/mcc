@@ -23,7 +23,7 @@ import org.toxsoft.uskat.alarms.lib.flacon.ISkAlarmFlacon;
  *
  * @author mvk
  */
-class S5AlarmGenerator
+final class S5AlarmGenerator
     implements IS5AlarmGenerator {
 
   /**
@@ -92,6 +92,8 @@ class S5AlarmGenerator
       logger.info( MSG_ADD_ALARM_DEF, alarmId );
     }
     profiles.add( new S5AlarmProfile( this, aSkAlarmDef, aAuthorId, aPredicate ) );
+    // Запись в журнал
+    logger().info( MSG_ADD_ALARM, aAuthorId, aSkAlarmDef.id(), aPredicate );
   }
 
   // 2023-02-28 mvk---

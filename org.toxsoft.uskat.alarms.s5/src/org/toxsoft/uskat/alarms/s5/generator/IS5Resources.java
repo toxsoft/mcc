@@ -14,6 +14,7 @@ interface IS5Resources {
   String MSG_ADD_ALARM_DEF = "В системе зарегистрированно описание аларма %s";
   String MSG_ALARM_ON      = "Включение аларма: %s. authorId = %s";
   String MSG_ALARM_OFF     = "Выключение аларма: %s. authorId = %s";
+  String MSG_ADD_ALARM     = "addAlarm(...): aAuthorId = %s, alarmId = %s, predicate = %s";
 
   // ------------------------------------------------------------------------------------
   // Тексты ошибок
