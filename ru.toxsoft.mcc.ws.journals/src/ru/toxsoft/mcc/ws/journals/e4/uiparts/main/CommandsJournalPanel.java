@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.toxsoft.core.jasperreports.gui.main.*;
 import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
@@ -22,6 +21,7 @@ import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
 import org.toxsoft.core.tslib.av.impl.AvUtils;
 import org.toxsoft.core.tslib.bricks.events.change.IGenericChangeListener;
 import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.primtypes.IStringList;
 import org.toxsoft.core.tslib.coll.primtypes.IStringListEdit;
 import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
@@ -77,8 +77,6 @@ public class CommandsJournalPanel
 
     setLayout( new BorderLayout() );
 
-    ISkConnection connection = aContext.get( ISkConnectionSupplier.class ).defConn();
-
     IM5Model<IDtoCompletedCommand> userModel = m5().getModel( CommandM5Model.MODEL_ID, IDtoCompletedCommand.class );
     // EventM5LifecycleManager lm =
     // (EventM5LifecycleManager)userModel.getLifecycleManager( windowContext().get( IEventService.class ) );
@@ -86,7 +84,7 @@ public class CommandsJournalPanel
     panel = userModel.panelCreator().createCollViewerPanel( aContext, commandProvider );
     panel.createControl( this ).setLayoutData( BorderLayout.CENTER );
 
-    queryEngine = new CommandQueryEngine( connection.coreApi() );
+    queryEngine = new CommandQueryEngine( aContext );
 
     JournalsLibUtils.loadClassesTreeModel( aContext, COMMANDS_FILTER_CLASSES_TREE_MODEL_LIB );
 
@@ -134,73 +132,27 @@ public class CommandsJournalPanel
   }
 
   private void queryAllEvents() {
-    try {
-      queryEngine.setQueryParams( paramsPanel.interval(), allCommandsParams() );
-
-      // 2023-01-20 mvk
-      ProgressMonitorDialog pd = new ProgressMonitorDialog( getShell() ) {
-
-        @Override
-        protected void cancelPressed() {
-          super.cancelPressed();
-          // 2023-01-20 mvk
-          queryEngine.cancelQuery();
-        }
-
-      };
-      pd.run( true, true, queryEngine );
-
-      commandProvider.items().clear();
-      commandProvider.items().addAll( queryEngine.getResult() );
-      panel.refresh();
-    }
-    catch( Exception ex ) {
-      ex.printStackTrace();
-      LoggerUtils.errorLogger().error( ex );
-      TsDialogUtils.error( getShell(), ex );
-      commandProvider.items().clear();
-      panel.refresh();
-    }
+    IList<IDtoCompletedCommand> commands = queryEngine.query( paramsPanel.interval(), allCommandsParams() );
+    commandProvider.items().clear();
+    commandProvider.items().addAll( commands );
+    panel.refresh();
   }
 
   private void querySelectedEvents() {
-    try {
-      // Поскольку метод queryEvents воспринимает пустые списки параметров и/или объектов как
-      // "запросить все и по всем"
-      // то тут проредим параметры фильтрованного запроса
-      ConcerningEventsParams selEvents = new ConcerningEventsParams();
-      for( ConcerningEventsItem item : ((ConcerningEventsParams)paramsPanel.selectedParams()).eventItems() ) {
-        if( item.eventIds().isEmpty() || item.strids().isEmpty() ) {
-          continue;
-        }
-        selEvents.addItem( item );
+    // Поскольку метод queryEvents воспринимает пустые списки параметров и/или объектов как
+    // "запросить все и по всем"
+    // то тут проредим параметры фильтрованного запроса
+    ConcerningEventsParams selEvents = new ConcerningEventsParams();
+    for( ConcerningEventsItem item : ((ConcerningEventsParams)paramsPanel.selectedParams()).eventItems() ) {
+      if( item.eventIds().isEmpty() || item.strids().isEmpty() ) {
+        continue;
       }
-      queryEngine.setQueryParams( paramsPanel.interval(), selEvents );
-
-      // 2023-01-20 mvk
-      ProgressMonitorDialog pd = new ProgressMonitorDialog( getShell() ) {
-
-        @Override
-        protected void cancelPressed() {
-          super.cancelPressed();
-          // 2023-01-20 mvk
-          queryEngine.cancelQuery();
-        }
-
-      };
-      pd.run( true, true, queryEngine );
-
-      commandProvider.items().clear();
-      commandProvider.items().addAll( queryEngine.getResult() );
-      panel.refresh();
+      selEvents.addItem( item );
     }
-    catch( Exception ex ) {
-      ex.printStackTrace();
-      LoggerUtils.errorLogger().error( ex );
-      TsDialogUtils.error( getShell(), ex );
-      commandProvider.items().clear();
-      panel.refresh();
-    }
+    IList<IDtoCompletedCommand> commands = queryEngine.query( paramsPanel.interval(), selEvents );
+    commandProvider.items().clear();
+    commandProvider.items().addAll( commands );
+    panel.refresh();
   }
 
   /**

@@ -5,6 +5,7 @@ package ru.toxsoft.mcc.ws.journals.e4.uiparts.engine;
  *
  * @author dima
  */
+@SuppressWarnings( "nls" )
 interface IMmResources {
 
   /**
@@ -21,6 +22,7 @@ interface IMmResources {
   String DESCRIPTION_STR         = Messages.DESCRIPTION_STR;
   String EV_DESCRIPTION          = Messages.EV_DESCRIPTION;
   String MSG_INFO_QUERIENG_CMDS  = Messages.MSG_INFO_QUERIENG_CMDS;
+  String ERR_QUERY_CMDS_FAILED   = "Ошибка выполнения запроса событий: %s";
 
   /**
    * {@link DialogConcerningEventsParams},
@@ -44,6 +46,7 @@ interface IMmResources {
    * {@link EventQueryEngine}
    */
   String MSG_INFO_QUERIENG_EVENTS = Messages.MSG_INFO_QUERIENG_EVENTS;
+  String ERR_QUERY_EVENTS_FAILED  = "Ошибка выполнения запроса событий: %s";
 
   /**
    * {@link JournalParamsPanel}, { JournalCmdParamsPanel}

@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.toxsoft.core.jasperreports.gui.main.*;
 import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
@@ -23,6 +22,7 @@ import org.toxsoft.core.tslib.av.impl.AvUtils;
 import org.toxsoft.core.tslib.av.metainfo.IDataDef;
 import org.toxsoft.core.tslib.bricks.events.change.IGenericChangeListener;
 import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.primtypes.IStringList;
 import org.toxsoft.core.tslib.coll.primtypes.IStringListEdit;
 import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
@@ -122,7 +122,7 @@ public class EventsJournalPanel
     panel = eventsModel.panelCreator().createCollViewerPanel( aContext, eventProvider );
     panel.createControl( this ).setLayoutData( BorderLayout.CENTER );
 
-    queryEngine = new EventQueryEngine( connection.coreApi() );
+    queryEngine = new EventQueryEngine( aContext );
 
     JournalsLibUtils.loadClassesTreeModel( aContext, aEventsFilterClassesTreeModelLib );
 
@@ -263,72 +263,37 @@ public class EventsJournalPanel
   }
 
   private void queryAllEvents() {
-    try {
-      queryEngine.setQueryParams( paramsPanel.interval(), allEventsParams() );
+    LoggerUtils.defaultLogger().info( "queryAllEvents(): start. queryEngine.query(...)" );
 
-      // 2023-01-20 mvk
-      ProgressMonitorDialog pd = new ProgressMonitorDialog( getShell() ) {
+    IList<SkEvent> events = queryEngine.query( paramsPanel.interval(), allEventsParams() );
 
-        @Override
-        protected void cancelPressed() {
-          super.cancelPressed();
-          queryEngine.cancelQuery();
-        }
+    LoggerUtils.defaultLogger().info( "queryAllEvents(): event size = %d", events.size() );
 
-      };
-      pd.run( true, true, queryEngine );
+    LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.items().clear()" );
+    eventProvider.items().clear();
 
-      eventProvider.items().clear();
-      eventProvider.items().addAll( queryEngine.getResult() );
-      panel.refresh();
-    }
-    catch( Exception ex ) {
-      ex.printStackTrace();
-      LoggerUtils.errorLogger().error( ex );
-      TsDialogUtils.error( getShell(), ex );
-      eventProvider.items().clear();
-      panel.refresh();
-    }
+    LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.items().addAll( events )" );
+    eventProvider.items().addAll( events );
+
+    LoggerUtils.defaultLogger().info( "queryAllEvents(): panel.refresh()" );
+    panel.refresh();
+
+    LoggerUtils.defaultLogger().info( "queryAllEvents(): finish" );
   }
 
   private void querySelectedEvents() {
-    try {
-      // Поскольку метод queryEvents воспринимает пустые списки параметров и/или объектов как
-      // "запросить все и по всем"
-      // то тут проредим параметры фильтрованного запроса
-      ConcerningEventsParams selEvents = new ConcerningEventsParams();
-      for( ConcerningEventsItem item : ((ConcerningEventsParams)paramsPanel.selectedParams()).eventItems() ) {
-        if( item.eventIds().isEmpty() || item.strids().isEmpty() ) {
-          continue;
-        }
-        selEvents.addItem( item );
+    // Поскольку метод queryEvents воспринимает пустые списки параметров и/или объектов как
+    // "запросить все и по всем" то тут проредим параметры фильтрованного запроса
+    ConcerningEventsParams selEvents = new ConcerningEventsParams();
+    for( ConcerningEventsItem item : ((ConcerningEventsParams)paramsPanel.selectedParams()).eventItems() ) {
+      if( item.eventIds().isEmpty() || item.strids().isEmpty() ) {
+        continue;
       }
-      queryEngine.setQueryParams( paramsPanel.interval(), selEvents );
-
-      // 2023-01-20 mvk
-      ProgressMonitorDialog pd = new ProgressMonitorDialog( getShell() ) {
-
-        @Override
-        protected void cancelPressed() {
-          super.cancelPressed();
-          // 2023-01-20 mvk
-          queryEngine.cancelQuery();
-        }
-
-      };
-      pd.run( true, true, queryEngine );
-
-      eventProvider.items().clear();
-      eventProvider.items().addAll( queryEngine.getResult() );
-      panel.refresh();
+      selEvents.addItem( item );
     }
-    catch( Exception ex ) {
-      ex.printStackTrace();
-      LoggerUtils.errorLogger().error( ex );
-      TsDialogUtils.error( getShell(), ex );
-      eventProvider.items().clear();
-      panel.refresh();
-    }
+    IList<SkEvent> events = queryEngine.query( paramsPanel.interval(), selEvents );
+    eventProvider.items().clear();
+    eventProvider.items().addAll( events );
+    panel.refresh();
   }
-
 }
