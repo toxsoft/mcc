@@ -54,6 +54,33 @@
         	<!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
         </fileset>
     </jar>
+
+  	<jar destfile="${lib.dir}/org.toxsoft.uskat.alarms.lib-lib.jar" manifest="dist/META_INF/MANIFEST.MF">
+      <metainf dir="dist/META_INF" />
+        <fileset dir="../org.toxsoft.uskat.alarms.lib/bin">
+          <!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+        </fileset>
+        <fileset dir="src">
+          <include name="ru/**/*.properties" />
+        </fileset>
+        <fileset dir="src">
+          <!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+        </fileset>
+    </jar>
+
+    <jar destfile="${lib.dir}/org.toxsoft.uskat.alarms.s5-lib.jar" manifest="dist/META_INF/MANIFEST.MF">
+      <metainf dir="dist/META_INF" />
+        <fileset dir="../org.toxsoft.uskat.alarms.s5/bin">
+          <!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+        </fileset>
+        <fileset dir="src">
+          <include name="ru/**/*.properties" />
+        </fileset>
+        <fileset dir="src">
+          <!-- <exclude name="ru/sitrol/tm/server/local/**"/> -->
+        </fileset>
+    </jar>
+
 <!--
     <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
 -->
