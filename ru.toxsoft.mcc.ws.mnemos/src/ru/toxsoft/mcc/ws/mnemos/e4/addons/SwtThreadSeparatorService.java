@@ -74,6 +74,9 @@ public class SwtThreadSeparatorService
   // ------------------------------------------------------------------------------------
   // AbstractSkService
   //
+
+  int d = 0;
+
   @Override
   protected void doInit( ITsContextRo aArgs ) {
     display = REF_DISPLAY.getRef( aArgs );
@@ -83,6 +86,9 @@ public class SwtThreadSeparatorService
 
       @Override
       public void run() {
+        // if( d++ % 10 == 0 ) {
+        // LoggerUtils.defaultLogger().info( "SwtThreadSeparatorService.doInit(...), run(...)" );
+        // }
         devCoreApi.doJobInCoreMainThread();
         display.timerExec( doJobTimeout, this );
       }
