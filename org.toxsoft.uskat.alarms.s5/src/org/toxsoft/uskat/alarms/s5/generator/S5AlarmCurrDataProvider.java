@@ -1,5 +1,7 @@
 package org.toxsoft.uskat.alarms.s5.generator;
 
+import static org.toxsoft.uskat.alarms.s5.generator.IS5Resources.*;
+
 import org.toxsoft.core.tslib.av.IAtomicValue;
 import org.toxsoft.core.tslib.coll.IMap;
 import org.toxsoft.core.tslib.coll.IMapEdit;
@@ -71,6 +73,10 @@ public class S5AlarmCurrDataProvider
     ISkReadCurrDataChannel channel = currdata.findByKey( gwid );
     if( channel == null ) {
       channel = rtdataService.createReadCurrDataChannels( new GwidList( gwid ) ).values().first();
+      if( channel == null ) {
+        // Текущее данное не существует
+        throw new TsIllegalArgumentRtException( ERR_CURRDATA_NOT_FOUND, aObjId, aDataId );
+      }
       currdata.put( gwid, channel );
       update();
     }
