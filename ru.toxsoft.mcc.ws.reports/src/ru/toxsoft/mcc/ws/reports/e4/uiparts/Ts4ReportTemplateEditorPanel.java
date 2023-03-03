@@ -2,50 +2,67 @@ package ru.toxsoft.mcc.ws.reports.e4.uiparts;
 
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
+import static org.toxsoft.uskat.base.gui.utils.SkQueryProgressDialogUtils.*;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 import static ru.toxsoft.mcc.ws.reports.IMccWsReportsConstants.*;
 import static ru.toxsoft.mcc.ws.reports.e4.uiparts.ISkResources.*;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.jasperreports.gui.main.*;
-import org.toxsoft.core.tsgui.bricks.actions.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
+import org.toxsoft.core.jasperreports.gui.main.JasperReportViewer;
+import org.toxsoft.core.tsgui.bricks.actions.ITsActionDef;
+import org.toxsoft.core.tsgui.bricks.actions.TsActionDef;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
 import org.toxsoft.core.tsgui.bricks.tsnodes.*;
-import org.toxsoft.core.tsgui.bricks.tstree.tmm.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tsgui.bricks.tstree.tmm.ITsTreeMaker;
+import org.toxsoft.core.tsgui.bricks.tstree.tmm.TreeModeInfo;
+import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
+import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
+import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.graphics.icons.ITsStdIconIds;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.*;
-import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
-import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tsgui.widgets.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
+import org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants;
+import org.toxsoft.core.tsgui.m5.gui.mpc.impl.MultiPaneComponentModown;
+import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
+import org.toxsoft.core.tsgui.m5.gui.panels.impl.M5CollectionPanelMpcModownWrapper;
+import org.toxsoft.core.tsgui.m5.model.IM5ItemsProvider;
+import org.toxsoft.core.tsgui.m5.model.IM5LifecycleManager;
+import org.toxsoft.core.tsgui.m5.model.impl.M5BunchEdit;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.panels.toolbar.ITsToolbar;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tsgui.utils.layout.EBorderLayoutPlacement;
+import org.toxsoft.core.tsgui.widgets.TsComposite;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSetUtils;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
+import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMap;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.api.hqserv.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
-import ru.toxsoft.mcc.ws.core.templates.api.*;
-import ru.toxsoft.mcc.ws.core.templates.gui.m5.*;
-import ru.toxsoft.mcc.ws.core.templates.utils.*;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkReportTemplate;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkReportTemplateService;
+import ru.toxsoft.mcc.ws.core.templates.gui.m5.SkReportTemplateM5LifecycleManager;
+import ru.toxsoft.mcc.ws.core.templates.utils.IntervalSelectionDialogPanel;
+import ru.toxsoft.mcc.ws.core.templates.utils.ReportTemplateUtilities;
 
 /**
  * Панель редактора шаблонов отчетов ts4.<br>
@@ -129,60 +146,55 @@ public class Ts4ReportTemplateEditorPanel
     }
 
     private void formReport( ISkReportTemplate aSelTemplate ) {
+      Shell shell = tsContext().get( Shell.class );
       // запросим у пользователя интервал времени
-      TimeInterval retVal =
-          IntervalSelectionDialogPanel.getParams( tsContext().get( Shell.class ), initValues, tsContext() );
-      if( retVal != null ) {
-        // запомним выбранный интервал
-        initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
+      TimeInterval retVal = IntervalSelectionDialogPanel.getParams( shell, initValues, tsContext() );
+      if( retVal == null ) {
+        return;
+      }
+      // запомним выбранный интервал
+      initValues = new TimeInterval( retVal.startTime(), retVal.endTime() );
 
-        IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
-        ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
+      IStringMap<IDtoQueryParam> queryParams = ReportTemplateUtilities.formQueryParams( aSelTemplate );
+      ISkConnectionSupplier connSupp = tsContext().get( ISkConnectionSupplier.class );
 
-        ISkQueryProcessedData processData =
-            connSupp.defConn().coreApi().hqService().createProcessedQuery( IOptionSet.NULL );
-
-        processData.prepare( queryParams );
-        processData.exec( new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() ) );
-
+      // Максимальное время выполнения запроса (мсек)
+      long timeout = aSelTemplate.maxExecutionTime();
+      // Параметры запроса
+      IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
+          ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( timeout ) //
+      ) );
+      // Формирование запроса
+      ISkQueryProcessedData query = connSupp.defConn().coreApi().hqService().createProcessedQuery( options );
+      try {
+        // Подготовка запроса
+        query.prepare( queryParams );
+        // Настройка обработки результатов запроса
         IM5Model<IStringMap<IAtomicValue>> resultModel =
             ReportTemplateUtilities.createM5ModelForTemplate( aSelTemplate );
-
-        // IList<ITimedList<?>> reportData = ReportTemplateUtiles.createTestResult( queryParams );
-        // IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
-        // асинхронное получение данных
-        processData.genericChangeEventer().addListener( aSource -> {
+        query.genericChangeEventer().addListener( aSource -> {
           ISkQueryProcessedData q = (ISkQueryProcessedData)aSource;
           if( q.state() == ESkQueryState.READY ) {
-            IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( processData, queryParams );
-
+            IList<ITimedList<?>> reportData = ReportTemplateUtilities.createResult( query, queryParams );
             IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
                 ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
-
             if( reportV == null ) {
               reportV = new JasperReportViewer( rightBoard, tsContext() );
             }
-
             reportV.setJasperReportPrint( tsContext(), resultModel, resultProvider );
           }
+          if( q.state() == ESkQueryState.FAILED ) {
+            String stateMessage = q.stateMessage();
+            TsDialogUtils.error( getShell(), ERR_QUERY_FAILED, stateMessage );
+          }
         } );
-
-        // mvk
-        // LoggerUtils.defaultLogger().info( "==== result query: ===" );
-        // for( String paramId : processData.listArgs().keys() ) {
-        // LoggerUtils.defaultLogger().info( " pararm = %s, count = %d", paramId,
-        // Integer.valueOf( processData.getArgData( paramId ).size() ) );
-        // }
-        // LoggerUtils.defaultLogger().info( "======================" );
-        //
-        // IM5ItemsProvider<IStringMap<IAtomicValue>> resultProvider =
-        // ReportTemplateUtilities.createM5ItemProviderForTemplate( aSelTemplate, reportData );
-        //
-        // if( reportV == null ) {
-        // reportV = new JasperReportViewer( rightBoard, tsContext() );
-        // }
-        //
-        // reportV.setJasperReportPrint( tsContext(), resultModel, resultProvider );
+        // Интервал запроса
+        IQueryInterval interval = new QueryInterval( EQueryIntervalType.OSOE, retVal.startTime(), retVal.endTime() );
+        // Выполение запроса в прогресс-диалоге
+        execQueryByProgressDialog( shell, STR_EXEC_QUERY_REPORT, query, interval, timeout );
+      }
+      finally {
+        query.close();
       }
     }
 

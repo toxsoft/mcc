@@ -7,18 +7,22 @@ import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.gui.m5.ISkResources.*;
 
-import org.toxsoft.core.tsgui.chart.api.*;
-import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.km5.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.tsgui.chart.api.ETimeUnit;
+import org.toxsoft.core.tsgui.m5.model.IM5LifecycleManager;
+import org.toxsoft.core.tsgui.m5.model.IM5MultiModownFieldDef;
+import org.toxsoft.core.tsgui.m5.model.impl.M5AttributeFieldDef;
+import org.toxsoft.core.tsgui.m5.model.impl.M5MultiModownFieldDef;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.base.gui.km5.KM5AttributeFieldDef;
+import org.toxsoft.uskat.base.gui.km5.KM5ModelBasic;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
-import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkReportParam;
+import ru.toxsoft.mcc.ws.core.templates.api.ISkReportTemplate;
 
 /**
  * M5-model of {@link ISkReportTemplate}.
@@ -91,6 +95,26 @@ public class SkReportTemplateM5Model
   };
 
   /**
+   * Attribute {@link ISkReportTemplate#maxExecutionTime() } query max execution time (msec)
+   */
+  public M5AttributeFieldDef<ISkReportTemplate> MAX_EXECUTION_TIME =
+      new M5AttributeFieldDef<>( ATRID_MAX_EXECUTION_TIME, INTEGER, //
+          TSID_NAME, STR_N_PARAM_MAX_EXECUTION_TIME, //
+          TSID_DESCRIPTION, STR_D_PARAM_MAX_EXECUTION_TIME, //
+          TSID_DEFAULT_VALUE, avInt( 10000 ) ) {
+
+        @Override
+        protected void doInit() {
+          setFlags( M5FF_COLUMN );
+        }
+
+        protected IAtomicValue doGetFieldValue( ISkReportTemplate aEntity ) {
+          return avInt( aEntity.maxExecutionTime() );
+        }
+
+      };
+
+  /**
    * Constructor.
    *
    * @param aConn {@link ISkConnection} - the connection
@@ -101,7 +125,7 @@ public class SkReportTemplateM5Model
     setNameAndDescription( STR_N_REPORT_TEMPLATE, STR_D_REPORT_TEMPLATE );
 
     // add fields
-    addFieldDefs( NAME, DESCRIPTION, AGGR_STEP, HAS_SUMMARY, REPORT_PARAMS );
+    addFieldDefs( NAME, DESCRIPTION, AGGR_STEP, HAS_SUMMARY, MAX_EXECUTION_TIME, REPORT_PARAMS );
     // panels creator
     // FIXME 4 debug use default
     // setPanelCreator( new M5DefaultPanelCreator<>() {

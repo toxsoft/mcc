@@ -3,21 +3,23 @@ package ru.toxsoft.mcc.ws.core.templates.gui.m5;
 import static org.toxsoft.uskat.core.ISkHardConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
 
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tslib.bricks.strid.idgen.*;
-import org.toxsoft.core.tslib.bricks.validator.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.km5.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.impl.dto.*;
-import org.toxsoft.uskat.s5.utils.*;
+import org.toxsoft.core.tsgui.m5.IM5Bunch;
+import org.toxsoft.core.tsgui.m5.IM5Model;
+import org.toxsoft.core.tslib.bricks.strid.idgen.SimpleStridGenaretor;
+import org.toxsoft.core.tslib.bricks.validator.ValidationResult;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.gw.skid.SkidList;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.base.gui.km5.KM5LifecycleManagerBasic;
+import org.toxsoft.uskat.core.api.objserv.IDtoFullObject;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.impl.dto.DtoFullObject;
+import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
-import ru.toxsoft.mcc.ws.core.templates.api.impl.*;
+import ru.toxsoft.mcc.ws.core.templates.api.impl.SkGraphParam;
 
 /**
  * Lifecycle manager for {@link SkGraphTemplateM5Model}.
@@ -105,6 +107,7 @@ public class SkGraphTemplateM5LifecycleManager
     dtoGraphTemplate.attrs().setValue( AID_NAME, aValues.getAsAv( AID_NAME ) );
     dtoGraphTemplate.attrs().setValue( AID_DESCRIPTION, aValues.getAsAv( AID_DESCRIPTION ) );
     dtoGraphTemplate.attrs().setValue( ATRID_AGGR_STEP, aValues.getAsAv( ATRID_AGGR_STEP ) );
+    dtoGraphTemplate.attrs().setValue( ATRID_MAX_EXECUTION_TIME, aValues.getAsAv( ATRID_MAX_EXECUTION_TIME ) );
 
     IList<ISkGraphParam> paramsList = aValues.getAs( CLBID_TEMPLATE_PARAMS, IList.class );
     String paramsStr = SkGraphParam.KEEPER.coll2str( paramsList );

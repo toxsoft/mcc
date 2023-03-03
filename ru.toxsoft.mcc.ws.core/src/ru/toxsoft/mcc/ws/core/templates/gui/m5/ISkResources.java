@@ -42,17 +42,19 @@ interface ISkResources {
   /**
    * {@link SkReportTemplateM5Model}
    */
-  String STR_N_TEMPLATE_PARAMS  = "параметры";
-  String STR_D_TEMPLATE_PARAMS  = "список параметров шаблона";
-  String STR_N_REPORT_TEMPLATE  = "шаблоны";
-  String STR_D_REPORT_TEMPLATE  = "шаблоны отчетов";
-  String STR_N_FDEF_HAS_SUMMARY = "'Итого'";
-  String STR_D_FDEF_HAS_SUMMARY = "отображать область 'Итого'";
-  String STR_N_FDEF_NAME        = "название";
-  String STR_D_FDEF_NAME        = "название шаблона";
-  String STR_N_FDEF_DESCR       = "описание";
-  String STR_D_FDEF_DESCR       = "описание шаблона";
-  String STR_N_PARAM_AGGR_STEP  = "шаг";
-  String STR_D_PARAM_AGGR_STEP  = "шаг агрегации";
+  String STR_N_TEMPLATE_PARAMS    = "параметры";
+  String STR_D_TEMPLATE_PARAMS    = "список параметров шаблона";
+  String STR_N_REPORT_TEMPLATE    = "шаблоны";
+  String STR_D_REPORT_TEMPLATE    = "шаблоны отчетов";
+  String STR_N_FDEF_HAS_SUMMARY   = "'Итого'";
+  String STR_D_FDEF_HAS_SUMMARY   = "отображать область 'Итого'";
+  String STR_N_FDEF_NAME          = "название";
+  String STR_D_FDEF_NAME          = "название шаблона";
+  String STR_N_FDEF_DESCR         = "описание";
+  String STR_D_FDEF_DESCR         = "описание шаблона";
+  String STR_N_PARAM_AGGR_STEP    = "шаг";
+  String STR_D_PARAM_AGGR_STEP    = "шаг агрегации";
+  String STR_N_PARAM_MAX_EXECUTION_TIME = "время выполнения";
+  String STR_D_PARAM_MAX_EXECUTION_TIME = "максимальное время выполнения запроса (мсек)";
 
 }

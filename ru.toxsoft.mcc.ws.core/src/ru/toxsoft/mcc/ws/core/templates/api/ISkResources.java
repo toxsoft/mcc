@@ -37,6 +37,8 @@ interface ISkResources {
   String STR_D_HAS_SUMMARY         = "в отчет добавить область 'Итого'";
   String STR_N_AGGR_STEP           = "шаг агрегации";
   String STR_D_AGGR_STEP           = "шаг агрегации";
+  String STR_N_MAX_EXECUTION_TIME  = "время выполнения";
+  String STR_D_MAX_EXECUTION_TIME  = "максимальное время выполнения запроса (мсек)";
   String STR_N_CLB_TEMPLATE_PARAMS = "список параметров шаблона";
   String STR_D_CLB_TEMPLATE_PARAMS = "список параметров шаблона";
   String STR_N_TEMPLATE_AUTHOR     = "автор шаблона";

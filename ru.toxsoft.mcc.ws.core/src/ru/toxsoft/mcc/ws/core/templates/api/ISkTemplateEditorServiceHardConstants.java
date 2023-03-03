@@ -3,12 +3,13 @@ package ru.toxsoft.mcc.ws.core.templates.api;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.api.ISkResources.*;
 
-import org.toxsoft.core.tsgui.chart.api.*;
-import org.toxsoft.core.tslib.coll.helpers.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.uskat.core.*;
+import org.toxsoft.core.tsgui.chart.api.ETimeUnit;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.coll.helpers.CollConstraint;
+import org.toxsoft.core.tslib.coll.primtypes.impl.SingleStringList;
+import org.toxsoft.uskat.core.ISkHardConstants;
 import org.toxsoft.uskat.core.api.sysdescr.dto.*;
-import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.api.users.ISkUser;
 import org.toxsoft.uskat.core.impl.dto.*;
 
 /**
@@ -100,6 +101,19 @@ public interface ISkTemplateEditorServiceHardConstants {
       TSID_NAME, STR_N_AGGR_STEP, //
       TSID_DESCRIPTION, STR_D_AGGR_STEP, //
       TSID_DEFAULT_VALUE, ETimeUnit.MIN01 );
+
+  /**
+   * ID of attribute {@link ISkGraphTemplate#maxExecutionTime()}.
+   */
+  String ATRID_MAX_EXECUTION_TIME = "maxExecutionTime"; //$NON-NLS-1$
+
+  /**
+   * Attribute {@link ISkGraphTemplate#maxExecutionTime()}.
+   */
+  IDtoAttrInfo ATRINF_MAX_EXECUTION_TIME = DtoAttrInfo.create2( ATRID_MAX_EXECUTION_TIME, DDEF_INTEGER, //
+      TSID_NAME, STR_N_MAX_EXECUTION_TIME, //
+      TSID_DESCRIPTION, STR_D_MAX_EXECUTION_TIME, //
+      TSID_DEFAULT_VALUE, AvUtils.avInt( 10000 ) );
 
   /**
    * SkGraphParamM5Model model id

@@ -7,14 +7,16 @@ import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.api.ISkTemplateEditorServiceHardConstants.*;
 import static ru.toxsoft.mcc.ws.core.templates.gui.m5.ISkResources.*;
 
-import org.toxsoft.core.tsgui.chart.api.*;
-import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.km5.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.tsgui.chart.api.ETimeUnit;
+import org.toxsoft.core.tsgui.m5.model.IM5LifecycleManager;
+import org.toxsoft.core.tsgui.m5.model.IM5MultiModownFieldDef;
+import org.toxsoft.core.tsgui.m5.model.impl.M5AttributeFieldDef;
+import org.toxsoft.core.tsgui.m5.model.impl.M5MultiModownFieldDef;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.base.gui.km5.KM5ModelBasic;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
 import ru.toxsoft.mcc.ws.core.templates.api.*;
 
@@ -66,6 +68,26 @@ public class SkGraphTemplateM5Model
   };
 
   /**
+   * Attribute {@link ISkGraphTemplate#maxExecutionTime() } query max execution time (msec)
+   */
+  public M5AttributeFieldDef<ISkGraphTemplate> MAX_EXECUTION_TIME =
+      new M5AttributeFieldDef<>( ATRID_MAX_EXECUTION_TIME, INTEGER, //
+          TSID_NAME, STR_N_PARAM_MAX_EXECUTION_TIME, //
+          TSID_DESCRIPTION, STR_D_PARAM_MAX_EXECUTION_TIME, //
+          TSID_DEFAULT_VALUE, avInt( 10000 ) ) {
+
+        @Override
+        protected void doInit() {
+          setFlags( M5FF_COLUMN );
+        }
+
+        protected IAtomicValue doGetFieldValue( ISkGraphTemplate aEntity ) {
+          return avInt( aEntity.maxExecutionTime() );
+        }
+
+      };
+
+  /**
    * Constructor.
    *
    * @param aConn {@link ISkConnection} - the connection
@@ -76,7 +98,7 @@ public class SkGraphTemplateM5Model
     setNameAndDescription( STR_N_GRAPH_TEMPLATE, STR_D_GRAPH_TEMPLATE );
 
     // add fields
-    addFieldDefs( NAME, DESCRIPTION, AGGR_STEP, REPORT_PARAMS );
+    addFieldDefs( NAME, DESCRIPTION, AGGR_STEP, MAX_EXECUTION_TIME, REPORT_PARAMS );
   }
 
   @Override
