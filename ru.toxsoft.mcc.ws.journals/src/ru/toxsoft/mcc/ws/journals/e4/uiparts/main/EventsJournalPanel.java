@@ -3,48 +3,44 @@ package ru.toxsoft.mcc.ws.journals.e4.uiparts.main;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.IMmFgdpLibCfgJournalsConstants.*;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.main.IMmResources.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.text.*;
+import java.util.*;
 
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.*;
 import org.toxsoft.core.jasperreports.gui.main.*;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
-import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
-import org.toxsoft.core.tsgui.m5.IM5Domain;
-import org.toxsoft.core.tsgui.m5.IM5Model;
-import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
-import org.toxsoft.core.tsgui.m5.model.impl.M5DefaultItemsProvider;
-import org.toxsoft.core.tsgui.panels.TsPanel;
-import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.av.metainfo.IDataDef;
-import org.toxsoft.core.tslib.bricks.events.change.IGenericChangeListener;
-import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.primtypes.IStringList;
-import org.toxsoft.core.tslib.coll.primtypes.IStringListEdit;
-import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
-import org.toxsoft.core.tslib.utils.errors.TsException;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
-import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.api.evserv.SkEvent;
-import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
-import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoEventInfo;
-import org.toxsoft.uskat.core.api.users.ISkUser;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.dialogs.*;
+import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.*;
+import org.toxsoft.core.tsgui.m5.model.*;
+import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.bricks.events.change.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.api.evserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
+import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.s5.utils.*;
 
-import ru.toxsoft.mcc.ws.journals.e4.uiparts.JournalsLibUtils;
-import ru.toxsoft.mcc.ws.journals.e4.uiparts.devel.DefaultMwsModJournalEventFormattersRegistry;
-import ru.toxsoft.mcc.ws.journals.e4.uiparts.devel.IMwsModJournalEventFormattersRegistry;
+import ru.toxsoft.mcc.ws.journals.e4.uiparts.*;
+import ru.toxsoft.mcc.ws.journals.e4.uiparts.devel.*;
 import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.*;
-import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IJournalParamsPanel.ECurrentAction;
+import ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IJournalParamsPanel.*;
 
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.type.HorizontalTextAlignEnum;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.type.*;
 
 /**
  * Панель журнала событий.
@@ -67,7 +63,9 @@ public class EventsJournalPanel
 
   private EventQueryEngine queryEngine;
 
-  private M5DefaultItemsProvider<SkEvent> eventProvider;
+  // private M5DefaultItemsProvider<SkEvent> eventProvider;
+
+  private InternalItemsProvider eventProvider;
 
   private IM5CollectionPanel<SkEvent> panel;
 
@@ -118,7 +116,7 @@ public class EventsJournalPanel
 
     eventsModel = m5().getModel( EventM5Model.MODEL_ID, SkEvent.class );
 
-    eventProvider = new M5DefaultItemsProvider<>();
+    eventProvider = new InternalItemsProvider();
     panel = eventsModel.panelCreator().createCollViewerPanel( aContext, eventProvider );
     panel.createControl( this ).setLayoutData( BorderLayout.CENTER );
 
@@ -270,10 +268,10 @@ public class EventsJournalPanel
     LoggerUtils.defaultLogger().info( "queryAllEvents(): event size = %d", events.size() );
 
     LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.items().clear()" );
-    eventProvider.items().clear();
+    // eventProvider.items().clear();
 
     LoggerUtils.defaultLogger().info( "queryAllEvents(): eventProvider.items().addAll( events )" );
-    eventProvider.items().addAll( events );
+    eventProvider.setItems( events );
 
     LoggerUtils.defaultLogger().info( "queryAllEvents(): panel.refresh()" );
     panel.refresh();
@@ -292,8 +290,39 @@ public class EventsJournalPanel
       selEvents.addItem( item );
     }
     IList<SkEvent> events = queryEngine.query( paramsPanel.interval(), selEvents );
-    eventProvider.items().clear();
-    eventProvider.items().addAll( events );
+    // eventProvider.items().clear();
+    eventProvider.setItems( events );
     panel.refresh();
+  }
+
+  /**
+   * Default items provider.
+   *
+   * @author hazard157
+   */
+  static class InternalItemsProvider
+      implements IM5ItemsProvider<SkEvent> {
+
+    private IList<SkEvent> items = new ElemArrayList<>();
+
+    @Override
+    public IGenericChangeEventer genericChangeEventer() {
+      return NoneGenericChangeEventer.INSTANCE;
+    }
+
+    @Override
+    public IList<SkEvent> listItems() {
+      return items;
+    }
+
+    void setItems( IList<SkEvent> aItems ) {
+      items = aItems;
+    }
+
+    // @Override
+    // public IListReorderer<SkEvent> reorderer() {
+    // return doGetItemsReorderer();
+    // }
+
   }
 }
