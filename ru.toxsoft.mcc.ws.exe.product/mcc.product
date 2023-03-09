@@ -18,7 +18,8 @@
    <launcherArgs>
       <programArgs>-clearPersistedState
       </programArgs>
-      <vmArgs>-Xms4096m -Xmx4096m -Dfile.encoding=UTF8 -Dlog4j.configuration=file:log4j.xml -Duser.timezone=&quot;Europe/Moscow&quot; -Duser.country=RU -Duser.language=ru</vmArgs>
+      <vmArgs>-Xms4096m -Xmx4096m -Dfile.encoding=UTF8 -Dlog4j.configuration=file:log4j.xml -Duser.timezone=&quot;Europe/Moscow&quot; -Duser.country=RU -Duser.language=ru
+      </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
@@ -151,6 +152,7 @@
       <plugin id="org.toxsoft.extlibs.jasperreports"/>
       <plugin id="org.toxsoft.extlibs.log4j"/>
       <plugin id="org.toxsoft.extlibs.wildfly"/>
+      <plugin id="org.toxsoft.uskat.alarms.gui"/>
       <plugin id="org.toxsoft.uskat.alarms.lib"/>
       <plugin id="org.toxsoft.uskat.alarms.s5"/>
       <plugin id="org.toxsoft.uskat.base.gui"/>
@@ -168,11 +170,11 @@
       <plugin id="org.w3c.dom.events"/>
       <plugin id="org.w3c.dom.smil"/>
       <plugin id="org.w3c.dom.svg"/>
-      <plugin id="ru.toxsoft.mcc.ws.core"/>
       <plugin id="ru.toxsoft.mcc.ws.exe"/>
-      <plugin id="ru.toxsoft.mcc.ws.journals"/>
       <plugin id="ru.toxsoft.mcc.ws.mnemos"/>
-      <plugin id="ru.toxsoft.mcc.ws.reports"/>
+      <plugin id="ru.toxsoft.vetrol.ws.core"/>
+      <plugin id="ru.toxsoft.vetrol.ws.journals"/>
+      <plugin id="ru.toxsoft.vetrol.ws.reports"/>
    </plugins>
 
    <configurations>

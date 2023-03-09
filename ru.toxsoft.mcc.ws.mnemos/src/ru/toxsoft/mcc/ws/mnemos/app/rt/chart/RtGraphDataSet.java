@@ -2,30 +2,35 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
 import static org.toxsoft.uskat.core.api.hqserv.ISkHistoryQueryServiceConstants.*;
 
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import org.toxsoft.core.tsgui.chart.api.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.av.temporal.*;
-import org.toxsoft.core.tslib.bricks.filter.*;
-import org.toxsoft.core.tslib.bricks.strid.impl.*;
-import org.toxsoft.core.tslib.bricks.time.*;
+import org.toxsoft.core.tsgui.chart.api.IG2DataSet;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.av.temporal.ITemporalAtomicValue;
+import org.toxsoft.core.tslib.av.temporal.TemporalAtomicValue;
+import org.toxsoft.core.tslib.bricks.filter.ITsCombiFilterParams;
+import org.toxsoft.core.tslib.bricks.strid.impl.Stridable;
+import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
+import org.toxsoft.core.tslib.bricks.time.ITimedList;
 import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.hqserv.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.rtdserv.*;
-import org.toxsoft.uskat.core.impl.dto.*;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMap;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.gwid.GwidList;
+import org.toxsoft.core.tslib.utils.Pair;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.api.hqserv.IDtoQueryParam;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.api.rtdserv.ISkReadCurrDataChannel;
+import org.toxsoft.uskat.core.impl.dto.DtoQueryParam;
 
-import ru.toxsoft.mcc.ws.core.templates.api.*;
-import ru.toxsoft.mcc.ws.core.templates.utils.*;
+import ru.toxsoft.vetrol.ws.core.templates.api.IVtGraphParam;
+import ru.toxsoft.vetrol.ws.core.templates.utils.ReportTemplateUtilities;
 
 /**
  * Набор данных для графика реального времени.
@@ -45,12 +50,12 @@ public class RtGraphDataSet
   private final ISkReadCurrDataChannel          rtDataChannel;
   int                                           maxCount = 600 + 2;
   private final Timer                           timer    = new Timer();
-  private final ISkGraphParam                   graphParam;
+  private final IVtGraphParam                   graphParam;
 
   /**
    * @return graphParam
    */
-  public ISkGraphParam getGraphParam() {
+  public IVtGraphParam getGraphParam() {
     return graphParam;
   }
 
@@ -65,7 +70,7 @@ public class RtGraphDataSet
    * @param aHistoryData исторические данные этого параметра
    */
 
-  public RtGraphDataSet( ISkGraphParam aGraphParam, ISkCoreApi aServerApi, ITimedList<?> aHistoryData ) {
+  public RtGraphDataSet( IVtGraphParam aGraphParam, ISkCoreApi aServerApi, ITimedList<?> aHistoryData ) {
     super( ReportTemplateUtilities.graphDataSetId( aGraphParam ) );
     // получим название и описание параметра
     ISkObject myselfObj = aServerApi.objService().find( aGraphParam.gwid().skid() );

@@ -3,35 +3,39 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 import static org.toxsoft.core.tsgui.bricks.actions.ITsStdActionDefs.*;
 import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.ISkResources.*;
 
-import org.eclipse.swt.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
+import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
 import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.panels.toolbar.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.ggprefs.lib.*;
-import org.toxsoft.uskat.ggprefs.lib.impl.*;
-import org.toxsoft.uskat.s5.utils.*;
+import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
+import org.toxsoft.core.tsgui.m5.model.impl.M5BunchEdit;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.panels.toolbar.TsToolbar;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesListEdit;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.StridablesList;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.gw.skid.SkidList;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.ggprefs.lib.IGuiGwPrefsSection;
+import org.toxsoft.uskat.ggprefs.lib.ISkGuiGwPrefsService;
+import org.toxsoft.uskat.ggprefs.lib.impl.SkGuiGwPrefsService;
+import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
-import ru.toxsoft.mcc.ws.core.templates.api.*;
+import ru.toxsoft.vetrol.ws.core.templates.api.IVtGraphTemplate;
 
 /**
  * Панель отображения графиков реального времени.<br>
@@ -86,13 +90,13 @@ public class ChartsTabPanel
     toolbar.getControl().setLayoutData( BorderLayout.NORTH );
     toolbar.addListener( aActionId -> {
       if( aActionId.equals( ACDEF_ADD.id() ) ) {
-        ISkGraphTemplate newRtGraphTemplate = doAddTemplate();
+        IVtGraphTemplate newRtGraphTemplate = doAddTemplate();
         addRtChartTemplate( newRtGraphTemplate );
       }
       if( aActionId.equals( ACDEF_REMOVE.id() ) ) {
         // получаем текущий график
         CTabItem selTab = tabFolder.getSelection();
-        ISkGraphTemplate selGraphTemplate = (ISkGraphTemplate)selTab.getData();
+        IVtGraphTemplate selGraphTemplate = (IVtGraphTemplate)selTab.getData();
         rtChartSkids.remove( selGraphTemplate.skid() );
         // гасим RtChart
         RtChartPanel chartPanel = (RtChartPanel)selTab.getControl();
@@ -102,8 +106,8 @@ public class ChartsTabPanel
       if( aActionId.equals( ACDEF_EDIT.id() ) ) {
         // получаем текущий график
         CTabItem selTab = tabFolder.getSelection();
-        ISkGraphTemplate selGraphTemplate = (ISkGraphTemplate)selTab.getData();
-        ISkGraphTemplate newRtGraphTemplate = doEditTemplate( selGraphTemplate );
+        IVtGraphTemplate selGraphTemplate = (IVtGraphTemplate)selTab.getData();
+        IVtGraphTemplate newRtGraphTemplate = doEditTemplate( selGraphTemplate );
         if( newRtGraphTemplate != null ) {
           rtChartSkids.remove( selGraphTemplate.skid() );
           // гасим RtChart
@@ -123,7 +127,7 @@ public class ChartsTabPanel
       @Override
       public void close( CTabFolderEvent event ) {
         // удаляем описание RtChart из настроек
-        ISkGraphTemplate graphTemplate = (ISkGraphTemplate)event.item.getData();
+        IVtGraphTemplate graphTemplate = (IVtGraphTemplate)event.item.getData();
         rtChartSkids.remove( graphTemplate.skid() );
         saveUserSettings();
       }
@@ -134,14 +138,14 @@ public class ChartsTabPanel
     restoreUserSettings();
   }
 
-  private ISkGraphTemplate doEditTemplate( ISkGraphTemplate aSelGraphTemplate ) {
+  private IVtGraphTemplate doEditTemplate( IVtGraphTemplate aSelGraphTemplate ) {
     IM5Domain m5 = conn.scope().get( IM5Domain.class );
-    IM5Model<ISkGraphTemplate> model = m5.getModel( ISkGraphTemplate.CLASS_ID, ISkGraphTemplate.class );
+    IM5Model<IVtGraphTemplate> model = m5.getModel( IVtGraphTemplate.CLASS_ID, IVtGraphTemplate.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
     return M5GuiUtils.askEdit( tsContext(), model, aSelGraphTemplate, cdi, model.getLifecycleManager( null ) );
   }
 
-  private void addRtChartTemplate( ISkGraphTemplate aRtGraphTemplate ) {
+  private void addRtChartTemplate( IVtGraphTemplate aRtGraphTemplate ) {
     if( aRtGraphTemplate != null ) {
       addRtChartTemplateToTabPanel( aRtGraphTemplate );
       rtChartSkids.add( aRtGraphTemplate.skid() );
@@ -149,7 +153,7 @@ public class ChartsTabPanel
     }
   }
 
-  private void addRtChartTemplateToTabPanel( ISkGraphTemplate aRtGraphTemplate ) {
+  private void addRtChartTemplateToTabPanel( IVtGraphTemplate aRtGraphTemplate ) {
     // создаем новую закладку
     CTabItem tabItem = new CTabItem( tabFolder, SWT.NONE );
     // закладке дадим имя параметра
@@ -165,7 +169,7 @@ public class ChartsTabPanel
     IOptionSet userPrefs = getUserPrefs();
     rtChartSkids = RtChartPanelOptions.RTCHART_SKIDS.getValue( userPrefs ).asValobj();
     for( Skid rtChartTemplateSkid : rtChartSkids ) {
-      ISkGraphTemplate graphTemplate = conn.coreApi().objService().get( rtChartTemplateSkid );
+      IVtGraphTemplate graphTemplate = conn.coreApi().objService().get( rtChartTemplateSkid );
       addRtChartTemplateToTabPanel( graphTemplate );
     }
   }
@@ -204,11 +208,11 @@ public class ChartsTabPanel
     return prefSection.getOptions( userSkid );
   }
 
-  protected ISkGraphTemplate doAddTemplate() {
+  protected IVtGraphTemplate doAddTemplate() {
     IM5Domain m5 = conn.scope().get( IM5Domain.class );
-    IM5Model<ISkGraphTemplate> model = m5.getModel( ISkGraphTemplate.CLASS_ID, ISkGraphTemplate.class );
+    IM5Model<IVtGraphTemplate> model = m5.getModel( IVtGraphTemplate.CLASS_ID, IVtGraphTemplate.class );
     ITsDialogInfo cdi = TsDialogInfo.forCreateEntity( tsContext() );
-    IM5BunchEdit<ISkGraphTemplate> initVals = new M5BunchEdit<>( model );
+    IM5BunchEdit<IVtGraphTemplate> initVals = new M5BunchEdit<>( model );
     return M5GuiUtils.askCreate( tsContext(), model, initVals, cdi, model.getLifecycleManager( null ) );
   }
 
