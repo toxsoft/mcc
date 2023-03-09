@@ -210,10 +210,10 @@ public abstract class AbstractValedSkCommand
   };
 
   @Override
-  final protected void doProcessButtonPress() {
+  final protected boolean doProcessButtonPress() {
     newVal = editValue( value );
     if( newVal == null ) {
-      return;
+      return false;
     }
     ISkCoreApi coreApi = tsContext().get( ISkConnectionSupplier.class ).defConn().coreApi();
     ISkCommandService cmdService = coreApi.cmdService();
@@ -229,7 +229,7 @@ public abstract class AbstractValedSkCommand
     String errStr = CmdUtils.errorString( command );
     if( errStr != null ) {
       TsDialogUtils.error( getShell(), errStr );
-      return;
+      return false;
     }
 
     command.stateEventer().addListener( commandListener );
@@ -239,6 +239,12 @@ public abstract class AbstractValedSkCommand
     // value = newVal;
     // updateTextControl();
     fireModifyEvent( true );
+    return false;
+  }
+
+  @Override
+  protected void doUpdateLabelControl() {
+    // nop
   }
 
   @Override
@@ -247,7 +253,7 @@ public abstract class AbstractValedSkCommand
   }
 
   @Override
-  protected void doSetUnvalidatedValue( IAtomicValue aValue ) {
+  protected void doDoSetUnvalidatedValue( IAtomicValue aValue ) {
     value = aValue;
     updateTextControl();
     newVal = IAtomicValue.NULL;
