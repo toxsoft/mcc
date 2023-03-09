@@ -4,11 +4,12 @@ import org.toxsoft.core.tslib.bricks.filter.*;
 import org.toxsoft.core.tslib.bricks.strid.impl.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.math.logicop.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
 
 /**
  * Элемент перечня .
@@ -87,29 +88,54 @@ public final class ConcerningEventsItem
    * Возвращает список интересующих Gwid.
    *
    * @param isEvents boolean - события или команда
+   * @param aServerApi ISkCoreApi - апи обращения к серверу
    * @return {@link GwidList} - список интересующих Gwid
    */
   public GwidList gwids( boolean isEvents, ISkCoreApi aServerApi ) {
-    GwidList evGwidList = new GwidList();
-    for( String eventId : eventIds() ) {
-      // пустой список объектов означает все объекты
-      if( !strids().isEmpty() ) {
-        for( String strid : strids() ) {
-          evGwidList.add(
-              isEvents ? Gwid.createEvent( classId(), strid, eventId ) : Gwid.createCmd( classId(), strid, eventId ) );
-        }
+
+    IStringListEdit filterObjs = new StringArrayList();
+    IStringListEdit filterProps = new StringArrayList();
+
+    if( eventIds().size() == 0 ) {
+      filterProps.add( Gwid.STR_MULTI_ID );
+    }
+    else {
+      // описание класса
+      ISkClassInfo classInfo = aServerApi.sysdescr().getClassInfo( classId() );
+
+      // количество события/команд класса
+      int classPropsSize = isEvents ? classInfo.events().list().size() : classInfo.cmds().list().size();
+
+      // если выбраны все команды/события
+      if( classPropsSize == eventIds().size() ) {
+        filterProps.add( Gwid.STR_MULTI_ID );
       }
       else {
-        // все объекты
-        ISkidList objIds = aServerApi.objService().listSkids( classId(), true );
-        for( Skid skid : objIds ) {
-          evGwidList.add( isEvents ? Gwid.createEvent( classId(), skid.strid(), eventId )
-              : Gwid.createCmd( classId(), skid.strid(), eventId ) );
+        // иначе фильтровать по выбранным
+        for( String eventId : eventIds() ) {
+          filterProps.add( eventId );
         }
-
-        // evGwidList.add( isEvents ? Gwid.createEvent( classId(), eventId ) : Gwid.createCmd( classId(), eventId ) );
       }
     }
+
+    if( strids().size() == 0 ) {
+      filterObjs.add( Gwid.STR_MULTI_ID );
+    }
+    else {
+      // TODO можно вставить проверку на количество всех объектов
+      for( String strid : strids() ) {
+        filterObjs.add( strid );
+      }
+    }
+
+    GwidList evGwidList = new GwidList();
+    for( String filterProp : filterProps ) {
+      for( String filterObj : filterObjs ) {
+        evGwidList.add( isEvents ? Gwid.createEvent( classId(), filterObj, filterProp )
+            : Gwid.createCmd( classId(), filterObj, filterProp ) );
+      }
+    }
+
     return evGwidList;
   }
 

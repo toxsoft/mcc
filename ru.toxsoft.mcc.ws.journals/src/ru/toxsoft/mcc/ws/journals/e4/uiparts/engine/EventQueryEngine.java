@@ -3,23 +3,21 @@ package ru.toxsoft.mcc.ws.journals.e4.uiparts.engine;
 import static org.toxsoft.uskat.base.gui.utils.SkQueryProgressDialogUtils.*;
 import static ru.toxsoft.mcc.ws.journals.e4.uiparts.engine.IMmResources.*;
 
-import org.eclipse.swt.widgets.Shell;
-import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
-import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
-import org.toxsoft.core.tslib.av.opset.impl.OptionSetUtils;
-import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
+import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.tsgui.dialogs.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
-import org.toxsoft.core.tslib.bricks.time.impl.TimedList;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.gw.gwid.GwidList;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.ISkCoreApi;
-import org.toxsoft.uskat.core.api.evserv.SkEvent;
+import org.toxsoft.core.tslib.bricks.time.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.uskat.base.gui.conn.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.evserv.*;
 import org.toxsoft.uskat.core.api.hqserv.*;
 
 /**
@@ -64,6 +62,11 @@ public class EventQueryEngine
       ConcerningEventsItem item = (ConcerningEventsItem)aParams.items().get( i );
       gwids.addAll( item.gwids( true, coreApi ) );
     }
+    LoggerUtils.defaultLogger().info( "Quary gwid size = %d", gwids.size() );
+    for( Gwid gwid : gwids ) {
+      LoggerUtils.defaultLogger().info( "gwid = %s", gwid.asString() );
+    }
+
     // Параметры запроса
     IOptionSetEdit options = new OptionSet( OptionSetUtils.createOpSet( //
         ISkHistoryQueryServiceConstants.OP_SK_MAX_EXECUTION_TIME, AvUtils.avInt( EVENT_QUERY_TIMEOUT ) //
