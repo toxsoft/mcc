@@ -12,7 +12,10 @@ import org.toxsoft.core.tsgui.bricks.ctx.*;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
 import org.toxsoft.core.tsgui.dialogs.*;
 import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.mpc.impl.*;
 import org.toxsoft.core.tsgui.m5.gui.panels.*;
+import org.toxsoft.core.tsgui.m5.gui.panels.impl.*;
+import org.toxsoft.core.tsgui.m5.gui.viewers.impl.*;
 import org.toxsoft.core.tsgui.m5.model.*;
 import org.toxsoft.core.tsgui.panels.*;
 import org.toxsoft.core.tsgui.utils.layout.*;
@@ -22,6 +25,7 @@ import org.toxsoft.core.tslib.bricks.events.change.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.notifier.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
@@ -117,7 +121,16 @@ public class EventsJournalPanel
     eventsModel = m5().getModel( EventM5Model.MODEL_ID, SkEvent.class );
 
     eventProvider = new InternalItemsProvider();
-    panel = eventsModel.panelCreator().createCollViewerPanel( aContext, eventProvider );
+
+    M5TreeViewer<SkEvent> treeViewer = new M5EventsTreeViewer( aContext, eventsModel );
+
+    MultiPaneComponentModown<SkEvent> eventComponent = new MultiPaneComponentModown<>( treeViewer );
+
+    eventComponent.setItemProvider( eventProvider );
+
+    panel = new M5CollectionPanelMpcModownWrapper<>( eventComponent, true );
+
+    // panel = eventsModel.panelCreator().createCollViewerPanel( aContext, eventProvider );
     panel.createControl( this ).setLayoutData( BorderLayout.CENTER );
 
     queryEngine = new EventQueryEngine( aContext );
@@ -323,6 +336,85 @@ public class EventsJournalPanel
     // public IListReorderer<SkEvent> reorderer() {
     // return doGetItemsReorderer();
     // }
+
+  }
+
+  /**
+   * Попытка простой реализации (без нотификации) для ускорения отображения
+   *
+   * @author max
+   * @param <T> - класс элемента коллекции
+   */
+  static class SimpleNotifierListEdit<T>
+      extends NotifierListEditWrapper<T> {
+
+    /**
+     * По умолчанию
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Список, который "оборачивается" настоящим классом.
+     */
+    private final IListEdit<T> source;
+
+    public SimpleNotifierListEdit( IListEdit<T> aSource ) {
+      super( aSource );
+
+      source = aSource;
+    }
+
+    @Override
+    public T set( int aIndex, T aElem ) {
+      return source.set( aIndex, aElem );
+    }
+
+    @Override
+    public void insert( int aIndex, T aElem ) {
+      source.insert( aIndex, aElem );
+    }
+
+    @Override
+    public int add( T aElem ) {
+      return source.add( aElem );
+    }
+
+    // @Override
+    // public void fireItemByIndexChangeEvent( int aIndex ) {
+    // LoggerUtils.defaultLogger().info( "fireItemByIndexChangeEvent" );
+    // super.fireItemByIndexChangeEvent( aIndex );
+    // }
+    //
+    // @Override
+    // public void fireItemByRefChangeEvent( Object aItem ) {
+    // LoggerUtils.defaultLogger().info( "fireItemByRefChangeEvent" );
+    // super.fireItemByRefChangeEvent( aItem );
+    // }
+    //
+    // @Override
+    // protected void fireChangedEvent( ECrudOp aOp, Object aItem ) {
+    // LoggerUtils.defaultLogger().info( "fireChangedEvent" );
+    // super.fireChangedEvent( aOp, aItem );
+    // }
+    //
+    // @Override
+    // public void fireBatchChangeEvent() {
+    // LoggerUtils.defaultLogger().info( "fireBatchChangeEvent" );
+    // super.fireBatchChangeEvent();
+    // }
+
+  }
+
+  /**
+   * Класс дереве - создан для доступа к protected конструктору для передачи в него простой реализации INotifierListEdit
+   */
+  static class M5EventsTreeViewer
+      extends M5TreeViewer<SkEvent> {
+
+    M5EventsTreeViewer( ITsGuiContext aContext, IM5Model<SkEvent> aObjModel ) {
+      super( aContext, aObjModel, new SimpleNotifierListEdit<>( new ElemArrayList<SkEvent>() ), false );
+
+    }
 
   }
 }
