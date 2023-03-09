@@ -72,13 +72,15 @@ public class ValedSkidEditor
   }
 
   @Override
-  protected void doProcessButtonPress() {
+  protected boolean doProcessButtonPress() {
     // create and dispaly Skid selector
     Gwid initVal = canGetValue().isOk() ? Gwid.createObj( getValue() ) : null;
     Gwid gwid = PanelGwidSelector.selectGwid( initVal, tsContext() );
     if( gwid != null ) {
       doSetUnvalidatedValue( gwid.skid() );
+      return true;
     }
+    return false;
   }
 
   @Override
@@ -96,12 +98,17 @@ public class ValedSkidEditor
   }
 
   @Override
+  protected void doUpdateTextControl() {
+    // nop
+  }
+
+  @Override
   protected Skid doGetUnvalidatedValue() {
     return Gwid.of( getTextControl().getText() ).skid();
   }
 
   @Override
-  protected void doSetUnvalidatedValue( Skid aValue ) {
+  protected void doDoSetUnvalidatedValue( Skid aValue ) {
     String txt = TsLibUtils.EMPTY_STRING;
     if( aValue != null ) {
       txt = aValue.toString();

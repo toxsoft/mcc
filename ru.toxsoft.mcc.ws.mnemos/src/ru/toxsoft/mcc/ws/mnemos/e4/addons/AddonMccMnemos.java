@@ -60,7 +60,7 @@ public class AddonMccMnemos
     ValedControlFactoriesRegistry fr = aWinContext.get( ValedControlFactoriesRegistry.class );
     fr.registerFactory( ValedBooleanCheckAdv.FACTORY );
     fr.registerFactory( ValedAvBooleanCheckAdv.FACTORY );
-    fr.registerFactory( ValedIntegerTextCommand.FACTORY );
+    // GOGA 2023-03-09 fr.registerFactory( ValedIntegerTextCommand.FACTORY );
 
     ISkConnectionSupplier connSupplier = aWinContext.get( ISkConnectionSupplier.class );
     openConnection( connSupplier.defConn(), aWinContext );

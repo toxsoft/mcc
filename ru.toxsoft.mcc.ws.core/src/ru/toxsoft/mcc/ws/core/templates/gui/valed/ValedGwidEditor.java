@@ -71,13 +71,15 @@ public class ValedGwidEditor
   }
 
   @Override
-  protected void doProcessButtonPress() {
+  protected boolean doProcessButtonPress() {
     // create and dispaly Gwid selector
     Gwid gwid = PanelGwidSelector.selectGwid( canGetValue().isOk() ? getValue() : null, tsContext() );
 
     if( gwid != null ) {
       doSetUnvalidatedValue( gwid );
+      return true;
     }
+    return false;
   }
 
   @Override
@@ -92,12 +94,17 @@ public class ValedGwidEditor
   }
 
   @Override
+  protected void doUpdateTextControl() {
+    // nop
+  }
+
+  @Override
   protected Gwid doGetUnvalidatedValue() {
     return Gwid.of( getTextControl().getText() );
   }
 
   @Override
-  protected void doSetUnvalidatedValue( Gwid aValue ) {
+  protected void doDoSetUnvalidatedValue( Gwid aValue ) {
     String txt = TsLibUtils.EMPTY_STRING;
     if( aValue != null ) {
       txt = aValue.toString();
