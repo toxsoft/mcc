@@ -8,7 +8,7 @@ import org.eclipse.jface.dialogs.*;
  * @author goga
  */
 @SuppressWarnings( "nls" )
-interface IVjResources {
+public interface IVjResources {
 
   /**
    * {@link ValedBooleanCheckAdv}

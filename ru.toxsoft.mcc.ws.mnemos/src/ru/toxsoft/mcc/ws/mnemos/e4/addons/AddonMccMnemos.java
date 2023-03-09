@@ -8,7 +8,9 @@ import org.toxsoft.core.tsgui.valed.impl.ValedControlFactoriesRegistry;
 import ru.toxsoft.mcc.ws.mnemos.Activator;
 import ru.toxsoft.mcc.ws.mnemos.IMccWsMnemosConstants;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.QuantDataAliases;
-import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
+import ru.toxsoft.mcc.ws.mnemos.app.valed.ValedAvBooleanCheckAdv;
+import ru.toxsoft.mcc.ws.mnemos.app.valed.ValedBooleanCheckAdv;
+import ru.toxsoft.mcc.ws.mnemos.app.valed_unneeded.ValedIntegerTextCommand;
 
 /**
  * Plugin addon.
