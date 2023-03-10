@@ -1,6 +1,6 @@
 package ru.toxsoft.mcc.ws.exe;
 
-import static ru.toxsoft.mcc.ws.exe.ITsResources.*;
+import static ru.toxsoft.mcc.ws.exe.IMccResources.*;
 
 import java.time.*;
 

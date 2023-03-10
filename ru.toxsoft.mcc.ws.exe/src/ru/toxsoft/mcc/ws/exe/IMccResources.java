@@ -5,7 +5,7 @@ package ru.toxsoft.mcc.ws.exe;
  *
  * @author hazard157
  */
-interface ITsResources {
+interface IMccResources {
 
   /**
    * {@link IMccWsExeConstants}
