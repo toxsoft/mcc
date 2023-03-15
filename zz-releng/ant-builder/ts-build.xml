@@ -16,13 +16,8 @@
   <!-- ЦЕЛЬ: lib.jar библиотек -->
   <!-- TODO: -->
   <target name="build-lib-jar" depends="clean" description="Сборка общих плагинов">
-    <ant dir="../../org.toxsoft.uskat.alarms.lib" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
-    <ant dir="../../org.toxsoft.uskat.alarms.s5" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../ru.toxsoft.mcc.server" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
-    <ant dir="../../ru.toxsoft.mcc.ws.core" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
-    <ant dir="../../ru.toxsoft.mcc.ws.journals" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../ru.toxsoft.mcc.ws.mnemos" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
-    <ant dir="../../ru.toxsoft.mcc.ws.reports" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../ru.toxsoft.mcc.ws.exe" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
 
     <ant dir="../../ru.toxsoft.mcc.server" antfile="ts-build.xml" target="3_build_deploy" />
@@ -39,13 +34,8 @@
                        exportSource="true"
                        exportSourceBundle="false"
                        exportType="directory"
-                       plugins="org.toxsoft.uskat.alarms.lib,
-                                org.toxsoft.uskat.alarms.s5,
-				ru.toxsoft.mcc.server,
-                                ru.toxsoft.mcc.ws.core,
-                                ru.toxsoft.mcc.ws.journals,
+                       plugins="ru.toxsoft.mcc.server,
                                 ru.toxsoft.mcc.ws.mnemos,
-                                ru.toxsoft.mcc.ws.reports,
                                 ru.toxsoft.mcc.ws.exe"
                        useworkspacecompiledclasses="true"
                        useJARFormat="true" />
@@ -55,9 +45,7 @@
   <target name="clean" description="Удаление старых версии">
     <delete>
       <fileset dir="${ts-dest-dir-libs}" includes="ru.toxsoft.mcc.*" />
-      <fileset dir="${ts-dest-dir-libs}" includes="org.toxsoft.uskat.alarms.*" />
       <fileset dir="${ts-dest-dir-plugins}/plugins" includes="ru.toxsoft.mcc.*" />   
-      <fileset dir="${ts-dest-dir-plugins}/plugins" includes="org.toxsoft.uskat.alarms.*" />   
     </delete>
   </target>
 

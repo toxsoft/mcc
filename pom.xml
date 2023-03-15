@@ -570,13 +570,8 @@
 
   <modules>
     <!-- TODO общие библиотеки -->
-    <module>org.toxsoft.uskat.alarms.lib</module>
-    <module>org.toxsoft.uskat.alarms.s5</module>
     <module>ru.toxsoft.mcc.server</module>
-    <module>ru.toxsoft.mcc.ws.core</module>
-    <module>ru.toxsoft.mcc.ws.journals</module>
     <module>ru.toxsoft.mcc.ws.mnemos</module>
-    <module>ru.toxsoft.mcc.ws.reports</module>
     <module>ru.toxsoft.mcc.ws.exe</module>
     <module>zz-releng/ru.toxsoft.mcc.releng.p2</module>
     <module>zz-releng/ru.toxsoft.mcc.releng.ant</module> 

@@ -5,23 +5,13 @@
          ru.toxsoft.mcc.releng Category
       </description>
    </category-def>
-   <bundle id="org.toxsoft.uskat.alarms.lib"/>
-   <bundle id="org.toxsoft.uskat.alarms.s5"/>
    <bundle id="ru.toxsoft.mcc.server"/>
-   <bundle id="ru.toxsoft.mcc.ws.core"/>
-   <bundle id="ru.toxsoft.mcc.ws.journals"/>
    <bundle id="ru.toxsoft.mcc.ws.mnemos"/>
-   <bundle id="ru.toxsoft.mcc.ws.reports"/>
    <bundle id="ru.toxsoft.mcc.ws.exe"/>
 
    <!-- sources -->
-   <bundle id="org.toxsoft.uskat.alarms.lib.source"/>
-   <bundle id="org.toxsoft.uskat.alarms.s5.source"/>
    <bundle id="ru.toxsoft.mcc.server.source"/>
-   <bundle id="ru.toxsoft.mcc.ws.core.source"/>
-   <bundle id="ru.toxsoft.mcc.ws.journals.source"/>
    <bundle id="ru.toxsoft.mcc.ws.mnemos.source"/>
-   <bundle id="ru.toxsoft.mcc.ws.reports.source"/>
    <bundle id="ru.toxsoft.mcc.ws.exe.source"/>
 
 </site>
