@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<units size='2'>
+  <unit id='ru.toxsoft.mcc.ws.journals' version='1.0.0.202303151025' generation='2'>
+    <update id='ru.toxsoft.mcc.ws.journals' range='[0.0.0,1.0.0.202303151025)' severity='0'/>
+    <properties size='5'>
+      <property name='org.eclipse.equinox.p2.name' value='MCC WorkStation Journals'/>
+      <property name='org.eclipse.equinox.p2.provider' value='toxsoft.ru'/>
+      <property name='maven-groupId' value='ru.toxsoft.mcc'/>
+      <property name='maven-artifactId' value='ru.toxsoft.mcc.ws.journals'/>
+      <property name='maven-version' value='1.0.0-SNAPSHOT'/>
+    </properties>
+    <provides size='5'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='ru.toxsoft.mcc.ws.journals' version='1.0.0.202303151025'/>
+      <provided namespace='osgi.bundle' name='ru.toxsoft.mcc.ws.journals' version='1.0.0.202303151025'/>
+      <provided namespace='java.package' name='ru.toxsoft.mcc.ws.journals' version='0.0.0'/>
+      <provided namespace='osgi.identity' name='ru.toxsoft.mcc.ws.journals' version='1.0.0.202303151025'>
+        <properties size='1'>
+          <property name='type' value='osgi.bundle'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+    </provides>
+    <requires size='24'>
+      <required namespace='osgi.bundle' name='javax.annotation' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='javax.inject' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.core.contexts' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.core.di' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.ui.model.workbench' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.eclipse.e4.ui.workbench' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.extlibs.wildfly' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.core.tslib' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.core.singlesrc.rcp' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.core.tsgui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.core.tsgui.mws' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.uskat.core' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.uskat.base.gui' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='ru.toxsoft.mcc.ws.core' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.uskat.s5' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.uskat.dataquality.lib' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.uskat.dataquality.s5' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.core.jasperreports.gui' range='1.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.extlibs.jasperreports' range='1.0.0'/>
+      <required namespace='osgi.bundle' name='org.toxsoft.uskat.alarms.lib' range='0.0.0'/>
+      <required namespace='osgi.bundle' name='ru.toxsoft.mcc.ws.mnemos' range='1.0.0'/>
+      <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version=17))'>
+        <description>
+          ru.toxsoft.mcc.ws.journals
+        </description>
+      </requiredProperties>
+    </requires>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='ru.toxsoft.mcc.ws.journals' version='1.0.0.202303151025'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: ru.toxsoft.mcc.ws.journals;singleton:=true&#xA;Bundle-Version: 1.0.0.202303151025&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+  <unit id='ru.toxsoft.mcc.ws.journals.source' version='1.0.0.202303151025' singleton='false'>
+    <update id='ru.toxsoft.mcc.ws.journals.source' range='[0.0.0,1.0.0.202303151025)' severity='0'/>
+    <properties size='9'>
+      <property name='df_LT.bundleVendor' value='toxsoft.ru'/>
+      <property name='df_LT.bundleName' value='MCC WorkStation Journals Source'/>
+      <property name='org.eclipse.equinox.p2.name' value='%bundleName'/>
+      <property name='org.eclipse.equinox.p2.provider' value='%bundleVendor'/>
+      <property name='org.eclipse.equinox.p2.bundle.localization' value='OSGI-INF/l10n/bundle-src'/>
+      <property name='maven-groupId' value='ru.toxsoft.mcc'/>
+      <property name='maven-artifactId' value='ru.toxsoft.mcc.ws.journals'/>
+      <property name='maven-version' value='1.0.0-SNAPSHOT'/>
+      <property name='maven-classifier' value='sources'/>
+    </properties>
+    <provides size='5'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='ru.toxsoft.mcc.ws.journals.source' version='1.0.0.202303151025'/>
+      <provided namespace='osgi.bundle' name='ru.toxsoft.mcc.ws.journals.source' version='1.0.0.202303151025'/>
+      <provided namespace='osgi.identity' name='ru.toxsoft.mcc.ws.journals.source' version='1.0.0.202303151025'>
+        <properties size='1'>
+          <property name='type' value='osgi.bundle'/>
+        </properties>
+      </provided>
+      <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='source' version='1.0.0'/>
+      <provided namespace='org.eclipse.equinox.p2.localization' name='df_LT' version='1.0.0'/>
+    </provides>
+    <artifacts size='1'>
+      <artifact classifier='osgi.bundle' id='ru.toxsoft.mcc.ws.journals.source' version='1.0.0.202303151025'/>
+    </artifacts>
+    <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+    <touchpointData size='1'>
+      <instructions size='1'>
+        <instruction key='manifest'>
+          Bundle-SymbolicName: ru.toxsoft.mcc.ws.journals.source&#xA;Bundle-Version: 1.0.0.202303151025&#xA;
+        </instruction>
+      </instructions>
+    </touchpointData>
+  </unit>
+</units>

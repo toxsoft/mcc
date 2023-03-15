@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MCC WorkStation Reports
+Bundle-SymbolicName: ru.toxsoft.mcc.ws.reports;singleton:=true
+Bundle-Version: 1.0.0.202303151025
+Bundle-Activator: ru.toxsoft.mcc.ws.reports.Activator
+Bundle-Vendor: toxsoft.ru
+Export-Package: ru.toxsoft.mcc.ws.reports,ru.toxsoft.mcc.ws.reports.e4.a
+ ddons,ru.toxsoft.mcc.ws.reports.e4.uiparts
+Require-Bundle: javax.annotation,javax.inject,org.eclipse.core.runtime,o
+ rg.eclipse.ui,org.eclipse.e4.core.contexts,org.eclipse.e4.core.di,org.e
+ clipse.e4.ui.model.workbench,org.eclipse.e4.ui.workbench,org.toxsoft.ex
+ tlibs.wildfly,org.toxsoft.core.tslib,org.toxsoft.core.singlesrc.rcp,org
+ .toxsoft.core.tsgui,org.toxsoft.core.tsgui.chart,org.toxsoft.core.tsgui
+ .mws,org.toxsoft.uskat.core,org.toxsoft.uskat.base.gui,ru.toxsoft.mcc.w
+ s.core,org.toxsoft.uskat.s5,org.toxsoft.uskat.dataquality.lib,org.toxso
+ ft.uskat.dataquality.s5,org.toxsoft.core.jasperreports.gui;bundle-versi
+ on="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Automatic-Module-Name: ru.toxsoft.mcc.ws.reports
+Bundle-ActivationPolicy: lazy
+Import-Package: org.toxsoft.uskat.onews.lib
+

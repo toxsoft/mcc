@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MCC Workstation Core plugin
+Bundle-SymbolicName: ru.toxsoft.mcc.ws.core;singleton:=true
+Bundle-Version: 1.0.0.202303151025
+Bundle-Activator: ru.toxsoft.mcc.ws.core.Activator
+Bundle-Vendor: toxsoft.ru
+Require-Bundle: javax.annotation,javax.inject,org.eclipse.core.runtime,o
+ rg.eclipse.ui,org.eclipse.e4.core.contexts,org.eclipse.e4.core.di,org.e
+ clipse.e4.ui.model.workbench,org.eclipse.e4.ui.workbench,org.toxsoft.co
+ re.tslib,org.toxsoft.core.singlesrc.rcp,org.toxsoft.core.tsgui,org.toxs
+ oft.core.tsgui.chart,org.toxsoft.core.tsgui.mws,org.toxsoft.uskat.core,
+ org.toxsoft.uskat.base.gui,org.toxsoft.uskat.s5
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Automatic-Module-Name: ru.toxsoft.mcc.ws.core
+Bundle-ActivationPolicy: lazy
+Export-Package: ru.toxsoft.mcc.ws.core,ru.toxsoft.mcc.ws.core.chart_util
+ s,ru.toxsoft.mcc.ws.core.chart_utils.console,ru.toxsoft.mcc.ws.core.cha
+ rt_utils.dataset,ru.toxsoft.mcc.ws.core.chart_utils.tools.aux_types,ru.
+ toxsoft.mcc.ws.core.chart_utils.tools.axes_markup,ru.toxsoft.mcc.ws.cor
+ e.e4.addons,ru.toxsoft.mcc.ws.core.templates,ru.toxsoft.mcc.ws.core.tem
+ plates.api,ru.toxsoft.mcc.ws.core.templates.api.impl,ru.toxsoft.mcc.ws.
+ core.templates.gui,ru.toxsoft.mcc.ws.core.templates.gui.m5,ru.toxsoft.m
+ cc.ws.core.templates.gui.valed,ru.toxsoft.mcc.ws.core.templates.utils
+
