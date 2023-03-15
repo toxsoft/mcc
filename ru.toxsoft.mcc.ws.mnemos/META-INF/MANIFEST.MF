@@ -20,14 +20,15 @@ Require-Bundle: javax.annotation,
  org.toxsoft.core.tsgui.mws,
  org.toxsoft.uskat.core,
  org.toxsoft.uskat.base.gui,
- ru.toxsoft.mcc.ws.core,
  org.toxsoft.uskat.s5,
  org.toxsoft.uskat.dataquality.lib,
  org.toxsoft.uskat.dataquality.s5,
  org.toxsoft.uskat.alarms.lib,
  org.toxsoft.uskat.alarms.s5,
+ org.toxsoft.uskat.alarms.gui,
  org.toxsoft.uskat.ggprefs.lib,
- org.toxsoft.uskat.ggprefs.gui
+ org.toxsoft.uskat.ggprefs.gui,
+ ru.toxsoft.vetrol.ws.core
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.mnemos
 Bundle-ActivationPolicy: lazy

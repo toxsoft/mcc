@@ -7,16 +7,18 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.ISkResources.*;
 
-import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.valed.controls.av.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.tsgui.m5.model.IM5LifecycleManager;
+import org.toxsoft.core.tsgui.m5.model.impl.M5AttributeFieldDef;
+import org.toxsoft.core.tsgui.m5.model.impl.M5Model;
+import org.toxsoft.core.tsgui.valed.controls.av.ValedAvStringText;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
-import ru.toxsoft.mcc.ws.core.templates.gui.valed.*;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.IDataNameAlias;
+import ru.toxsoft.vetrol.ws.core.templates.gui.valed.ValedAvValobjGwidEditor;
 
 /**
  * M5-model of {@link IDataNameAlias}.

@@ -1,46 +1,54 @@
 package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
-import org.eclipse.jface.resource.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.*;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.RGBA;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.plugin.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tsgui.chart.api.*;
 import org.toxsoft.core.tsgui.chart.impl.*;
-import org.toxsoft.core.tsgui.graphics.*;
-import org.toxsoft.core.tsgui.graphics.fonts.impl.*;
-import org.toxsoft.core.tsgui.graphics.lines.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tsgui.utils.*;
-import org.toxsoft.core.tsgui.utils.layout.*;
-import org.toxsoft.core.tsgui.valed.controls.basic.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.temporal.*;
-import org.toxsoft.core.tslib.bricks.strid.*;
-import org.toxsoft.core.tslib.bricks.strid.impl.*;
+import org.toxsoft.core.tsgui.graphics.ETsOrientation;
+import org.toxsoft.core.tsgui.graphics.fonts.impl.FontInfo;
+import org.toxsoft.core.tsgui.graphics.lines.TsLineInfo;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tsgui.utils.ITsVisualsProvider;
+import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
+import org.toxsoft.core.tsgui.valed.controls.basic.ValedComboSelector;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.av.temporal.ITemporalAtomicValue;
+import org.toxsoft.core.tslib.bricks.strid.IStridable;
+import org.toxsoft.core.tslib.bricks.strid.impl.Stridable;
 import org.toxsoft.core.tslib.bricks.time.*;
-import org.toxsoft.core.tslib.bricks.time.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.*;
+import org.toxsoft.core.tslib.bricks.time.impl.QueryInterval;
+import org.toxsoft.core.tslib.bricks.time.impl.TimeInterval;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMap;
+import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.utils.Pair;
+import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.hqserv.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
-import ru.toxsoft.mcc.ws.core.chart_utils.*;
-import ru.toxsoft.mcc.ws.core.chart_utils.console.*;
-import ru.toxsoft.mcc.ws.core.chart_utils.tools.axes_markup.*;
-import ru.toxsoft.mcc.ws.core.templates.api.*;
-import ru.toxsoft.mcc.ws.core.templates.utils.*;
-import ru.toxsoft.mcc.ws.mnemos.*;
+import ru.toxsoft.mcc.ws.mnemos.Activator;
+import ru.toxsoft.vetrol.ws.core.chart.utils.*;
+import ru.toxsoft.vetrol.ws.core.chart.utils.console.ConsoleWindow;
+import ru.toxsoft.vetrol.ws.core.chart.utils.console.TimeAxisTuner;
+import ru.toxsoft.vetrol.ws.core.chart.utils.tools.axes_markup.AxisMarkupTuner;
+import ru.toxsoft.vetrol.ws.core.chart.utils.tools.axes_markup.MarkUpInfo;
+import ru.toxsoft.vetrol.ws.core.templates.api.IVtGraphParam;
+import ru.toxsoft.vetrol.ws.core.templates.api.IVtGraphTemplate;
+import ru.toxsoft.vetrol.ws.core.templates.utils.ReportTemplateUtilities;
 
 /**
  * Компонента, отображающая график одного параметра в реальном времени. <br>
@@ -131,7 +139,7 @@ public class RtChartPanel
    * @param aGraphTemplate описания шаблона графика
    * @param aConnection соединение с сервером
    */
-  public RtChartPanel( Composite aParent, ITsGuiContext aContext, ISkGraphTemplate aGraphTemplate,
+  public RtChartPanel( Composite aParent, ITsGuiContext aContext, IVtGraphTemplate aGraphTemplate,
       ISkConnection aConnection ) {
     super( aParent, aContext );
     setLayout( new BorderLayout() );
@@ -155,7 +163,7 @@ public class RtChartPanel
       if( q.state() == ESkQueryState.READY ) {
         int i = 0;
         IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
-        for( ISkGraphParam graphParam : aGraphTemplate.listParams() ) {
+        for( IVtGraphParam graphParam : aGraphTemplate.listParams() ) {
           graphDataSetList.add( new RtGraphDataSet( graphParam, serverApi, requestAnswer.get( i++ ) ) );
         }
         init();
@@ -197,7 +205,7 @@ public class RtChartPanel
     layout();
   }
 
-  void createPlot( ISkGraphParam aGraphParam ) {
+  void createPlot( IVtGraphParam aGraphParam ) {
     PlotDefTuner plotTuner = new PlotDefTuner( tsContext() );
     RGB plotColor = aGraphParam.color().rgb();
     int lineWidth = aGraphParam.lineWidth();
@@ -212,7 +220,7 @@ public class RtChartPanel
     chart.plotDefs().add( plotDef );
   }
 
-  void createYAxis( IG2Chart aChart, ISkGraphParam aGraphParam ) {
+  void createYAxis( IG2Chart aChart, IVtGraphParam aGraphParam ) {
     for( YAxisInfo axisInfo : axisInfoes ) {
       double min = axisInfo.graphicInfoes().values().get( 0 ).minMax().left().doubleValue();
       double max = axisInfo.graphicInfoes().values().get( 0 ).minMax().right().doubleValue();
@@ -247,7 +255,7 @@ public class RtChartPanel
     return yTuner.createAxisDef( aId, aUnitInfo.right(), aUnitInfo.left() );
   }
 
-  private void fillChartData( RtGraphDataSet aGraphDataSet, ISkGraphParam aGraphParam ) {
+  private void fillChartData( RtGraphDataSet aGraphDataSet, IVtGraphParam aGraphParam ) {
     IList<ITemporalAtomicValue> values = aGraphDataSet.getValues( ITimeInterval.NULL );
     Pair<Double, Double> minMax = calcMinMax( values );
 
