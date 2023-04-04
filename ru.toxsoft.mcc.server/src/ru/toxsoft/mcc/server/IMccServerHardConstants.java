@@ -33,7 +33,7 @@ public interface IMccServerHardConstants
   /**
    * Номер версии
    */
-  TsVersion MCC_SERVER_VERSION = new TsVersion( 2, 2, getBuildTime() );
+  TsVersion MCC_SERVER_VERSION = new TsVersion( 2, 3, getBuildTime() );
 
   // ------------------------------------------------------------------------------------------------
   // Параметры подключения к серверу
