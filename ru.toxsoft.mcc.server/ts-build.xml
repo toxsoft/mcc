@@ -111,21 +111,21 @@
   
   <target name="4_deploy" description="Формирование и размещение *-deploy-jar в wildfly">
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/deployments" file="${deploy.dir}/${deploy.jar}" overwrite="true" />
-    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/configuration">
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node01.dir}/configuration" overwrite="true">
         <fileset file="dist/files_to_os/${wildfly-standalone-node01.file}"/>
         <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>
         <fileset file="${wildfly-home.dir}/standalone/configuration/*.properties"/>
     </copy>    
 
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node02.dir}/deployments" file="${deploy.dir}/${deploy.jar}" overwrite="true" />
-    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node02.dir}/configuration">
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node02.dir}/configuration" overwrite="true">
         <fileset file="dist/files_to_os/${wildfly-standalone-node02.file}"/>
         <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>
         <fileset file="${wildfly-home.dir}/standalone/configuration/*.properties"/>
     </copy>    
   
     <copy todir="${wildfly-home.dir}/${wildfly-standalone-node03.dir}/deployments" file="${deploy.dir}/${deploy.jar}" overwrite="true" />
-    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node03.dir}/configuration">
+    <copy todir="${wildfly-home.dir}/${wildfly-standalone-node03.dir}/configuration" overwrite="true">
         <fileset file="dist/files_to_os/${wildfly-standalone-node03.file}"/>
         <fileset file="dist/files_to_os/${wildfly-standalone.file}"/>
         <fileset file="${wildfly-home.dir}/standalone/configuration/*.properties"/>
