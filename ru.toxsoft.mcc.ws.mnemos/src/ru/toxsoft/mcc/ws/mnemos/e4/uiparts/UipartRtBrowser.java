@@ -1,15 +1,16 @@
 package ru.toxsoft.mcc.ws.mnemos.e4.uiparts;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.widgets.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.base.gui.e4.uiparts.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.widgets.TsComposite;
+import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.gui.e4.uiparts.SkMwsAbstractPart;
 
-import ru.toxsoft.mcc.ws.mnemos.app.rtb.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rtb.TestPanel;
 
 /**
  * Экран мнемосхемы нагнетателя.

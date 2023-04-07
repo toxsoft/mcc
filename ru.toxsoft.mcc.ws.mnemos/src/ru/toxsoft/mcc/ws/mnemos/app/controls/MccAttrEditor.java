@@ -4,28 +4,35 @@ import static org.toxsoft.core.tsgui.graphics.icons.ITsStdIconIds.*;
 import static org.toxsoft.core.tsgui.valed.IValedImplementationHelpers.*;
 import static ru.toxsoft.mcc.ws.mnemos.app.controls.IVjResources.*;
 
-import org.eclipse.jface.dialogs.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.graphics.colors.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.bricks.strid.more.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.impl.dto.*;
-import org.toxsoft.uskat.core.utils.*;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContextable;
+import org.toxsoft.core.tsgui.graphics.colors.ETsColor;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.graphics.icons.ITsIconManager;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.bricks.strid.more.IdChain;
+import org.toxsoft.core.tslib.utils.TsLibUtils;
+import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoAttrInfo;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.impl.dto.DtoFullObject;
+import org.toxsoft.uskat.core.utils.ISkConnected;
 
-import ru.toxsoft.mcc.ws.mnemos.app.utils.*;
+import ru.toxsoft.mcc.ws.mnemos.app.utils.MccAvUtils;
 
 public class MccAttrEditor
     implements ITsGuiContextable, ISkConnected {

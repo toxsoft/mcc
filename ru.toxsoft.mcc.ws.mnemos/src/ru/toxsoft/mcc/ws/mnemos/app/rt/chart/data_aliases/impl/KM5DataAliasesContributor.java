@@ -1,11 +1,12 @@
 package ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl;
 
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.km5.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.tsgui.m5.IM5Domain;
+import org.toxsoft.core.tslib.coll.primtypes.IStringList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.km5.IKM5ContributorCreator;
+import org.toxsoft.uskat.core.gui.km5.KM5AbstractContributor;
 
 /**
  * Contributes M5-models for template entities.

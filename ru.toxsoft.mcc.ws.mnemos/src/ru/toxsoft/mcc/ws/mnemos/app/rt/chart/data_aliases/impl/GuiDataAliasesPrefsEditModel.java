@@ -2,18 +2,21 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl;
 
 import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.ISkResources.*;
 
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.uskat.ggprefs.lib.*;
+import org.toxsoft.core.tsgui.m5.IM5FieldDef;
+import org.toxsoft.core.tsgui.m5.model.IM5MultiModownFieldDef;
+import org.toxsoft.core.tsgui.m5.model.impl.M5Model;
+import org.toxsoft.core.tsgui.m5.model.impl.M5MultiModownFieldDef;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.skf.ggprefs.lib.IGuiGwPrefsSection;
 
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.IDataNameAlias;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.IDataNameAliasesList;
 
 /**
  * Модель используемая при редактировании списка data aliases

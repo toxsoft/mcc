@@ -1,19 +1,22 @@
 package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
-import org.eclipse.swt.graphics.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.graphics.cursors.*;
-import org.toxsoft.core.tslib.bricks.strid.more.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.utils.*;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Rectangle;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContextable;
+import org.toxsoft.core.tsgui.graphics.cursors.ECursorType;
+import org.toxsoft.core.tslib.bricks.strid.more.IdChain;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.utils.ISkConnected;
 
-import ru.toxsoft.mcc.ws.mnemos.app.*;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+import ru.toxsoft.mcc.ws.mnemos.app.MccSchemePanel;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.IRtDataConsumer;
 
 /**
  * Базовый класс элементов, размещаемых на мнемосхеме, для проекта МосКокс.

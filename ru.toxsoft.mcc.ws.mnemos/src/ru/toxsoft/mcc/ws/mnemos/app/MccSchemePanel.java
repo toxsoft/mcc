@@ -1,35 +1,38 @@
 package ru.toxsoft.mcc.ws.mnemos.app;
 
-import org.eclipse.jface.action.*;
-import org.eclipse.jface.resource.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.ui.plugin.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.graphics.*;
-import org.toxsoft.core.tsgui.graphics.colors.*;
-import org.toxsoft.core.tsgui.graphics.cursors.*;
-import org.toxsoft.core.tsgui.graphics.fonts.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tslib.av.opset.*;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.graphics.ETsFulcrum;
+import org.toxsoft.core.tsgui.graphics.colors.ETsColor;
+import org.toxsoft.core.tsgui.graphics.cursors.ECursorType;
+import org.toxsoft.core.tsgui.graphics.fonts.ITsFontManager;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
 import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.utils.*;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.coll.impl.ElemMap;
+import org.toxsoft.core.tslib.coll.primtypes.IStringListEdit;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.utils.ISkConnected;
 
-import ru.toxsoft.mcc.ws.mnemos.*;
+import ru.toxsoft.mcc.ws.mnemos.Activator;
 import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.IRtDataProvider;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.MccRtDataProvider;
 
 /**
  * Панель отображения мнемосхемы.

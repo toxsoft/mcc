@@ -29,8 +29,8 @@ import org.toxsoft.uskat.core.api.objserv.ISkObject;
 import org.toxsoft.uskat.core.api.rtdserv.ISkReadCurrDataChannel;
 import org.toxsoft.uskat.core.impl.dto.DtoQueryParam;
 
-import ru.toxsoft.vetrol.ws.core.templates.api.IVtGraphParam;
-import ru.toxsoft.vetrol.ws.core.templates.utils.ReportTemplateUtilities;
+import ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtGraphParam;
+import ru.toxsoft.skt.vetrol.ws.core.templates.utils.ReportTemplateUtilities;
 
 /**
  * Набор данных для графика реального времени.

@@ -27,15 +27,15 @@ import org.toxsoft.core.tslib.gw.gwid.Gwid;
 import org.toxsoft.core.tslib.gw.skid.Skid;
 import org.toxsoft.core.tslib.gw.skid.SkidList;
 import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.skf.ggprefs.lib.IGuiGwPrefsSection;
+import org.toxsoft.skf.ggprefs.lib.ISkGuiGwPrefsService;
+import org.toxsoft.skf.ggprefs.lib.impl.SkGuiGwPrefsService;
 import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.users.ISkUser;
 import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.ggprefs.lib.IGuiGwPrefsSection;
-import org.toxsoft.uskat.ggprefs.lib.ISkGuiGwPrefsService;
-import org.toxsoft.uskat.ggprefs.lib.impl.SkGuiGwPrefsService;
 import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
-import ru.toxsoft.vetrol.ws.core.templates.api.IVtGraphTemplate;
+import ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtGraphTemplate;
 
 /**
  * Панель отображения графиков реального времени.<br>

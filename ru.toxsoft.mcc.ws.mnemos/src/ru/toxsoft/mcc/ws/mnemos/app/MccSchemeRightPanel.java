@@ -1,14 +1,16 @@
 package ru.toxsoft.mcc.ws.mnemos.app;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.panels.TsPanel;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
-import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.IRtDataProvider;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.MccRtDataProvider;
 
 /**
  * Панель отображения мнемосхемы.

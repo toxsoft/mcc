@@ -7,12 +7,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.RtChartPanel;
-import ru.toxsoft.vetrol.ws.core.chart.utils.ChartPanel;
-import ru.toxsoft.vetrol.ws.core.templates.api.IVtGraphTemplate;
-import ru.toxsoft.vetrol.ws.core.templates.utils.ReportTemplateUtilities;
+import ru.toxsoft.skt.vetrol.ws.core.chart.utils.ChartPanel;
+import ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtGraphTemplate;
+import ru.toxsoft.skt.vetrol.ws.core.templates.utils.ReportTemplateUtilities;
 
 /**
  * Окно для отображения графика.

@@ -1,16 +1,17 @@
 package ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl;
 
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.ggprefs.lib.*;
+import org.toxsoft.core.tsgui.m5.IM5Bunch;
+import org.toxsoft.core.tsgui.m5.IM5Model;
+import org.toxsoft.core.tsgui.m5.model.impl.M5LifecycleManager;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.skf.ggprefs.lib.IGuiGwPrefsSection;
 
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
 

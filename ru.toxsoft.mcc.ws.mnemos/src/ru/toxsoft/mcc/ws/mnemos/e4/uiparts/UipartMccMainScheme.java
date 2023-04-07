@@ -1,16 +1,16 @@
 package ru.toxsoft.mcc.ws.mnemos.e4.uiparts;
 
-import java.awt.*;
+import java.awt.Dimension;
 
-import org.eclipse.swt.*;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.toxsoft.core.tsgui.utils.layout.*;
+import org.toxsoft.core.tsgui.utils.layout.AWTLayout;
 import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
-import org.toxsoft.core.tsgui.widgets.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.base.gui.e4.uiparts.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.tsgui.widgets.TsComposite;
+import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.gui.e4.uiparts.SkMwsAbstractPart;
 
 import ru.toxsoft.mcc.ws.mnemos.app.*;
 

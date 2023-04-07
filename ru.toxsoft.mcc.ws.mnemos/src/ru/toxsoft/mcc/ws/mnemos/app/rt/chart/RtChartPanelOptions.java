@@ -3,17 +3,20 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.impl.DataDef.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static org.toxsoft.uskat.ggprefs.lib.IGuiGwPrefsConstants.*;
+import static org.toxsoft.skf.ggprefs.lib.IGuiGwPrefsConstants.*;
 import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.ISkResources.*;
 
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
-import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.impl.DataDef;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesListEdit;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.StridablesList;
+import org.toxsoft.core.tslib.gw.skid.SkidList;
+import org.toxsoft.core.tslib.gw.skid.SkidListKeeper;
 
 /**
  * Параметры настроек панели "RtCharts".

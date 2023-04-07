@@ -6,26 +6,29 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static ru.toxsoft.mcc.ws.mnemos.app.valed.IVjResources.*;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.graphics.colors.*;
-import org.toxsoft.core.tsgui.graphics.cursors.*;
-import org.toxsoft.core.tsgui.valed.impl.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.objserv.*;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.graphics.colors.ETsColor;
+import org.toxsoft.core.tsgui.graphics.cursors.ECursorType;
+import org.toxsoft.core.tsgui.valed.impl.AbstractValedControl;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.impl.DataDef;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
-import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
+import ru.toxsoft.mcc.ws.mnemos.app.dialogs.MccDialogContext;
+import ru.toxsoft.mcc.ws.mnemos.app.dialogs.PanelAnalogInput;
 
 /**
  * Редактор атомарного значения аналогового входа.

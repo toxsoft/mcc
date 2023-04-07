@@ -1,23 +1,24 @@
 package ru.toxsoft.mcc.ws.mnemos.app.rtb;
 
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
-import org.toxsoft.core.tsgui.m5.*;
-import org.toxsoft.core.tsgui.m5.gui.panels.*;
-import org.toxsoft.core.tsgui.m5.model.*;
-import org.toxsoft.core.tsgui.m5.model.impl.*;
-import org.toxsoft.core.tsgui.panels.*;
-import org.toxsoft.core.tslib.bricks.strid.more.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.base.gui.km5.sgw.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.toxsoft.core.tsgui.m5.IM5Domain;
+import org.toxsoft.core.tsgui.m5.IM5Model;
+import org.toxsoft.core.tsgui.m5.gui.panels.IM5CollectionPanel;
+import org.toxsoft.core.tsgui.m5.model.IM5ItemsProvider;
+import org.toxsoft.core.tsgui.m5.model.impl.M5LifecycleManager;
+import org.toxsoft.core.tsgui.panels.TsStdEventsProducerPanel;
+import org.toxsoft.core.tslib.bricks.strid.more.IdChain;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
 import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.utils.*;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.gui.km5.sgw.ISgwM5Constants;
+import org.toxsoft.uskat.core.utils.ISkConnected;
 
 /**
  * Панель для просмотра списка объектов указанного класса.

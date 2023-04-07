@@ -1,21 +1,24 @@
 package ru.toxsoft.mcc.ws.mnemos.app.widgets;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.bricks.ctx.*;
-import org.toxsoft.core.tslib.bricks.events.change.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
+import org.toxsoft.core.tslib.bricks.ctx.ITsContextable;
+import org.toxsoft.core.tslib.bricks.events.change.IGenericChangeListener;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
+import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.cmdserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
-import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
+import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoCmdInfo;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
 /**
  * SWT кнопка для однократной посылки команды при нажатии.

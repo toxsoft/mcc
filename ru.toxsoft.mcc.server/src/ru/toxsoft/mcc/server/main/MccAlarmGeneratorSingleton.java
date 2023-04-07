@@ -4,7 +4,7 @@ import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.impl.DataDef.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static org.toxsoft.uskat.alarms.lib.EAlarmPriority.*;
+import static org.toxsoft.skf.alarms.lib.EAlarmPriority.*;
 import static org.toxsoft.uskat.s5.server.IS5ImplementConstants.*;
 import static ru.toxsoft.mcc.server.main.IMccResources.*;
 
@@ -19,9 +19,9 @@ import org.toxsoft.core.tslib.gw.skid.ISkidList;
 import org.toxsoft.core.tslib.gw.skid.Skid;
 import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
 import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.uskat.alarms.lib.*;
-import org.toxsoft.uskat.alarms.s5.generator.IS5AlarmAtomicValuePredicate;
-import org.toxsoft.uskat.alarms.s5.generator.S5AbstractAlarmGeneratorSingleton;
+import org.toxsoft.skf.alarms.lib.*;
+import org.toxsoft.skf.alarms.s5.generator.IS5AlarmAtomicValuePredicate;
+import org.toxsoft.skf.alarms.s5.generator.S5AbstractAlarmGeneratorSingleton;
 import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.objserv.ISkObjectService;
 

@@ -2,13 +2,14 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
 import static ru.toxsoft.mcc.ws.mnemos.app.rt.chart.ISkResources.*;
 
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.ggprefs.lib.*;
-import org.toxsoft.uskat.ggprefs.lib.impl.*;
+import org.toxsoft.core.tslib.av.metainfo.IDataDef;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.skf.ggprefs.lib.*;
+import org.toxsoft.skf.ggprefs.lib.impl.DpuGuiGwPrefsSectionDef;
+import org.toxsoft.skf.ggprefs.lib.impl.SkGuiGwPrefsService;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
 /**
  * Набор вспомогательных методов для работы с настройками панели RtCharts.

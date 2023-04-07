@@ -3,11 +3,11 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases;
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.toxsoft.core.tsgui.bricks.quant.AbstractQuant;
 import org.toxsoft.core.tslib.utils.valobj.TsValobjUtils;
-import org.toxsoft.uskat.base.gui.km5.KM5Utils;
+import org.toxsoft.uskat.core.gui.km5.KM5Utils;
 
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.DataNameAliasesList;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.KM5DataAliasesContributor;
-import ru.toxsoft.vetrol.ws.core.IVtWsCoreConstants;
+import ru.toxsoft.skt.vetrol.ws.core.IVtWsCoreConstants;
 
 /**
  * The libtary quant.

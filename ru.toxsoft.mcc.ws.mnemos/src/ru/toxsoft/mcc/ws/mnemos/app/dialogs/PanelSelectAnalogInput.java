@@ -1,15 +1,15 @@
 package ru.toxsoft.mcc.ws.mnemos.app.dialogs;
 
 import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tsgui.dialogs.datarec.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
 /**
  * Диалог выбора аналогового входа (для тестовых целей).

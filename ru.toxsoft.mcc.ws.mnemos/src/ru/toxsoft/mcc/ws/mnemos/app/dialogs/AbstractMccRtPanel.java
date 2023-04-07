@@ -1,28 +1,32 @@
 package ru.toxsoft.mcc.ws.mnemos.app.dialogs;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.custom.*;
-import org.eclipse.swt.layout.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
-import org.toxsoft.core.tsgui.dialogs.datarec.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.utils.*;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
+import org.toxsoft.core.tsgui.dialogs.datarec.AbstractTsDialogPanel;
+import org.toxsoft.core.tsgui.dialogs.datarec.TsDialog;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
+import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoRtdataInfo;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.utils.ISkConnected;
 
-import ru.toxsoft.mcc.ws.mnemos.app.controls.*;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
-import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
+import ru.toxsoft.mcc.ws.mnemos.app.controls.MccRtBooleanLabel;
+import ru.toxsoft.mcc.ws.mnemos.app.controls.MccRtTextEditor;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.MccRtDataProvider;
+import ru.toxsoft.mcc.ws.mnemos.app.valed.MccValedAvBooleanCheckCommand;
+import ru.toxsoft.mcc.ws.mnemos.app.valed.ValedBooleanCheckAdv;
 
 /**
  * Базовый класс панелей для диалогов настройки проекта МосКокс.

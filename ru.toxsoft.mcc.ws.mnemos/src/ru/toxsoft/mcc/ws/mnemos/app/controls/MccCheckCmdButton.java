@@ -2,32 +2,36 @@ package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
 import static ru.toxsoft.mcc.ws.mnemos.app.controls.IVjResources.*;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.events.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.dialogs.*;
-import org.toxsoft.core.tsgui.graphics.colors.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.events.change.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContextable;
+import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
+import org.toxsoft.core.tsgui.graphics.colors.ETsColor;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.graphics.icons.ITsStdIconIds;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.bricks.events.change.IGenericChangeListener;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.uskat.base.gui.conn.*;
-import org.toxsoft.uskat.core.*;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.utils.TsLibUtils;
+import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
+import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
+import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.cmdserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
-import org.toxsoft.uskat.core.api.users.*;
+import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
+import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoCmdInfo;
+import org.toxsoft.uskat.core.api.users.ISkUser;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
-import ru.toxsoft.mcc.ws.mnemos.app.*;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+import ru.toxsoft.mcc.ws.mnemos.app.CmdUtils;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.IRtDataConsumer;
 
 /**
  * Копка в виде checkbox для посылки команды для проекта МосКокс.

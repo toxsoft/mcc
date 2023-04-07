@@ -2,7 +2,7 @@ package ru.toxsoft.mcc.ws.exe.e4.addons;
 
 import static org.toxsoft.core.tsgui.graphics.icons.EIconSize.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
-import static ru.toxsoft.vetrol.ws.core.IVtWsCoreConstants.*;
+import static ru.toxsoft.skt.vetrol.ws.core.IVtWsCoreConstants.*;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -21,18 +21,18 @@ import org.toxsoft.core.tslib.coll.primtypes.IStringList;
 import org.toxsoft.core.tslib.coll.primtypes.impl.IntArrayList;
 import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
 import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.uskat.base.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.skf.onews.gui.QuantSkOneWsGui;
+import org.toxsoft.skf.users.gui.QuantSkUsersGui;
 import org.toxsoft.uskat.concurrent.S5SynchronizedConnection;
 import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.impl.ISkCoreConfigConstants;
-import org.toxsoft.uskat.onews.gui.QuantSkOneWsGui;
 import org.toxsoft.uskat.s5.client.IS5ConnectionParams;
 import org.toxsoft.uskat.s5.client.remote.S5RemoteBackendProvider;
 import org.toxsoft.uskat.s5.common.S5Host;
 import org.toxsoft.uskat.s5.common.S5HostList;
 import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
 import org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable;
-import org.toxsoft.uskat.users.gui.QuantSkUsersGui;
 
 /**
  * Application addon.
@@ -62,7 +62,7 @@ public class AddonMccWsExe
     MApplication app = aAppContext.get( MApplication.class );
     EModelService modelService = aAppContext.get( EModelService.class );
     MTrimmedWindow mainWindow = (MTrimmedWindow)modelService.find( IMwsCoreConstants.MWSID_WINDOW_MAIN, app );
-    mainWindow.setIconURI( TsIconManagerUtils.makeStdIconUriString( ru.toxsoft.vetrol.ws.core.Activator.PLUGIN_ID,
+    mainWindow.setIconURI( TsIconManagerUtils.makeStdIconUriString( ru.toxsoft.skt.vetrol.ws.core.Activator.PLUGIN_ID,
         ICONID_APP_ICON, IS_48X48 ) );
   }
 
