@@ -11,6 +11,7 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.uskat.core.api.objserv.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.*;
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
@@ -56,8 +57,12 @@ public class MccMainEngineControl
 
   @Override
   public void showSettingDialog() {
-    MccDialogContext ctx = new MccDialogContext( tsContext(), skObject() );
-    PanelIrreversibleEngine.showDialog( ctx );
+    Gwid gwid = Gwid.createObj( "mcc.MainSwitch", "n2MainSwitch" ); //$NON-NLS-1$ //$NON-NLS-2$
+    ISkObject mainSwitch = coreApi().objService().find( gwid.skid() );
+    // MccDialogContext ctx = new MccDialogContext( tsContext(), skObject() );
+    // PanelIrreversibleEngine.showDialog( ctx );
+    MccDialogContext ctx = new MccDialogContext( tsContext(), mainSwitch );
+    PanelMainSwitch.showDialog( ctx );
   }
 
   // ------------------------------------------------------------------------------------
