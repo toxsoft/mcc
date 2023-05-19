@@ -68,11 +68,8 @@ public class MccAlarmGeneratorSingleton
   // S5AbstractAlarmGeneratorSingleton
   //
   @Override
-  protected void doAddAlarmDefs( ISkCoreApi aCoreApi ) {
-  }
-
   @SuppressWarnings( "nls" )
-  protected void doAddAlarmDefsOld( ISkCoreApi aCoreApi ) {
+  protected void doAddAlarmDefs( ISkCoreApi aCoreApi ) {
     // Служба объектов
     ISkObjectService objectService = aCoreApi.objService();
     // Добавление алармов для генерации
@@ -111,7 +108,7 @@ public class MccAlarmGeneratorSingleton
       Skid objId = objIds.get( index );
       addAlarm( "IrreversibleEngineSwitchOnFailure",   HIGH, STR_N_IRREVERSIBLE_ENGINE_SWITCH_ON_FAILURE,      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "IrreversibleEngineSwitchOffFailure",  HIGH, STR_N_IRREVERSIBLE_ENGINE_SWITCH_OFF_FAILURE,       objId,  "rtdSwitchOffFailure",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "IrreversibleEnginePwr",  HIGH, STR_N_IRREVERSIBLE_ENGINE_PWR,       objId, "rtdPwr",      value -> equals( value, AV_FALSE  ) );
+      addAlarm( "IrreversibleEnginePwr",  HIGH, STR_N_IRREVERSIBLE_ENGINE_PWR_FAILURE,       objId, "rtdPwrFailure",      value -> equals( value, AV_TRUE  ) );
 
     }
     // @formatter:on
@@ -124,11 +121,10 @@ public class MccAlarmGeneratorSingleton
     objIds = objectService.listSkids( "mcc.MainSwitch", true );
     for( int index = 0, n = objIds.size(); index < n; index++ ) {
       Skid objId = objIds.get( index );
-      addAlarm( "MainSwitchEmergencyStop",   NORMAL, STR_N_MAIN_SWITCH_EMERGENCY_STOP,      objId,  "rtdEmergencyStop",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "MainSwitchAlarm",           HIGH, STR_N_MAIN_SWITCH_ALARM,      objId,  "rtdMainSwitchAlarm",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "MainSwitchSwitchOnFailure",   HIGH, STR_N_MAIN_SWITCH_SWITCH_ON_FAILURE,      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "MainSwitchSwitchOffFailure",  HIGH, STR_N_MAIN_SWITCH_SWITCH_OFF_FAILURE,      objId,  "rtdSwitchOffFailure",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "MainSwitchPowerControl",  HIGH, STR_N_MAIN_SWITCH_POWER_CONTROL,      objId,  "rtdPowerControl",     value -> equals( value, AV_FALSE  ) );
+      addAlarm( "MainSwitchPowerControl",  HIGH, STR_N_MAIN_SWITCH_POWER_CONTROL_FAILURE,      objId,  "rtdPwrControlFailure",     value -> equals( value, AV_TRUE  ) );
 
     }
 
@@ -148,8 +144,8 @@ public class MccAlarmGeneratorSingleton
       addAlarm( "ReversibleEngineOpenOffFailure",  HIGH, STR_N_REVERSIBLE_ENGINE_OPEN_OFF_FAILURE,       objId,  "rtdOpenOffFailure",      value -> equals( value, AV_TRUE  ) );
       addAlarm( "ReversibleEngineCloseOnFailure",   HIGH, STR_N_REVERSIBLE_ENGINE_CLOSE_ON_FAILURE,      objId,  "rtdCloseOnFailure",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "ReversibleEngineCloseOffFailure",  HIGH, STR_N_REVERSIBLE_ENGINE_CLOSE_OFF_FAILURE,       objId,  "rtdCloseOffFailure",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "ReversibleEnginePowerControl",  HIGH, STR_N_REVERSIBLE_ENGINE_POWER_CONTROL,      objId,  "rtdPowerControl",     value -> equals( value, AV_FALSE  ) );
-      addAlarm( "ReversibleEnginePwr",  HIGH, STR_N_REVERSIBLE_ENGINE_PWR,       objId,  "rtdPwr",      value -> equals( value, AV_FALSE  ) );
+      addAlarm( "ReversibleEnginePowerControl",  HIGH, STR_N_REVERSIBLE_ENGINE_POWER_CONTROL_FAILURE,      objId,  "rtdPowerControlFailure",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEnginePwr",  HIGH, STR_N_REVERSIBLE_ENGINE_PWR_FAILURE,       objId,  "rtdPwrFailure",      value -> equals( value, AV_TRUE  ) );
     }
 
     // @formatter:on
