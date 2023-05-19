@@ -124,7 +124,7 @@ public class MccAlarmGeneratorSingleton
       addAlarm( "MainSwitchAlarm",           HIGH, STR_N_MAIN_SWITCH_ALARM,      objId,  "rtdMainSwitchAlarm",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "MainSwitchSwitchOnFailure",   HIGH, STR_N_MAIN_SWITCH_SWITCH_ON_FAILURE,      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "MainSwitchSwitchOffFailure",  HIGH, STR_N_MAIN_SWITCH_SWITCH_OFF_FAILURE,      objId,  "rtdSwitchOffFailure",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "MainSwitchPowerControl",  HIGH, STR_N_MAIN_SWITCH_POWER_CONTROL_FAILURE,      objId,  "rtdPwrControl",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "MainSwitchPowerControl",  HIGH, STR_N_MAIN_SWITCH_POWER_CONTROL_FAILURE,      objId,  "rtdPowerControl",     value -> equals( value, AV_TRUE  ) );
 
     }
 
