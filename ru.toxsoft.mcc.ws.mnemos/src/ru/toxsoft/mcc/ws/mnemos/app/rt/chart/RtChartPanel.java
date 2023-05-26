@@ -42,8 +42,6 @@ import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
 import ru.toxsoft.mcc.ws.mnemos.Activator;
 import ru.toxsoft.skt.vetrol.ws.core.chart.utils.*;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.PlotDefTuner;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.YAxisTuner;
 import ru.toxsoft.skt.vetrol.ws.core.chart.utils.console.ConsoleWindow;
 import ru.toxsoft.skt.vetrol.ws.core.chart.utils.console.TimeAxisTuner;
 import ru.toxsoft.skt.vetrol.ws.core.chart.utils.tools.axes_markup.AxisMarkupTuner;
@@ -289,8 +287,8 @@ public class RtChartPanel
   Pair<Double, Double> calcMinMax( IList<ITemporalAtomicValue> aValues ) {
 
     if( aValues.size() > 0 ) {
-      double max = Double.MIN_VALUE;
-      double min = Double.MAX_VALUE;
+      double max = Double.NEGATIVE_INFINITY;
+      double min = Double.POSITIVE_INFINITY;
       // счетчик присвоенных значений
       int assignedValuesCounter = 0;
       for( ITemporalAtomicValue value : aValues ) {

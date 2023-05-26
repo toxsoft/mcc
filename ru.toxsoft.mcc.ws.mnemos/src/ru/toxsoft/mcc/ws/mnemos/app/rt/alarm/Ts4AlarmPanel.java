@@ -11,8 +11,6 @@ import org.toxsoft.core.tsgui.bricks.actions.TsActionDef;
 import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
 import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
 import org.toxsoft.core.tsgui.bricks.tstree.impl.TsTreeViewer;
-import org.toxsoft.core.tsgui.dialogs.ETsDialogCode;
-import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
 import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
 import org.toxsoft.core.tsgui.m5.IM5Model;
 import org.toxsoft.core.tsgui.m5.gui.mpc.IMultiPaneComponentConstants;
@@ -138,10 +136,11 @@ public class Ts4AlarmPanel
               case ACTID_QUIT_ALARM: {
                 // TODO
                 IList<ISkAlarm> selAlarms = tree().checks().listCheckedItems( true );
-                if( TsDialogUtils.askYesNoCancel( getShell(),
-                    "Квитировать выбранные тревоги?" ) != ETsDialogCode.YES ) {
-                  return;
-                }
+                // dima 19.05.23 отключено по требованию Синько
+                // if( TsDialogUtils.askYesNoCancel( getShell(),
+                // "Квитировать выбранные тревоги?" ) != ETsDialogCode.YES ) {
+                // return;
+                // }
 
                 for( ISkAlarm alarm : selAlarms ) {
                   lifecycleManager().remove( alarm );
