@@ -30,12 +30,11 @@ import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
 import org.toxsoft.skf.ggprefs.lib.IGuiGwPrefsSection;
 import org.toxsoft.skf.ggprefs.lib.ISkGuiGwPrefsService;
 import org.toxsoft.skf.ggprefs.lib.impl.SkGuiGwPrefsService;
+import org.toxsoft.skf.reports.templates.service.IVtGraphTemplate;
 import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.users.ISkUser;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
-
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtGraphTemplate;
 
 /**
  * Панель отображения графиков реального времени.<br>

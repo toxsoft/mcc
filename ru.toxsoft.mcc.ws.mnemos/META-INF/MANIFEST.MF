@@ -28,7 +28,9 @@ Require-Bundle: javax.annotation,
  org.toxsoft.skf.alarms.gui,
  org.toxsoft.skf.ggprefs.lib,
  org.toxsoft.skf.ggprefs.gui,
- ru.toxsoft.skt.vetrol.ws.core
+ org.toxsoft.skf.reports.chart.utils.gui,
+ org.toxsoft.skf.reports.lib,
+ org.toxsoft.skf.reports.gui
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.mnemos
 Bundle-ActivationPolicy: lazy

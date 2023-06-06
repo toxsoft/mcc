@@ -23,14 +23,13 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
 import org.toxsoft.core.tslib.gw.gwid.Gwid;
 import org.toxsoft.core.tslib.gw.gwid.GwidList;
 import org.toxsoft.core.tslib.utils.Pair;
+import org.toxsoft.skf.reports.gui.utils.ReportTemplateUtilities;
+import org.toxsoft.skf.reports.templates.service.IVtGraphParam;
 import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.hqserv.IDtoQueryParam;
 import org.toxsoft.uskat.core.api.objserv.ISkObject;
 import org.toxsoft.uskat.core.api.rtdserv.ISkReadCurrDataChannel;
 import org.toxsoft.uskat.core.impl.dto.DtoQueryParam;
-
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtGraphParam;
-import ru.toxsoft.skt.vetrol.ws.core.templates.utils.ReportTemplateUtilities;
 
 /**
  * Набор данных для графика реального времени.

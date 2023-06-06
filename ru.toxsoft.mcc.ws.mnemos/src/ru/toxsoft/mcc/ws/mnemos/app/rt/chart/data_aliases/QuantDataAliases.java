@@ -7,7 +7,6 @@ import org.toxsoft.uskat.core.gui.km5.KM5Utils;
 
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.DataNameAliasesList;
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.KM5DataAliasesContributor;
-import ru.toxsoft.skt.vetrol.ws.core.IVtWsCoreConstants;
 
 /**
  * The libtary quant.
@@ -33,7 +32,8 @@ public class QuantDataAliases
 
   @Override
   protected void doInitWin( IEclipseContext aWinContext ) {
-    IVtWsCoreConstants.init( aWinContext );
+    // 2023-06-06 mvk TODO: ???
+    // IVtWsCoreConstants.init( aWinContext );
   }
 
 }

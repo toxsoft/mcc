@@ -1,8 +1,6 @@
 package ru.toxsoft.mcc.ws.exe.e4.addons;
 
-import static org.toxsoft.core.tsgui.graphics.icons.EIconSize.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
-import static ru.toxsoft.skt.vetrol.ws.core.IVtWsCoreConstants.*;
 
 import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.ui.model.application.MApplication;
@@ -10,6 +8,7 @@ import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.swt.widgets.Display;
 import org.toxsoft.core.tsgui.bricks.quant.IQuantRegistrator;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
 import org.toxsoft.core.tsgui.graphics.icons.impl.TsIconManagerUtils;
 import org.toxsoft.core.tsgui.mws.Activator;
 import org.toxsoft.core.tsgui.mws.IMwsCoreConstants;
@@ -22,9 +21,12 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.IntArrayList;
 import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
 import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
 import org.toxsoft.skf.onews.gui.QuantSkOneWsGui;
+import org.toxsoft.skf.reports.gui.IReportsGuiConstants;
 import org.toxsoft.skf.users.gui.QuantSkUsersGui;
 import org.toxsoft.uskat.concurrent.S5SynchronizedConnection;
+import org.toxsoft.uskat.core.api.users.ISkLoggedUserInfo;
 import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.QuantSkCoreGui;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.impl.ISkCoreConfigConstants;
 import org.toxsoft.uskat.s5.client.IS5ConnectionParams;
@@ -54,6 +56,8 @@ public class AddonMccWsExe
     // регистрация М5 моделей работы с пользователями и правами доступа
     aQuantRegistrator.registerQuant( new QuantSkUsersGui() );
     aQuantRegistrator.registerQuant( new QuantSkOneWsGui() );
+    // 2023-06-06 mvk TODO: ???
+    aQuantRegistrator.registerQuant( new QuantSkCoreGui() );
   }
 
   @Override
@@ -62,8 +66,8 @@ public class AddonMccWsExe
     MApplication app = aAppContext.get( MApplication.class );
     EModelService modelService = aAppContext.get( EModelService.class );
     MTrimmedWindow mainWindow = (MTrimmedWindow)modelService.find( IMwsCoreConstants.MWSID_WINDOW_MAIN, app );
-    mainWindow.setIconURI( TsIconManagerUtils.makeStdIconUriString( ru.toxsoft.skt.vetrol.ws.core.Activator.PLUGIN_ID,
-        ICONID_APP_ICON, IS_48X48 ) );
+    mainWindow.setIconURI( TsIconManagerUtils.makeStdIconUriString( org.toxsoft.skf.reports.gui.Activator.PLUGIN_ID,
+        IReportsGuiConstants.ICONID_APP_ICON, EIconSize.IS_48X48 ) );
   }
 
   @Override
@@ -113,6 +117,8 @@ public class AddonMccWsExe
       ISkConnection syncConn = S5SynchronizedConnection.createSynchronizedConnection( aConn );
       syncConn.open( ctx );
       LoggerUtils.defaultLogger().info( "Connection opened" ); //$NON-NLS-1$
+      ISkLoggedUserInfo userInfo = aConn.coreApi().getCurrentUserInfo();
+      LoggerUtils.defaultLogger().info( "%s", userInfo );
     }
     catch( Exception ex ) {
       LoggerUtils.errorLogger().error( ex );

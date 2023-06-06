@@ -35,20 +35,20 @@ import org.toxsoft.core.tslib.coll.primtypes.IStringMap;
 import org.toxsoft.core.tslib.coll.primtypes.IStringMapEdit;
 import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
 import org.toxsoft.core.tslib.utils.Pair;
+import org.toxsoft.skf.reports.chart.utils.gui.console.ConsoleWindow;
+import org.toxsoft.skf.reports.chart.utils.gui.console.TimeAxisTuner;
+import org.toxsoft.skf.reports.chart.utils.gui.panels.*;
+import org.toxsoft.skf.reports.chart.utils.gui.tools.axes_markup.AxisMarkupTuner;
+import org.toxsoft.skf.reports.chart.utils.gui.tools.axes_markup.MarkUpInfo;
+import org.toxsoft.skf.reports.gui.utils.ReportTemplateUtilities;
+import org.toxsoft.skf.reports.templates.service.IVtGraphParam;
+import org.toxsoft.skf.reports.templates.service.IVtGraphTemplate;
 import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.hqserv.*;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
 import ru.toxsoft.mcc.ws.mnemos.Activator;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.*;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.console.ConsoleWindow;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.console.TimeAxisTuner;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.tools.axes_markup.AxisMarkupTuner;
-import ru.toxsoft.skt.vetrol.ws.core.chart.utils.tools.axes_markup.MarkUpInfo;
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtGraphParam;
-import ru.toxsoft.skt.vetrol.ws.core.templates.api.IVtGraphTemplate;
-import ru.toxsoft.skt.vetrol.ws.core.templates.utils.ReportTemplateUtilities;
 
 /**
  * Компонента, отображающая график одного параметра в реальном времени. <br>

@@ -14,11 +14,11 @@ import org.toxsoft.core.tsgui.valed.controls.av.ValedAvStringText;
 import org.toxsoft.core.tslib.av.EAtomicType;
 import org.toxsoft.core.tslib.av.IAtomicValue;
 import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.skf.reports.gui.panels.valed.ValedAvValobjGwidEditor;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 
 import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.IDataNameAlias;
-import ru.toxsoft.skt.vetrol.ws.core.templates.gui.valed.ValedAvValobjGwidEditor;
 
 /**
  * M5-model of {@link IDataNameAlias}.
