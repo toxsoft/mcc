@@ -21,7 +21,6 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.IntArrayList;
 import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
 import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
 import org.toxsoft.skf.onews.gui.QuantSkOneWsGui;
-import org.toxsoft.skf.reports.gui.IReportsGuiConstants;
 import org.toxsoft.skf.users.gui.QuantSkUsersGui;
 import org.toxsoft.uskat.concurrent.S5SynchronizedConnection;
 import org.toxsoft.uskat.core.api.users.ISkLoggedUserInfo;
@@ -35,6 +34,8 @@ import org.toxsoft.uskat.s5.common.S5Host;
 import org.toxsoft.uskat.s5.common.S5HostList;
 import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
 import org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable;
+
+import ru.toxsoft.mcc.ws.exe.IMccWsExeConstants;
 
 /**
  * Application addon.
@@ -66,8 +67,8 @@ public class AddonMccWsExe
     MApplication app = aAppContext.get( MApplication.class );
     EModelService modelService = aAppContext.get( EModelService.class );
     MTrimmedWindow mainWindow = (MTrimmedWindow)modelService.find( IMwsCoreConstants.MWSID_WINDOW_MAIN, app );
-    mainWindow.setIconURI( TsIconManagerUtils.makeStdIconUriString( org.toxsoft.skf.reports.gui.Activator.PLUGIN_ID,
-        IReportsGuiConstants.ICONID_APP_ICON, EIconSize.IS_48X48 ) );
+    mainWindow.setIconURI( TsIconManagerUtils.makeStdIconUriString( ru.toxsoft.mcc.ws.exe.Activator.PLUGIN_ID,
+        IMccWsExeConstants.ICONID_APP_ICON, EIconSize.IS_48X48 ) );
   }
 
   @Override

@@ -32,9 +32,9 @@
       startupMessageRect="7,252,445,20"
       startupForegroundColor="000000" />
    <launcher name="mcc">
-      <linux icon="/ru.toxsoft.mcc.ws.core/icons/app-icon-128.xpm"/>
+      <linux icon="/ru.toxsoft.mcc.ws.exe/icons/app-icon-128.xpm"/>
       <win useIco="true">
-         <ico path="/ru.toxsoft.mcc.ws.core/icons/VETROL-logo.ico"/>
+         <ico path="/ru.toxsoft.mcc.ws.exe/icons/app-icon.ico"/>
          <bmp/>
       </win>
    </launcher>
