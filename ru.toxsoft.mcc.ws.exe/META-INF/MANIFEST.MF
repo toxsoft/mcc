@@ -26,7 +26,8 @@ Require-Bundle: javax.annotation,
  org.toxsoft.skf.dq.s5,
  org.toxsoft.skf.alarms.lib,
  org.toxsoft.skf.alarms.s5,
- org.toxsoft.skf.reports.gui
+ org.toxsoft.skf.reports.gui,
+ org.toxsoft.skf.journals.mws
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: ru.toxsoft.mcc.ws.exe
 Bundle-ActivationPolicy: lazy
