@@ -2,47 +2,52 @@ package ru.toxsoft.mcc.ws.exe.e4.addons;
 
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 
-import org.eclipse.e4.core.contexts.*;
-import org.eclipse.e4.ui.model.application.*;
-import org.eclipse.e4.ui.model.application.ui.basic.*;
-import org.eclipse.e4.ui.workbench.modeling.*;
-import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.*;
-import org.toxsoft.core.tsgui.bricks.quant.*;
-import org.toxsoft.core.tsgui.graphics.icons.*;
-import org.toxsoft.core.tsgui.graphics.icons.impl.*;
-import org.toxsoft.core.tsgui.mws.*;
+import org.eclipse.e4.core.contexts.IEclipseContext;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.model.application.ui.basic.MTrimmedWindow;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
+import org.eclipse.swt.widgets.Display;
+import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
+import org.toxsoft.core.tsgui.bricks.quant.IQuantRegistrator;
+import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
+import org.toxsoft.core.tsgui.graphics.icons.impl.TsIconManagerUtils;
 import org.toxsoft.core.tsgui.mws.Activator;
-import org.toxsoft.core.tsgui.mws.bases.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.bricks.ctx.*;
-import org.toxsoft.core.tslib.bricks.ctx.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.core.tsgui.mws.IMwsCoreConstants;
+import org.toxsoft.core.tsgui.mws.bases.MwsAbstractAddon;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
+import org.toxsoft.core.tslib.bricks.ctx.impl.TsContext;
+import org.toxsoft.core.tslib.coll.primtypes.IIntList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.IntArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.utils.TsLibUtils;
+import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
 import org.toxsoft.skf.journals.e4.uiparts.devel.*;
-import org.toxsoft.skf.onews.gui.*;
-import org.toxsoft.skf.users.gui.*;
-import org.toxsoft.uskat.concurrent.*;
-import org.toxsoft.uskat.core.api.evserv.*;
-import org.toxsoft.uskat.core.api.objserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.api.sysdescr.dto.*;
-import org.toxsoft.uskat.core.api.users.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.gui.*;
-import org.toxsoft.uskat.core.gui.conn.*;
-import org.toxsoft.uskat.core.impl.*;
-import org.toxsoft.uskat.s5.client.*;
-import org.toxsoft.uskat.s5.client.remote.*;
-import org.toxsoft.uskat.s5.common.*;
-import org.toxsoft.uskat.s5.server.*;
-import org.toxsoft.uskat.s5.utils.threads.impl.*;
+import org.toxsoft.skf.onews.gui.QuantSkOneWsGui;
+import org.toxsoft.skf.users.gui.QuantSkUsersGui;
+import org.toxsoft.uskat.concurrent.S5SynchronizedConnection;
+import org.toxsoft.uskat.core.api.evserv.SkEvent;
+import org.toxsoft.uskat.core.api.objserv.ISkObject;
+import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
+import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoEventInfo;
+import org.toxsoft.uskat.core.api.users.ISkLoggedUserInfo;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.gui.QuantSkCoreGui;
+import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.toxsoft.uskat.core.gui.conn.SkSwtThreadSeparator;
+import org.toxsoft.uskat.core.impl.ISkCoreConfigConstants;
+import org.toxsoft.uskat.s5.client.IS5ConnectionParams;
+import org.toxsoft.uskat.s5.client.remote.S5RemoteBackendProvider;
+import org.toxsoft.uskat.s5.common.S5Host;
+import org.toxsoft.uskat.s5.common.S5HostList;
+import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
+import org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable;
 
-import ru.toxsoft.mcc.ws.exe.*;
+import ru.toxsoft.mcc.ws.exe.IMccWsExeConstants;
 
 /**
  * Application addon.
@@ -547,11 +552,13 @@ public class AddonMccWsExe
     IS5ConnectionParams.OP_CURRDATA_TIMEOUT.setValue( ctx.params(), avInt( currdataTimeout ) );
     IS5ConnectionParams.OP_HISTDATA_TIMEOUT.setValue( ctx.params(), avInt( histdataTimeout ) );
     IS5ConnectionParams.REF_CONNECTION_LOCK.setRef( ctx, new S5Lockable() );
-    // 2022-10-25 mvk обязательно для RCP
-    IS5ConnectionParams.REF_CLASSLOADER.setRef( ctx, getClass().getClassLoader() );
 
-    ISkCoreConfigConstants.REFDEF_THREAD_SEPARATOR.setRef( ctx, SwtThreadSeparatorService.CREATOR );
-    SwtThreadSeparatorService.REF_DISPLAY.setRef( ctx, aWinContext.get( Display.class ) );
+    // 2022-10-25 mvk обязательно для RCP
+    Display display = aWinContext.get( Display.class );
+    IS5ConnectionParams.REF_CLASSLOADER.setRef( ctx, getClass().getClassLoader() );
+    ISkCoreConfigConstants.REFDEF_THREAD_SEPARATOR.setRef( ctx, SkSwtThreadSeparator.CREATOR );
+    SkSwtThreadSeparator.REF_DISPLAY.setRef( ctx, display );
+    ISkCoreConfigConstants.REFDEF_API_THREAD.setRef( ctx, display.getThread() );
 
     try {
       ISkConnection syncConn = S5SynchronizedConnection.createSynchronizedConnection( aConn );

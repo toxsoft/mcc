@@ -163,8 +163,9 @@ public class RtChartPanel
       if( q.state() == ESkQueryState.READY ) {
         int i = 0;
         IList<ITimedList<?>> requestAnswer = ReportTemplateUtilities.createResult( processData, queryParams );
+        Display display2 = aContext.get( Display.class );
         for( IVtGraphParam graphParam : aGraphTemplate.listParams() ) {
-          graphDataSetList.add( new RtGraphDataSet( graphParam, serverApi, requestAnswer.get( i++ ) ) );
+          graphDataSetList.add( new RtGraphDataSet( display2, graphParam, serverApi, requestAnswer.get( i++ ) ) );
         }
         init();
         start();
