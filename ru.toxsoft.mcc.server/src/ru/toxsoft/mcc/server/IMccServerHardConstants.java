@@ -16,24 +16,34 @@ public interface IMccServerHardConstants
     extends IS5ServerHardConstants {
 
   /**
+   * Префикс проекта mcc.
+   */
+  String PROJECT_PREFIX = "mcc";
+
+  /**
    * Идентификатор сервера.
    */
-  String MCC_SERVER_ID = "mcc.server";
+  String SERVER_ID = PROJECT_PREFIX + ".server";
 
   /**
    * Имя сервера.
    */
-  String MCC_SERVER_NAME = STR_N_MCC_SERVER_INFO;
+  String SERVER_NAME = STR_N_SERVER_INFO;
 
   /**
    * Описание сервера
    */
-  String MCC_SERVER_DESCR = STR_D_MCC_SERVER_INFO;
+  String SERVER_DESCR = STR_D_SERVER_INFO;
 
   /**
    * Номер версии
    */
-  TsVersion MCC_SERVER_VERSION = new TsVersion( 2, 3, getBuildTime() );
+  TsVersion SERVER_VERSION = new TsVersion( 2, 3, getBuildTime() );
+
+  /**
+   * Имя схемы базы данных сервера в СУБД (например, mysql)
+   */
+  String DB_SCHEME_NAME = PROJECT_PREFIX;
 
   // ------------------------------------------------------------------------------------------------
   // Параметры подключения к серверу
