@@ -149,12 +149,6 @@
             <logger category="org.jboss.security.auth.spi.DatabaseServerLoginModule">
                 <level name="TRACE"/>
             </logger>
-            <logger category="ru.toxsoft.s5.server.login.S5ServerLoginModule">
-                <level name="TRACE"/>
-            </logger>
-            <logger category="ru.toxsoft.s5.server.login.S5ServerLoginModuleFoo">
-                <level name="TRACE"/>
-            </logger>
             <logger category="org.hibernate.engine.internal.StatefulPersistenceContext">
                 <level name="ERROR"/>
             </logger>
@@ -167,139 +161,64 @@
             <logger category="io.undertow.server.HttpServerExchange">
                 <level name="ERROR"/>
             </logger>
-            <logger category="ru">
+
+            <!-- TODO: -->
+            <logger category="org.toxsoft">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.toxsoft.core.pas.server.PasServer">
+                <level name="ERROR"/>
+            </logger>
+            <logger category="org.toxsoft.uskat.s5.utils.threads.impl.S5LockControl">
                 <level name="ALL"/>
             </logger>
-            <logger category="ru.toxsoft.s5.server">
-                <level name="ALL"/>
-            </logger>
-            <logger category="ru.toxsoft.s5.common.services.srvmsgs.impl.S5JmsMonitor">
-                <level name="ALL"/>
-            </logger>
-            <logger category="ru.uskat.s5.server.transactions.S5TransactionManager">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.uskat.s5.client.S5BackendDoJobThread">
-                <level name="ERROR"/>
-            </logger>
-
-            <!-- disable DOJOB log start -->
-            <logger category="ru.toxsoft.tslib.pas">
-                <level name="OFF"/>
-            </logger>
-            <logger category="ru.uskat.s5.server.sessions.pas">
-                <level name="INFO"/>
-            </logger>
-            <logger category="ru.uskat.s5.server.sessions.S5SessionManager">
-                <level name="INFO"/>
-            </logger>
-            <logger category="ru.uskat.s5.server.backend.supports.commands">
-                <level name="INFO"/>
-            </logger>
-            <logger category="ru.uskat.s5.ext.gateways">
-                <level name="INFO"/>
-            </logger>
-            <!-- disable DOJOB log finish -->
-
-            <logger category="ru.uskat.s5.server.backend.supports.objects.S5ObjectsSQL">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.uskat.s5.server.sequences.impl.S5SequenceSQL">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.uskat.s5.client.remote.addons.S5RealtimeRemote">
-                <level name="INFO"/>
-            </logger>            
-            <logger category="ru.uskat.s5.server.backend.supports.links.S5BackendLinksSingleton">
-                <level name="INFO"/>
-            </logger>            
-            <logger category="ru.uskat.s5.server.backend.supports.currdata.S5BackendCurrDataSingleton">
-                <level name="WARN"/>
-            </logger>            
-            <logger category="ru.uskat.s5.server.backend.supports.histdata.S5BackendHistDataSingleton">
-                <level name="WARN"/>
-            </logger>            
-            <logger category="ru.uskat.s5.server.backend.supports.commands.impl.S5BackendCommandSingleton">
-                <level name="INFO"/>
-            </logger>            
-            <logger category="ru.uskat.s5.server.backend.supports.events.impl.S5BackendEventSingleton">
-                <level name="INFO"/>
-            </logger>            
-            <logger category="ru.uskat.s5.ext.dataquality.backend.supports.S5BackendDataQualitySingleton">
-                <level name="INFO"/>
-            </logger>
-
-            <logger category="ru.uskat.s5.server.backend.addons.realtime.S5RealtimeLocal">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.uskat.s5.ext.reports.backend.addons.S5ReportSession">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.uskat.s5.ext.dataquality.backend.addons.S5DataQualitySession">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.uskat.s5.server.backend.impl.S5BackendSession">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.uskat.s5.server.backend.addons.realtime.S5RealtimeSession">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.uskat.s5.server.backend.addons.batch.S5BatchOperationsSession">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.sitrol.backend.addons.topology.MetroTopologySession">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.sitrol.backend.addons.schedules.MetroSchedulesSession">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.sitrol.backend.addons.dispatch.MetroDispatchSession">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.sitrol.backend.addons.predict.MetroPredictSession">
+            <logger category="org.toxsoft.uskat.s5.server.sessions.pas.S5SessionMessenger">
                 <level name="ERROR"/>
             </logger>
             
-            <logger category="rootHistData">
-                <level name="ERROR"/>
-            </logger>
             <logger category="S5SequenceWriter">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="S5SequenceUniter">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="S5SequenceValidator">
-                <level name="ERROR"/>
-            </logger>
-            <logger category="ru.sitrol.server.services">
                 <level name="INFO"/>
             </logger>
-            <logger category="ru.sitrol.server.services.schedules">
-                <level name="ERROR"/>
+            <logger category="S5SequenceUniter">
+                <level name="INFO"/>
             </logger>
-            <logger category="ru.sitrol.server.services.schedules.impl.MetroRoutePlan">
-                <level name="ERROR"/>
+            <logger category="S5SequencePartition">
+                <level name="ALL"/>
             </logger>
-            <logger category="ru.sitrol.server.services.schedules.MetroTrainScheduleServiceSingleton">
-                <level name="ERROR"/>
+            <logger category="S5SequenceValidator">
+                <level name="INFO"/>
             </logger>
-            <logger category="ru.sitrol.server.services.time.impl">
-                <level name="ERROR"/>
+            
+            
+            <logger category="org.toxsoft.uskat.s5.server.sequences.impl.S5SequenceSQL">
+                <level name="ALL"/>
             </logger>
-            <logger category="ru.sitrol.server.services.time.impl.MetroTrainTimeServiceSingleton">
-                <level name="ERROR"/>
+            
+
+            <logger category="org.toxsoft.uskat.s5.utils.threads.impl.S5ReadThreadExecutor">
+                <level name="ALL"/>
             </logger>
-            <logger category="ru.sitrol.server.services.time.impl.MetroTrainTimeLineMeter">
-                <level name="ERROR"/>
+            
+
+            <logger category="org.toxsoft.uskat.s5.server.backend.addons.events.S5BaEventsRemote">
+                <level name="INFO"/>
             </logger>
-            <logger category="ru.sitrol.server.services.dispatch">
-                <level name="ERROR"/>
+            <logger category="org.toxsoft.uskat.s5.server.backend.addons.events.S5BaEventsSession">
+                <level name="INFO"/>
             </logger>
-            <logger category="ru.sitrol.server.services.dispatch.monitor">
-                <level name="ERROR"/>
+            <logger category="org.toxsoft.uskat.s5.server.backend.supports.events.impl.S5BackendEventSingleton">
+                <level name="INFO"/>
             </logger>
-            <logger category="ru.sitrol.server.services.dispatch.monitor.impl.MetroExecutedTraintableWriter">
+
+            <logger category="org.toxsoft.uskat.s5.server.backend.supports.commands.impl.S5BackendCommandSingleton">
+                <level name="INFO"/>
+            </logger>
+            
+            <logger category="org.toxsoft.uskat.s5.server.backend.supports.histdata.impl.S5BackendHistDataSingleton">
+                <level name="INFO"/>
+            </logger>
+            
+            <logger category="org.toxsoft.uskat.s5.server.backend.supports.queries.impl.S5BackendQueriesSingleton">
                 <level name="INFO"/>
             </logger>
             <root-logger>
@@ -377,6 +296,7 @@
                     <managed-executor-service name="s5-service-dojob" jndi-name="java:jboss/ee/concurrency/executor/s5/service/dojob" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-read" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/read" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-write" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/write" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
+                    <managed-executor-service name="s5-sequence-partition" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/partition" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-union" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/union" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-validation" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/validation" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-commands" jndi-name="java:jboss/ee/concurrency/executor/s5/commands" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100" keepalive-time="5000" queue-length="100"/>

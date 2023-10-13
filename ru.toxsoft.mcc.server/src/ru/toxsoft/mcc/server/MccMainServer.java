@@ -1,5 +1,6 @@
 package ru.toxsoft.mcc.server;
 
+import static org.toxsoft.uskat.s5.server.IS5ServerHardConstants.*;
 import static ru.toxsoft.mcc.server.IMccServerHardConstants.*;
 
 import org.toxsoft.core.tslib.av.EAtomicType;
@@ -34,7 +35,7 @@ public class MccMainServer
    * Конструктор
    */
   public MccMainServer() {
-    super( new S5Module( MCC_SERVER_ID, MCC_SERVER_NAME, MCC_SERVER_DESCR, MCC_SERVER_VERSION ) );
+    super( new S5Module( SERVER_ID, SERVER_NAME, SERVER_DESCR, SERVER_VERSION ) );
   }
 
   // ------------------------------------------------------------------------------------
@@ -42,11 +43,14 @@ public class MccMainServer
   //
   @Override
   protected IOptionSet doProjectSpecificParams() {
-    // Параметры sitrol
+    // Параметры бекенда
     IOptionSetEdit retValue = new OptionSet();
+    // Схема базы данных сервера
+    retValue.setStr( OP_BACKEND_DB_SCHEME_NAME, DB_SCHEME_NAME );
     // TODO: 2020-09-02 mvkd !!!
     // Запрет формирования хранимых данных (исторические данные, история команд и события)
     // retValue.setBool( OP_BACKEND_DATA_WRITE_DISABLE, true );
+
     return retValue;
   }
 

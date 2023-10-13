@@ -8,7 +8,7 @@ package ru.toxsoft.mcc.server;
 @SuppressWarnings( "nls" )
 interface IMccResources {
 
-  String STR_N_MCC_SERVER_INFO = "MCC server";
-  String STR_D_MCC_SERVER_INFO = "АСУТП Ветрол МосКокс";
+  String STR_N_SERVER_INFO = "MCC server";
+  String STR_D_SERVER_INFO = "АСУТП Ветрол МосКокс";
 
 }

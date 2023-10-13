@@ -169,6 +169,9 @@
             <logger category="S5SequenceUniter">
                 <level name="INFO"/>
             </logger>
+            <logger category="S5SequencePartition">
+                <level name="ALL"/>
+            </logger>
             <logger category="S5SequenceValidator">
                 <level name="INFO"/>
             </logger>
@@ -183,6 +186,20 @@
                 <level name="ALL"/>
             </logger>
             
+
+            <logger category="org.toxsoft.uskat.s5.server.backend.addons.events.S5BaEventsRemote">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.toxsoft.uskat.s5.server.backend.addons.events.S5BaEventsSession">
+                <level name="INFO"/>
+            </logger>
+            <logger category="org.toxsoft.uskat.s5.server.backend.supports.events.impl.S5BackendEventSingleton">
+                <level name="INFO"/>
+            </logger>
+
+            <logger category="org.toxsoft.uskat.s5.server.backend.supports.commands.impl.S5BackendCommandSingleton">
+                <level name="INFO"/>
+            </logger>
             
             <logger category="org.toxsoft.uskat.s5.server.backend.supports.histdata.impl.S5BackendHistDataSingleton">
                 <level name="INFO"/>
@@ -268,6 +285,7 @@
                     <managed-executor-service name="s5-sequence-read" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/read" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-write" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/write" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-union" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/union" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
+                    <managed-executor-service name="s5-sequence-partition" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/partition" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-validation" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/validation" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-commands" jndi-name="java:jboss/ee/concurrency/executor/s5/commands" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100" keepalive-time="5000" queue-length="100"/>
                 </managed-executor-services>
