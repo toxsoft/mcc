@@ -28,13 +28,12 @@ import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
 import org.toxsoft.core.tslib.bricks.time.ITimeInterval;
 import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.gw.skid.Skid;
 import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
 import org.toxsoft.skf.alarms.lib.*;
 import org.toxsoft.skf.alarms.lib.impl.SkAlarmFlacon;
 import org.toxsoft.skf.alarms.s5.supports.S5AlarmDefEntity;
-import org.toxsoft.uskat.core.api.users.ISkUser;
 import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
 /**
  * Панель отображения и квитирования списка Алармов
@@ -153,9 +152,8 @@ public class Ts4AlarmPanel
               }
               case ACTID_GENERATE_TEST_ALARM: {
                 // TODO
-                ISkUser currUser = S5ConnectionUtils.getConnectedUser( skConn.coreApi() );
-
-                alarmService.generateAlarm( TEST_ALARM_ID, currUser.skid(), currUser.skid(), (byte)0,
+                Skid currUser = skConn.coreApi().getCurrentUserInfo().userSkid();
+                alarmService.generateAlarm( TEST_ALARM_ID, currUser, currUser, (byte)0,
                     new SkAlarmFlacon( new OptionSet() ) );
                 break;
               }

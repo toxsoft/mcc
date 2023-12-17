@@ -34,7 +34,6 @@ import org.toxsoft.skf.reports.templates.service.IVtGraphTemplate;
 import org.toxsoft.uskat.core.ISkCoreApi;
 import org.toxsoft.uskat.core.api.users.ISkUser;
 import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.s5.utils.S5ConnectionUtils;
 
 /**
  * Панель отображения графиков реального времени.<br>
@@ -75,7 +74,7 @@ public class ChartsTabPanel
     this.setLayout( new BorderLayout() );
     conn = aConnection;
     top = isTop;
-    ISkUser currUser = S5ConnectionUtils.getConnectedUser( aConnection.coreApi() );
+    Skid currUser = aConnection.coreApi().getCurrentUserInfo().userSkid();
     userSkid = new Skid( ISkUser.CLASS_ID, currUser.strid() );
     userGwid = Gwid.createObj( ISkUser.CLASS_ID, currUser.strid() );
 
