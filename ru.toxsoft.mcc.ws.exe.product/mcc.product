@@ -159,8 +159,13 @@
       <plugin id="org.toxsoft.skf.dq.s5"/>
       <plugin id="org.toxsoft.skf.ggprefs.gui"/>
       <plugin id="org.toxsoft.skf.ggprefs.lib"/>
+      <plugin id="org.toxsoft.skf.journals.mws"/>
       <plugin id="org.toxsoft.skf.onews.gui"/>
       <plugin id="org.toxsoft.skf.onews.lib"/>
+      <plugin id="org.toxsoft.skf.reports.chart.utils.gui"/>
+      <plugin id="org.toxsoft.skf.reports.gui"/>
+      <plugin id="org.toxsoft.skf.reports.lib"/>
+      <plugin id="org.toxsoft.skf.reports.mws"/>
       <plugin id="org.toxsoft.skf.users.gui"/>
       <plugin id="org.toxsoft.uskat.core"/>
       <plugin id="org.toxsoft.uskat.core.gui"/>
@@ -172,9 +177,6 @@
       <plugin id="org.w3c.dom.svg"/>
       <plugin id="ru.toxsoft.mcc.ws.exe"/>
       <plugin id="ru.toxsoft.mcc.ws.mnemos"/>
-      <plugin id="ru.toxsoft.skt.vetrol.ws.core"/>
-      <plugin id="ru.toxsoft.skt.vetrol.ws.journals"/>
-      <plugin id="ru.toxsoft.skt.vetrol.ws.reports"/>
    </plugins>
 
    <configurations>
