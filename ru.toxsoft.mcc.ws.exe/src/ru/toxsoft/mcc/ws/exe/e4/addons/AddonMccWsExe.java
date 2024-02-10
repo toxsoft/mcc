@@ -29,7 +29,6 @@ import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
 import org.toxsoft.skf.journals.e4.uiparts.devel.*;
 import org.toxsoft.skf.onews.gui.QuantSkOneWsGui;
 import org.toxsoft.skf.users.gui.QuantSkUsersGui;
-import org.toxsoft.uskat.concurrent.S5SynchronizedConnection;
 import org.toxsoft.uskat.core.api.evserv.SkEvent;
 import org.toxsoft.uskat.core.api.objserv.ISkObject;
 import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
@@ -38,14 +37,13 @@ import org.toxsoft.uskat.core.api.users.ISkLoggedUserInfo;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.QuantSkCoreGui;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.gui.conn.SkSwtThreadSeparator;
+import org.toxsoft.uskat.core.gui.conn.SkGuiThreadExecutor;
 import org.toxsoft.uskat.core.impl.ISkCoreConfigConstants;
 import org.toxsoft.uskat.s5.client.IS5ConnectionParams;
 import org.toxsoft.uskat.s5.client.remote.S5RemoteBackendProvider;
 import org.toxsoft.uskat.s5.common.S5Host;
 import org.toxsoft.uskat.s5.common.S5HostList;
 import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
-import org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable;
 
 import ru.toxsoft.mcc.ws.exe.IMccWsExeConstants;
 
@@ -551,18 +549,14 @@ public class AddonMccWsExe
     IS5ConnectionParams.OP_FAILURE_TIMEOUT.setValue( ctx.params(), avInt( failureTimeout ) );
     IS5ConnectionParams.OP_CURRDATA_TIMEOUT.setValue( ctx.params(), avInt( currdataTimeout ) );
     IS5ConnectionParams.OP_HISTDATA_TIMEOUT.setValue( ctx.params(), avInt( histdataTimeout ) );
-    IS5ConnectionParams.REF_CONNECTION_LOCK.setRef( ctx, new S5Lockable() );
 
     // 2022-10-25 mvk обязательно для RCP
     Display display = aWinContext.get( Display.class );
     IS5ConnectionParams.REF_CLASSLOADER.setRef( ctx, getClass().getClassLoader() );
-    ISkCoreConfigConstants.REFDEF_THREAD_SEPARATOR.setRef( ctx, SkSwtThreadSeparator.CREATOR );
-    SkSwtThreadSeparator.REF_DISPLAY.setRef( ctx, display );
-    ISkCoreConfigConstants.REFDEF_API_THREAD.setRef( ctx, display.getThread() );
+    ISkCoreConfigConstants.REFDEF_THREAD_EXECUTOR.setRef( ctx, new SkGuiThreadExecutor( display ) );
 
     try {
-      ISkConnection syncConn = S5SynchronizedConnection.createSynchronizedConnection( aConn );
-      syncConn.open( ctx );
+      aConn.open( ctx );
       LoggerUtils.defaultLogger().info( "Connection opened" ); //$NON-NLS-1$
       ISkLoggedUserInfo userInfo = aConn.coreApi().getCurrentUserInfo();
       LoggerUtils.defaultLogger().info( "%s", userInfo );
