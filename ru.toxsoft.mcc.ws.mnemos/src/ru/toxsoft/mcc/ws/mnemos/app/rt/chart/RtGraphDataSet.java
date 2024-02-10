@@ -2,9 +2,7 @@ package ru.toxsoft.mcc.ws.mnemos.app.rt.chart;
 
 import static org.toxsoft.uskat.core.api.hqserv.ISkHistoryQueryServiceConstants.*;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
+import org.eclipse.swt.widgets.Display;
 import org.toxsoft.core.tsgui.chart.api.IG2DataSet;
 import org.toxsoft.core.tslib.av.IAtomicValue;
 import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
@@ -23,6 +21,7 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
 import org.toxsoft.core.tslib.gw.gwid.Gwid;
 import org.toxsoft.core.tslib.gw.gwid.GwidList;
 import org.toxsoft.core.tslib.utils.Pair;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
 import org.toxsoft.skf.reports.gui.utils.ReportTemplateUtilities;
 import org.toxsoft.skf.reports.templates.service.IVtGraphParam;
 import org.toxsoft.uskat.core.ISkCoreApi;
@@ -48,8 +47,9 @@ public class RtGraphDataSet
   private final IListEdit<ITemporalAtomicValue> values   = new ElemArrayList<>();
   private final ISkReadCurrDataChannel          rtDataChannel;
   int                                           maxCount = 600 + 2;
-  private final Timer                           timer    = new Timer();
-  private final IVtGraphParam                   graphParam;
+  // 2023-08-18 mvk ---
+  // private final Timer timer = new Timer();
+  private final IVtGraphParam graphParam;
 
   /**
    * @return graphParam
@@ -64,13 +64,16 @@ public class RtGraphDataSet
   /**
    * Создание набора данных реального времени
    *
+   * @param aDisplay дисплей
    * @param aGraphParam описание rt data
    * @param aServerApi доступ к серверу
    * @param aHistoryData исторические данные этого параметра
    */
 
-  public RtGraphDataSet( IVtGraphParam aGraphParam, ISkCoreApi aServerApi, ITimedList<?> aHistoryData ) {
+  public RtGraphDataSet( Display aDisplay, IVtGraphParam aGraphParam, ISkCoreApi aServerApi,
+      ITimedList<?> aHistoryData ) {
     super( ReportTemplateUtilities.graphDataSetId( aGraphParam ) );
+    TsNullArgumentRtException.checkNull( aDisplay );
     // получим название и описание параметра
     ISkObject myselfObj = aServerApi.objService().find( aGraphParam.gwid().skid() );
     setName( myselfObj.nmName() );
@@ -124,17 +127,31 @@ public class RtGraphDataSet
     IMap<Gwid, ISkReadCurrDataChannel> channelMap =
         aServerApi.rtdService().createReadCurrDataChannels( new GwidList( aGraphParam.gwid() ) );
     rtDataChannel = channelMap.getByKey( aGraphParam.gwid() );
+
     // запускаем таймер
-    TimerTask repeatedTask = new TimerTask() {
+    // 2023-08-18 mvk ---+++
+    // TimerTask repeatedTask = new TimerTask() {
+    //
+    // @Override
+    // public void run() {
+    // // обновим текущее значение
+    // addCurrValue( rtDataChannel.getValue() );
+    // }
+    // };
+    // timer.scheduleAtFixedRate( repeatedTask, 1000L, 1000L );
+    aDisplay.asyncExec( new Runnable() {
 
       @Override
       public void run() {
+        if( !rtDataChannel.isOk() ) {
+          // Канал завершил работу
+          return;
+        }
         // обновим текущее значение
         addCurrValue( rtDataChannel.getValue() );
+        aDisplay.timerExec( 1000, this );
       }
-    };
-    timer.scheduleAtFixedRate( repeatedTask, 1000L, 1000L );
-
+    } );
   }
 
   private synchronized void addCurrValue( IAtomicValue aValue ) {
@@ -160,7 +177,6 @@ public class RtGraphDataSet
   public void close() {
     // закрываем канал текущих данных
     rtDataChannel.close();
-    timer.cancel();
   }
 
   @Override
