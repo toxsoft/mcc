@@ -16,6 +16,7 @@ import org.toxsoft.core.tslib.gw.gwid.Gwid;
 import org.toxsoft.skf.alarms.s5.addons.S5BaAlarmCreator;
 import org.toxsoft.skf.dq.s5.addons.S5BaDataQualityCreator;
 import org.toxsoft.uskat.s5.common.S5Module;
+import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
 import org.toxsoft.uskat.s5.server.backend.addons.IS5BackendAddonCreator;
 import org.toxsoft.uskat.s5.server.backend.supports.histdata.impl.sequences.S5HistdataSequencesUtils10;
 import org.toxsoft.uskat.s5.server.sequences.IS5SequenceImplementation;
@@ -47,6 +48,9 @@ public class MccMainServer
     IOptionSetEdit retValue = new OptionSet();
     // Схема базы данных сервера
     retValue.setStr( OP_BACKEND_DB_SCHEME_NAME, DB_SCHEME_NAME );
+    // Глубина хранения исторических данных
+    retValue.setInt( IS5ServerHardConstants.OP_DB_STORAGE_DEPTH, DB_STORAGE_DEPTH );
+
     // TODO: 2020-09-02 mvkd !!!
     // Запрет формирования хранимых данных (исторические данные, история команд и события)
     // retValue.setBool( OP_BACKEND_DATA_WRITE_DISABLE, true );
