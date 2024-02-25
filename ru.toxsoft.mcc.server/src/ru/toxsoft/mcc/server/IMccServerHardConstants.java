@@ -38,7 +38,7 @@ public interface IMccServerHardConstants
   /**
    * Номер версии
    */
-  TsVersion SERVER_VERSION = new TsVersion( 2, 3, getBuildTime() );
+  TsVersion SERVER_VERSION = new TsVersion( 2, 4, getBuildTime() );
 
   /**
    * Имя схемы базы данных сервера в СУБД (например, mysql)
