@@ -108,7 +108,7 @@ public class MccAlarmGeneratorSingleton
       Skid objId = objIds.get( index );
       addAlarm( "IrreversibleEngineSwitchOnFailure",   HIGH, STR_N_IRREVERSIBLE_ENGINE_SWITCH_ON_FAILURE,      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "IrreversibleEngineSwitchOffFailure",  HIGH, STR_N_IRREVERSIBLE_ENGINE_SWITCH_OFF_FAILURE,       objId,  "rtdSwitchOffFailure",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "IrreversibleEnginePwr",  HIGH, STR_N_IRREVERSIBLE_ENGINE_PWR_FAILURE,       objId, "rtdPwr",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "IrreversibleEnginePwr",  HIGH, STR_N_IRREVERSIBLE_ENGINE_PWR_FAILURE,       objId, "rtdPwr",      value -> equals( value, AV_FALSE  ) );
 
     }
     // @formatter:on
@@ -124,7 +124,7 @@ public class MccAlarmGeneratorSingleton
       addAlarm( "MainSwitchAlarm",           HIGH, STR_N_MAIN_SWITCH_ALARM,      objId,  "rtdMainSwitchAlarm",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "MainSwitchSwitchOnFailure",   HIGH, STR_N_MAIN_SWITCH_SWITCH_ON_FAILURE,      objId,  "rtdSwitchOnFailure",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "MainSwitchSwitchOffFailure",  HIGH, STR_N_MAIN_SWITCH_SWITCH_OFF_FAILURE,      objId,  "rtdSwitchOffFailure",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "MainSwitchPowerControl",  HIGH, STR_N_MAIN_SWITCH_POWER_CONTROL_FAILURE,      objId,  "rtdPowerControl",     value -> equals( value, AV_TRUE  ) );
+      addAlarm( "MainSwitchPowerControl",  HIGH, STR_N_MAIN_SWITCH_POWER_CONTROL_FAILURE,      objId,  "rtdPowerControl",     value -> equals( value, AV_FALSE  ) );
 
     }
 
@@ -144,8 +144,8 @@ public class MccAlarmGeneratorSingleton
       addAlarm( "ReversibleEngineOpenOffFailure",  HIGH, STR_N_REVERSIBLE_ENGINE_OPEN_OFF_FAILURE,       objId,  "rtdOpenOffFailure",      value -> equals( value, AV_TRUE  ) );
       addAlarm( "ReversibleEngineCloseOnFailure",   HIGH, STR_N_REVERSIBLE_ENGINE_CLOSE_ON_FAILURE,      objId,  "rtdCloseOnFailure",     value -> equals( value, AV_TRUE  ) );
       addAlarm( "ReversibleEngineCloseOffFailure",  HIGH, STR_N_REVERSIBLE_ENGINE_CLOSE_OFF_FAILURE,       objId,  "rtdCloseOffFailure",      value -> equals( value, AV_TRUE  ) );
-      addAlarm( "ReversibleEnginePowerControl",  HIGH, STR_N_REVERSIBLE_ENGINE_POWER_CONTROL_FAILURE,      objId,  "rtdPowerControl",     value -> equals( value, AV_TRUE  ) );
-      addAlarm( "ReversibleEnginePwr",  HIGH, STR_N_REVERSIBLE_ENGINE_PWR_FAILURE,       objId,  "rtdPwr",      value -> equals( value, AV_TRUE  ) );
+      addAlarm( "ReversibleEnginePowerControl",  HIGH, STR_N_REVERSIBLE_ENGINE_POWER_CONTROL_FAILURE,      objId,  "rtdPowerControl",     value -> equals( value, AV_FALSE  ) );
+      addAlarm( "ReversibleEnginePwr",  HIGH, STR_N_REVERSIBLE_ENGINE_PWR_FAILURE,       objId,  "rtdPwr",      value -> equals( value, AV_FALSE  ) );
     }
 
     // @formatter:on
