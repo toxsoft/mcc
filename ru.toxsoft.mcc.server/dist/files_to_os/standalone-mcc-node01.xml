@@ -281,6 +281,7 @@
                 </managed-thread-factories>
                 <managed-executor-services>
                     <managed-executor-service name="default" jndi-name="java:jboss/ee/concurrency/executor/default" context-service="default" hung-task-termination-period="0" hung-task-threshold="60000" keepalive-time="5000"/>
+                    <managed-executor-service name="s5-uskat-api" jndi-name="java:jboss/ee/concurrency/executor/s5/uskat/api" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-service-dojob" jndi-name="java:jboss/ee/concurrency/executor/s5/service/dojob" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-read" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/read" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
                     <managed-executor-service name="s5-sequence-write" jndi-name="java:jboss/ee/concurrency/executor/s5/sequence/write" context-service="default" hung-task-threshold="60000" core-threads="24" max-threads="100000" keepalive-time="5000" queue-length="120000"/>
