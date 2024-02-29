@@ -13,6 +13,8 @@ import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.bricks.strid.more.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.core.tslib.utils.progargs.*;
 import org.toxsoft.uskat.core.api.objserv.*;
 
 import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
@@ -25,6 +27,8 @@ import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
  */
 public class MccAnalogInputControl
     extends AbstractMccSchemeControl {
+
+  private final static String ARGID_FONT_SIZE = "FontSize"; //$NON-NLS-1$
 
   /**
    * ИД класса - аналоговый вход
@@ -130,6 +134,26 @@ public class MccAnalogInputControl
    */
   public Control createControl( Composite aParent, int aSwtStyle ) {
     label = new CLabel( aParent, aSwtStyle );
+
+    int fontSize = 0;
+    ProgramArgs pa = tsContext().get( ProgramArgs.class );
+    String sizeStr = ""; //$NON-NLS-1$
+    if( pa.hasArg( ARGID_FONT_SIZE ) ) {
+      try {
+        sizeStr = pa.getArgValue( ARGID_FONT_SIZE );
+        fontSize = Integer.parseInt( sizeStr );
+      }
+      catch( Throwable e ) {
+        LoggerUtils.errorLogger().error( "Недопустимый формат размера шрифта", sizeStr );
+      }
+    }
+
+    if( fontSize != 0 ) {
+      FontData fd = label.getFont().getFontData()[0];
+      Font f = fontManager().getFont( fd.getName(), fontSize, fd.getStyle() );
+      label.setFont( f );
+    }
+
     label.addControlListener( new ControlListener() {
 
       @Override
@@ -180,6 +204,9 @@ public class MccAnalogInputControl
       }
     }
     label.setText( AvUtils.printAv( formatString( value.atomicType() ), value ) );
+    // if( !value.isAssigned() ) {
+    // label.setText( "234.56" );
+    // }
     update();
     label.redraw();
   }
