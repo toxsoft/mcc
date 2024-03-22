@@ -2,41 +2,35 @@ package ru.toxsoft.mcc.ws.mnemos.app.controls;
 
 import static ru.toxsoft.mcc.ws.mnemos.app.controls.IVjResources.*;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.*;
+import org.eclipse.swt.custom.*;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
-import org.toxsoft.core.tsgui.dialogs.ETsDialogCode;
-import org.toxsoft.core.tsgui.dialogs.TsDialogUtils;
-import org.toxsoft.core.tsgui.graphics.icons.EIconSize;
-import org.toxsoft.core.tsgui.panels.TsPanel;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
-import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.uskat.core.api.objserv.ISkObject;
-import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
-import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoAttrInfo;
-import org.toxsoft.uskat.core.api.sysdescr.dto.IDtoRtdataInfo;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.core.utils.ISkConnected;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.dialogs.*;
+import org.toxsoft.core.tsgui.graphics.icons.*;
+import org.toxsoft.core.tsgui.panels.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.uskat.core.api.objserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
+import org.toxsoft.uskat.core.api.sysdescr.dto.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.gui.conn.*;
+import org.toxsoft.uskat.core.utils.*;
 
-import ru.toxsoft.mcc.ws.mnemos.app.dialogs.MccDialogContext;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.MccRtDataProvider;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.IDataNameAlias;
-import ru.toxsoft.mcc.ws.mnemos.app.utils.RtDataAliasHelper;
-import ru.toxsoft.mcc.ws.mnemos.app.valed.MccValedAvBooleanCheckCommand;
-import ru.toxsoft.mcc.ws.mnemos.app.valed.ValedBooleanCheckAdv;
+import ru.toxsoft.mcc.ws.mnemos.app.dialogs.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.mnemos.app.utils.*;
+import ru.toxsoft.mcc.ws.mnemos.app.valed.*;
 
 /**
  * Базовый класс панелей для диалогов настройки проекта МосКокс.
@@ -306,7 +300,7 @@ public abstract class AbstractMccDialogPanel
    *
    * @param aParent Composite - родительская компонента
    * @param aDataId String - ИД данного
-   * @param aFalseImageId String- ИД картинки для значения <b>true</b>
+   * @param aFalseImageId String- ИД картинки для значения <b>false</b>
    * @param aTrueImageId String - ИД картинки для значения <b>true</b>
    * @return MccRtBooleanLabel - созданный контроль
    */
