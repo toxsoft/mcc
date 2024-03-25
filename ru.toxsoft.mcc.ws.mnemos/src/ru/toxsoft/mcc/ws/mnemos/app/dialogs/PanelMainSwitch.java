@@ -88,7 +88,7 @@ public class PanelMainSwitch
     createRtBooleanLabel( comp, "rtdMainSwitchAlarm", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
     // createRtBooleanLabel( comp, "rtdEmergencyStop", ICONID_GRAY_LAMP, ICONID_RED_LAMP );
     // createRtBooleanLabel( comp, "rtdEmergencyStop", ICONID_RED_LAMP, ICONID_GRAY_LAMP );
-    Gwid gwid = Gwid.createObj( "mcc.MainSwitch", "n2MainSwitch" ); //$NON-NLS-1$ //$NON-NLS-2$
+    Gwid gwid = Gwid.createRtdata( "mcc.MainSwitch", "n2MainSwitch", "rtdEmergencyStop" ); //$NON-NLS-1$ //$NON-NLS-2$
     createRtBooleanLabel( comp, gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
     // Gwid gwid = Gwid.createRtdata( "mcc.DigInput", "n2DI_AirInGED_Norm", "rtdCurrentValue" );

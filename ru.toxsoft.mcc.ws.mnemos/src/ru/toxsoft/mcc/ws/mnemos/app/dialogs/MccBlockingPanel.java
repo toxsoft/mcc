@@ -53,7 +53,7 @@ public class MccBlockingPanel
     // gwid = Gwid.createRtdata( CLSID_CTRL_SYSTEM, "n2CtrlSystem", "rtdEmergencyStop" ); //$NON-NLS-1$ //$NON-NLS-2$
     // createRtLabel( gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
     // gwid = Gwid.createRtdata( CLSID_CTRL_SYSTEM, "n2CtrlSystem", "rtdEmergencyStop" ); //$NON-NLS-1$ //$NON-NLS-2$
-    gwid = Gwid.createObj( "mcc.MainSwitch", "n2MainSwitch" ); //$NON-NLS-1$ //$NON-NLS-2$
+    gwid = Gwid.createRtdata( "mcc.MainSwitch", "n2MainSwitch", "rtdEmergencyStop" ); //$NON-NLS-1$ //$NON-NLS-2$
     createRtLabel( gwid, ICONID_RED_LAMP, ICONID_GRAY_LAMP );
 
     gwid = Gwid.createRtdata( CLSID_DIG_INPUT, "n2DI_Upwr380_Norm", "rtdCurrentValue" ); //$NON-NLS-1$ //$NON-NLS-2$
