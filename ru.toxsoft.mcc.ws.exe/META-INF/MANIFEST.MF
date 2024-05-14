@@ -24,8 +24,8 @@ Require-Bundle: javax.annotation,
  org.toxsoft.uskat.core.gui,
  org.toxsoft.skf.dq.lib,
  org.toxsoft.skf.dq.s5,
- org.toxsoft.skf.alarms.lib,
- org.toxsoft.skf.alarms.s5,
+ org.toxsoft.skf.legacy.alarms.lib,
+ org.toxsoft.skf.legacy.alarms.s5,
  org.toxsoft.skf.reports.gui,
  org.toxsoft.skf.journals.mws
 Bundle-RequiredExecutionEnvironment: JavaSE-17

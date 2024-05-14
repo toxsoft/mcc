@@ -16,8 +16,8 @@ Require-Bundle: org.toxsoft.extlibs.log4j,
  org.toxsoft.uskat.s5.histdata10,
  org.toxsoft.skf.dq.lib,
  org.toxsoft.skf.dq.s5,
- org.toxsoft.skf.alarms.lib,
- org.toxsoft.skf.alarms.s5
+ org.toxsoft.skf.legacy.alarms.lib,
+ org.toxsoft.skf.legacy.alarms.s5
 Eclipse-BuddyPolicy: registered
 Export-Package: ru.toxsoft.mcc.server,
  ru.toxsoft.mcc.server.main
