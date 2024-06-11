@@ -30,9 +30,9 @@ import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.IListEdit;
 import org.toxsoft.core.tslib.gw.skid.Skid;
 import org.toxsoft.core.tslib.utils.errors.TsNotAllEnumsUsedRtException;
-import org.toxsoft.skf.alarms.lib.*;
-import org.toxsoft.skf.alarms.lib.impl.SkAlarmFlacon;
-import org.toxsoft.skf.alarms.s5.supports.S5AlarmDefEntity;
+import org.toxsoft.skf.legacy.alarms.lib.*;
+import org.toxsoft.skf.legacy.alarms.lib.impl.SkAlarmFlacon;
+import org.toxsoft.skf.legacy.alarms.s5.supports.S5AlarmDefEntity;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 
 /**

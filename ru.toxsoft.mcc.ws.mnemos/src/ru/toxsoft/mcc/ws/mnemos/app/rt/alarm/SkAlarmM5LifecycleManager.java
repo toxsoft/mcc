@@ -20,9 +20,9 @@ import org.toxsoft.core.tslib.coll.IListEdit;
 import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
 import org.toxsoft.core.tslib.utils.TsLibUtils;
 import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.skf.alarms.lib.*;
-import org.toxsoft.skf.alarms.lib.filters.SkAlarmFilterByHistory;
-import org.toxsoft.skf.alarms.lib.impl.SkAlarmThreadHistoryItem;
+import org.toxsoft.skf.legacy.alarms.lib.*;
+import org.toxsoft.skf.legacy.alarms.lib.filters.SkAlarmFilterByHistory;
+import org.toxsoft.skf.legacy.alarms.lib.impl.SkAlarmThreadHistoryItem;
 
 /**
  * Lifecycle manager for {@link SkAlarmM5Model}.

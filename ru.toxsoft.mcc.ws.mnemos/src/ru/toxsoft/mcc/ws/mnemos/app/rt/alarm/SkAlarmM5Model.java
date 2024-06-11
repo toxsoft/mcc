@@ -14,7 +14,7 @@ import org.toxsoft.core.tsgui.m5.model.impl.M5Model;
 import org.toxsoft.core.tsgui.valed.controls.av.ValedAvStringText;
 import org.toxsoft.core.tslib.av.EAtomicType;
 import org.toxsoft.core.tslib.av.IAtomicValue;
-import org.toxsoft.skf.alarms.lib.ISkAlarm;
+import org.toxsoft.skf.legacy.alarms.lib.ISkAlarm;
 import org.toxsoft.uskat.core.api.objserv.ISkObject;
 import org.toxsoft.uskat.core.connection.ISkConnection;
 import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
