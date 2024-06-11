@@ -7,9 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.toxsoft.core.tsgui.utils.layout.AWTLayout;
 import org.toxsoft.core.tsgui.utils.layout.BorderLayout;
 import org.toxsoft.core.tsgui.widgets.TsComposite;
-import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
 import org.toxsoft.uskat.core.gui.e4.uiparts.SkMwsAbstractPart;
 
 import ru.toxsoft.mcc.ws.mnemos.app.*;
@@ -23,16 +20,6 @@ import ru.toxsoft.mcc.ws.mnemos.app.*;
 public class UipartMccMainScheme
     extends SkMwsAbstractPart {
   // extends MwsAbstractPart {
-
-  @Override
-  public ISkConnection skConn() {
-    ISkConnectionSupplier cs = tsContext().get( ISkConnectionSupplier.class );
-    if( cs != null ) {
-      return cs.defConn();
-    }
-    LoggerUtils.errorLogger().error( "ISkConnectionSupplier - null" ); //$NON-NLS-1$
-    return null;
-  }
 
   @Override
   protected void doCreateContent( TsComposite aParent ) {
