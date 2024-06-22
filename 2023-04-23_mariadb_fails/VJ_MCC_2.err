@@ -1,0 +1,195 @@
+2022-04-16 10:32:42 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2022-04-16 10:32:42 0 [Note] InnoDB: Number of pools: 1
+2022-04-16 10:32:42 0 [Note] InnoDB: Using crc32 + pclmulqdq instructions
+2022-04-16 10:32:42 0 [Note] InnoDB: Initializing buffer pool, total size = 2147483648, chunk size = 134217728
+2022-04-16 10:32:42 0 [Note] InnoDB: Completed initialization of buffer pool
+2022-04-16 10:32:42 0 [Note] InnoDB: 128 rollback segments are active.
+2022-04-16 10:32:42 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2022-04-16 10:32:42 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2022-04-16 10:32:42 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+2022-04-16 10:32:42 0 [Note] InnoDB: 10.6.7 started; log sequence number 42173; transaction id 14
+2022-04-16 10:32:42 0 [Note] Plugin 'FEEDBACK' is disabled.
+2022-04-16 10:32:42 0 [Note] InnoDB: Loading buffer pool(s) from C:\dapps\mariadb\data\ib_buffer_pool
+2022-04-16 10:32:42 0 [Note] Server socket created on IP: '::'.
+2022-04-16 10:32:42 0 [Note] Server socket created on IP: '0.0.0.0'.
+2022-04-16 10:32:42 0 [Note] InnoDB: Buffer pool(s) load completed at 220416 10:32:42
+2022-04-16 10:32:42 0 [Note] C:\dapps\mariadb\bin\mysqld.exe: ready for connections.
+Version: '10.6.7-MariaDB'  socket: ''  port: 3306  mariadb.org binary distribution
+2022-04-16 10:41:06 3 [Warning] Access denied for user 'root'@'localhost' (using password: NO)
+2022-04-16 10:43:49 0 [Note] Windows service "MariaDB":  received SERVICE_CONTROL_STOP
+2022-04-16 10:43:49 0 [Note] C:\dapps\mariadb\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2022-04-16 10:43:49 0 [Note] InnoDB: FTS optimize thread exiting.
+2022-04-16 10:43:49 0 [Note] InnoDB: Starting shutdown...
+2022-04-16 10:43:49 0 [Note] InnoDB: Dumping buffer pool(s) to C:\dapps\mariadb\data\ib_buffer_pool
+2022-04-16 10:43:49 0 [Note] InnoDB: Buffer pool(s) dump completed at 220416 10:43:49
+2022-04-16 10:43:49 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1"
+2022-04-16 10:43:49 0 [Note] InnoDB: Shutdown completed; log sequence number 42329; transaction id 15
+2022-04-16 10:43:50 0 [Note] C:\dapps\mariadb\bin\mysqld.exe: Shutdown complete
+
+2022-04-16 10:48:10 0 [Warning] You need to use --log-bin to make --binlog-format work.
+2022-04-16 10:48:10 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2022-04-16 10:48:10 0 [Note] InnoDB: Number of pools: 1
+2022-04-16 10:48:10 0 [Note] InnoDB: Using crc32 + pclmulqdq instructions
+2022-04-16 10:48:10 0 [Note] InnoDB: Initializing buffer pool, total size = 4294967296, chunk size = 134217728
+2022-04-16 10:48:10 0 [Note] InnoDB: Completed initialization of buffer pool
+2022-04-16 10:48:10 0 [Note] InnoDB: Resizing redo log from 100663296 to 1073741824 bytes; LSN=42341
+2022-04-16 10:48:10 0 [Note] InnoDB: Starting to delete and rewrite log file.
+2022-04-16 10:48:10 0 [Note] InnoDB: Setting log file ./ib_logfile101 size to 1073741824 bytes
+2022-04-16 10:48:10 0 [Note] InnoDB: Renaming log file ./ib_logfile101 to ./ib_logfile0
+2022-04-16 10:48:10 0 [Note] InnoDB: New log file created, LSN=42341
+2022-04-16 10:48:10 0 [Note] InnoDB: 128 rollback segments are active.
+2022-04-16 10:48:11 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2022-04-16 10:48:11 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2022-04-16 10:48:11 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+2022-04-16 10:48:11 0 [Note] InnoDB: 10.6.7 started; log sequence number 42329; transaction id 14
+2022-04-16 10:48:11 0 [Note] Plugin 'FEEDBACK' is disabled.
+2022-04-16 10:48:11 0 [Note] InnoDB: Loading buffer pool(s) from C:\dapps\mariadb\data\ib_buffer_pool
+2022-04-16 10:48:11 0 [Warning] 'innodb-file-format' was removed. It does nothing now and exists only for compatibility with old my.cnf files.
+2022-04-16 10:48:11 0 [Warning] 'thread-concurrency' was removed. It does nothing now and exists only for compatibility with old my.cnf files.
+2022-04-16 10:48:11 0 [Warning] 'innodb-thread-concurrency' was removed. It does nothing now and exists only for compatibility with old my.cnf files.
+2022-04-16 10:48:11 0 [Note] InnoDB: Buffer pool(s) load completed at 220416 10:48:11
+2022-04-16 10:48:11 0 [Note] Server socket created on IP: '::'.
+2022-04-16 10:48:11 0 [Note] Server socket created on IP: '0.0.0.0'.
+2022-04-16 10:48:11 0 [Note] C:\dapps\mariadb\bin\mysqld.exe: ready for connections.
+Version: '10.6.7-MariaDB'  socket: ''  port: 3306  mariadb.org binary distribution
+2022-04-16 12:20:46 27 [Warning] Aborted connection 27 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 65 [Warning] Aborted connection 65 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 105 [Warning] Aborted connection 105 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 89 [Warning] Aborted connection 89 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 73 [Warning] Aborted connection 73 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 110 [Warning] Aborted connection 110 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 64 [Warning] Aborted connection 64 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 26 [Warning] Aborted connection 26 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 25 [Warning] Aborted connection 25 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 24 [Warning] Aborted connection 24 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 23 [Warning] Aborted connection 23 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 21 [Warning] Aborted connection 21 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 20 [Warning] Aborted connection 20 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 15 [Warning] Aborted connection 15 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 13 [Warning] Aborted connection 13 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 16 [Warning] Aborted connection 16 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 14 [Warning] Aborted connection 14 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 19 [Warning] Aborted connection 19 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 12 [Warning] Aborted connection 12 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 18 [Warning] Aborted connection 18 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 17 [Warning] Aborted connection 17 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 43 [Warning] Aborted connection 43 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 11 [Warning] Aborted connection 11 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 40 [Warning] Aborted connection 40 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 39 [Warning] Aborted connection 39 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 38 [Warning] Aborted connection 38 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 37 [Warning] Aborted connection 37 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 36 [Warning] Aborted connection 36 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 35 [Warning] Aborted connection 35 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 34 [Warning] Aborted connection 34 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 33 [Warning] Aborted connection 33 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 32 [Warning] Aborted connection 32 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 31 [Warning] Aborted connection 31 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 30 [Warning] Aborted connection 30 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 29 [Warning] Aborted connection 29 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 28 [Warning] Aborted connection 28 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 22 [Warning] Aborted connection 22 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 55 [Warning] Aborted connection 55 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 57 [Warning] Aborted connection 57 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 54 [Warning] Aborted connection 54 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 53 [Warning] Aborted connection 53 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 52 [Warning] Aborted connection 52 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 51 [Warning] Aborted connection 51 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 50 [Warning] Aborted connection 50 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 49 [Warning] Aborted connection 49 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 48 [Warning] Aborted connection 48 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 47 [Warning] Aborted connection 47 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 46 [Warning] Aborted connection 46 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 45 [Warning] Aborted connection 45 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 44 [Warning] Aborted connection 44 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 42 [Warning] Aborted connection 42 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 41 [Warning] Aborted connection 41 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 72 [Warning] Aborted connection 72 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 71 [Warning] Aborted connection 71 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 70 [Warning] Aborted connection 70 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 69 [Warning] Aborted connection 69 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 68 [Warning] Aborted connection 68 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 67 [Warning] Aborted connection 67 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 66 [Warning] Aborted connection 66 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 63 [Warning] Aborted connection 63 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 62 [Warning] Aborted connection 62 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 61 [Warning] Aborted connection 61 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 60 [Warning] Aborted connection 60 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 59 [Warning] Aborted connection 59 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 58 [Warning] Aborted connection 58 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 56 [Warning] Aborted connection 56 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 88 [Warning] Aborted connection 88 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 87 [Warning] Aborted connection 87 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 86 [Warning] Aborted connection 86 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 85 [Warning] Aborted connection 85 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 84 [Warning] Aborted connection 84 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 83 [Warning] Aborted connection 83 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 82 [Warning] Aborted connection 82 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 81 [Warning] Aborted connection 81 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 80 [Warning] Aborted connection 80 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 79 [Warning] Aborted connection 79 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 78 [Warning] Aborted connection 78 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 77 [Warning] Aborted connection 77 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 76 [Warning] Aborted connection 76 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 75 [Warning] Aborted connection 75 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 74 [Warning] Aborted connection 74 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 104 [Warning] Aborted connection 104 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 103 [Warning] Aborted connection 103 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 102 [Warning] Aborted connection 102 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 101 [Warning] Aborted connection 101 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 100 [Warning] Aborted connection 100 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 99 [Warning] Aborted connection 99 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 98 [Warning] Aborted connection 98 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 97 [Warning] Aborted connection 97 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 96 [Warning] Aborted connection 96 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 95 [Warning] Aborted connection 95 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 94 [Warning] Aborted connection 94 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 93 [Warning] Aborted connection 93 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 92 [Warning] Aborted connection 92 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 91 [Warning] Aborted connection 91 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 90 [Warning] Aborted connection 90 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 109 [Warning] Aborted connection 109 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 108 [Warning] Aborted connection 108 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 107 [Warning] Aborted connection 107 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-16 12:20:46 106 [Warning] Aborted connection 106 to db: 'mcc' user: 'root' host: '127.0.0.1' (Got an error reading communication packets)
+2022-04-17 15:49:58 0 [Note] Windows service "MariaDB":  received SERVICE_CONTROL_SHUTDOWN
+2022-04-17 15:49:58 0 [Note] C:\dapps\mariadb\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2022-04-17 15:49:58 0 [Note] InnoDB: FTS optimize thread exiting.
+2022-04-17 15:49:59 0 [Note] InnoDB: Starting shutdown...
+2022-04-17 15:49:59 0 [Note] InnoDB: Dumping buffer pool(s) to C:\dapps\mariadb\data\ib_buffer_pool
+2022-04-17 15:49:59 0 [Note] InnoDB: Buffer pool(s) dump completed at 220417 15:49:59
+2022-04-17 15:50:09 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1"
+2022-04-17 15:50:09 0 [Note] InnoDB: Shutdown completed; log sequence number 1520807; transaction id 1955
+2022-04-17 15:50:09 0 [Note] C:\dapps\mariadb\bin\mysqld.exe: Shutdown complete
+
+2022-04-17 15:51:10 0 [Warning] You need to use --log-bin to make --binlog-format work.
+2022-04-17 15:51:10 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2022-04-17 15:51:10 0 [Note] InnoDB: Number of pools: 1
+2022-04-17 15:51:10 0 [Note] InnoDB: Using crc32 + pclmulqdq instructions
+2022-04-17 15:51:10 0 [Note] InnoDB: Initializing buffer pool, total size = 4294967296, chunk size = 134217728
+2022-04-17 15:51:10 0 [Note] InnoDB: Completed initialization of buffer pool
+2022-04-17 15:51:10 0 [Note] InnoDB: 128 rollback segments are active.
+2022-04-17 15:51:11 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2022-04-17 15:51:11 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2022-04-17 15:51:11 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+2022-04-17 15:51:11 0 [Note] InnoDB: 10.6.7 started; log sequence number 1520807; transaction id 1957
+2022-04-17 15:51:11 0 [Note] Plugin 'FEEDBACK' is disabled.
+2022-04-17 15:51:11 0 [Note] InnoDB: Loading buffer pool(s) from C:\dapps\mariadb\data\ib_buffer_pool
+2022-04-17 15:51:12 0 [Warning] 'innodb-file-format' was removed. It does nothing now and exists only for compatibility with old my.cnf files.
+2022-04-17 15:51:12 0 [Warning] 'thread-concurrency' was removed. It does nothing now and exists only for compatibility with old my.cnf files.
+2022-04-17 15:51:12 0 [Warning] 'innodb-thread-concurrency' was removed. It does nothing now and exists only for compatibility with old my.cnf files.
+2022-04-17 15:51:12 0 [Note] Server socket created on IP: '::'.
+2022-04-17 15:51:12 0 [Note] Server socket created on IP: '0.0.0.0'.
+2022-04-17 15:51:12 0 [Note] C:\dapps\mariadb\bin\mysqld.exe: ready for connections.
+Version: '10.6.7-MariaDB'  socket: ''  port: 3306  mariadb.org binary distribution
+2022-04-17 15:51:12 0 [Note] InnoDB: Buffer pool(s) load completed at 220417 15:51:12
+2022-04-18 10:55:17 0 [Note] Windows service "MariaDB":  received SERVICE_CONTROL_SHUTDOWN
+2022-04-18 10:55:17 0 [Note] C:\dapps\mariadb\bin\mysqld.exe (initiated by: unknown): Normal shutdown
+2022-04-18 10:55:17 0 [Note] InnoDB: FTS optimize thread exiting.
+2022-04-18 10:55:17 0 [Note] InnoDB: Starting shutdown...
+2022-04-18 10:55:17 0 [Note] InnoDB: Dumping buffer pool(s) to C:\dapps\mariadb\data\ib_buffer_pool
+2022-04-18 10:55:17 0 [Note] InnoDB: Buffer pool(s) dump completed at 220418 10:55:17
+2022-04-18 10:55:18 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1"
+2022-04-18 10:55:18 0 [Note] InnoDB: Shutdown completed; log sequence number 1520819; transaction id 1958
+2022-04-18 10:55:18 0 [Note] C:\dapps\mariadb\bin\mysqld.exe: Shutdown complete
+
