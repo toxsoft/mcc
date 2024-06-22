@@ -4,7 +4,7 @@ Bundle-Name: MCC Server
 Bundle-SymbolicName: ru.toxsoft.mcc.server
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ToxSoft LLC
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: ru.toxsoft.mcc.server
 Require-Bundle: org.toxsoft.extlibs.log4j,
  org.toxsoft.extlibs.wildfly,

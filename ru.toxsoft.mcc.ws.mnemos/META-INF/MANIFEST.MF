@@ -5,8 +5,8 @@ Bundle-SymbolicName: ru.toxsoft.mcc.ws.mnemos;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ru.toxsoft.mcc.ws.mnemos.Activator
 Bundle-Vendor: toxsoft.ru
-Require-Bundle: javax.annotation,
- javax.inject,
+Require-Bundle: jakarta.inject.jakarta.inject-api,
+ jakarta.annotation-api,
  org.eclipse.core.runtime,
  org.eclipse.ui,
  org.eclipse.e4.core.contexts,
@@ -31,7 +31,7 @@ Require-Bundle: javax.annotation,
  org.toxsoft.skf.reports.chart.utils.gui,
  org.toxsoft.skf.reports.lib,
  org.toxsoft.skf.reports.gui
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Automatic-Module-Name: ru.toxsoft.mcc.ws.mnemos
 Bundle-ActivationPolicy: lazy
 Export-Package: ru.toxsoft.mcc.ws.mnemos,
