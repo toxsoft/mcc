@@ -1,25 +1,21 @@
 package ru.toxsoft.mcc.server;
 
-import static org.toxsoft.uskat.s5.server.IS5ServerHardConstants.*;
 import static ru.toxsoft.mcc.server.IMccServerHardConstants.*;
 
-import org.toxsoft.core.tslib.av.EAtomicType;
-import org.toxsoft.core.tslib.av.opset.IOptionSet;
-import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
-import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
-import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
-import org.toxsoft.core.tslib.bricks.strid.coll.impl.StridablesList;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.IListEdit;
-import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.skf.dq.s5.addons.S5BaDataQualityCreator;
-import org.toxsoft.skf.legacy.alarms.s5.addons.S5BaAlarmCreator;
-import org.toxsoft.uskat.s5.common.S5Module;
-import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
-import org.toxsoft.uskat.s5.server.backend.addons.IS5BackendAddonCreator;
-import org.toxsoft.uskat.s5.server.backend.supports.histdata.impl.sequences.S5HistdataSequencesUtils10;
-import org.toxsoft.uskat.s5.server.sequences.IS5SequenceImplementation;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.skf.dq.s5.addons.*;
+import org.toxsoft.skf.legacy.alarms.s5.addons.*;
+import org.toxsoft.uskat.s5.common.*;
+import org.toxsoft.uskat.s5.server.backend.addons.*;
+import org.toxsoft.uskat.s5.server.backend.supports.histdata.impl.sequences.*;
+import org.toxsoft.uskat.s5.server.sequences.*;
 import org.toxsoft.uskat.s5.server.startup.*;
 
 /**
@@ -46,10 +42,10 @@ public class MccMainServer
   protected IOptionSet doProjectSpecificParams() {
     // Параметры бекенда
     IOptionSetEdit retValue = new OptionSet();
-    // Схема базы данных сервера
-    retValue.setStr( OP_BACKEND_DB_SCHEME_NAME, DB_SCHEME_NAME );
-    // Глубина хранения исторических данных
-    retValue.setInt( IS5ServerHardConstants.OP_DB_STORAGE_DEPTH, DB_STORAGE_DEPTH );
+    // // Схема базы данных сервера
+    // retValue.setStr( OP_BACKEND_DB_SCHEME_NAME, DB_SCHEME_NAME );
+    // // Глубина хранения исторических данных
+    // retValue.setInt( IS5ServerHardConstants.OP_DB_STORAGE_DEPTH, DB_STORAGE_DEPTH );
 
     // TODO: 2020-09-02 mvkd !!!
     // Запрет формирования хранимых данных (исторические данные, история команд и события)
