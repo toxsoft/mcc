@@ -2,14 +2,14 @@ package ru.toxsoft.mcc.server.main;
 
 import static org.toxsoft.uskat.s5.server.IS5ImplementConstants.*;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import javax.ejb.*;
 
-import org.toxsoft.core.tslib.av.IAtomicValue;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.uskat.s5.server.startup.IS5InitialSysdescrSingleton;
-import org.toxsoft.uskat.s5.server.startup.S5InitialSysdescrSingleton;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.s5.server.startup.*;
 
 /**
  * Реализация синглтона инициализации бекенда.
@@ -52,7 +52,7 @@ public class ProjectInitialSysdescrSingleton
   // Реализация шаблонных методов S5InitialSysdescrSingleton
   //
   @Override
-  protected void doCreateSysdescr() {
+  protected void doCreateSysdescr( ISkCoreApi aCoreApi ) {
     // Установка пароля root по умолчанию
     // ISkUser root = userService().listUsers().findByKey( ISkUserServiceHardConstants.USER_ID_ROOT );
     // if( root.password().equals( TsLibUtils.EMPTY_STRING ) ) {
