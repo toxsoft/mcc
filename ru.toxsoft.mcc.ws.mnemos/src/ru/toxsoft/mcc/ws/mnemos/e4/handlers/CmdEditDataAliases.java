@@ -2,32 +2,30 @@ package ru.toxsoft.mcc.ws.mnemos.e4.handlers;
 
 import static ru.toxsoft.mcc.ws.mnemos.e4.handlers.ISkResources.*;
 
-import org.eclipse.e4.core.contexts.IEclipseContext;
-import org.eclipse.e4.core.di.annotations.Execute;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tsgui.bricks.ctx.impl.TsGuiContext;
-import org.toxsoft.core.tsgui.dialogs.datarec.ITsDialogInfo;
-import org.toxsoft.core.tsgui.dialogs.datarec.TsDialogInfo;
-import org.toxsoft.core.tsgui.m5.IM5Domain;
-import org.toxsoft.core.tsgui.m5.gui.M5GuiUtils;
-import org.toxsoft.core.tslib.av.metainfo.IDataDef;
-import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesListEdit;
-import org.toxsoft.core.tslib.bricks.strid.coll.impl.StridablesList;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.gw.skid.Skid;
-import org.toxsoft.skf.ggprefs.lib.IGuiGwPrefsSection;
-import org.toxsoft.skf.ggprefs.lib.ISkGuiGwPrefsService;
-import org.toxsoft.skf.ggprefs.lib.impl.SkGuiGwPrefsService;
-import org.toxsoft.uskat.core.ISkCoreApi;
-import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
-import org.toxsoft.uskat.s5.legacy.ISkSystem;
+import org.eclipse.e4.core.contexts.*;
+import org.eclipse.e4.core.di.annotations.*;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tsgui.bricks.ctx.impl.*;
+import org.toxsoft.core.tsgui.dialogs.datarec.*;
+import org.toxsoft.core.tsgui.m5.*;
+import org.toxsoft.core.tsgui.m5.gui.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.skf.ggprefs.lib.*;
+import org.toxsoft.skf.ggprefs.lib.impl.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.backend.api.*;
+import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.uskat.core.gui.conn.*;
+import org.toxsoft.uskat.s5.server.*;
 
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.PrefUtils;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.MccSystemOptions;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.GuiDataAliasesPrefsEditLifecycleManager;
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.GuiDataAliasesPrefsEditModel;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.*;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.data_aliases.impl.*;
 
 /**
  * Испонитель команды "Правки названии параметров".
@@ -41,8 +39,8 @@ public class CmdEditDataAliases {
 
   private ISkConnection conn;
 
-  private final Skid systemSkid = new Skid( ISkSystem.CLASS_ID, ISkSystem.THIS_SYSTEM );
-  private final Gwid systemGwid = Gwid.createObj( ISkSystem.CLASS_ID, ISkSystem.THIS_SYSTEM );
+  private Skid systemSkid;
+  private Gwid systemGwid;
 
   /**
    * ИД раздела настроек {@link IGuiGwPrefsSection} для работы с настройками мнемосхемы.
@@ -76,6 +74,10 @@ public class CmdEditDataAliases {
       coreApi.addService( SkGuiGwPrefsService.CREATOR );
     }
     prefSection = PrefUtils.section( MNEMOS_PREFS_SECTION_ID, conn );
+
+    ISkBackendInfo info = conn.backendInfo();
+    systemSkid = IS5ServerHardConstants.OP_SERVER_ID.getValue( info.params() ).asValobj();
+    systemGwid = Gwid.createObj( systemSkid.classId(), systemSkid.strid() );
 
     // Задание опций
     IStridablesListEdit<IDataDef> panelPrefs = new StridablesList<>();
