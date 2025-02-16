@@ -32,7 +32,7 @@ public class MccMainServer
    * Конструктор
    */
   public MccMainServer() {
-    super( new S5Module( SERVER_ID, SERVER_NAME, SERVER_DESCR, SERVER_VERSION ) );
+    super( SERVER_ID, SERVER_ID, new S5Module( SERVER_ID, SERVER_NAME, SERVER_DESCR, SERVER_VERSION ) );
   }
 
   // ------------------------------------------------------------------------------------
