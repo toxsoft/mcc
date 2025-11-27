@@ -1,18 +1,17 @@
 package ru.toxsoft.mcc.ws.mnemos.app;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
-import org.toxsoft.core.tsgui.bricks.ctx.ITsGuiContext;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.skf.reports.chart.utils.gui.panels.ChartPanel;
-import org.toxsoft.skf.reports.gui.utils.ReportTemplateUtilities;
-import org.toxsoft.skf.reports.templates.service.IVtGraphTemplate;
-import org.toxsoft.uskat.core.gui.conn.ISkConnectionSupplier;
+import org.eclipse.swt.*;
+import org.eclipse.swt.custom.*;
+import org.eclipse.swt.layout.*;
+import org.eclipse.swt.widgets.*;
+import org.toxsoft.core.tsgui.bricks.ctx.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.skf.reports.chart.utils.gui.panels.*;
+import org.toxsoft.skf.reports.gui.utils.*;
+import org.toxsoft.skf.reports.templates.service.*;
+import org.toxsoft.uskat.core.gui.conn.*;
 
-import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.RtChartPanel;
+import ru.toxsoft.mcc.ws.mnemos.app.rt.chart.*;
 
 /**
  * Окно для отображения графика.
@@ -81,8 +80,9 @@ public class MccChartWindow {
    */
   public static RtChartPanel popupRtChart( ITsGuiContext aContext, Composite aParent, Gwid aParamGwid, String aTitle,
       String aDescription ) {
-    IVtGraphTemplate selTemplate = ReportTemplateUtilities.createTemplate( aParamGwid, aTitle, aDescription );
     ISkConnectionSupplier connSupp = aContext.get( ISkConnectionSupplier.class );
+    IVtGraphTemplate selTemplate =
+        ReportTemplateUtilities.createTemplate( connSupp.defConn().coreApi(), aParamGwid, aTitle, aDescription );
 
     // создаем новую панель
     RtChartPanel popupRtChart = new RtChartPanel( aParent, aContext, selTemplate, connSupp.defConn() );
