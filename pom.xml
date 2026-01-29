@@ -514,9 +514,6 @@
       </build>
       <modules>
         <!-- TODO rcp-библиотеки -->
-        <module>../ts4-targets/eclipse-releng/${platform.rcp.artifactId}</module>
-        <module>../ts4-targets/eclipse-releng/${platform.rap.artifactId}</module>
-     
         <module>ru.toxsoft.mcc.ws.exe.product</module>
 
         <module>zz-releng/ru.toxsoft.mcc.releng.p2.rcp</module>
