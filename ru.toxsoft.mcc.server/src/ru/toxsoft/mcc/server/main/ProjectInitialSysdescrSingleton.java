@@ -4,12 +4,12 @@ import static org.toxsoft.uskat.s5.server.IS5ImplementConstants.*;
 
 import java.util.concurrent.*;
 
-import javax.ejb.*;
-
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.s5.server.startup.*;
+
+import jakarta.ejb.*;
 
 /**
  * Реализация синглтона инициализации бекенда.

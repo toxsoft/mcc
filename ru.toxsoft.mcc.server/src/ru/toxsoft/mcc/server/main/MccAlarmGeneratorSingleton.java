@@ -8,22 +8,18 @@ import static org.toxsoft.skf.legacy.alarms.lib.EAlarmPriority.*;
 import static org.toxsoft.uskat.s5.server.IS5ImplementConstants.*;
 import static ru.toxsoft.mcc.server.main.IMccResources.*;
 
-import javax.ejb.*;
-
-import org.toxsoft.core.tslib.av.EAtomicType;
-import org.toxsoft.core.tslib.av.metainfo.IDataDef;
-import org.toxsoft.core.tslib.av.opset.impl.OptionSetUtils;
-import org.toxsoft.core.tslib.gw.gwid.EGwidKind;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.gw.skid.ISkidList;
-import org.toxsoft.core.tslib.gw.skid.Skid;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.skf.legacy.alarms.lib.*;
-import org.toxsoft.skf.legacy.alarms.s5.generator.IS5AlarmAtomicValuePredicate;
-import org.toxsoft.skf.legacy.alarms.s5.generator.S5AbstractAlarmGeneratorSingleton;
-import org.toxsoft.uskat.core.ISkCoreApi;
-import org.toxsoft.uskat.core.api.objserv.ISkObjectService;
+import org.toxsoft.skf.legacy.alarms.s5.generator.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.api.objserv.*;
+
+import jakarta.ejb.*;
 
 /**
  * Абстрактная реализация синглтона генератора алармов службы {@link ISkAlarmService}.
