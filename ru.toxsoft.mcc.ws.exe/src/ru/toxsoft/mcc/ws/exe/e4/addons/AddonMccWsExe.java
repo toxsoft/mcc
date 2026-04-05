@@ -507,7 +507,7 @@ public class AddonMccWsExe
       eventFormattersRegistry.registerFomatter( evGwid, new TriggeredJournalEventFormatter( "включен", "отключен" ) );
     }
     catch( Exception exept ) {
-      LoggerUtils.defaultLogger().error( exept );
+      LoggerUtils.error( exept );
     }
   }
 
@@ -555,12 +555,12 @@ public class AddonMccWsExe
 
     try {
       aConn.open( ctx );
-      LoggerUtils.defaultLogger().info( "Connection opened" ); //$NON-NLS-1$
+      LoggerUtils.info( "Connection opened" ); //$NON-NLS-1$
       ISkLoggedUserInfo userInfo = aConn.coreApi().getCurrentUserInfo();
-      LoggerUtils.defaultLogger().info( "%s", userInfo );
+      LoggerUtils.info( "%s", userInfo );
     }
     catch( Exception ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
   }
 

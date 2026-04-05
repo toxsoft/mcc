@@ -144,7 +144,7 @@ public class MccAnalogInputControl
         fontSize = Integer.parseInt( sizeStr );
       }
       catch( Throwable e ) {
-        LoggerUtils.errorLogger().error( "Недопустимый формат размера шрифта", sizeStr );
+        LoggerUtils.error( "Недопустимый формат размера шрифта", sizeStr );
       }
     }
 

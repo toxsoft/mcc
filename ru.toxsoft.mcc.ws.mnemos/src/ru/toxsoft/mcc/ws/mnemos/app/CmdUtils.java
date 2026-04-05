@@ -20,18 +20,11 @@ public class CmdUtils {
    *         <b>false</b> - команда не завершена или завершена успешно
    */
   public static boolean isFailed( ESkCommandState aState ) {
-    switch( aState ) {
-      case FAILED:
-      case TIMEOUTED:
-      case UNHANDLED:
-        return true;
-      case EXECUTING:
-      case SENDING:
-      case SUCCESS:
-        return false;
-      default:
-        throw new TsNotAllEnumsUsedRtException();
-    }
+    return switch( aState ) {
+      case FAILED, TIMEOUTED, UNHANDLED -> true;
+      case EXECUTING, SENDING, SUCCESS -> false;
+      default -> throw new TsNotAllEnumsUsedRtException();
+    };
   }
 
   /**
@@ -45,10 +38,10 @@ public class CmdUtils {
     }
     for( SkCommandState state : aCommand.statesHistory() ) {
       if( isFailed( state.state() ) ) {
-        LoggerUtils.errorLogger().error( state.state().description() + ": " + aCommand.toString() ); //$NON-NLS-1$
+        LoggerUtils.error( state.state().description() + ": " + aCommand.toString() ); //$NON-NLS-1$
       }
       else {
-        LoggerUtils.defaultLogger().info( state.state().description() + ": " + aCommand.toString() ); //$NON-NLS-1$
+        LoggerUtils.info( state.state().description() + ": " + aCommand.toString() ); //$NON-NLS-1$
       }
     }
   }

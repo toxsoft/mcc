@@ -44,7 +44,7 @@ public class SoundPlayer
       init();
     }
     catch( Throwable ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
     finally {
       try {
@@ -53,7 +53,7 @@ public class SoundPlayer
         }
       }
       catch( Throwable ex ) {
-        LoggerUtils.errorLogger().error( ex );
+        LoggerUtils.error( ex );
       }
     }
   }
@@ -86,7 +86,7 @@ public class SoundPlayer
       inputStream.close();
     }
     catch( Throwable ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
     clip.close();
   }
@@ -106,7 +106,7 @@ public class SoundPlayer
               clip.start();
             }
             catch( Throwable ex ) {
-              LoggerUtils.errorLogger().error( ex );
+              LoggerUtils.error( ex );
             }
           }
         }
@@ -114,7 +114,7 @@ public class SoundPlayer
       clip.open( inputStream );
     }
     catch( Throwable ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
   }
 

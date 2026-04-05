@@ -97,7 +97,7 @@ public class MccRtDataProvider
     void selectChannels( IMap<Gwid, ISkReadCurrDataChannel> aChannels ) {
       for( int i = 0; i < allGwids.length; i++ ) {
         if( !aChannels.hasKey( allGwids[i] ) ) {
-          LoggerUtils.errorLogger().error( "Can not create read chanel fo gwid" + allGwids[i].toString() ); //$NON-NLS-1$
+          LoggerUtils.error( "Can not create read chanel fo gwid" + allGwids[i].toString() ); //$NON-NLS-1$
         }
         ISkReadCurrDataChannel channel = aChannels.getByKey( allGwids[i] );
         channels[i] = channel;

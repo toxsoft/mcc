@@ -69,7 +69,7 @@ public abstract class AbstractMccDialogPanel
     cmdSender.eventer().addListener( aSource -> {
       String errStr = cmdSender.errorString();
       if( cmdSender.errorString() != null && !errStr.isBlank() ) {
-        LoggerUtils.errorLogger().error( errStr );
+        LoggerUtils.error( errStr );
         TsDialogUtils.error( getShell(), errStr );
       }
     } );

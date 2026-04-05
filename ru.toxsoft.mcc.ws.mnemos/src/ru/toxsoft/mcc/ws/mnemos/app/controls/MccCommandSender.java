@@ -54,7 +54,7 @@ public class MccCommandSender {
       default:
         throw new TsNotAllEnumsUsedRtException();
     }
-    LoggerUtils.errorLogger().info( "command %s state changed %s", cmd.cmdGwid(), cmdState.state() ); //$NON-NLS-1$
+    LoggerUtils.info( "command %s state changed %s", cmd.cmdGwid(), cmdState.state() ); //$NON-NLS-1$
     if( cmd.isComplete() ) {
       cmd.stateEventer().removeListener( this.commandListener );
       if( cmd.isComplete() && cmd.state().state() != ESkCommandState.SUCCESS ) {
